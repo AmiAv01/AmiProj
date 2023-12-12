@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('layout_for_details', function (Blueprint $table) {
-            $table->id();
+            $table->integer('lt_dt_acode')->primary();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
