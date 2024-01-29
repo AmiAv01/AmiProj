@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,15 +19,14 @@ use App\Http\Controllers\Admin\AdminController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [UserController::class,'index'])->name('home');
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+/*Inertia::render('Welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+    'laravelVersion' => Application::VERSION,
+    'phpVersion' => PHP_VERSION,
+]);*/
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -45,6 +46,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>'RedirectIfAdmin'], function (){
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function (){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // details route
+    Route::get('/details', [DetailController::class, 'index'])->name('admin.details.index');
+    Route::post('/details/store', [DetailController::class, 'store'])->name('admin.details.store');
+    Route::put('/details/update/{id}', [DetailController::class, 'update'])->name('admin.details.update');
+    Route::delete('/details/delete/{dt_id}', [DetailController::class, 'delete'])->name('admin.details.delete');
 });
 
 require __DIR__.'/auth.php';
