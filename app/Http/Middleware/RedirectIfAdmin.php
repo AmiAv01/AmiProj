@@ -14,9 +14,9 @@ class RedirectIfAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $guard=null): Response
+    public function handle(Request $request, Closure $next, $guard = null): Response
     {
-        if (Auth::guard($guard)->check() && Auth::user()->isAdmin() == 1) {
+        if (Auth::guard($guard)->check() && Auth::user()->isAdmin == 1) {
             return redirect()->route('admin.dashboard');
         }
 
