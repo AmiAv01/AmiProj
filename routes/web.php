@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DetailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\DetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +19,7 @@ use App\Http\Controllers\Admin\DetailController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [UserController::class,'index'])->name('home');
-
-/*Inertia::render('Welcome', [
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-    'laravelVersion' => Application::VERSION,
-    'phpVersion' => PHP_VERSION,
-]);*/
+Route::get('/', [UserController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -38,13 +31,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix'=>'admin', 'middleware'=>'RedirectIfAdmin'], function (){
+Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::get('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
     Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function (){
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // details route
