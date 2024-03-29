@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-slate-900">
+    <header class="bg-slate-900 sticky top-0 z-40">
         <nav class="bg-slate-900 border-gray-200 dark:bg-gray-900">
             <div
                 class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6"
@@ -222,7 +222,7 @@
                         <input
                             type="search"
                             id="search-dropdown"
-                            class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
+                            class="block p-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
                             placeholder="Поиск"
                             required
                         />
