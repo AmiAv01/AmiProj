@@ -1,5 +1,5 @@
 <template>
-    <div  v-if="links.length > 3">
+    <div class="flex justify-center" v-if="links.length > 3">
         <div class="flex flex-wrap mt-8">
             <template v-for="(link, key) in links" :key="key">
                 <div
@@ -16,7 +16,6 @@
                     v-html="link.label"
                 />
             </template>
-
         </div>
     </div>
 </template>
