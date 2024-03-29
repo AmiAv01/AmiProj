@@ -4,11 +4,11 @@
             <div class="w-full mt-[50px]">
                 <div class="w-[1300px] flex justify-between mx-auto my-0">
                     <div
-                        class="flex justify-around border border-gray-700 w-[60%] h-[600px] rounded-[15px]"
+                        class="flex justify-around border border-gray-200 w-[60%] h-[600px] rounded-[15px]"
                     >
                         <img
                             src="../../../../../public/generators.jpg"
-                            class="h-[200px] w-[200px] self-center ml-4"
+                            class="h-[200px] w-[200px] self-center ml-4 bg-transparent"
                             alt="#"
                         />
                         <div class="flex flex-col w-[40%] justify-center">
@@ -19,7 +19,7 @@
                             >
                                 Перейти
                                 <svg
-                                    class="w-5 h-5 ml-6 text-gray-800 dark:text-white"
+                                    class="w-5 h-5 ml-6 text-white dark:text-white"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -38,7 +38,7 @@
                     </div>
                     <div class="w-[38%]">
                         <div
-                            class="flex justify-around border border-gray-700 mb-[20px] h-[290px] rounded-[15px]"
+                            class="flex justify-around border border-gray-200 mb-[20px] h-[290px] rounded-[15px]"
                         >
                             <img
                                 src="../../../../../public/generators.jpg"
@@ -53,7 +53,7 @@
                                 >
                                     Перейти
                                     <svg
-                                        class="w-5 h-5 ml-6 text-gray-800 dark:text-white"
+                                        class="w-5 h-5 ml-6 text-white dark:text-white"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-around border border-gray-700 h-[290px] rounded-[15px]"
+                            class="flex justify-around border border-gray-200 h-[290px] rounded-[15px]"
                         >
                             <img
                                 src="../../../../../public/generators.jpg"
@@ -86,7 +86,7 @@
                                 >
                                     Перейти
                                     <svg
-                                        class="w-5 h-5 ml-6 text-gray-800 dark:text-white"
+                                        class="w-5 h-5 ml-6 text-white dark:text-white"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -107,7 +107,19 @@
                 </div>
             </div>
         </section>
+        <section>
+            <ProductList v-bind:details="details" />
+            <LogoClouds />
+            <News />
+        </section>
     </main>
 </template>
 
-<script setup></script>
+<script setup>
+import LogoClouds from "./LogoClouds.vue";
+import ProductList from "./ProductList.vue";
+import News from "./News.vue";
+defineProps({
+    details: Array,
+});
+</script>
