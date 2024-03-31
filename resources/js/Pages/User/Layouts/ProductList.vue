@@ -57,7 +57,7 @@
 
 <script setup>
 defineProps({
-    details: Array,
+    details: Object,
 });
 import Pagination from "@/Pages/Admin/Components/Pagination.vue";
 </script>
