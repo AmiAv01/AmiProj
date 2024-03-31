@@ -120,6 +120,6 @@ import LogoClouds from "./LogoClouds.vue";
 import ProductList from "./ProductList.vue";
 import News from "./News.vue";
 defineProps({
-    details: Array,
+    details: Object,
 });
 </script>
