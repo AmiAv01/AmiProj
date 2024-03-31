@@ -1,5 +1,6 @@
 <template>
-    <Header> </Header>
+    <Header v-bind:canLogin="canLogin" v-bind:canRegister="canRegister">
+    </Header>
     <Main v-bind:details="details"></Main>
     <Footer></Footer>
 </template>
@@ -8,6 +9,12 @@ import Header from "./Header.vue";
 import Main from "./Main.vue";
 import Footer from "./Footer.vue";
 defineProps({
-    details: Array,
+    details: Object,
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
 });
 </script>
