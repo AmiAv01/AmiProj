@@ -15,11 +15,12 @@
                     />
                 </a>
                 <div
+                    v-if="!$page.props.auth.user"
                     class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <Link
-                        type="button"
-                        href="login"
+                        v-if="canLogin"
+                        :href="route('login')"
                         class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
                         <svg
@@ -41,7 +42,8 @@
                     </Link>
 
                     <Link
-                        type="button"
+                        :href="route('register')"
+                        v-if="canRegister"
                         class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
                         <svg
@@ -87,6 +89,79 @@
                     </button>
                 </div>
                 <div
+                    v-else
+                    class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                >
+                    <button
+                        type="button"
+                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        id="user-menu-button"
+                        aria-expanded="false"
+                        data-dropdown-toggle="user-dropdown"
+                        data-dropdown-placement="bottom"
+                    >
+                        <span class="sr-only">Open user menu</span>
+                        <i class="fa-solid fa-user text-white text-xl"></i>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div
+                        class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                        id="user-dropdown"
+                    >
+                        <div class="px-4 py-3">
+                            <span
+                                class="block text-sm text-gray-900 dark:text-white"
+                                >{{ $page.props.auth.user.name }}</span
+                            >
+                            <span
+                                class="block text-sm text-gray-500 truncate dark:text-gray-400"
+                                >{{ $page.props.auth.user.email }}</span
+                            >
+                        </div>
+                        <ul class="py-2" aria-labelledby="user-menu-button">
+                            <li>
+                                <a
+                                    :href="route('profile.edit')"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >Настройки</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    :href="route('logout')"
+                                    method="post"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >Выход</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <button
+                        data-collapse-toggle="navbar-user"
+                        type="button"
+                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        aria-controls="navbar-user"
+                        aria-expanded="false"
+                    >
+                        <span class="sr-only">Open main menu</span>
+                        <svg
+                            class="w-5 h-5"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 17 14"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 1h15M1 7h15M1 13h15"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div
                     class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
                     id="navbar-cta"
                 >
@@ -96,7 +171,7 @@
                         <li class="group/main inline-block relative">
                             <a
                                 href="#"
-                                class="flex items-center py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                class="flex items-center py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                                 >Категории<svg
                                     class="w-2.5 h-2.5 ms-1"
                                     aria-hidden="true"
@@ -113,7 +188,7 @@
                                     /></svg
                             ></a>
                             <ul
-                                class="flex items-center absolute hidden z-50 pt-2 border-2 bg-white rounded-[15px] border-2 w-[250px] group-hover/main:block"
+                                class="flex items-center absolute hidden z-50 pt-2 border-2 bg-white rounded-[15px] w-[250px] group-hover/main:block"
                             >
                                 <li
                                     class="text-black bg-white border-b-2 hover:bg-black hover:text-white"
@@ -150,7 +225,7 @@
                         <li class="group/main inline-block relative">
                             <a
                                 href="#"
-                                class="flex items-center py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                class="flex items-center py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                                 >Контакты<svg
                                     class="w-2.5 h-2.5 ms-1"
                                     aria-hidden="true"
@@ -277,5 +352,13 @@ import { initFlowbite } from "flowbite";
 import { Link } from "@inertiajs/inertia-vue3";
 onMounted(() => {
     initFlowbite();
+});
+defineProps({
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
 });
 </script>
