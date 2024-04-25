@@ -3,6 +3,9 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
@@ -25,6 +28,17 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::controller(NewsController::class)->group(function () {
+    Route::get('/news', 'index')->name('news.index');
+    Route::post('/news', 'store')->name('news.store');
+});
+
+Route::controller(CatalogController::class)->prefix('catalog')->group(function () {
+    Route::get('/generator', 'index')->name('generator.index');
+});
+
+Route::get('/info', [InfoController::class, 'index'])->name('info.index');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -45,6 +59,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/details/store', [DetailController::class, 'store'])->name('admin.details.store');
     Route::put('/details/update/{id}', [DetailController::class, 'update'])->name('admin.details.update');
     Route::delete('/details/delete/{dt_id}', [DetailController::class, 'delete'])->name('admin.details.delete');
+
 });
 
 require __DIR__.'/auth.php';
