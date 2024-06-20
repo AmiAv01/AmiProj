@@ -166,52 +166,7 @@
                     <ul
                         class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-slate-900 md:space-x-10 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-slate-900 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
                     >
-                        <li class="group/main inline-block relative">
-                            <a
-                                href="#"
-                                class="flex items-center py-2 px-3 md:p-0 text-white text-lg rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                                >Категории<svg
-                                    class="w-2.5 h-2.5 ms-1"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 10 6"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="m1 1 4 4 4-4"
-                                    /></svg
-                            ></a>
-                            <ul
-                                class="items-center absolute hidden z-50 pt-2 border-2 bg-white rounded-[15px] w-[250px] group-hover/main:block"
-                            >
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 border-b-2 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        >Стартеры</a
-                                    >
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 border-b-2 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        >Генераторы</a
-                                    >
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 border-b-2 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        >Остальные запчасти</a
-                                    >
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
+                        <li class="pr-6">
                             <Link
                                 :href="route('news.index')"
                                 class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
@@ -219,19 +174,19 @@
                                 >Новости</Link
                             >
                         </li>
-                        <li>
+                        <li class="pr-6">
                             <Link
                                 :href="route('info.index')"
                                 class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 d:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                                 >О нас</Link
                             >
                         </li>
-                        <li class="group/main inline-block relative">
+                        <li class="pr-6 group/main group inline-block relative">
                             <a
                                 href="#"
                                 class="flex items-center py-2 px-3 md:p-0 rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                                 >Контакты<svg
-                                    class="w-2.5 h-2.5 ms-1"
+                                    class="w-2.5 h-2.5 ms-1 group-hover:rotate-180"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -288,20 +243,20 @@
                 </div>
             </div>
         </nav>
-        <div class="max-w-screen-xl mx-auto p-6">
+        <div class="max-w-screen-xl mx-auto px-6 py-5">
             <form>
                 <div class="flex flex-wrap">
                     <div class="relative w-[60%]">
                         <input
                             type="search"
                             id="search-dropdown"
-                            class="block p-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
-                            placeholder="Поиск"
+                            class="block px-2.5 py-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
+                            placeholder="Поиск по каталогу"
                             required
                         />
                         <button
                             type="submit"
-                            class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
+                            class="absolute flex items-center top-0 end-0 p-2.5 h-full font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
                         >
                             <svg
                                 class="w-4 h-4"
@@ -318,6 +273,7 @@
                                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                                 />
                             </svg>
+                            <span class="pl-2 text-md">Найти</span>
                         </button>
                     </div>
                     <div class="flex space-x-2 ml-[80px]">
@@ -342,12 +298,15 @@
                 </div>
             </form>
         </div>
+        <NavMenu />
     </header>
 </template>
+
 <script setup>
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 import { Link } from "@inertiajs/inertia-vue3";
+import NavMenu from "./Nav/NavMenu.vue";
 onMounted(() => {
     initFlowbite();
 });
