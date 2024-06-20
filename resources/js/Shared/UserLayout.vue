@@ -1,14 +1,12 @@
 <template>
-    <HeaderTest> </HeaderTest>
+    <Header> </Header>
     <main scroll-region>
         <slot />
     </main>
-
     <Footer></Footer>
 </template>
 <script setup>
 import Header from "./Header.vue";
-import HeaderTest from "./HeaderTest.vue";
 import Footer from "./Footer.vue";
 defineProps({
     details: Object,
