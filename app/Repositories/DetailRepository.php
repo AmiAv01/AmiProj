@@ -20,6 +20,6 @@ class DetailRepository implements DetailRepositoryInterface
 
     public function findByCategory(array $categories)
     {
-        return Detail::where('dt_typec', $categories)->paginate(12);
+        return Detail::whereIn('dt_typec', $categories)->paginate(12);
     }
 }
