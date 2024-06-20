@@ -343,7 +343,7 @@
 <script setup>
 import { router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
-import Pagination from "@/Pages/Admin/Components/Pagination.vue";
+import Pagination from "@/Shared/Pagination.vue";
 import { Plus } from "@element-plus/icons-vue";
 import Swal from "sweetalert2";
 
