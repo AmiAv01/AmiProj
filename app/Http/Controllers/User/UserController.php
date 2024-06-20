@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\Detail\DetailService;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    public function __construct(protected DetailService $detailService)
+    {
+
+    }
+
     public function index()
     {
-        $details = DB::table('detail')->paginate(12);
+        $details = $this->detailService->getAll();
 
         return Inertia::render('User/Index', [
             'details' => $details,
