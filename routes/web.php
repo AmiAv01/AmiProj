@@ -3,7 +3,12 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
-use App\Http\Controllers\Catalog\CatalogController;
+use App\Http\Controllers\Catalog\BearingController;
+use App\Http\Controllers\Catalog\GeneratorController;
+use App\Http\Controllers\Catalog\GeneratorPartsController;
+use App\Http\Controllers\Catalog\OtherDetailsController;
+use App\Http\Controllers\Catalog\StarterController;
+use App\Http\Controllers\Catalog\StarterPartsController;
 use App\Http\Controllers\Info\InfoController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -33,9 +38,14 @@ Route::controller(NewsController::class)->group(function () {
     Route::post('/news', 'store')->name('news.store');
 });
 
-Route::controller(CatalogController::class)->prefix('catalog')->group(function () {
-    Route::get('/generator', 'index')->name('generator.index');
-});
+Route::group(['prefix' => 'catalog'], (function () {
+    Route::get('/generators', [GeneratorController::class, 'index'])->name('generator.index');
+    Route::get('/starters', [StarterController::class, 'index'])->name('starter.index');
+    Route::get('/bearings', [BearingController::class, 'index'])->name('bearing.index');
+    Route::get('/starter_parts/{category?}', [StarterPartsController::class, 'index']);
+    Route::get('/generator_parts/{category}', [GeneratorPartsController::class, 'index']);
+    Route::get('/other', [OtherDetailsController::class, 'index']);
+}));
 
 Route::get('/info', [InfoController::class, 'index'])->name('info.index');
 
