@@ -3,10 +3,10 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\InfoController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Catalog\CatalogController;
+use App\Http\Controllers\Info\InfoController;
+use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
