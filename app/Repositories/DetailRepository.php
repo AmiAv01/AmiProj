@@ -15,11 +15,11 @@ class DetailRepository implements DetailRepositoryInterface
 
     public function findById(int $id)
     {
-        return Detail::findOrFail($id);
+        return Detail::where('dt_id', '=', $id)->get();
     }
 
     public function findByCategory(array $categories)
     {
-        return Detail::whereIn('dt_typec', $categories)->paginate(12);
+        return DB::table('detail')->whereIn('dt_typec', $categories)->paginate(12);
     }
 }
