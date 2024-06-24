@@ -8,9 +8,9 @@ use Inertia\Inertia;
 
 class CatalogController extends Controller
 {
-    public function index(array $name)
+    public function index()
     {
-        $details = Detail::where('dt_typec', 'ГЕНЕРАТОР')->paginate(12);
+        $details = Detail::where('dt_typec', ['ГЕНЕРАТОР'])->paginate(12);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
