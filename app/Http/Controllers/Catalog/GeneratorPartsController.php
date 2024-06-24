@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
+use App\Models\Firm;
 use App\Services\Detail\DetailService;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class GeneratorPartsController extends Controller
@@ -30,10 +30,11 @@ class GeneratorPartsController extends Controller
             return abort(404);
         }
         $details = $this->detailService->getByCategory(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]]);
-        Log::channel('stderr')->info($details);
+        $categories = Firm::all();
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
+            'categories' => $categories,
             'title' => $this->names[$category],
         ]);
     }
