@@ -17,7 +17,7 @@ import LogoClouds from "./LogoClouds.vue";
 import ProductList from "./ProductList.vue";
 import News from "@/Shared/News.vue";
 import UserLayout from "@/Shared/UserLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+
 import HeroSection from "@/Pages/User/HeroSection.vue";
 
 export default {
