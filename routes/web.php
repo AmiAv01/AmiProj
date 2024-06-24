@@ -11,6 +11,7 @@ use App\Http\Controllers\Catalog\StarterController;
 use App\Http\Controllers\Catalog\StarterPartsController;
 use App\Http\Controllers\Info\InfoController;
 use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
@@ -45,6 +46,9 @@ Route::group(['prefix' => 'catalog'], (function () {
     Route::get('/starter_parts/{category?}', [StarterPartsController::class, 'index']);
     Route::get('/generator_parts/{category}', [GeneratorPartsController::class, 'index']);
     Route::get('/other', [OtherDetailsController::class, 'index']);
+    Route::get('/product/{id}', [ProductController::class, 'index'])->name('product.info');
+    Route::get('/starter_parts/product/{id}', [ProductController::class, 'index'])->name('product.info');
+    Route::get('/generator_parts/product/{id}', [ProductController::class, 'index'])->name('product.info');
 }));
 
 Route::get('/info', [InfoController::class, 'index'])->name('info.index');
