@@ -1,7 +1,7 @@
 <template>
     <layout>
         <div class="bg-white flex ml-10 py-24 sm:py-32">
-            <brand-selector :categories="categories" />
+            <brand-selector :categories="categories.brands" />
             <div class="ml-[150px] max-w-7xl">
                 <div class="mx-auto max-w-2xl lg:mx-0">
                     <p class="text-5xl font-bold tracking-tight text-gray-900">
@@ -29,7 +29,6 @@ import UserLayout from "@/Shared/UserLayout.vue";
 import Pagination from "@/Shared/Pagination.vue";
 import CatalogCard from "@/Pages/CatalogCard/CatalogCard.vue";
 import BrandSelector from "@/Shared/BrandSelector/Index.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 export default {
     components: {
         layout: UserLayout,
