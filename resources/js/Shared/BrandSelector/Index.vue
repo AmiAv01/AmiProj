@@ -5,10 +5,16 @@
         >
             Бренды
         </p>
-        <form class="h-[350px]">
+        <form class="h-[350px] flex flex-col">
+            <input
+                class="rounded-[15px] m-4 h-[40px]"
+                placeholder="Введите название"
+                v-model="searchQuery"
+                @input="searchCategory"
+            />
             <ul class="h-[300px] bg-green-300 overflow-y-auto p-6">
                 <li
-                    v-for="category in categories"
+                    v-for="category in searchedCategories"
                     :key="category.fr_code"
                     class="py-[4px]"
                 >
@@ -32,9 +38,25 @@
 
 <script>
 export default {
+    data() {
+        return {
+            searchQuery: "",
+            searchedCategories: this.categories,
+        };
+    },
     props: {
         categories: {
             type: Array,
+        },
+    },
+    methods: {
+        searchCategory() {
+            console.log(this.categories);
+            this.searchedCategories = [...this.categories].filter((name) =>
+                name.fr_name
+                    .toLowerCase()
+                    .includes(this.searchQuery.toLowerCase())
+            );
         },
     },
 };
