@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Models\Firm;
 use App\Services\Detail\DetailService;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class StarterPartsController extends Controller
@@ -29,16 +27,13 @@ class StarterPartsController extends Controller
 
     public function index(string $category)
     {
-        Log::channel('stderr')->info($this->categories[$category]);
         if (! array_key_exists($category, $this->categories)) {
             return abort(404);
         }
         $details = $this->detailService->getByCategory(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]]);
-        $categories = Firm::all();
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
-            'categories' => $categories,
             'title' => $this->names[$category],
         ]);
     }

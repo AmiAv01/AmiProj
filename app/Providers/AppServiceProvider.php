@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Firm;
 use App\Repositories\DetailRepository;
 use App\Repositories\Interfaces\DetailRepositoryInterface;
 use App\Services\Detail\DetailService;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
+use Inertia\ResponseFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Inertia::composer('Catalog/Index', function (ResponseFactory $inertia) {
+            $inertia->with([
+                'categories' => [
+                    'brands' => Firm::all(),
+                ],
+            ]);
+        });
     }
 }
