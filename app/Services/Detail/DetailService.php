@@ -2,7 +2,10 @@
 
 namespace App\Services\Detail;
 
+use App\Models\Firm;
 use App\Repositories\Interfaces\DetailRepositoryInterface;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DetailService
 {
@@ -23,6 +26,8 @@ class DetailService
 
     public function getByCategory(array $categories)
     {
-        return $this->detailRepository->findByCategory($categories);
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+
+        return $this->detailRepository->findByCategory($categories, $brands->pluck('fr_name')->toArray());
     }
 }
