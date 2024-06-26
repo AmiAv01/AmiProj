@@ -8,5 +8,5 @@ interface DetailRepositoryInterface
 
     public function findById(int $id);
 
-    public function findByCategory(array $categories);
+    public function findByCategory(array $categories, array $brands);
 }
