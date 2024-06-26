@@ -1,7 +1,10 @@
 <template>
     <layout>
         <div class="bg-white flex ml-10 py-24 sm:py-32">
-            <brand-selector :categories="categories.brands" />
+            <brand-selector
+                :categories="categories.brands"
+                :clientBrands="clientBrands"
+            />
             <div class="ml-[150px] max-w-7xl">
                 <div class="mx-auto max-w-2xl lg:mx-0">
                     <p class="text-5xl font-bold tracking-tight text-gray-900">
@@ -41,23 +44,14 @@ export default {
             selectedDetails: this.details,
         };
     },
-    computed: {
-        selectedDetails: function () {
-            console.log(this.selectedDetails.data);
-            console.log(this.checked);
-            if (this.checked.length === 0) {
-                return this.details;
-            } else {
-                return this.selectedDetails.data.filter((item) => {
-                    console.log(item.fr_code);
-                    this.checked.includes(item.fr_code);
-                });
-            }
-        },
-    },
 };
 </script>
 
 <script setup>
-defineProps({ details: Object, title: String, categories: Array });
+defineProps({
+    details: Object,
+    title: String,
+    categories: Object,
+    clientBrands: Object,
+});
 </script>
