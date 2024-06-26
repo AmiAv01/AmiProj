@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Services\Detail\DetailService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OtherDetailsController extends Controller
@@ -13,15 +14,16 @@ class OtherDetailsController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $details = $this->detailService->getByCategory(['АВТОХИМИЯ', 'ВИНТ', 'ВЕНТИЛЯТОР САЛОНА', 'ВТУЛКА СФЕРИЧЕСКАЯ', 'ИЗОЛЯТОР', 'ИНСТРУМЕНТ',
             'КРЫШКА ПОДШИПНИКА', 'МУФТА РЕЗИНОВАЯ', 'ОБОРУДОВАНИЕ И ОСНАСТКА', 'ПРИПОЙ ДЛЯ КОНТАКТНОЙ СВАРКИ', 'РЕМКОМПЛЕКТ', 'СМАЗКА ДЛЯ БЕНДИКСОВ MOLYKOTE 33',
-            'СТОПОР', 'СТОПОРНАЯ ПЛАСТИНА ПОДШИПНИКА', 'СТОПОРНОЕ КОЛЬЦО', 'СТОПОРНОЕ КОЛЬЦО КОМПЛЕКТ', 'ШАЙБА', 'ШАЙБА ДИСТАНЦИОННАЯ', 'ШПОНКА']);
+            'СТОПОР', 'СТОПОРНАЯ ПЛАСТИНА ПОДШИПНИКА', 'СТОПОРНОЕ КОЛЬЦО', 'СТОПОРНОЕ КОЛЬЦО КОМПЛЕКТ', 'ШАЙБА', 'ШАЙБА ДИСТАНЦИОННАЯ', 'ШПОНКА'], []);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => 'Прочие запчасти',
+            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
         ]);
     }
 }

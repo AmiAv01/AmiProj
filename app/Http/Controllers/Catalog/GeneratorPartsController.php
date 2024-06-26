@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Services\Detail\DetailService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class GeneratorPartsController extends Controller
@@ -23,16 +24,17 @@ class GeneratorPartsController extends Controller
     {
     }
 
-    public function index(string $category)
+    public function index(string $category, Request $request)
     {
         if (! array_key_exists($category, $this->categories)) {
             return abort(404);
         }
-        $details = $this->detailService->getByCategory(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]]);
+        $details = $this->detailService->getByCategory(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], []);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => $this->names[$category],
+            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
         ]);
     }
 }
