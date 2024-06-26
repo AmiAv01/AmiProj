@@ -18,7 +18,7 @@
                     v-if="!$page.props.auth.user"
                     class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
-                    <Link
+                    <inertia-link
                         :href="route('login')"
                         class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
@@ -38,9 +38,9 @@
                             />
                         </svg>
                         Вход
-                    </Link>
+                    </inertia-link>
 
-                    <Link
+                    <inertia-link
                         :href="route('register')"
                         class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
@@ -60,7 +60,7 @@
                             />
                         </svg>
                         Регистрация
-                    </Link>
+                    </inertia-link>
                     <button
                         data-collapse-toggle="navbar-cta"
                         type="button"
@@ -118,18 +118,18 @@
                         </div>
                         <ul class="py-2" aria-labelledby="user-menu-button">
                             <li>
-                                <Link
+                                <inertia-link
                                     :href="route('profile.edit')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                    >Настройки</Link
+                                    >Настройки</inertia-link
                                 >
                             </li>
                             <li>
-                                <Link
+                                <inertia-link
                                     :href="route('logout')"
                                     method="post"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                    >Выход</Link
+                                    >Выход</inertia-link
                                 >
                             </li>
                         </ul>
@@ -167,18 +167,18 @@
                         class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-slate-900 md:space-x-10 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-slate-900 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
                     >
                         <li class="pr-6">
-                            <Link
+                            <inertia-link
                                 :href="route('news.index')"
                                 class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                                 aria-current="page"
-                                >Новости</Link
+                                >Новости</inertia-link
                             >
                         </li>
                         <li class="pr-6">
-                            <Link
+                            <inertia-link
                                 :href="route('info.index')"
                                 class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 d:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                                >О нас</Link
+                                >О нас</inertia-link
                             >
                         </li>
                         <li class="pr-6 group/main group inline-block relative">
@@ -305,7 +305,6 @@
 <script setup>
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
-import { Link } from "@inertiajs/inertia-vue3";
 import NavMenu from "./Nav/NavMenu.vue";
 onMounted(() => {
     initFlowbite();

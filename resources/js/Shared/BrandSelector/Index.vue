@@ -20,33 +20,40 @@
                 >
                     <input
                         type="checkbox"
-                        :value="category.fr_name"
+                        :value="category.fr_code"
                         class="mr-2 rounded-[5px] w-5 h-5 focus:ring-0 focus:outline-none cursor-pointer"
                         v-model="checked"
                     />
                     <label class="text-lg">{{ category.fr_name }}</label>
                 </li>
             </ul>
-            <button
+            <inertia-link
+                :href="`${this.currentUrl}?filter[id]=${this.checked.join()}`"
                 class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 mx-auto bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
             >
                 Подобрать
-            </button>
+            </inertia-link>
         </form>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
             searchQuery: "",
             searchedCategories: this.categories,
+            checked: [],
+            currentUrl: null,
         };
     },
     props: {
         categories: {
             type: Array,
+        },
+        clientBrands: {
+            type: Object,
         },
     },
     methods: {
@@ -58,6 +65,20 @@ export default {
                     .includes(this.searchQuery.toLowerCase())
             );
         },
+        getCheckbox() {
+            console.log(this.checked);
+        },
+        getFilteredData() {
+            axios.get().then((res) => console.log(res));
+        },
+    },
+    created: function () {
+        this.currentUrl = window.location.pathname;
+        console.log(`Current URL => ${this.currentUrl}`);
+        console.log(this.clientBrands);
+        if (this.clientBrands !== null) {
+            this.checked = this.clientBrands["id"].split(",");
+        }
     },
 };
 </script>

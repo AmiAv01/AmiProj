@@ -8,7 +8,7 @@
                     v-html="link.label"
                 />
 
-                <Link
+                <inertia-link
                     v-else
                     class="mr-1 mb-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-blue-200 focus:border-primary focus:text-primary"
                     :class="{ 'bg-blue-200': link.active }"
@@ -23,11 +23,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 export default defineComponent({
-    components: {
-        Link,
-    },
     props: {
         links: Array,
     },
