@@ -20,7 +20,9 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.1",
         "@inertiajs/inertia-vue3": "^0.6.0",
+        "debounce": "^2.1.0",
         "flowbite": "^2.2.0",
+        "lodash.debounce": "^4.0.8",
         "sweetalert2": "^11.10.1",
         "vuex": "^4.1.0"
     }
