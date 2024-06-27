@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
 use App\Http\Controllers\Catalog\BearingController;
+use App\Http\Controllers\Catalog\CatalogSearchedController;
 use App\Http\Controllers\Catalog\GeneratorController;
 use App\Http\Controllers\Catalog\GeneratorPartsController;
 use App\Http\Controllers\Catalog\OtherDetailsController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Info\InfoController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +41,11 @@ Route::controller(NewsController::class)->group(function () {
     Route::post('/news', 'store')->name('news.store');
 });
 
+Route::get('/api/search', [SearchController::class, 'index']);
+
 Route::group(['prefix' => 'catalog'], (function () {
+    Route::get('/search', [CatalogSearchedController::class, 'index']);
+    Route::get('/api/search', [SearchController::class, 'index']);
     Route::get('/generators', [GeneratorController::class, 'index'])->name('generator.index');
     Route::get('/starters', [StarterController::class, 'index'])->name('starter.index');
     Route::get('/bearings', [BearingController::class, 'index'])->name('bearing.index');
