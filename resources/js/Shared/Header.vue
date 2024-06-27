@@ -61,30 +61,6 @@
                         </svg>
                         Регистрация
                     </inertia-link>
-                    <button
-                        data-collapse-toggle="navbar-cta"
-                        type="button"
-                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        aria-controls="navbar-cta"
-                        aria-expanded="false"
-                    >
-                        <span class="sr-only">Open main menu</span>
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 17 14"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M1 1h15M1 7h15M1 13h15"
-                            />
-                        </svg>
-                    </button>
                 </div>
                 <div
                     v-else
@@ -134,30 +110,6 @@
                             </li>
                         </ul>
                     </div>
-                    <button
-                        data-collapse-toggle="navbar-user"
-                        type="button"
-                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        aria-controls="navbar-user"
-                        aria-expanded="false"
-                    >
-                        <span class="sr-only">Open main menu</span>
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 17 14"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M1 1h15M1 7h15M1 13h15"
-                            />
-                        </svg>
-                    </button>
                 </div>
                 <div
                     class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
@@ -244,70 +196,28 @@
             </div>
         </nav>
         <div class="max-w-screen-xl mx-auto px-6 py-5">
-            <form>
-                <div class="flex flex-wrap">
-                    <div class="relative w-[60%]">
-                        <input
-                            type="search"
-                            id="search-dropdown"
-                            class="block px-2.5 py-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
-                            placeholder="Поиск по каталогу"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            class="absolute flex items-center top-0 end-0 p-2.5 h-full font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
-                        >
-                            <svg
-                                class="w-4 h-4"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                                />
-                            </svg>
-                            <span class="pl-2 text-md">Найти</span>
-                        </button>
-                    </div>
-                    <div class="flex space-x-2 ml-[80px]">
-                        <svg
-                            class="w-6 h-6 text-white dark:text-white"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                            />
-                        </svg>
-                        <p class="text-white">
-                            Мы работаем: пн-пт - 9:00-18:00
-                        </p>
-                    </div>
-                </div>
-            </form>
+            <search />
         </div>
         <NavMenu />
     </header>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import { initFlowbite } from "flowbite";
-import NavMenu from "./Nav/NavMenu.vue";
 onMounted(() => {
     initFlowbite();
 });
 defineProps({});
+</script>
+
+<script>
+import Search from "./Search.vue";
+import { onMounted } from "vue";
+import { initFlowbite } from "flowbite";
+import NavMenu from "./Nav/NavMenu.vue";
+
+export default {
+    components: {
+        search: Search,
+    },
+};
 </script>
