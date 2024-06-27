@@ -36,7 +36,7 @@
                             <p
                                 class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
                             >
-                                $ 0
+                                BYN 0
                             </p>
                         </div>
 
