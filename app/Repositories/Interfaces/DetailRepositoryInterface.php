@@ -9,4 +9,6 @@ interface DetailRepositoryInterface
     public function findById(int $id);
 
     public function findByCategory(array $categories, array $brands);
+
+    public function findBySearching(string $searching, array $brands);
 }

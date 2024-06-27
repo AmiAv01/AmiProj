@@ -17,8 +17,13 @@ class DetailRepository implements DetailRepositoryInterface
         return Detail::where('dt_id', '=', $id)->get();
     }
 
-    public function findByCategory(array $categories, array $brands)
+    public function findByCategory(array $categories = [], array $brands = [])
     {
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands)->paginate(12)->withQueryString();
+    }
+
+    public function findBySearching(string $searching = '', array $brands = [])
+    {
+        return Detail::where('dt_invoice', 'like', "%$searching%")->orWhere('dt_cargo', 'like', "%$searching%")->whereIn('fr_code', $brands)->paginate(12)->withQueryString();
     }
 }

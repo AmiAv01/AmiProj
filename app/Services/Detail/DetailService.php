@@ -30,4 +30,11 @@ class DetailService
 
         return $this->detailRepository->findByCategory($categories, $brands->pluck('fr_name')->toArray());
     }
+
+    public function getBySearching(string $searching)
+    {
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+
+        return $this->detailRepository->findBySearching($searching, $brands->pluck('fr_name')->toArray());
+    }
 }
