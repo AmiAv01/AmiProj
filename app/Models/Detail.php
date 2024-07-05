@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Detail extends Model
 {
     use HasFactory;
-    public $table = "detail";
+
+    public $table = 'detail';
 
     protected $fillable = [
         'dt_id',
@@ -35,7 +36,6 @@ class Detail extends Model
         'dt_name',
         'fr_code',
         'dt_tp_ptype',
-        'lt_dt_acode'
+        'lt_dt_acode',
     ];
-
 }

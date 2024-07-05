@@ -9,18 +9,22 @@ use Inertia\Inertia;
 
 class AdminAuthController extends Controller
 {
-    public function showLoginForm(){
+    public function showLoginForm()
+    {
         return Inertia::render('Admin/Auth/Login');
     }
 
-    public function login(Request $request){
-        if (Auth::attempt(['email' => $request->email, 'password'=>$request->password, 'isAdmin'=>true])){
+    public function login(Request $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'isAdmin' => true])) {
             return redirect()->route('admin.dashboard');
         }
+
         return redirect()->route('admin.login')->with('error', 'Неверные данные');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
