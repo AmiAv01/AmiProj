@@ -1,62 +1,82 @@
 <template>
     <div
-        class="bg-white w-[50%] border border-gray-200 rounded-lg dark:bg-neutral-700 dark:border-neutral-700"
-        data-hs-input-number=""
+        class="flex items-center max-[500px]:justify-center h-full max-md:mt-3"
     >
-        <div class="w-full flex justify-between items-center gap-x-1">
-            <div class="grow py-4 px-6">
-                <input
-                    class="w-full p-0 text-lg bg-transparent border-0 text-gray-800 focus:ring-0 dark:text-white"
-                    v-model="count"
-                    type="text"
-                    value="1"
-                />
-            </div>
-            <div
-                class="flex items-center -gap-y-px divide-x divide-gray-200 border-s border-gray-200 dark:divide-neutral-700 dark:border-neutral-700"
+        <div class="flex items-center h-full">
+            <button
+                @click="decCount"
+                class="group rounded-l-xl px-5 py-[12px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-gray-50 hover:border-gray-300 hover:shadow-gray-300 focus-within:outline-gray-300"
             >
-                <button
-                    type="button"
-                    class="size-10 inline-flex justify-center px-2 items-center gap-x-2 text-sm font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-                    @click="decCount"
+                <svg
+                    class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
                 >
-                    <svg
-                        class="flex-shrink-0 size-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
+                    <path
+                        d="M16.5 11H5.5"
+                        stroke=""
+                        stroke-width="1.6"
                         stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M5 12h14"></path>
-                    </svg>
-                </button>
-                <button
-                    type="button"
-                    class="size-12 inline-flex justify-center px-2 items-center gap-x-2 text-lg font-medium last:rounded-e-lg bg-white text-gray-800 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-                    @click="incCount"
+                    />
+                    <path
+                        d="M16.5 11H5.5"
+                        stroke=""
+                        stroke-opacity="0.2"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                    />
+                    <path
+                        d="M16.5 11H5.5"
+                        stroke=""
+                        stroke-opacity="0.2"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </button>
+            <input
+                type="text"
+                v-model="count"
+                class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[73px] min-w-[60px] placeholder:text-gray-900 py-[9px] text-center bg-transparent"
+                value="1"
+            />
+            <button
+                @click="incCount"
+                class="group rounded-r-xl px-5 py-[12px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-gray-50 hover:border-gray-300 hover:shadow-gray-300 focus-within:outline-gray-300"
+            >
+                <svg
+                    class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
                 >
-                    <svg
-                        class="flex-shrink-0 size-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
+                    <path
+                        d="M11 5.5V16.5M16.5 11H5.5"
+                        stroke=""
+                        stroke-width="1.6"
                         stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M5 12h14"></path>
-                        <path d="M12 5v14"></path>
-                    </svg>
-                </button>
-            </div>
+                    />
+                    <path
+                        d="M11 5.5V16.5M16.5 11H5.5"
+                        stroke=""
+                        stroke-opacity="0.2"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                    />
+                    <path
+                        d="M11 5.5V16.5M16.5 11H5.5"
+                        stroke=""
+                        stroke-opacity="0.2"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </button>
         </div>
     </div>
 </template>
