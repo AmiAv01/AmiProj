@@ -28,13 +28,11 @@
 </template>
 
 <script>
-import UserLayout from "@/Shared/UserLayout.vue";
 import Pagination from "@/Shared/Pagination.vue";
 import CatalogCard from "@/Pages/CatalogCard/CatalogCard.vue";
 import BrandSelector from "@/Shared/BrandSelector/Index.vue";
 export default {
     components: {
-        layout: UserLayout,
         "catalog-card": CatalogCard,
         "brand-selector": BrandSelector,
     },

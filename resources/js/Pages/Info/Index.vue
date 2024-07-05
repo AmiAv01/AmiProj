@@ -101,11 +101,5 @@
 </template>
 
 <script>
-import UserLayout from "@/Shared/UserLayout.vue";
-
-export default {
-    components: {
-        layout: UserLayout,
-    },
-};
+export default {};
 </script>
