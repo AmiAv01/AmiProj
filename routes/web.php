@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Catalog\BearingController;
 use App\Http\Controllers\Catalog\CatalogSearchedController;
 use App\Http\Controllers\Catalog\GeneratorController;
@@ -36,10 +37,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::controller(NewsController::class)->group(function () {
-    Route::get('/news', 'index')->name('news.index');
-    Route::post('/news', 'store')->name('news.store');
-});
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 Route::get('/api/search', [SearchController::class, 'index']);
 
@@ -59,11 +57,7 @@ Route::group(['prefix' => 'catalog'], (function () {
 
 Route::get('/info', [InfoController::class, 'index'])->name('info.index');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -83,3 +77,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
