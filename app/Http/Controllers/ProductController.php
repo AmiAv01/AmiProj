@@ -15,10 +15,10 @@ class ProductController extends Controller
 
     public function index(int $id)
     {
-        Log::channel('stderr')->info($id);
         $detail = $this->detailService->getById($id);
-        Log::channel('stderr')->info($detail);
+        $sameDetails = $this->detailService->getSameDetails($id);
+        Log::info($sameDetails);
 
-        return Inertia::render('Card/Index', ['detail' => $detail]);
+        return Inertia::render('Card/Index', ['detail' => $detail, 'sameDetails' => $sameDetails]);
     }
 }
