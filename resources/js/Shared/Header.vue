@@ -18,9 +18,9 @@
                     v-if="!$page.props.auth.user"
                     class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
-                    <inertia-link
+                    <menu-button
+                        :attributes="`px-4 py-2 text-sm`"
                         :href="route('login')"
-                        class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
                         <svg
                             class="w-4 h-4 mr-2 text-white dark:text-white"
@@ -38,11 +38,11 @@
                             />
                         </svg>
                         Вход
-                    </inertia-link>
+                    </menu-button>
 
-                    <inertia-link
+                    <menu-button
+                        :attributes="`px-4 py-2 text-sm`"
                         :href="route('register')"
-                        class="flex items-center text-white bg-green-700 mr-2 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
                         <svg
                             class="w-4 h-4 mr-2 text-white dark:text-white"
@@ -60,15 +60,15 @@
                             />
                         </svg>
                         Регистрация
-                    </inertia-link>
+                    </menu-button>
                 </div>
                 <div
                     v-else
-                    class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                    class="flex w-[150px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <button
                         type="button"
-                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                         id="user-menu-button"
                         aria-expanded="false"
                         data-dropdown-toggle="user-dropdown"
@@ -110,6 +110,21 @@
                             </li>
                         </ul>
                     </div>
+                    <menu-button
+                        :attributes="`px-4 py-2 text-sm`"
+                        :href="route('cart.index')"
+                    >
+                        <svg
+                            class="w-4 h-4 mr-2 fill-white"
+                            viewBox="0 0 576 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                            ></path>
+                        </svg>
+                        Корзина
+                    </menu-button>
                 </div>
                 <div
                     class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
