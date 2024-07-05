@@ -14,45 +14,7 @@
                     class="absolute top-[45px] rounded-[15px] z-10 w-full h-[200px] overflow-y-auto"
                     v-if="details.length !== 0"
                 >
-                    <div
-                        v-for="detail in details"
-                        :key="detail.dt_id"
-                        class="bg-white w-full p-4 flex border-2"
-                    >
-                        <div class="mr-4">
-                            <img
-                                v-if="detail.dt_foto.length === 0"
-                                :alt="detail"
-                                class="w-10 h-10 object-cover object-center"
-                            />
-                            <img
-                                v-else=""
-                                src="../../../public/build/no-photo--lg.png"
-                                alt="#"
-                                class="w-10 h-10 object-cover object-center"
-                            />
-                        </div>
-                        <div class="flex flex-col">
-                            <p
-                                class="font-manrope font-semibold text-lg text-black mb-2"
-                            >
-                                <a
-                                    use:inertia-vue3
-                                    :href="`../catalog/product/${detail.dt_id}`"
-                                >
-                                    <span aria-hidden="true" />
-                                    {{ detail.dt_typec }}
-                                    {{ detail.dt_invoice }}
-                                </a>
-                            </p>
-                            <p class="font-normal text-md text-gray-500">
-                                Артикул: {{ detail.dt_cargo }}
-                            </p>
-                            <p class="font-normal text-md text-gray-500">
-                                Бренд: {{ detail.fr_code }}
-                            </p>
-                        </div>
-                    </div>
+                    <detail-list :details="details" />
                 </div>
                 <inertia-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
