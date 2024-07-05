@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex">
         <div class="col-span-7 min-[500px]:col-span-2 md:col-span-1">
             <img
                 v-if="detail.dt_foto.length == 0"
@@ -22,7 +22,8 @@
                 >
                     <a use:inertia-vue3 :href="`product/${detail.dt_id}`">
                         <span aria-hidden="true" />
-                        {{ detail.dt_typec }} {{ detail.dt_invoice }}
+                        {{ editString(detail.dt_typec) }}
+                        {{ detail.dt_invoice }}
                     </a>
                 </h3>
                 <p class="font-normal text-xl leading-8 text-gray-500">
@@ -37,16 +38,40 @@
             >
                 {{ detail.oem }}
             </p>
+            <div>
+                <cart-button @click="addInCart" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import { Link } from "@inertiajs/vue3";
-
 export default {
     props: {
         detail: Object,
+    },
+    methods: {
+        editString(str, brand) {
+            if (!str) {
+                return str;
+            }
+            let resultString = "";
+            if (brand) {
+            }
+            return str[0].toUpperCase() + str.slice(1).toLowerCase();
+        },
+        addInCart() {
+            axios
+                .post("/cart", {
+                    id: this.detail.dt_id,
+                    typec: this.detail.dt_typec,
+                    invoice: this.detail.dt_invoice,
+                    cargo: this.detail.dt_cargo,
+                    fr_code: this.detail._code,
+                })
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+        },
     },
 };
 </script>
