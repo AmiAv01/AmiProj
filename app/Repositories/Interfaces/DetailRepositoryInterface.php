@@ -11,4 +11,6 @@ interface DetailRepositoryInterface
     public function findByCategory(array $categories, array $brands);
 
     public function findBySearching(string $searching, array $brands);
+
+    public function findSameDetails(string $code);
 }

@@ -37,4 +37,11 @@ class DetailService
 
         return $this->detailRepository->findBySearching($searching, $brands->pluck('fr_name')->toArray());
     }
+
+    public function getSameDetails($id)
+    {
+        $detail = $this->detailRepository->findById($id);
+
+        return $this->detailRepository->findSameDetails($detail->pluck('dt_cargo')[0]);
+    }
 }

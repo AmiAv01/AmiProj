@@ -26,4 +26,9 @@ class DetailRepository implements DetailRepositoryInterface
     {
         return Detail::where('dt_invoice', 'like', "%$searching%")->orWhere('dt_cargo', 'like', "%$searching%")->whereIn('fr_code', $brands)->paginate(12)->withQueryString();
     }
+
+    public function findSameDetails(string $code)
+    {
+        return Detail::where('dt_cargo', '=', $code)->get();
+    }
 }
