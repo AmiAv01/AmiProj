@@ -32,14 +32,17 @@
                         </p>
                     </div>
                 </div>
-                <input-number />
+                <input-number
+                    @change="changeQuantity"
+                    :quantity="`${item.quantity}`"
+                />
                 <div
                     class="flex flex-col justify-center ml-[50px] items-center"
                 >
                     <p
                         class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
                     >
-                        {{ item.price }} BYN
+                        {{ item.price * item.quantity }} BYN
                     </p>
                     <button @click="deleteFromCart" class="cursor-pointer">
                         <svg
@@ -69,7 +72,13 @@
 
 <script>
 import InputNumber from "@/Components/InputNumber.vue";
+import axios from "axios";
 export default {
+    data() {
+        return {
+            quantity: this.item.quantity,
+        };
+    },
     components: {
         "input-number": InputNumber,
     },
@@ -85,6 +94,16 @@ export default {
                 .delete(`/cart/${this.item.id}`)
                 .then((res) => {
                     //console.log(res.data);
+                    this.$emit("getItems", res.data);
+                })
+                .catch((err) => console.log(err));
+        },
+        changeQuantity(count) {
+            console.log(`count: ${count}`);
+            axios
+                .put(`/cart/${this.item.id}`, { quantity: count })
+                .then((res) => {
+                    console.log(res);
                     this.$emit("getItems", res.data);
                 })
                 .catch((err) => console.log(err));
