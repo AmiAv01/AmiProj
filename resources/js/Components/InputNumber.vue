@@ -39,9 +39,9 @@
             </button>
             <input
                 type="text"
+                @input="changeQuantity"
                 v-model="count"
                 class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[73px] min-w-[60px] placeholder:text-gray-900 py-[9px] text-center bg-transparent"
-                value="1"
             />
             <button
                 @click="incCount"
@@ -88,15 +88,29 @@ export default {
             count: 1,
         };
     },
+    props: {
+        quantity: {
+            type: Number,
+            default: 1,
+        },
+    },
     methods: {
         incCount() {
             this.count++;
+            this.$emit("change", this.count);
         },
         decCount() {
             if (this.count > 1) {
                 this.count--;
+                this.$emit("change", this.count);
             }
         },
+        changeQuantity() {
+            this.$emit("change", this.count);
+        },
+    },
+    mounted() {
+        this.count = this.quantity;
     },
 };
 </script>
