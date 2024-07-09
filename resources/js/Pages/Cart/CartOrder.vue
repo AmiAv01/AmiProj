@@ -13,10 +13,10 @@
 
                 <div class="flex items-center justify-between py-8">
                     <p class="font-medium text-xl leading-8 text-black">
-                        3 Items
+                        Товары, {{ count }} шт.
                     </p>
                     <p class="font-semibold text-xl leading-8 text-indigo-600">
-                        $485.00
+                        {{ price }} BYN
                     </p>
                 </div>
                 <button
@@ -30,5 +30,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        count: {
+            type: Number,
+            default: 0,
+        },
+        price: {
+            type: Number,
+            default: 0,
+        },
+    },
+};
 </script>
