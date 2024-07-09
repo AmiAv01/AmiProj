@@ -33,7 +33,7 @@
                             />
                         </div>
                     </div>
-                    <cart-order />
+                    <cart-order :count="count" :price="price" />
                 </div>
             </div>
         </section>
@@ -47,6 +47,8 @@ export default {
     data() {
         return {
             details: [],
+            count: 0,
+            price: 0,
         };
     },
     components: {
@@ -62,6 +64,26 @@ export default {
             console.log(data.items);
             this.details = data.items;
         },
+        getTotalQuantity() {
+            return Object.values(this.details).reduce(
+                (sum, obj) => sum + obj.quantity,
+                0
+            );
+        },
+        getTotalPrice() {
+            return Object.values(this.details).reduce(
+                (sum, obj) => sum + obj.price * obj.quantity,
+                0
+            );
+        },
+    },
+    computed: {
+        count() {
+            return this.getTotalQuantity();
+        },
+        price() {
+            return this.getTotalPrice();
+        },
     },
 };
 </script>
@@ -69,6 +91,5 @@ export default {
 <script setup>
 defineProps({
     items: Array,
-    count: Number,
 });
 </script>
