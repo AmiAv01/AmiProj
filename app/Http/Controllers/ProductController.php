@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Detail\DetailService;
+use App\Services\DetailService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 

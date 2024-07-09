@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Services\Detail\DetailService;
+use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
