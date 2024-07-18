@@ -20,6 +20,7 @@
                     </p>
                 </div>
                 <button
+                    @click.prevent="makeOrder"
                     class="w-full text-center bg-indigo-600 rounded-xl py-3 px-6 font-semibold text-lg text-white transition-all duration-500 hover:bg-indigo-700"
                 >
                     Оформить заказ
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     props: {
         count: {
@@ -39,6 +41,14 @@ export default {
         price: {
             type: Number,
             default: 0,
+        },
+    },
+    methods: {
+        makeOrder() {
+            axios
+                .post("/order", { total_price: this.price })
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
         },
     },
 };
