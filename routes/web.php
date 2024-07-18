@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Admin\NewsAdminController;
+use App\Http\Controllers\Admin\OrderAdminController;
+use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Catalog\BearingController;
 use App\Http\Controllers\Catalog\CatalogSearchedController;
 use App\Http\Controllers\Catalog\GeneratorController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Catalog\StarterController;
 use App\Http\Controllers\Catalog\StarterPartsController;
 use App\Http\Controllers\Info\InfoController;
 use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -58,6 +61,7 @@ Route::group(['prefix' => 'catalog'], (function () {
 Route::get('/info', [InfoController::class, 'index'])->name('info.index');
 
 Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -73,6 +77,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/details/store', [DetailController::class, 'store'])->name('admin.details.store');
     Route::put('/details/update/{id}', [DetailController::class, 'update'])->name('admin.details.update');
     Route::delete('/details/delete/{dt_id}', [DetailController::class, 'delete'])->name('admin.details.delete');
+
+    // orders route
+    Route::get('/orders', [OrderAdminController::class, 'index'])->name('admin.orders.index');
+
+    // news route
+    Route::get('/news', [NewsAdminController::class, 'index'])->name('admin.news.index');
 
 });
 
