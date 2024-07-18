@@ -127,7 +127,7 @@
                     </menu-button>
                     <menu-button
                         :attributes="`px-4 py-2 text-sm ml-2`"
-                        :href="route('cart.index')"
+                        :href="route('order.index')"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +233,7 @@
             </div>
         </nav>
         <div class="max-w-screen-xl mx-auto px-6 py-5">
-            <search />
+            <search :link="`../api/search?searchQ`" />
         </div>
         <NavMenu />
     </header>
