@@ -1,5 +1,5 @@
 <template>
-    <layout>
+    <layout :title="title">
         <div class="bg-white flex ml-10 py-24 sm:py-32">
             <brand-selector
                 :categories="categories.brands"
@@ -21,14 +21,13 @@
                         />
                     </div>
                 </div>
-                <Pagination :links="details.links" />
+                <pagination :links="details.links" />
             </div>
         </div>
     </layout>
 </template>
 
 <script>
-import Pagination from "@/Shared/Pagination.vue";
 import CatalogCard from "@/Pages/CatalogCard/CatalogCard.vue";
 import BrandSelector from "@/Shared/BrandSelector/Index.vue";
 export default {
