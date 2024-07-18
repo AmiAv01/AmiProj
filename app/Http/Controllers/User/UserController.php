@@ -17,10 +17,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $details = $this->detailService->getAll();
-
         return Inertia::render('User/Index', [
-            'details' => $details,
+            'details' => $this->detailService->getAll(),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,
