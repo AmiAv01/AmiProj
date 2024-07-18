@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Firm;
-use App\Repositories\DetailRepository;
-use App\Repositories\Interfaces\DetailRepositoryInterface;
-use App\Services\Detail\DetailService;
+use App\Services\CartService;
+use App\Services\DetailService;
+use App\Services\NewsService;
+use App\Services\OrderService;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Inertia\ResponseFactory;
@@ -17,10 +18,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(DetailRepositoryInterface::class, DetailRepository::class);
-        $this->app->bind(DetailService::class, function ($app) {
-            return new DetailService($app->make(DetailRepositoryInterface::class));
-        });
+        $this->app->bind(CartService::class);
+        $this->app->bind(OrderService::class);
+        $this->app->bind(NewsService::class);
+        $this->app->bind(DetailService::class);
     }
 
     /**
