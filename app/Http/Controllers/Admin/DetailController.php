@@ -4,17 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Detail;
+use App\Services\DetailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DetailController extends Controller
 {
+    public function __construct(protected DetailService $detailService)
+    {
+
+    }
+
     public function index()
     {
-        $details = DB::table('detail')->paginate(10);
-
-        return Inertia::render('Admin/Detail/Index', ['details' => $details->items(), 'pagination' => $details]);
+        return Inertia::render('Admin/Detail/DetailList', ['details' => $this->detailService->getAll()]);
     }
 
     public function store(Request $request)
