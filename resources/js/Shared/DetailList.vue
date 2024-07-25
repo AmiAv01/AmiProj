@@ -20,7 +20,10 @@
             </div>
             <div class="flex flex-col">
                 <p class="font-manrope font-semibold text-lg text-black mb-2">
-                    <a use:inertia-vue3 :href="`../product/${detail.dt_id}`">
+                    <a
+                        use:inertia-vue3
+                        :href="`../catalog/product/${detail.dt_id}`"
+                    >
                         <span aria-hidden="true" />
                         {{ detail.dt_typec }}
                         {{ detail.dt_invoice }}
