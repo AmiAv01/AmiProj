@@ -64,7 +64,7 @@
                 </div>
                 <div
                     v-else
-                    class="flex w-[150px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                    class="flex w-[260px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <button
                         type="button"
@@ -111,7 +111,7 @@
                         </ul>
                     </div>
                     <menu-button
-                        :attributes="`px-4 py-2 text-sm mr-2`"
+                        :attributes="`px-4 py-2 text-sm mr-4`"
                         :href="route('cart.index')"
                     >
                         <svg
@@ -126,7 +126,7 @@
                         Корзина
                     </menu-button>
                     <menu-button
-                        :attributes="`px-4 py-2 text-sm ml-2`"
+                        :attributes="`px-4 py-2 text-sm ml-4`"
                         :href="route('order.index')"
                     >
                         <svg
