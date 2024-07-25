@@ -13,33 +13,31 @@
             <div class="grid grid-cols-1 md:grid-cols-4 w-full">
                 <div class="md:col-span-2">
                     <div class="flex flex-col max-[500px]:items-center gap-3">
-                        <p class="font-semibold text-base leading-7 text-black">
+                        <p class="font-semibold text-xl leading-7 text-black">
                             {{ item.dt_typec }} {{ item.dt_invoice }}
                         </p>
-                        <p class="font-normal text-base text-gray-500">
+                        <p class="font-normal text-xl text-gray-500">
                             Артикул: {{ item.cargo }}
                         </p>
-                        <p
-                            class="font-normal text-base leading-7 text-gray-500"
-                        >
+                        <p class="font-normal text-xl leading-7 text-gray-500">
                             Бренд:
                             {{ item.fr_code }}
                         </p>
                         <p
-                            class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
+                            class="font-medium text-xl leading-7 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
                         >
                             {{ item.unit_price }} BYN
                         </p>
                     </div>
                 </div>
-                <p class="text-center self-center text-lg text-gray-600">
+                <p class="text-center self-center text-2xl text-gray-600">
                     {{ item.quantity }} шт.
                 </p>
                 <div
                     class="flex flex-col justify-center ml-[50px] items-center"
                 >
                     <p
-                        class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
+                        class="font-bold text-2xl mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
                     >
                         {{ item.unit_price * item.quantity }} BYN
                     </p>
