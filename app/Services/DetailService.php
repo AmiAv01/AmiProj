@@ -26,6 +26,13 @@ class DetailService
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
     }
 
+    public function getByBrand()
+    {
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+
+        return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
+    }
+
     public function getBySearching(string $searching)
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
@@ -38,6 +45,6 @@ class DetailService
         $detail = $this->getById($id);
         $code = $detail->pluck('dt_cargo')[0];
 
-        return Detail::where('dt_cargo', '=', $code)->get();
+        return Detail::where('dt_cargo', '=', $code)->where('dt_id', '!=', $id)->get();
     }
 }
