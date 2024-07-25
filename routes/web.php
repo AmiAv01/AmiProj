@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminSearchController;
 use App\Http\Controllers\Admin\DetailController;
 use App\Http\Controllers\Admin\NewsAdminController;
 use App\Http\Controllers\Admin\OrderAdminController;
@@ -83,6 +84,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // news route
     Route::get('/news', [NewsAdminController::class, 'index'])->name('admin.news.index');
+    Route::put('/news/{post}', [NewsAdminController::class, 'update'])->name('admin.news.update');
+
+    Route::get('/api/search', [AdminSearchController::class, 'index'])->name('admin.search.index');
 
 });
 
