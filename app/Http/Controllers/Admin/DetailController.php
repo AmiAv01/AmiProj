@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Detail;
+use App\Models\Firm;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class DetailController extends Controller
 
     public function index()
     {
-        return Inertia::render('Admin/Detail/DetailList', ['details' => $this->detailService->getAll()]);
+        return Inertia::render('Admin/Detail/DetailList', ['details' => $this->detailService->getByBrand(), 'brands' => Firm::all()]);
     }
 
     public function store(Request $request)
