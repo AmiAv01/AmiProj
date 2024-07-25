@@ -6,7 +6,7 @@
                     type="search"
                     id="search-dropdown"
                     class="block px-2.5 py-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
-                    placeholder="Поиск по каталогу"
+                    placeholder="Поиск по артикулу + деталировка"
                     v-model="searchQuery"
                     @input="getSearchingDetails"
                 />
@@ -64,6 +64,12 @@ import axios from "axios";
 import debounce from "lodash.debounce";
 
 export default {
+    props: {
+        link: {
+            type: String,
+            default: "",
+        },
+    },
     data() {
         return {
             searchQuery: "",
@@ -76,7 +82,7 @@ export default {
                 this.details = [];
             } else {
                 axios
-                    .get(`../api/search?searchQ=${this.searchQuery}`)
+                    .get(`${this.link}=${this.searchQuery}`)
                     .then((res) => {
                         console.log(res.data.details);
                         this.details = res.data.details;
