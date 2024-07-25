@@ -5,12 +5,15 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Darryldecode\Cart\Facades\CartFacade;
+use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderService
 {
     public function getAll()
     {
-        return Order::paginate(12);
+        return Order::join('user', 'order.created_by', '=', 'user.id')->paginate(12);
     }
 
     public function getByUserId($userId)
@@ -40,6 +43,20 @@ class OrderService
     public function getOrderItems($id)
     {
         return OrderItem::where('order_id', '=', $id)->join('detail', 'order_item.detail_id', '=', 'detail.dt_id')->get();
+    }
+
+    public function getByStatus()
+    {
+        return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->join('user', 'order.created_by', '=', 'user.id')
+            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
+    }
+
+    public function getBySearching(string $search)
+    {
+        Log::info(strval($search));
+
+        return Order::join('user', 'order.created_by', '=', 'user.id')->where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%")
+            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
     }
 
     public function update()
