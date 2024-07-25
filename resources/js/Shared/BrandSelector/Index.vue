@@ -1,7 +1,7 @@
 <template>
-    <div class="rounded-[15px] h-[450px] bg-green-300">
+    <div :class="`rounded-[15px] h-[450px] ${bgBodyColor}`">
         <p
-            class="text-3xl text-white bg-green-700 rounded-tr-[15px] rounded-tl-[15px] font-bold p-4"
+            :class="`text-3xl text-white ${bgHeaderColor} rounded-tr-[15px] rounded-tl-[15px] font-bold p-4`"
         >
             Бренды
         </p>
@@ -12,7 +12,7 @@
                 v-model="searchQuery"
                 @input="searchCategory"
             />
-            <ul class="h-[300px] bg-green-300 overflow-y-auto p-6">
+            <ul :class="`h-[300px] ${bgBodyColor} overflow-y-auto p-6`">
                 <li
                     v-for="category in searchedCategories"
                     :key="category.fr_code"
@@ -57,6 +57,15 @@ export default {
         },
         clientBrands: {
             type: Object,
+            default: null,
+        },
+        bgHeaderColor: {
+            type: String,
+            default: "bg-green-700",
+        },
+        bgBodyColor: {
+            type: String,
+            default: "bg-green-300",
         },
     },
     methods: {
