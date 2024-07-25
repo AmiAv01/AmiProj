@@ -11,7 +11,8 @@ import UserLayout from "@/Shared/UserLayout.vue";
 import MenuButton from "@/Components/MenuButton.vue"
 import CartButton from "@/Components/CartButton.vue";
 import Pagination from "@/Shared/Pagination.vue"
-import Search from "@/Shared/Search.vue"
+import Search from "@/Shared/Search.vue";
+import Modal from "@/Components/Modal.vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -21,7 +22,8 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) });
         app.component('inertia-link', Link).component('detail-list', DetailList).component('layout', UserLayout).
-            component('menu-button', MenuButton).component('cart-button', CartButton).component('pagination', Pagination);
+            component('menu-button', MenuButton).component('cart-button', CartButton).component('pagination', Pagination)
+            .component('modal', Modal);
         return app.use(plugin)
         .use(ZiggyVue, Ziggy)
         .mount(el);
