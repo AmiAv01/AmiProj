@@ -27,7 +27,10 @@
                     </a>
                 </h3>
                 <p class="font-normal text-xl leading-8 text-gray-500">
-                    Артикул: {{ detail.dt_cargo }}
+                    Артикул: {{ detail.dt_invoice }}
+                </p>
+                <p class="font-normal text-xl leading-8 text-gray-500">
+                    Cargo: {{ detail.dt_cargo }}
                 </p>
                 <p class="font-normal text-xl leading-8 text-gray-500">
                     Бренд: {{ detail.fr_code }}
