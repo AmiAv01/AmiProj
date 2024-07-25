@@ -15,13 +15,13 @@
                     <p class="font-medium text-xl leading-8 text-black">
                         Товары, {{ count }} шт.
                     </p>
-                    <p class="font-semibold text-xl leading-8 text-indigo-600">
+                    <p class="font-semibold text-xl leading-8 text-green-500">
                         {{ price }} BYN
                     </p>
                 </div>
                 <button
                     @click.prevent="makeOrder"
-                    class="w-full text-center bg-indigo-600 rounded-xl py-3 px-6 font-semibold text-lg text-white transition-all duration-500 hover:bg-indigo-700"
+                    class="w-full text-center bg-green-700 rounded-xl py-3 px-6 font-semibold text-lg text-white transition-all duration-500 hover:bg-green-600"
                 >
                     Оформить заказ
                 </button>
