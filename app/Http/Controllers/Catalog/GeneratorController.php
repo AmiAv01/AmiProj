@@ -16,7 +16,7 @@ class GeneratorController extends Controller
 
     public function index(Request $request)
     {
-        $details = $this->detailService->getByCategory(['ГЕНЕРАТОР']);
+        $details = $this->detailService->getByFilters(['ГЕНЕРАТОР']);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
