@@ -16,7 +16,7 @@ class BearingController extends Controller
 
     public function index(Request $request)
     {
-        $details = $this->detailService->getByCategory(['ПОДШИПНИК', 'ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА'], []);
+        $details = $this->detailService->getByFilters(['ПОДШИПНИК', 'ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА'], []);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
