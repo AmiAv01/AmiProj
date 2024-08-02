@@ -31,7 +31,7 @@ class StarterPartsController extends Controller
         if (! array_key_exists($category, $this->categories)) {
             return abort(404);
         }
-        $details = $this->detailService->getByCategory(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], []);
+        $details = $this->detailService->getByFilters(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], []);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,

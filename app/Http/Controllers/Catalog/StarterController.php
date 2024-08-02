@@ -16,7 +16,7 @@ class StarterController extends Controller
 
     public function index(Request $request)
     {
-        $details = $this->detailService->getByCategory(['СТАРТЕР'], []);
+        $details = $this->detailService->getByFilters(['СТАРТЕР'], []);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
