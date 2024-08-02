@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Detail;
+use App\Services\DetailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SearchController extends Controller
 {
+    public function __construct(protected DetailService $detailService)
+    {
+    }
+
     public function index(Request $request)
     {
         $search = $request->input('searchQ');
-        $details = Detail::where('dt_invoice', 'like', "%$search%")->orWhere('dt_cargo', 'like', "%$search%")->get();
-        Log::channel('error')->info($details);
 
         return [
-            'details' => $details,
+            'details' => $this->detailService->getBySearching($search),
         ];
     }
 }
