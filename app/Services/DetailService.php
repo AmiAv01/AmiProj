@@ -19,7 +19,7 @@ class DetailService
         return Detail::where('dt_id', '=', $id)->get();
     }
 
-    public function getByCategory(array $categories)
+    public function getByFilters(array $categories)
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
