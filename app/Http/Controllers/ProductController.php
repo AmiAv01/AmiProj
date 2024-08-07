@@ -13,12 +13,12 @@ class ProductController extends Controller
 
     }
 
-    public function index(int $id)
+    public function index(string $id)
     {
-        $detail = $this->detailService->getById($id);
-        $sameDetails = $this->detailService->getSameDetails($id);
-        Log::info($sameDetails);
+        $detail = $this->detailService->getByInvoice($id);
+        //$sameDetails = $this->detailService->getSameDetails($id);
+        Log::info($detail);
 
-        return Inertia::render('Card/Index', ['detail' => $detail, 'sameDetails' => $sameDetails]);
+        return Inertia::render('Card/Index', ['detail' => $detail[0]]); //'sameDetails' => $sameDetails]);
     }
 }

@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/build
+composer.phar
+composer.lock
+.DS_Store
+.phpunit*
+/tests/Browser
+storage/debugbar/*.json

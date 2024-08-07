@@ -2,12 +2,13 @@
     <div class="flex">
         <div class="col-span-7 min-[500px]:col-span-2 md:col-span-1">
             <img
-                v-if="detail.dt_foto.length == 0"
+                v-if="detail.dt_foto.length === 0"
                 :alt="detail"
                 class="w-full object-cover object-center"
+                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
             />
             <img
-                v-else=""
+                v-else
                 src="../../../../public/build/no-photo--lg.png"
                 alt="#"
                 class="w-full object-cover object-center"
@@ -20,9 +21,9 @@
                 <h3
                     class="font-manrope font-semibold text-4xl leading-9 text-black mb-12"
                 >
-                    <a use:inertia-vue3 :href="`product/${detail.dt_id}`">
+                    <a use:inertia-vue3 :href="`product/${detail.dt_invoice}`">
                         <span aria-hidden="true" />
-                        {{ editString(detail.dt_typec) }}
+                        {{ editTitle(detail.dt_typec) }}
                         {{ detail.dt_invoice }}
                     </a>
                 </h3>
@@ -49,20 +50,13 @@
 </template>
 
 <script>
+import { editDetailTitle } from "@/Services/TitleService";
+
 export default {
     props: {
         detail: Object,
     },
     methods: {
-        editString(str, brand) {
-            if (!str) {
-                return str;
-            }
-            let resultString = "";
-            if (brand) {
-            }
-            return str[0].toUpperCase() + str.slice(1).toLowerCase();
-        },
         addInCart() {
             axios
                 .post("/cart", {
@@ -74,6 +68,9 @@ export default {
                 })
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
+        },
+        editTitle(res) {
+            return editDetailTitle(res);
         },
     },
 };
