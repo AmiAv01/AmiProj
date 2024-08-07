@@ -1,24 +1,15 @@
 <template>
     <layout>
-        <news-list :posts="news" />
+        <news />
     </layout>
 </template>
 
 <script>
-import NewsList from "@/Shared/News/NewsList.vue";
+import News from "@/Shared/News.vue";
 
 export default {
     components: {
-        "news-list": "NewsList",
-    },
-    created() {
-        console.log(this.news);
+        news: News,
     },
 };
-</script>
-
-<script setup>
-defineProps({
-    news: Array,
-});
 </script>

@@ -12,13 +12,11 @@
         "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
-        "laravel/scout": "^10.11",
         "laravel/tinker": "^2.8",
         "spatie/laravel-query-builder": "^6.0",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.26",
         "laravel/pint": "^1.0",
