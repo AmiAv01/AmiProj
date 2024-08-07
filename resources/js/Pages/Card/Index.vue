@@ -5,14 +5,16 @@
                 <div class="lg:grid px-4 lg:grid-cols-3 lg:gap-8 xl:gap-16">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
-                            class="w-full dark:hidden"
-                            src="../../../../public/build/no-photo--lg.png"
-                            alt=""
-                        />
-                        <img
+                            v-if="detail.dt_foto.length === 0"
                             class="w-full hidden dark:block"
                             src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
                             alt=""
+                        />
+                        <img
+                            v-else
+                            class="w-full dark:hidden"
+                            src="../../../../public/build/no-photo--lg.png"
+                            alt="#"
                         />
                     </div>
 
@@ -20,16 +22,17 @@
                         <h1
                             class="text-4xl font-semibold text-gray-900 dark:text-white mb-8"
                         >
-                            {{ detail[0].dt_typec }} {{ detail[0].dt_invoice }}
+                            {{ editTitle(detail.dt_typec) }}
+                            {{ detail.dt_invoice }}
                         </h1>
                         <p class="font-normal text-2xl leading-8 text-gray-500">
-                            OEM: <strong>{{ detail[0].dt_oem }}</strong>
+                            OEM: <strong>{{ detail.dt_oem }}</strong>
                         </p>
                         <p class="font-normal text-2xl leading-8 text-gray-500">
-                            CARGO: <strong>{{ detail[0].dt_cargo }}</strong>
+                            CARGO: <strong>{{ detail.dt_cargo }}</strong>
                         </p>
                         <p class="font-normal text-2xl leading-8 text-gray-500">
-                            Бренд: <strong>{{ detail[0].fr_code }}</strong>
+                            Бренд: <strong>{{ detail.fr_code }}</strong>
                         </p>
 
                         <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
@@ -56,13 +59,28 @@
                             class="my-6 md:my-8 border-gray-200 dark:border-gray-800"
                         />
                     </div>
-                    <div class="rounded-lg border-2">
+                    <div
+                        v-if="!!isHasDetails()"
+                        class="rounded-lg border-2 w-[80%]"
+                    >
                         <p class="text-2xl px-4 py-4 text-center border-b-2">
                             <strong>Деталировка</strong>
                         </p>
                         <div class="h-[400px] overflow-y-auto">
                             <detail-list :details="sameDetails" />
                         </div>
+                        <!--div class="h-[400px] overflow-y-auto">
+                            <div class="flex flex-col">
+                                <div class="flex justify-around pt-2">
+                                    <p class="text-xl font-bold">Кросс</p>
+                                    <p class="text-xl font-bold">Бренд</p>
+                                </div>
+                                <div class="flex justify-around">
+                                    <p></p>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div!-->
                     </div>
                 </div>
             </div>
@@ -72,6 +90,7 @@
 
 <script>
 import axios from "axios";
+import { editDetailTitle } from "@/Services/TitleService";
 
 export default {
     created() {
@@ -90,6 +109,21 @@ export default {
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
         },
+        editTitle(str) {
+            return editDetailTitle(str);
+        },
+        isHasDetails() {
+            if (
+                this.detail.dt_typec === "ГЕНЕРАТОР" ||
+                this.detail.dt_typec === "СТАРТЕР"
+            ) {
+                return true;
+            }
+            return false;
+        },
+    },
+    created() {
+        console.log(this.detail);
     },
 };
 </script>
@@ -98,9 +132,9 @@ export default {
 import axios from "axios";
 
 defineProps({
-    sameDetails: {
+    /*sameDetails: {
         type: Array,
-    },
+    },*/
     detail: {
         type: Array,
     },
