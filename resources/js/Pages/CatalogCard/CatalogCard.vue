@@ -66,7 +66,10 @@ export default {
                     cargo: this.detail.dt_cargo,
                     fr_code: this.detail._code,
                 })
-                .then((res) => console.log(res))
+                .then((res) => {
+                    console.log(res);
+                    this.$emit('showPush', true);
+                })
                 .catch((err) => console.log(err));
         },
         editTitle(res) {
