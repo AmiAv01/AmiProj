@@ -132,9 +132,9 @@ export default {
 import axios from "axios";
 
 defineProps({
-    /*sameDetails: {
+    sameDetails: {
         type: Array,
-    },*/
+    },
     detail: {
         type: Array,
     },
