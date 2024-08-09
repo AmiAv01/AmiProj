@@ -14,7 +14,12 @@
                     class="absolute top-[45px] rounded-[15px] z-10 w-full h-[200px] overflow-y-auto"
                     v-if="details.length !== 0"
                 >
-                    <detail-list :details="details" />
+                    <!--detail-list :details="details" /!-->
+                    <div v-for="detail in details" class="bg-white flex border-2 border-gray-300">
+                        <a :href="`/search?searchQ=${search}`" class="text-xl p-4">{{(detail.dt_oem.startsWith(search)) ? detail.dt_oem : detail.dt_invoice}}</a>
+                        <p class="text-xl p-4">{{detail.fr_code}}</p>
+                        <p class="text-xl p-4">{{detail.dt_typec}}</p>
+                    </div>
                 </div>
                 <inertia-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
@@ -74,6 +79,7 @@ export default {
         return {
             searchQuery: "",
             details: [],
+            search: '',
         };
     },
     methods: {
@@ -86,6 +92,7 @@ export default {
                     .then((res) => {
                         console.log(res.data.details);
                         this.details = res.data.details;
+                        this.search = res.data.search;
                     })
                     .catch((err) => console.log(err));
             }

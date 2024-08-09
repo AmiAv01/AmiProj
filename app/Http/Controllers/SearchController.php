@@ -17,6 +17,7 @@ class SearchController extends Controller
 
         return [
             'details' => $this->detailService->getBySearching($search),
+            'search' => $search,
         ];
     }
 }
