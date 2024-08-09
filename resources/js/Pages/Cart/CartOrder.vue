@@ -1,4 +1,7 @@
 <template>
+    <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Заказ успешно оформлен`">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    </push>
     <div
         class="col-span-12 xl:col-span-4 bg-gray-50 w-full max-xl:px-6 max-w-3xl xl:max-w-lg mx-auto lg:pl-8 py-24"
     >
@@ -33,6 +36,11 @@
 <script>
 import axios from "axios";
 export default {
+    data(){
+        return {
+            isShow: false,
+        }
+    },
     props: {
         count: {
             type: Number,
@@ -47,9 +55,15 @@ export default {
         makeOrder() {
             axios
                 .post("/order", { total_price: this.price })
-                .then((res) => console.log(res))
+                .then((res) => {
+                    console.log(res);
+                    this.isShow = true;
+                })
                 .catch((err) => console.log(err));
         },
+        hideModal(param){
+            this.isShow = param;
+        }
     },
 };
 </script>
