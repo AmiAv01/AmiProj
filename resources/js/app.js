@@ -13,6 +13,7 @@ import CartButton from "@/Components/CartButton.vue";
 import Pagination from "@/Shared/Pagination.vue"
 import Search from "@/Shared/Search.vue";
 import Modal from "@/Components/Modal.vue";
+import PushNotification from "@/Components/PushNotification.vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -23,7 +24,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) });
         app.component('inertia-link', Link).component('detail-list', DetailList).component('layout', UserLayout).
             component('menu-button', MenuButton).component('cart-button', CartButton).component('pagination', Pagination)
-            .component('modal', Modal);
+            .component('modal', Modal).component('push', PushNotification);
         return app.use(plugin)
         .use(ZiggyVue, Ziggy)
         .mount(el);
