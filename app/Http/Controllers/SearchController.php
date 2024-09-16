@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\DetailService;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function __construct(protected DetailService $detailService)
+    public function __construct(protected SearchService $searchService)
     {
     }
 
@@ -16,7 +16,7 @@ class SearchController extends Controller
         $search = $request->input('searchQ');
 
         return [
-            'details' => $this->detailService->getBySearching($search),
+            'details' => $this->searchService->getBySearching($search),
             'search' => $search,
         ];
     }
