@@ -11,13 +11,13 @@
                     @input="getSearchingDetails"
                 />
                 <div
-                    class="absolute top-[45px] rounded-[15px] z-10 w-full h-[200px] overflow-y-auto"
+                    class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto"
                     v-if="details.length !== 0"
                 >
                     <!--detail-list :details="details" /!-->
-                    <div v-for="detail in details" class="bg-white flex border-2 border-gray-300">
-                        <a :href="`/search?searchQ=${search}`" class="text-xl p-4">{{(detail.dt_oem.startsWith(search)) ? detail.dt_oem : detail.dt_invoice}}</a>
-                        <p class="text-xl p-4">{{detail.fr_code}}</p>
+                    <div v-for="detail in details" class="bg-white grid grid-cols-3 gap-4 p-2  border-b-2 border-gray-300">
+                        <a :href="`/catalog/product/${detail.dt_code}`" class="text-xl p-4">{{detail.dt_code}}</a>
+                        <p class="text-xl p-4">{{detail.dt_firm}}</p>
                         <p class="text-xl p-4">{{detail.dt_typec}}</p>
                     </div>
                 </div>
@@ -96,7 +96,7 @@ export default {
                     })
                     .catch((err) => console.log(err));
             }
-        }, 1500),
+        }, 1000),
     },
 };
 </script>

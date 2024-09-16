@@ -16,9 +16,14 @@ class ProductController extends Controller
     public function index(string $id)
     {
         $detail = $this->detailService->getByInvoice($id);
-        $sameDetails = $this->detailService->getSameDetails($id);
         Log::info($detail);
+        if (!$detail->isEmpty()){
+            $sameDetails = $this->detailService->getSameDetails($id);
+            Log::info($detail);
 
-        return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails]);
+            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails]);
+        }
+        return Inertia::render('Card/Index', ['detail' => $this->detailService->getByInvoiceFromOems($id),
+            'sameDetails' => []]);
     }
 }
