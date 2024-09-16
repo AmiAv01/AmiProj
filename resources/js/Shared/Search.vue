@@ -11,10 +11,15 @@
                     @input="getSearchingDetails"
                 />
                 <div
-                    class="absolute top-[45px] rounded-[15px] z-10 w-full h-[200px] overflow-y-auto"
+                    class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto"
                     v-if="details.length !== 0"
                 >
-                    <detail-list :details="details" />
+                    <!--detail-list :details="details" /!-->
+                    <div v-for="detail in details" class="bg-white grid grid-cols-3 gap-4 p-2  border-b-2 border-gray-300">
+                        <a :href="`/catalog/product/${detail.dt_code}`" class="text-xl p-4">{{detail.dt_code}}</a>
+                        <p class="text-xl p-4">{{detail.dt_firm}}</p>
+                        <p class="text-xl p-4">{{detail.dt_typec}}</p>
+                    </div>
                 </div>
                 <inertia-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
@@ -74,6 +79,7 @@ export default {
         return {
             searchQuery: "",
             details: [],
+            search: '',
         };
     },
     methods: {
@@ -86,10 +92,11 @@ export default {
                     .then((res) => {
                         console.log(res.data.details);
                         this.details = res.data.details;
+                        this.search = res.data.search;
                     })
                     .catch((err) => console.log(err));
             }
-        }, 1500),
+        }, 1000),
     },
 };
 </script>

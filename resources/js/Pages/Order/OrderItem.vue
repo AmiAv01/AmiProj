@@ -5,7 +5,7 @@
         >
             <div class="w-full md:max-w-[126px]">
                 <img
-                    src="https://pagedone.io/asset/uploads/1701162850.png"
+                    src="../../../../public/build/no-photo--lg.png"
                     alt="perfume bottle image"
                     class="mx-auto"
                 />

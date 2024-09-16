@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AltCz;
 use App\Models\Detail;
 use App\Models\Firm;
 use App\Models\Oems;
@@ -36,53 +37,35 @@ class DetailService
         return $details->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->withQueryString();
     }
 
-    public function getBySearching(string $searchQuery)
-    {
-        $detailsFromOems = Oems::search($searchQuery)->get();
-        $ids = array_merge($detailsFromOems->pluck('dt_oem')->toArray(), $detailsFromOems->pluck('dt_invoice')->toArray());
-        $tmpArr = array_unique($ids);
-        $i = 0;
-        while ($tmpArr != []) {
-            $oems = Oems::whereIn('dt_invoice', $tmpArr)->orWhereIn('dt_oem', $tmpArr)->get();
-            $tmpArr = array_unique(array_merge($oems->pluck('dt_oem')->toArray(), $oems->pluck('dt_invoice')->toArray()));
-            $tmpArr = array_diff($tmpArr, $ids);
-            $ids = array_unique(array_merge($ids, $tmpArr));
-            $i++;
-        }
-        $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_cargo', $ids)->orWhereIn('dt_oem', $ids)->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code', 'dt_foto')->get();
-        foreach ($ids as $id) {
-            $item = Detail::where('dt_comment', 'like', "%$id%")->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code', 'dt_foto')->get();
-            Log::info($item);
-            if (! $item->isEmpty()){ //&& array_search($item->pluck('dt_invoice'), $ids)) {
-                $details->push($item[0]);
-            }
-
-        }
-        //$details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code')->get();
-
-        return $details;
-
-    }
-
-    public function getBySearchingWithPagination(string $searchQuery)
-    {
-        $details = Oems::where('dt_invoice', 'like', "%$searchQuery%")->orWhere('dt_typec', 'like', "%$searchQuery%")->orWhere('dt_oem', 'like', "%$searchQuery%")->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code');
-        //$details = Oems::scopeSearch($searchQuery, []);
-        $detailsFromOems = Detail::where('dt_invoice', 'like', "%$searchQuery%")->orWhere('dt_oem', 'like', "%$searchQuery%")->orWhere('dt_typec', 'like', "%$searchQuery%")->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code')->union($details)->paginate(12)->withQueryString();
-
-        return $detailsFromOems;
-    }
-
     public function getByInvoice(string $invoice)
     {
         return Detail::where('dt_invoice', '=', $invoice)->get();
     }
 
+    public function getByInvoiceFromOems(string $invoice){
+        return Oems::where('dt_invoice', '=', $invoice)->first();
+    }
+
     public function getSameDetails($id)
     {
         $detail = $this->getByInvoice($id);
-        $code = $detail->pluck('dt_cargo')[0];
 
-        return Detail::where('dt_cargo', '=', $code)->where('dt_id', '!=', $id)->get();
+        $brand = $detail->pluck('dt_typec')[0];
+        if ($brand === 'ГЕНЕРАТОР') {
+            $ids = [];
+            $generators = AltCz::where('hcparts', '=', $id)->get()->toArray();
+            Log::info($generators);
+            foreach ($generators as $generator){
+                array_push($ids, $generator['dt_code']);
+            }
+            $ids = array_unique($ids);
+            Log::info($ids);
+            unset($ids[array_search('', $ids)]);
+            $details = Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->get()->toArray();
+            Log::info($details);
+            return $details;
+        }
+
+        return [];
     }
 }

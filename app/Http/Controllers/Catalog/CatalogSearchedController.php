@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Services\DetailService;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class CatalogSearchedController extends Controller
 {
-    public function __construct(protected DetailService $detailService)
+    public function __construct(protected SearchService $searchService)
     {
 
     }
@@ -18,7 +19,7 @@ class CatalogSearchedController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('searchQ');
-        $details = $this->detailService->getBySearchingWithPagination($search);
+        $details = $this->searchService->getBySearchingWithPagination($search);
         Log::info($details);
 
         return Inertia::render('Catalog/Index', [

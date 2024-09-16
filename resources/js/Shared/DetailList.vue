@@ -7,7 +7,7 @@
         >
             <div class="mr-4">
                 <img
-                    v-if="detail.dt_foto.length === 0"
+                    v-if="detail.dt_foto"
                     :alt="detail"
                     class="w-10 h-10 object-cover object-center"
                 />
@@ -22,7 +22,7 @@
                 <p class="font-manrope font-semibold text-lg text-black mb-2">
                     <a
                         use:inertia-vue3
-                        :href="`../catalog/product/${detail.dt_id}`"
+                        :href="`../../catalog/product/${detail.dt_invoice}`"
                     >
                         <span aria-hidden="true" />
                         {{ detail.dt_typec }}
@@ -38,6 +38,9 @@
             </div>
         </div>
     </div>
+    <div class="bg-white w-full p-4 flex text-3xl text-gray-400 items-center justify-center" v-if="details === undefined || !details.length">
+        <p>Запчастей не найдено</p>
+    </div>
 </template>
 
 <script>
@@ -45,5 +48,8 @@ export default {
     props: {
         details: Array,
     },
+    created() {
+        console.log(!this.details);
+    }
 };
 </script>

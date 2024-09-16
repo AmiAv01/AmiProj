@@ -23,4 +23,4 @@ composer.lock
 .DS_Store
 .phpunit*
 /tests/Browser
-storage/debugbar/*.json
+storage/debugbar
