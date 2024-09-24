@@ -42,8 +42,9 @@ class DetailService
         return Detail::where('dt_invoice', '=', $invoice)->get();
     }
 
-    public function getByInvoiceFromOems(string $invoice){
-        return Oems::where('dt_invoice', '=', $invoice)->first();
+    public function getByCodeFromOems(string $code){
+        Log::info($code);
+        return Oems::where('dt_invoice', '=', $code)->orWhere('dt_oem', '=', $code)->first();
     }
 
     public function getSameDetails($id)
@@ -67,5 +68,24 @@ class DetailService
         }
 
         return [];
+    }
+
+    public function getAnalogs($id){
+        $detailsFromOems = Oems::where('dt_invoice', '=', $id)->orWhere('dt_oem', '=', $id)->get()->toArray();
+        Log::info($detailsFromOems);
+        $ids = [];
+        $i = 0;
+        foreach ($detailsFromOems as $detail) {
+            if ($detail['dt_oem'] === $id ) {
+                $ids[$i] = $detail['dt_invoice'];
+                $i++;
+            } elseif($detail['dt_invoice'] === $id) {
+                $ids[$i] = $detail['dt_oem'];
+                $i++;
+            }
+        }
+        Log::info($ids);
+        $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)->get()->toArray();
+        return $details;
     }
 }

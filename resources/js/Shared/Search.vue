@@ -15,10 +15,17 @@
                     v-if="details.length !== 0"
                 >
                     <!--detail-list :details="details" /!-->
-                    <div v-for="detail in details" class="bg-white grid grid-cols-3 gap-4 p-2  border-b-2 border-gray-300">
-                        <a :href="`/catalog/product/${detail.dt_code}`" class="text-xl p-4">{{detail.dt_code}}</a>
-                        <p class="text-xl p-4">{{detail.dt_firm}}</p>
-                        <p class="text-xl p-4">{{detail.dt_typec}}</p>
+                    <div  class="bg-white  pt-4  border-b-2 border-gray-300">
+                        <div class="grid grid-cols-3 gap-4 overflow-hidden">
+                            <p class="font-bold text-lg px-4">Код</p>
+                            <p class="font-bold text-lg ">Бренд</p>
+                            <p class="font-bold text-lg px-4">Наименование</p>
+                        </div>
+                        <div v-for="detail in details" class="grid grid-cols-3 gap-4 overflow-hidden border-t-2 border-gray-300">
+                            <a :href="`/catalog/product/${detail.dt_code}`" class="text-xl p-4 border-r-2 border-gray-300">{{detail.dt_code}}</a>
+                            <p class="text-xl p-4 border-r-2 border-gray-300">{{editTitle(detail.dt_firm)}}</p>
+                            <p class="text-xl p-4 border-r-2 border-gray-300">{{editTitle(detail.dt_typec)}}</p>
+                        </div>
                     </div>
                 </div>
                 <inertia-link
@@ -67,6 +74,7 @@
 <script>
 import axios from "axios";
 import debounce from "lodash.debounce";
+import { editDetailTitle } from "@/Services/TitleService";
 
 export default {
     props: {
@@ -97,6 +105,9 @@ export default {
                     .catch((err) => console.log(err));
             }
         }, 1000),
+        editTitle(res) {
+            return editDetailTitle(res);
+        },
     },
 };
 </script>

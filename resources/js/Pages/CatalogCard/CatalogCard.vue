@@ -1,25 +1,23 @@
 <template>
-    <div class="flex">
-        <div class="col-span-7 min-[500px]:col-span-2 md:col-span-1">
-            <img
-                v-if="detail.dt_foto.length === 0"
-                :alt="detail"
-                class="w-full object-cover object-center"
-                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-            />
-            <img
-                v-else
-                src="../../../../public/build/no-photo--lg.png"
-                alt="#"
-                class="w-full object-cover object-center"
-            />
-        </div>
+    <div class="grid grid-cols-7  w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10">
+        <!--img
+            v-if="detail.dt_foto.length === 0"
+            :alt="detail"
+            class="w-full object-cover object-center"
+            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
+        /!-->
+        <img
+
+            src="../../../../public/build/no-photo--lg.png"
+            alt="#"
+            class="w-[120px] object-cover object-center"
+        />
         <div
-            class="col-span-7 md:col-span-6 min-[500px]:pl-10 max-sm:mt-5 flex flex-col justify-center"
+            class=" flex flex-col col-start-2 col-end-4"
         >
             <div>
                 <h3
-                    class="font-manrope font-semibold text-4xl leading-9 text-black mb-12"
+                    class="font-manrope  font-semibold text-4xl leading-9 text-black mb-4"
                 >
                     <a use:inertia-vue3 :href="`product/${detail.dt_invoice}`">
                         <span aria-hidden="true" />
@@ -27,13 +25,13 @@
                         {{ detail.dt_invoice }}
                     </a>
                 </h3>
-                <p class="font-normal text-xl leading-8 text-gray-500">
+                <!--p class="font-normal text-xl leading-8 text-gray-500">
                     Артикул: {{ detail.dt_invoice }}
-                </p>
-                <p class="font-normal text-xl leading-8 text-gray-500">
+                </p!-->
+                <p class="font-normal text-2xl leading-8 text-gray-500">
                     Cargo: {{ detail.dt_cargo }}
                 </p>
-                <p class="font-normal text-xl leading-8 text-gray-500">
+                <p class="font-normal text-2xl leading-8 text-gray-500">
                     Бренд: {{ detail.fr_code }}
                 </p>
             </div>
@@ -42,9 +40,11 @@
             >
                 {{ detail.oem }}
             </p>
-            <div>
-                <cart-button @click="addInCart" />
-            </div>
+
+
+        </div>
+        <div class="col-start-5 col-end-7 row-start-1 row-end-2">
+            <cart-button @click="addInCart" />
         </div>
     </div>
 </template>
