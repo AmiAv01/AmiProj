@@ -4,14 +4,14 @@
             <div class="w-full px-4 2xl:px-0">
                 <div class="lg:grid px-4 lg:grid-cols-3 lg:gap-8 xl:gap-16">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                        <img
+                        <!--img
                             v-if="detail.dt_foto.length === 0"
                             class="w-full hidden dark:block"
                             src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
                             alt=""
-                        />
+                        /!-->
                         <img
-                            v-else
+
                             class="w-full dark:hidden"
                             src="../../../../public/build/no-photo--lg.png"
                             alt="#"
@@ -34,6 +34,9 @@
                         <p class="font-normal text-2xl leading-8 text-gray-500">
                             Бренд: <strong>{{ detail.fr_code }}</strong>
                         </p>
+                        <p class="font-normal text-2xl leading-8 text-blue-700">
+                            <strong>{{ detail.dt_comment }}</strong>
+                        </p>
 
                         <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
                             <p
@@ -44,7 +47,7 @@
                         </div>
 
                         <div
-                            class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8"
+                            class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
                         >
                             <cart-button
                                 @click="addInCart"
@@ -53,6 +56,8 @@
                                 role="button"
                             >
                             </cart-button>
+                            <p v-if="detail.dt_ost !== 0 " class="text-2xl text-green-400">Есть в наличии</p>
+                            <p v-else class="text-2xl text-red-400">Нет в наличии</p>
                         </div>
 
                         <hr
@@ -69,21 +74,13 @@
                         <div class="h-[400px] overflow-y-auto">
                             <detail-list :details="sameDetails" />
                         </div>
-                        <!--div class="h-[400px] overflow-y-auto">
-                            <div class="flex flex-col">
-                                <div class="flex justify-around pt-2">
-                                    <p class="text-xl font-bold">Кросс</p>
-                                    <p class="text-xl font-bold">Бренд</p>
-                                </div>
-                                <div class="flex justify-around">
-                                    <p></p>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div!-->
                     </div>
                 </div>
             </div>
+        </section>
+        <section class="p-6">
+            <p class="text-center font-bold text-5xl mb-8">Похожие детали</p>
+            <analogs :details="analogs"/>
         </section>
     </layout>
 </template>
@@ -129,7 +126,8 @@ export default {
 </script>
 
 <script setup>
-import axios from "axios";
+import DetailList from "@/Shared/DetailList.vue";
+import Analogs from "@/Pages/Card/Analogs.vue";
 
 defineProps({
     sameDetails: {
@@ -138,5 +136,8 @@ defineProps({
     detail: {
         type: Array,
     },
+    analogs: {
+        type: Array,
+    }
 });
 </script>
