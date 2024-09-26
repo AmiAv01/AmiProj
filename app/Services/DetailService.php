@@ -13,9 +13,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class DetailService
 {
-    public function getAll()
+    public function getAll(int $perPage)
     {
-        return Detail::paginate(12);
+        return Detail::paginate($perPage);
     }
 
     public function getById(int $id)
