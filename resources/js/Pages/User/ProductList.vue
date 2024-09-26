@@ -37,7 +37,7 @@
                                         aria-hidden="true"
                                         class="absolute inset-0"
                                     />
-                                    {{ detail.dt_invoice }}
+                                    {{ editTitle(detail.dt_typec) }} {{ detail.dt_invoice }}
                                 </a>
                             </h3>
                             <p class="mt-1 text-md text-gray-500">
@@ -57,6 +57,18 @@
         </div>
     </div>
 </template>
+
+<script>
+import { editDetailTitle } from "@/Services/TitleService";
+
+export default {
+    methods: {
+        editTitle(res) {
+            return editDetailTitle(res);
+        },
+    }
+}
+</script>
 
 <script setup>
 defineProps({
