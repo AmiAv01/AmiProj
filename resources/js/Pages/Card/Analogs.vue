@@ -24,7 +24,7 @@
                         :href="`../../catalog/product/${detail.dt_invoice}`"
                     >
                         <span aria-hidden="true" />
-                        {{ detail.dt_typec }}
+                        {{ editTitle(detail.dt_typec) }}
                         {{ detail.dt_invoice }}
                     </a>
                 </p>
@@ -43,12 +43,19 @@
 </template>
 
 <script>
+
+import { editDetailTitle } from "@/Services/TitleService";
 export default {
     props: {
         details: Array,
     },
     created() {
         console.log(!this.details);
+    },
+    methods: {
+        editTitle(res) {
+            return editDetailTitle(res);
+        },
     }
 };
 </script>
