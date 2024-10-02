@@ -18,46 +18,51 @@
                         />
                     </div>
 
-                    <div class="mt-6 sm:mt-8 lg:mt-0">
+                    <div  class="mt-6 sm:mt-8 lg:mt-0">
                         <h1
                             class="text-4xl font-semibold text-gray-900 dark:text-white mb-8"
                         >
                             {{ editTitle(detail.dt_typec) }}
-                            {{ detail.dt_invoice }}
+                            {{ isEmpty ? title : detail.dt_invoice }}
                         </h1>
-                        <p class="font-normal text-2xl leading-8 text-gray-500">
-                            OEM: <strong>{{ detail.dt_oem }}</strong>
-                        </p>
-                        <p class="font-normal text-2xl leading-8 text-gray-500">
-                            CARGO: <strong>{{ detail.dt_cargo }}</strong>
-                        </p>
-                        <p class="font-normal text-2xl leading-8 text-gray-500">
-                            Бренд: <strong>{{ detail.fr_code }}</strong>
-                        </p>
-                        <p class="font-normal text-2xl leading-8 text-blue-700">
-                            <strong>{{ detail.dt_comment }}</strong>
-                        </p>
-
-                        <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                            <p
-                                class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
-                            >
-                                BYN 0
+                        <div v-if="!isEmpty">
+                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                                OEM: <strong>{{ detail.dt_oem }}</strong>
                             </p>
-                        </div>
+                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                                CARGO: <strong>{{ detail.dt_cargo }}</strong>
+                            </p>
+                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                                Бренд: <strong>{{ detail.fr_code }}</strong>
+                            </p>
+                            <p class="font-normal text-2xl leading-8 text-blue-700">
+                                <strong>{{ detail.dt_comment }}</strong>
+                            </p>
 
-                        <div
-                            class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
-                        >
-                            <cart-button
-                                @click="addInCart"
-                                title=""
-                                class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
-                                role="button"
+                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+                                <p
+                                    class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+                                >
+                                    BYN 0
+                                </p>
+                            </div>
+
+                            <div
+                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
                             >
-                            </cart-button>
-                            <p v-if="detail.dt_ost !== 0 " class="text-2xl text-green-400">Есть в наличии</p>
-                            <p v-else class="text-2xl text-red-400">Нет в наличии</p>
+                                <cart-button
+                                    @click="addInCart"
+                                    title=""
+                                    class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                                    role="button"
+                                >
+                                </cart-button>
+                                <p v-if="detail.dt_ost !== 0 " class="text-2xl text-green-400">Есть в наличии</p>
+                                <p v-else class="text-2xl text-red-400">Нет в наличии</p>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <p class="text-2xl text-red-400">Нет в наличии</p>
                         </div>
 
                         <hr
@@ -79,7 +84,7 @@
             </div>
         </section>
         <section class="p-6">
-            <p class="text-center font-bold text-5xl mb-8">Похожие детали</p>
+            <p class="text-center font-bold text-5xl mb-8">Похожие запчасти</p>
             <analogs :details="analogs"/>
         </section>
     </layout>
@@ -90,8 +95,20 @@ import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 
 export default {
+    data(){
+      return {
+          title: {
+              type: String,
+              default: ''
+          }
+      }
+    },
     created() {
         console.log(this.sameDetails);
+        if (this.isEmpty) {
+            let link = window.location.href;
+            this.title = link.substring(link.lastIndexOf('/') + 1);
+        }
     },
     methods: {
         addInCart() {
@@ -118,9 +135,9 @@ export default {
             }
             return false;
         },
-    },
-    created() {
-        console.log(this.detail);
+        getTitleOfDetail(){
+
+        }
     },
 };
 </script>
@@ -138,6 +155,9 @@ defineProps({
     },
     analogs: {
         type: Array,
+    },
+    isEmpty:{
+        type: Boolean,
     }
 });
 </script>

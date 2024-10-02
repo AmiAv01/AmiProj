@@ -23,7 +23,7 @@
                     <div v-else
                          class="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 border-t w-[1300px] border-gray-200"
                     >
-                        <p class="text-center mt-12 text-5xl text-gray-500">По данному запросу запачстей не найдено</p>
+                        <p class="text-center mt-12 text-5xl text-gray-500">По данному запросу запчастей не найдено</p>
                     </div>
                 </div>
                 <pagination :links="details.links"  />

@@ -19,7 +19,7 @@
                     class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <menu-button
-                        :attributes="`px-4 py-2 text-sm`"
+                        :attributes="`px-4 py-2 text-sm mr-2`"
                         :href="route('login')"
                     >
                         <svg

@@ -20,12 +20,10 @@ class ProductController extends Controller
         Log::info($detail);
         if (!$detail->isEmpty()){
             $sameDetails = $this->detailService->getSameDetails($id);
-
             Log::info($detail);
-
-            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails, 'analogs' => $analogs]);
+            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails, 'analogs' => $analogs, 'isEmpty' => false]);
         }
         return Inertia::render('Card/Index', ['detail' => $this->detailService->getByCodeFromOems($id),
-            'sameDetails' => [], 'analogs' => $analogs]);
+            'sameDetails' => [], 'analogs' => $analogs, 'isEmpty' => true]);
     }
 }
