@@ -30,11 +30,11 @@ class DetailService
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
     }
 
-    public function getByBrand(Collection $details)
+    public function getByBrand()
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
-        return $details->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->withQueryString();
+        return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
     }
 
     public function getByInvoice(string $invoice)
