@@ -10,6 +10,21 @@
                     v-model="searchQuery"
                     @input="getSearchingDetails"
                 />
+                <div v-if="categoryList.length !== 0"  class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto">
+                    <div  class="bg-white  pt-4  border-b-6 border-gray-300 ">
+                        <div class="overflow-hidden">
+                            <p class="font-bold text-xl px-4">Категории</p>
+                        </div>
+                        <div v-for="category in categoryList" class="overflow-hidden border-t-2 p-4 border-gray-300">
+                            <inertia-link
+                                :href="`${otherParts.get(`${category}`)}`"
+                                class=" text-2xl p-8 border-b-gray-300"
+                            >
+                                {{ category }}
+                            </inertia-link>
+                        </div>
+                    </div>
+                </div>
                 <div
                     class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto"
                     v-if="details.length !== 0"
@@ -27,6 +42,7 @@
                             <p class="text-xl p-4 border-r-2 border-gray-300">{{editTitle(detail.dt_typec)}}</p>
                         </div>
                     </div>
+
                 </div>
                 <inertia-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
@@ -75,8 +91,14 @@
 import axios from "axios";
 import debounce from "lodash.debounce";
 import { editDetailTitle } from "@/Services/TitleService";
+import {otherParts} from "@/Store/index.js";
 
 export default {
+    computed: {
+        otherParts() {
+            return otherParts
+        }
+    },
     props: {
         link: {
             type: String,
@@ -88,12 +110,16 @@ export default {
             searchQuery: "",
             details: [],
             search: '',
+            categoryList: []
         };
     },
     methods: {
         getSearchingDetails: debounce(function () {
+            let categories = Array.from(otherParts.keys()).filter(key => key.includes(this.searchQuery));
+            this.categoryList = Array.from(categories);
             if (this.searchQuery === "") {
                 this.details = [];
+                this.categoryList = [];
             } else {
                 axios
                     .get(`${this.link}=${this.searchQuery}`)
