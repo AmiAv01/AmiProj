@@ -26,20 +26,20 @@
                             {{ isEmpty ? title : detail.dt_invoice }}
                         </h1>
                         <div v-if="!isEmpty">
-                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                            <p class="font-normal text-2xl leading-8 text-gray-500" v-if="$page.props.auth.user">
                                 OEM: <strong>{{ detail.dt_oem }}</strong>
                             </p>
                             <p class="font-normal text-2xl leading-8 text-gray-500">
                                 CARGO: <strong>{{ detail.dt_cargo }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                            <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 Бренд: <strong>{{ detail.fr_code }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-blue-700">
+                            <p class="font-normal text-2xl leading-8 text-blue-700" v-if="$page.props.auth.user">
                                 <strong>{{ detail.dt_comment }}</strong>
                             </p>
 
-                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex" v-if="$page.props.auth.user">
                                 <p
                                     class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
                                 >
@@ -48,7 +48,7 @@
                             </div>
 
                             <div
-                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
+                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8" v-if="$page.props.auth.user"
                             >
                                 <cart-button
                                     @click="addInCart"
@@ -60,6 +60,7 @@
                                 <p v-if="detail.dt_ost !== 0 " class="text-2xl text-green-400">Есть в наличии</p>
                                 <p v-else class="text-2xl text-red-400">Нет в наличии</p>
                             </div>
+                            <p class="text-3xl mt-6 text-green-400" v-if="!$page.props.auth.user">Наличие уточнять</p>
                         </div>
                         <div v-else>
                             <p class="text-2xl text-red-400">Нет в наличии</p>
