@@ -6,13 +6,12 @@
             class="bg-white w-full p-4 flex border-b-2"
         >
             <div class="mr-4">
-                <img
+                <!--img
                     v-if="detail.dt_foto"
                     :alt="detail"
                     class="w-10 h-10 object-cover object-center"
-                />
+                /!-->
                 <img
-                    v-else=""
                     src="../../../public/build/no-photo--lg.png"
                     alt="#"
                     class="w-10 h-10 object-cover object-center"

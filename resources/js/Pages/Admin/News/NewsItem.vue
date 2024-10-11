@@ -70,7 +70,6 @@
 
 <script>
 import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
-import { closeModal } from "@/Services/ModalService";
 
 export default {
     data() {
