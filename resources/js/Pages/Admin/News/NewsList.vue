@@ -2,16 +2,7 @@
     <admin-layout>
         <section class="p-3 sm:p-5">
             <!-- dialog for adding product or editing product -->
-            <el-dialog
-                v-model="dialogVisible"
-                :title="editMode ? 'Edit product' : 'Add Product'"
-                width="30%"
-                :before-close="handleClose"
-            >
-                <!-- form start -->
 
-                <!-- end -->
-            </el-dialog>
 
             <!-- end -->
             <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
