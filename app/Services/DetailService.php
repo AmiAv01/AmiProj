@@ -72,7 +72,6 @@ class DetailService
 
     public function getAnalogs($id){
         $detailsFromOems = Oems::where('dt_invoice', '=', $id)->orWhere('dt_oem', '=', $id)->get()->toArray();
-        Log::info($detailsFromOems);
         $ids = [];
         $i = 0;
         foreach ($detailsFromOems as $detail) {
@@ -84,8 +83,22 @@ class DetailService
                 $i++;
             }
         }
-        Log::info($ids);
         $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)->get()->toArray();
         return $details;
+    }
+
+    public function getCargoFromAnalogs(array $details):array{
+        $codeIds = [];
+        foreach ($details as $detail){
+            array_push($codeIds, $detail['dt_cargo']);
+            array_push($codeIds, $detail['dt_oem']);
+            array_push($codeIds, $detail['dt_invoice']);
+        }
+        $detailsFromOems = Oems::whereIn('dt_invoice', array_unique($codeIds))
+            ->orWhereIn('dt_oem', array_unique($codeIds))->where('fr_code', '=', 'CARGO')
+            ->where('dt_parent', '=', 'CARGO')->get();
+        $cargoIds = array_unique($detailsFromOems->pluck('dt_invoice')->toArray());
+        Log::info($cargoIds);
+        return array_values($cargoIds);
     }
 }
