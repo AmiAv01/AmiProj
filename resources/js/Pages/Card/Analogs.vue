@@ -29,7 +29,7 @@
                     </a>
                 </p>
                 <p class="font-normal text-md text-gray-500">
-                    Артикул: {{ detail.dt_cargo }}
+                    Cargo: {{ detail.dt_cargo }}
                 </p>
                 <p class="font-normal text-md text-gray-500">
                     Бренд: {{ detail.fr_code }}
