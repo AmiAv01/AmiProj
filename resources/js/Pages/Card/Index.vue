@@ -20,11 +20,13 @@
 
                     <div  class="mt-6 sm:mt-8 lg:mt-0">
                         <h1
-                            class="text-4xl font-semibold text-gray-900 dark:text-white mb-8"
+                            class="text-4xl font-semibold text-gray-900 dark:text-white "
                         >
                             {{ editTitle(detail.dt_typec) }}
-                            {{ isEmpty ? title : detail.dt_invoice }}
+                            {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
+                            {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
+                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900 dark:text-white mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
                         <div v-if="!isEmpty">
                             <p class="font-normal text-2xl leading-8 text-gray-500" v-if="$page.props.auth.user">
                                 OEM: <strong>{{ detail.dt_oem }}</strong>
@@ -96,20 +98,8 @@ import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 
 export default {
-    data(){
-      return {
-          title: {
-              type: String,
-              default: ''
-          }
-      }
-    },
     created() {
         console.log(this.sameDetails);
-        if (this.isEmpty) {
-            let link = window.location.href;
-            this.title = link.substring(link.lastIndexOf('/') + 1);
-        }
     },
     methods: {
         addInCart() {
@@ -156,6 +146,9 @@ defineProps({
     },
     analogs: {
         type: Array,
+    },
+    cargoIds: {
+       type: Array,
     },
     isEmpty:{
         type: Boolean,
