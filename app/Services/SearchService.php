@@ -14,17 +14,8 @@ class SearchService{
         $result = [];
         $i = 0;
         foreach ($detailsFromOems as $detail) {
-            if (str_starts_with( $detail['dt_oem'], $searchQuery )) {
-                $data[$i]['dt_code'] = $detail['dt_oem'];
-                $data[$i]['dt_firm'] = $detail['fr_code'];
-                $data[$i]['dt_typec'] = $detail['dt_typec'];
-                $i++;
-            } else {
-                $data[$i]['dt_code'] = $detail['dt_invoice'];
-                $data[$i]['dt_firm'] = $detail['dt_parent'];
-                $data[$i]['dt_typec'] = $detail['dt_typec'];
-                $i++;
-            }
+            $data[$i] = $this->getInfoAboutDetailFromOems($detail, $searchQuery);
+            $i++;
         }
         usort($data, function ($a, $b) {
             return strcmp($a['dt_code'], $b['dt_code']);
@@ -33,7 +24,20 @@ class SearchService{
             $result[md5($item['dt_code'].$item['dt_firm'])] = $item;
         }
         return $result;
+    }
 
+    public function getInfoAboutDetailFromOems($detail, $searchQuery){
+        $resultData = [];
+        if (str_starts_with( $detail['dt_oem'], $searchQuery)) {
+            $resultData['dt_code'] = $detail['dt_oem'];
+            $resultData['dt_firm'] = $detail['fr_code'];
+            $resultData['dt_typec'] = $detail['dt_typec'];
+        } else {
+            $resultData['dt_code'] = $detail['dt_invoice'];
+            $resultData['dt_firm'] = $detail['dt_parent'];
+            $resultData['dt_typec'] = $detail['dt_typec'];
+        }
+        return $resultData;
     }
 
     public function getBySearchingWithPagination(string $searchQuery)
