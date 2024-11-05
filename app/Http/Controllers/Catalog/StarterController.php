@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class StarterController extends Controller
 {
@@ -14,8 +15,11 @@ class StarterController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
+        $request->validate([
+            'filter' => 'array',
+        ]);
         $details = $this->detailService->getByFilters(['СТАРТЕР'], []);
 
         return Inertia::render('Catalog/Index', [

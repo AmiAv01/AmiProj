@@ -11,8 +11,11 @@ class SearchController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(Request $request): array
     {
+        $request->validate([
+            'searchQ' => 'string|nullable|max:255',
+        ]);
         $search = $request->input('searchQ');
 
         return [

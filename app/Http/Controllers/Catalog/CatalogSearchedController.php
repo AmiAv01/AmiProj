@@ -8,6 +8,7 @@ use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CatalogSearchedController extends Controller
 {
@@ -16,8 +17,12 @@ class CatalogSearchedController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
+        $request->validate([
+            'filter' => 'array',
+            'search' => 'string|nullable|max:255',
+        ]);
         $search = $request->input('searchQ');
         $details = $this->searchService->getBySearchingWithPagination($search);
         Log::info($details);

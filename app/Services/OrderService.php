@@ -5,18 +5,20 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Darryldecode\Cart\Facades\CartFacade;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class OrderService
+final class OrderService
 {
-    public function getAll()
+    public function getAll(): Collection
     {
         return Order::join('user', 'order.created_by', '=', 'user.id')->paginate(12);
     }
 
-    public function getByUserId($userId)
+    public function getByUserId(string $userId): Collection
     {
         return Order::where('created_by', '=', $userId)->get();
     }
@@ -35,23 +37,23 @@ class OrderService
         }
     }
 
-    public function getById($id)
+    public function getById($id): Order
     {
         return Order::find($id);
     }
 
-    public function getOrderItems($id)
+    public function getOrderItems($id): Collection
     {
         return OrderItem::where('order_id', '=', $id)->join('detail', 'order_item.detail_id', '=', 'detail.dt_id')->get();
     }
 
-    public function getByStatus()
+    public function getByStatus(): LengthAwarePaginator
     {
         return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->join('user', 'order.created_by', '=', 'user.id')
             ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
     }
 
-    public function getBySearching(string $search)
+    public function getBySearching(string $search): Collection
     {
         Log::info(strval($search));
 
@@ -59,7 +61,4 @@ class OrderService
             ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
     }
 
-    public function update()
-    {
-    }
 }

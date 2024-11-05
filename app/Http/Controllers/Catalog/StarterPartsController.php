@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class StarterPartsController extends Controller
 {
@@ -26,8 +27,11 @@ class StarterPartsController extends Controller
     {
     }
 
-    public function index(string $category, Request $request)
+    public function index(string $category, Request $request): Response
     {
+        $request->validate([
+            'filter' => 'array',
+        ]);
         if (! array_key_exists($category, $this->categories)) {
             return abort(404);
         }
