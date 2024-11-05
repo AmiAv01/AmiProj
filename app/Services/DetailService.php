@@ -10,44 +10,45 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-
-class DetailService
+use Illuminate\Pagination\LengthAwarePaginator;
+final class DetailService
 {
-    public function getAll(int $perPage)
+    public function getAll(int $perPage): LengthAwarePaginator
     {
         return Detail::paginate($perPage);
     }
 
-    public function getById(int $id)
+    public function getById(int $id): Collection
     {
         return Detail::where('dt_id', '=', $id)->get();
     }
 
-    public function getByFilters(array $categories)
+    public function getByFilters(array $categories): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
     }
 
-    public function getByBrand()
+    public function getByBrand(): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
     }
 
-    public function getByInvoice(string $invoice)
+    public function getByInvoice(string $invoice): Collection
     {
-        return Detail::where('dt_invoice', '=', $invoice)->get();
+        return Detail::where('dt_invoice', '=', $invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )->get();
     }
 
-    public function getByCodeFromOems(string $code){
+    public function getByCodeFromOems(string $code): Oems
+    {
         Log::info($code);
         return Oems::where('dt_invoice', '=', $code)->orWhere('dt_oem', '=', $code)->first();
     }
 
-    public function getSameDetails($id)
+    public function getSameDetails($id): array
     {
         $detail = $this->getByInvoice($id);
 
@@ -70,7 +71,8 @@ class DetailService
         return [];
     }
 
-    public function getAnalogs($id){
+    public function getAnalogs($id):array
+    {
         $detailsFromOems = Oems::where('dt_invoice', '=', $id)->orWhere('dt_oem', '=', $id)->get()->toArray();
         $ids = [];
         $i = 0;
@@ -87,7 +89,8 @@ class DetailService
         return $details;
     }
 
-    public function getCargoFromAnalogs(array $details):array{
+    public function getCargoFromAnalogs(array $details):array
+    {
         $codeIds = [];
         foreach ($details as $detail){
             array_push($codeIds, $detail['dt_cargo']);
