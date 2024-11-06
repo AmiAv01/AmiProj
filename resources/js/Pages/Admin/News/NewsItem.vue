@@ -51,6 +51,7 @@
                 </ul>
                 <div class="py-1">
                     <button
+                        @click = "deletePost(post.id)"
                         class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                         Удалить
@@ -60,17 +61,17 @@
         </td>
     </tr>
     <news-form
-        @closeModal="isShow = closeModal"
+        @closeModal="isShow = false"
         :show="isShow"
         :title="post.title"
         :description="post.description"
         :postId="post.id"
+        :actionTitle="`Изменить`"
     />
 </template>
 
 <script>
 import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
-import { closeModal } from "@/Services/ModalService";
 
 export default {
     data() {
@@ -91,6 +92,11 @@ export default {
         showModal() {
             this.isShow = true;
         },
+        deletePost(id){
+            axios.delete(`/admin/news/${id}`)
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        }
     },
 };
 </script>
