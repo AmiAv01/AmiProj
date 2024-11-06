@@ -84,8 +84,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // news route
     Route::get('/news', [NewsAdminController::class, 'index'])->name('admin.news.index');
-    Route::put('/news/{post}', [NewsAdminController::class, 'update'])->name('admin.news.update');
-
+    Route::post('/news/store', [NewsAdminController::class, 'store'])->name('admin.news.store');
+    Route::patch('/news/{post}', [NewsAdminController::class, 'update'])->name('admin.news.update');
+    Route::delete('/news/{post}', [NewsAdminController::class, 'destroy'])->name('admin.news.delete');
     Route::get('/api/search', [AdminSearchController::class, 'index'])->name('admin.search.index');
 
 });
