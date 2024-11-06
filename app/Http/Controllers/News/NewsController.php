@@ -15,7 +15,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        return Inertia::render('Blog/Index', ['news' => $this->newsService->getAll()]);
+        return Inertia::render('News/NewsList', ['posts' => $this->newsService->getAll()]);
     }
 
     public function store()

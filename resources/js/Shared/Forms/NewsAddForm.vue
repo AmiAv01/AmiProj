@@ -1,7 +1,7 @@
 <template>
     <modal
         :show="isShow"
-        :title="`Редактирование новости`"
+        :title="`Добавление новости`"
         @closeModal="closeModal"
     >
         <div class="w-full">
@@ -18,6 +18,7 @@
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
+                        required
                         v-model="currentTitle"
                         placeholder="Ввести название"
                     />
@@ -32,11 +33,12 @@
                     <textarea
                         v-model="currentDescription"
                         placeholder="Ввести описание"
+                        required
                         class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
                 <button
-                    @click.prevent = "editPost"
+                    @click ="addPost"
                     class="bg-green-700 rounded-lg text-white px-5 py-2.5 mx-auto text-lg mt-4"
                 >
                     {{ actionTitle }}
@@ -51,43 +53,28 @@ import axios from "axios";
 export default {
     data() {
         return {
-            currentTitle: this.title,
-            currentDescription: this.description,
+            currentTitle: "",
+            currentDescription: "",
         };
     },
     props: {
-        title: {
-            type: String,
-            default: "",
-        },
-        description: {
-            type: String,
-            default: "",
-        },
         isShow: {
             type: Boolean,
             default: false,
-        },
-        postId: {
-            type: Number,
-            default: 0,
         },
         actionTitle: {
             type: String,
             default: '',
         }
     },
-    emits: {
-        closeModal: false
-    },
+
     methods: {
         closeModal() {
             this.$emit("closeModal");
         },
-        editPost() {
-            console.log(this.postId)
+        addPost() {
             axios
-                .patch(`/admin/news/${this.postId}`, {
+                .post(`/admin/news/store`, {
                     title: this.currentTitle,
                     description: this.currentDescription,
                 })
@@ -95,7 +82,6 @@ export default {
                 .catch((err) => console.log(err));
         },
     },
-
     created() {
         console.log(this.postId);
     },

@@ -1,12 +1,7 @@
 <template>
     <admin-layout>
         <section class="p-3 sm:p-5">
-            <!-- dialog for adding product or editing product -->
-
-
-            <!-- end -->
             <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-                <!-- Start coding here -->
                 <div
                     class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
                 >
@@ -18,6 +13,12 @@
                             :link="`../admin/api/search?category=news&searchQ`"
                             @setData="searchData"
                         />
+                        <button
+                            @click="showModal"
+                            class="flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600flex max-w-[400px]  py-2 px-4"
+                        >
+                            Добавить
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table
@@ -40,7 +41,7 @@
                             </thead>
                             <tbody>
                                 <news-item
-                                    v-for="(post, index) in searchNews.data"
+                                    v-for="(post, index) in news.data"
                                     :post="post"
                                     :key="post.id"
                                 />
@@ -51,6 +52,11 @@
                     <Pagination :links="searchNews.links" />
                 </div>
             </div>
+            <news-form
+                @closeModal="isShow = false"
+                :show="isShow"
+                :actionTitle="`Добавить`"
+            />
         </section>
     </admin-layout>
 </template>
@@ -61,17 +67,19 @@ import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import Search from "@/Pages/Admin/Search.vue";
 import Modal from "@/Components/Modal.vue";
 import NewsItem from "@/Pages/Admin/News/NewsItem.vue";
+import NewsAddForm from "@/Shared/Forms/NewsAddForm.vue";
 
 export default {
     data() {
         return {
             searchNews: this.news,
+            isShow: false
         };
     },
     components: {
         search: Search,
         "news-item": NewsItem,
-
+        "news-form": NewsAddForm,
         modal: Modal,
         "admin-layout": AdminLayout,
     },
@@ -81,6 +89,7 @@ export default {
             default: [],
         },
     },
+
     created() {
         console.log(this.news.links);
     },
@@ -88,6 +97,9 @@ export default {
         searchData(data) {
             console.log(data.news);
             this.searchNews = data.news;
+        },
+        showModal() {
+            this.isShow = true;
         },
     },
 };

@@ -40,6 +40,9 @@
                             <p class="font-normal text-2xl leading-8 text-blue-700" v-if="$page.props.auth.user">
                                 <strong>{{ detail.dt_comment }}</strong>
                             </p>
+                            <p class="font-normal text-2xl leading-8 text-gray-500" >
+                                Наличие: <strong>{{detail.ostc  ? detail.ostc : 0}}</strong>
+                            </p>
 
                             <div class="mt-4 sm:items-center sm:gap-4 sm:flex" v-if="$page.props.auth.user">
                                 <p
