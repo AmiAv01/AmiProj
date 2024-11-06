@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Desktop\DesktopController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminSearchController;
 use App\Http\Controllers\Admin\DetailController;
@@ -60,6 +61,7 @@ Route::group(['prefix' => 'catalog'], (function () {
 }));
 
 Route::get('/info', [InfoController::class, 'index'])->name('info.index');
+Route::get('/desktop', [DesktopController::class, 'index'])->name('desktop.index');
 
 Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);

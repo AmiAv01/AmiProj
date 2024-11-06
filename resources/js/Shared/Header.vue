@@ -170,6 +170,13 @@
                                 >О нас</inertia-link
                             >
                         </li>
+                        <li class="pr-6">
+                            <inertia-link
+                                :href="route('desktop.index')"
+                                class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 d:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                            >Скачать</inertia-link
+                            >
+                        </li>
                         <li class="pr-6 group/main group inline-block relative">
                             <a
                                 href="#"
