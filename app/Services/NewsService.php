@@ -2,18 +2,23 @@
 
 namespace App\Services;
 
+use App\Http\Requests\NewsFormRequest;
 use App\Models\News;
+use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
-class NewsService
+final class NewsService
 {
-    public function getAll()
+    public function getAll():LengthAwarePaginator
     {
-        return News::join('user', 'news.author', '=', 'user.id')->select('news.id', 'news.title', 'news.date', 'news.description', 'user.name')->paginate(12);
+        return News::join('user', 'news.author', '=', 'user.id')->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate(12);
     }
 
-    public function destroy()
+    public function store(array $request, int $adminId):News
     {
-
+        Log::info($adminId);
+        return News::create(['title' => $request['title'], 'date' => Carbon::now() ,'description' => $request['description'], 'author' => $adminId]);
     }
 
     public function getBySearching(string $search)
@@ -21,12 +26,15 @@ class NewsService
         return News::where('title', 'like', "%$search%")->paginate(12)->withQueryString();
     }
 
-    public function show()
+    public function update(array $request, int $id):bool
     {
+        $news = News::find($id);
+        return $news->update(['title' => $request['title'], 'description' => $request['description']]);
     }
 
-    public function update()
+    public function destroy(int $id):bool
     {
-
+        $news = News::find($id);
+        return $news->delete();
     }
 }
