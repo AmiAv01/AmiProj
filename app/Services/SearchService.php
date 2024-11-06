@@ -5,9 +5,10 @@ namespace App\Services;
 use App\Models\Detail;
 use App\Models\Oems;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Collection;
 
-class SearchService{
-    public function getBySearching(string $searchQuery)
+final class SearchService{
+    public function getBySearching(string $searchQuery): array
     {
         $detailsFromOems = Oems::where('dt_invoice', 'like', "$searchQuery%")->orWhere('dt_oem', 'like', "$searchQuery%")->get()->toArray();
         $data = [];
@@ -26,7 +27,8 @@ class SearchService{
         return $result;
     }
 
-    public function getInfoAboutDetailFromOems($detail, $searchQuery){
+    public function getInfoAboutDetailFromOems(array $detail,string $searchQuery): array
+    {
         $resultData = [];
         if (str_starts_with( $detail['dt_oem'], $searchQuery)) {
             $resultData['dt_code'] = $detail['dt_oem'];
@@ -40,7 +42,7 @@ class SearchService{
         return $resultData;
     }
 
-    public function getBySearchingWithPagination(string $searchQuery)
+    public function getBySearchingWithPagination(string $searchQuery): Collection
     {
         $detailsFromOems = Oems::search($searchQuery)->get();
         $ids = array_unique(array_merge($detailsFromOems->pluck('dt_oem')->toArray(), $detailsFromOems->pluck('dt_invoice')->toArray()));

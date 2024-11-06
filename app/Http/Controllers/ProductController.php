@@ -6,6 +6,7 @@ use App\Services\DetailService;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductController extends Controller
 
     }
 
-    public function index(string $id)
+    public function index(string $id): Response
     {
         $detail = $this->detailService->getByInvoice($id);
         $analogs = $this->detailService->getAnalogs($id);

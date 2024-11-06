@@ -7,6 +7,7 @@ use App\Services\DetailService;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
 
     }
 
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('User/Index', [
             'details' => $this->detailService->getAll(4),

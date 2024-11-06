@@ -11,7 +11,6 @@ import UserLayout from "@/Shared/UserLayout.vue";
 import MenuButton from "@/Components/MenuButton.vue"
 import CartButton from "@/Components/CartButton.vue";
 import Pagination from "@/Shared/Pagination.vue"
-import Search from "@/Shared/Search.vue";
 import Modal from "@/Components/Modal.vue";
 import PushNotification from "@/Components/PushNotification.vue";
 

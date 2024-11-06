@@ -4,14 +4,14 @@ namespace App\Services;
 
 use Darryldecode\Cart\Facades\CartFacade;
 
-class CartService
+final class CartService
 {
-    public function index($cookie)
+    public function index(array $cookie)
     {
         return CartFacade::session($cookie['laravel_session'])->getContent();
     }
 
-    public function store($cookie, $request)
+    public function store(array $cookie, $request)
     {
         if (! CartFacade::session($cookie['laravel_session'])) {
             CartFacade::sesion($cookie['laravel_session']);
@@ -27,14 +27,14 @@ class CartService
         return $request;
     }
 
-    public function update($cookie, $id, $request)
+    public function update(array $cookie, $id, $request)
     {
         CartFacade::session($cookie['laravel_session'])->update($id, [
             'quantity' => ['relative' => false, 'value' => $request['quantity']],
         ]);
     }
 
-    public function destroy($cookie, $id)
+    public function destroy(array $cookie, $id)
     {
         CartFacade::session($cookie['laravel_session'])->remove($id);
     }
