@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\CartService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
+    public function __construct(protected CartService $cartService)
+    {}
+
     public function create(): Response
     {
         return Inertia::render('Auth/Register');
@@ -43,6 +47,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $cart = $this->cartService->storeCart($user->id);
         event(new Registered($user));
 
         Auth::login($user);
