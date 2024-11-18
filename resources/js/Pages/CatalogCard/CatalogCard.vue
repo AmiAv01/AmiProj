@@ -83,10 +83,6 @@ export default {
             axios
                 .post("/cart", {
                     id: this.detail.dt_id,
-                    typec: this.detail.dt_typec,
-                    invoice: this.detail.dt_invoice,
-                    cargo: this.detail.dt_cargo,
-                    fr_code: this.detail._code,
                 })
                 .then((res) => {
                     console.log(res);
