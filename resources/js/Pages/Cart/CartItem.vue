@@ -14,21 +14,21 @@
                 <div class="md:col-span-2">
                     <div class="flex flex-col max-[500px]:items-center gap-3">
                         <p class="font-semibold text-base leading-7 text-black">
-                            {{ item.name }} {{ item.attributes.invoice }}
+                            {{ editTitle(item.dt_typec)}} {{ item.dt_invoice }}
                         </p>
                         <p class="font-normal text-base text-gray-500">
-                            Артикул: {{ item.attributes.cargo }}
+                            Артикул: {{ item.dt_cargo }}
                         </p>
                         <p
                             class="font-normal text-base leading-7 text-gray-500"
                         >
                             Бренд:
-                            {{ item.attributes.fr_code }}
+                            {{ item.fr_code }}
                         </p>
                         <p
-                            class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
+                            class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 "
                         >
-                            {{ item.price }} BYN
+                            100 BYN
                         </p>
                     </div>
                 </div>
@@ -40,9 +40,9 @@
                     class="flex flex-col justify-center ml-[50px] items-center"
                 >
                     <p
-                        class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
+                        class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
-                        {{ item.price * item.quantity }} BYN
+                        {{ 100 * item.quantity }} BYN
                     </p>
                     <button @click="deleteFromCart" class="cursor-pointer">
                         <svg
@@ -73,6 +73,7 @@
 <script>
 import InputNumber from "@/Components/InputNumber.vue";
 import axios from "axios";
+import { editDetailTitle } from "@/Services/TitleService";
 export default {
     data() {
         return {
@@ -91,7 +92,7 @@ export default {
     methods: {
         deleteFromCart() {
             axios
-                .delete(`/cart/${this.item.id}`)
+                .delete(`/cart/${this.item.dt_id}`)
                 .then((res) => {
                     //console.log(res.data);
                     this.$emit("getItems", res.data);
@@ -101,12 +102,15 @@ export default {
         changeQuantity(count) {
             console.log(`count: ${count}`);
             axios
-                .put(`/cart/${this.item.id}`, { quantity: count })
+                .put(`/cart/${this.item.dt_id}`, { quantity: count })
                 .then((res) => {
                     console.log(res);
                     this.$emit("getItems", res.data);
                 })
                 .catch((err) => console.log(err));
+        },
+        editTitle(res) {
+            return editDetailTitle(res);
         },
     },
 };
