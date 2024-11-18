@@ -26,10 +26,7 @@ class OrderController extends Controller
 
     public function store(Request $request): Order
     {
-        var_dump($request);
-        $userId = auth()->check() ? auth()->user()->id : null;
-        $order = $this->orderService->createOrder($request, $userId);
-
+        $order = $this->orderService->createOrder(auth()->id(), $request['totalPrice']);
         return $order;
     }
 

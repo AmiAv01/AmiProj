@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Darryldecode\Cart\Facades\CartFacade;
@@ -23,18 +24,19 @@ final class OrderService
         return Order::where('created_by', '=', $userId)->get();
     }
 
-    public function createOrder($request, $userId)
+    public function createOrder(int $userId, int $price):Order
     {
-        $cookie = $request->cookie();
-        $order = Order::create(['total_price' => $request['total_price'], 'status' => 'Новый', 'session_id' => $cookie['laravel_session'], 'created_by' => $userId, 'updated_by' => $userId]);
-        $items = CartFacade::session($cookie['laravel_session'])->getContent();
-        foreach ($items as $item) {
+        $order = Order::create(['total_price' => $price, 'status' => 'Новый', 'created_by' => $userId, 'updated_by' => $userId]);
+        $cart =  Cart::where('user_id', '=', $userId)->first();
+        $cartItems = $cart->items();
+        foreach ($cartItems as $item) {
             $order->items()->create([
-                'detail_id' => $item->id,
+                'detail_id' => $item->product['dt_id'],
                 'quantity' => $item->quantity,
                 'unit_price' => $item->quantity * $item->price,
             ]);
         }
+        return $order;
     }
 
     public function getById($id): Order
