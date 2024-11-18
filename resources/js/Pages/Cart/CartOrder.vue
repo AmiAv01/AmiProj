@@ -53,13 +53,18 @@ export default {
     },
     methods: {
         makeOrder() {
-            axios
-                .post("/order", { total_price: this.price })
-                .then((res) => {
-                    console.log(res);
-                    this.isShow = true;
-                })
-                .catch((err) => console.log(err));
+            axios.all([
+                axios.post("/order", { totalPrice: this.price })
+                    .then((res) => {
+                        console.log(res);
+                        this.isShow = true;
+                    }).catch((err) => console.log(err)),
+                axios.put('/clear')
+                    .then((res) => {
+                        console.log(res);
+                        window.location.reload();
+                    }).catch((err) => console.log(err))
+            ])
         },
         hideModal(param){
             this.isShow = param;
