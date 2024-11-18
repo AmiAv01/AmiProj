@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Desktop\DesktopController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminSearchController;
@@ -64,6 +65,7 @@ Route::get('/info', [InfoController::class, 'index'])->name('info.index');
 Route::get('/desktop', [DesktopController::class, 'index'])->name('desktop.index');
 
 Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::middleware('auth')->put('/clear', [ClearCartController::class, 'index'])->name('cart.clear');
 Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function () {
