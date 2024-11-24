@@ -2,16 +2,7 @@
     <admin-layout>
         <section class="p-3 sm:p-5">
             <!-- dialog for adding product or editing product -->
-            <el-dialog
-                v-model="dialogVisible"
-                :title="editMode ? 'Edit product' : 'Add Product'"
-                width="30%"
-                :before-close="handleClose"
-            >
-                <!-- form start -->
 
-                <!-- end -->
-            </el-dialog>
 
             <!-- end -->
             <div class="mx-auto px-4 justify-between lg:px-12 flex">
@@ -33,13 +24,13 @@
                             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
                         >
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                             >
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">id</th>
-                                    <th scope="col" class="px-4 py-3">Firm</th>
-                                    <th scope="col" class="px-4 py-3">Type</th>
-                                    <th scope="col" class="px-4 py-3">Acode</th>
+                                    <th scope="col" class="px-4 py-3">#</th>
+                                    <th scope="col" class="px-4 py-3">Фирма</th>
+                                    <th scope="col" class="px-4 py-3">Тип</th>
+                                    <th scope="col" class="px-4 py-3">Invoice</th>
                                     <th scope="col" class="px-4 py-3">Cargo</th>
                                     <th scope="col" class="px-4 py-3">Ost</th>
                                 </tr>
@@ -63,13 +54,13 @@
                                         {{ detail.dt_type }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        {{ detail.lt_dt_acode }}
+                                        {{ detail.dt_invoice}}
                                     </td>
                                     <td class="px-4 py-3">
                                         {{ detail.dt_cargo }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        {{ detail.dt_ost }}
+                                        {{ detail.ostc }}
                                     </td>
                                     <td
                                         class="px-4 py-3 flex items-center justify-end"
