@@ -34,7 +34,8 @@ final class DetailService
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
-        return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
+        return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
+            ->join('stk', 'stk.code', '=', 'detail.dt_code' )->paginate(12)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Collection
