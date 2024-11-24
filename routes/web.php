@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Desktop\DesktopController;
 use App\Http\Controllers\Admin\AdminController;
@@ -85,6 +86,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // orders route
     Route::get('/orders', [OrderAdminController::class, 'index'])->name('admin.orders.index');
+    Route::get('/orders/{order}', [OrderAdminController::class, 'show'])->name('admin.orders.show');
 
     // news route
     Route::get('/news', [NewsAdminController::class, 'index'])->name('admin.news.index');
@@ -93,6 +95,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/news/{post}', [NewsAdminController::class, 'destroy'])->name('admin.news.delete');
     Route::get('/api/search', [AdminSearchController::class, 'index'])->name('admin.search.index');
 
+    //users route
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
+    Route::delete('/users',[AdminUserController::class, 'destroy'])->name('admin.users.delete');
 });
 
 require __DIR__.'/auth.php';
