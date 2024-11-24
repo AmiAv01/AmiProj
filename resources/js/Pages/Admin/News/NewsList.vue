@@ -25,23 +25,23 @@
                             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
                         >
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                             >
                                 <tr>
                                     <th scope="col" class="px-4 py-3">#</th>
-                                    <th scope="col" class="px-4 py-3">Title</th>
-                                    <th scope="col" class="px-4 py-3">Date</th>
+                                    <th scope="col" class="px-4 py-3">Заголовок</th>
+                                    <th scope="col" class="px-4 py-3">Дата</th>
                                     <th scope="col" class="px-4 py-3">
-                                        Description
+                                        Описание
                                     </th>
                                     <th scope="col" class="px-4 py-3">
-                                        Author
+                                        Автор
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <news-item
-                                    v-for="(post, index) in news.data"
+                                    v-for="(post) in searchNews.data"
                                     :post="post"
                                     :key="post.id"
                                 />
