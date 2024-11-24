@@ -35,8 +35,4 @@ class OrderController extends Controller
         return Inertia::render('Order/OrderCard', ['order' => $this->orderService->getById($id), 'details' => $this->orderService->getOrderItems($id)]);
     }
 
-    public function update()
-    {
-
-    }
 }
