@@ -28,7 +28,7 @@ final class OrderService
     {
         $order = Order::create(['total_price' => $price, 'status' => 'Новый', 'created_by' => $userId, 'updated_by' => $userId]);
         $cart =  Cart::where('user_id', '=', $userId)->first();
-        $cartItems = $cart->items();
+        $cartItems = $cart->items;
         foreach ($cartItems as $item) {
             $order->items()->create([
                 'detail_id' => $item->product['dt_id'],
@@ -39,12 +39,12 @@ final class OrderService
         return $order;
     }
 
-    public function getById($id): Order
+    public function getById(int $id): Collection
     {
-        return Order::find($id);
+        return Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')->get();
     }
 
-    public function getOrderItems($id): Collection
+    public function getOrderItems(int $id): Collection
     {
         return OrderItem::where('order_id', '=', $id)->join('detail', 'order_item.detail_id', '=', 'detail.dt_id')->get();
     }
