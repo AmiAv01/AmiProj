@@ -27,7 +27,7 @@ final class UserService
 
     public function destroy(int $id):bool
     {
-        $news = News::find($id);
-        return $news->delete();
+        $user = User::find($id);
+        return $user->delete();
     }
 }
