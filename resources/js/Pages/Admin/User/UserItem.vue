@@ -52,7 +52,7 @@
                 </ul>
                 <div class="py-1">
                     <button
-                        @click = "deletePost(user.id)"
+                        @click = "deleteUser(user.id)"
                         class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                         Удалить
@@ -93,8 +93,8 @@ export default {
         showModal() {
             this.isShow = true;
         },
-        deletePost(id){
-            axios.delete(`/admin/news/${id}`)
+        deleteUser(id){
+            axios.delete(`/admin/users/${id}`)
                 .then(res => console.log(res.data))
                 .catch(err => console.log(err))
         }
