@@ -33,6 +33,6 @@ class AdminUserController extends Controller
 
     public function destroy(int $post)
     {
-        return $this->newsService->destroy($post);
+        return $this->userService->destroy($post);
     }
 }
