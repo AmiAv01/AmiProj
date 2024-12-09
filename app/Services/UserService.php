@@ -30,4 +30,14 @@ final class UserService
         $user = User::find($id);
         return $user->delete();
     }
+
+    public function approveUser(int $id):bool{
+        $user = User::find($id);
+        if ($user){
+            $user->approved = 1;
+            $user->save();
+            return true;
+        }
+        return false;
+    }
 }
