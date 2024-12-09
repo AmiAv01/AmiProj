@@ -7,7 +7,7 @@
             {{ post.id }}
         </th>
         <td class="px-4 py-3">{{ post.title }}</td>
-        <td class="px-4 py-3">{{ post.date }}</td>
+        <td class="px-4 py-3">{{ new Date(post.date).toLocaleDateString() }}</td>
         <td class="px-4 py-3">
             {{ post.description }}
         </td>
