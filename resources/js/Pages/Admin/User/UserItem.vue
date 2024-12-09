@@ -59,20 +59,15 @@
                     </button>
                 </div>
             </div>
+            <button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 p-2 ml-2`">Подтвердить</button>
+            <menu-button/>
         </td>
     </tr>
-    <!--news-form
-        @closeModal="isShow = false"
-        :show="isShow"
-        :title="post.title"
-        :description="post.description"
-        :postId="post.id"
-        :actionTitle="`Изменить`"
-    /!-->
 </template>
 
 <script>
 import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
+import MenuButton from "@/Components/MenuButton.vue";
 
 export default {
     data() {
@@ -87,6 +82,7 @@ export default {
         },
     },
     components: {
+        MenuButton,
         "news-form": NewsEditForm,
     },
     methods: {
@@ -96,6 +92,14 @@ export default {
         deleteUser(id){
             axios.delete(`/admin/users/${id}`)
                 .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        },
+        approveUser(id){
+            axios.put(`/admin/approve/${id}`)
+                .then(res => {
+                    console.log(res.data);
+                    window.location.reload();
+                })
                 .catch(err => console.log(err))
         }
     },
