@@ -21,7 +21,7 @@
             {{ order.email }}
         </td>
         <td class="px-4 py-3">
-            {{ order.created_at }}
+            {{ new Date(order.created_at).toLocaleDateString() }}
         </td>
     </tr>
 </template>
