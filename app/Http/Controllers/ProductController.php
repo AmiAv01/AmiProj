@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Services\DetailService;
 use App\Services\SearchService;
+use App\Services\PriceService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function __construct(protected DetailService $detailService, protected SearchService $searchService)
+    public function __construct(protected DetailService $detailService, protected SearchService $searchService, protected
+        PriceService $priceService)
     {
 
     }
@@ -21,7 +23,8 @@ class ProductController extends Controller
         $analogs = $this->detailService->getAnalogs($id);
         if (!$detail->isEmpty()){
             $sameDetails = $this->detailService->getSameDetails($id);
-            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails, 'analogs' => $analogs, 'isEmpty' => false]);
+            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $sameDetails,
+                'analogs' => $analogs, 'isEmpty' => false, 'price' => $this->priceService->getPrice($detail[0]->dt_id, (auth()->check() && auth()->user()->id))]);
         }
         $detailFromOems = $this->detailService->getByCodeFromOems($id);
         $dataFromOems = $this->searchService->getInfoAboutDetailFromOems($detailFromOems, $id);

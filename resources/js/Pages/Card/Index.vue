@@ -48,7 +48,7 @@
                                 <p
                                     class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
                                 >
-                                    BYN 0
+                                    {{price ? price : 0}} BYN
                                 </p>
                             </div>
 
@@ -129,9 +129,6 @@ export default {
             }
             return false;
         },
-        getTitleOfDetail(){
-
-        }
     },
 };
 </script>
@@ -155,6 +152,9 @@ defineProps({
     },
     isEmpty:{
         type: Boolean,
+    },
+    price: {
+        type: Number
     }
 });
 </script>
