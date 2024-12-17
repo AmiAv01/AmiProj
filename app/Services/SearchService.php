@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Detail;
 use App\Models\Oems;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -27,7 +28,7 @@ final class SearchService{
         return $result;
     }
 
-    public function getInfoAboutDetailFromOems(array $detail,string $searchQuery): array
+    public function getInfoAboutDetailFromOems(array | Oems $detail,string $searchQuery): array
     {
         $resultData = [];
         if (str_starts_with( $detail['dt_oem'], $searchQuery)) {
@@ -42,13 +43,13 @@ final class SearchService{
         return $resultData;
     }
 
-    public function getBySearchingWithPagination(string $searchQuery): Collection
+    public function getBySearchingWithPagination(string $searchQuery): LengthAwarePaginator
     {
-        $detailsFromOems = Oems::search($searchQuery)->get();
+        /*$detailsFromOems = Oems::search($searchQuery)->get();
         $ids = array_unique(array_merge($detailsFromOems->pluck('dt_oem')->toArray(), $detailsFromOems->pluck('dt_invoice')->toArray()));
-
-        $details = Detail::whereIn('dt_invoice', $sortIds)->orWhereIn('dt_oem', $sortIds)->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code', 'dt_cargo')->paginate(12)->withQueryString();
-        return $details;
+        $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code', 'dt_cargo')->paginate(12)->withQueryString();*/
+        $details = $this->getBySearching($searchQuery);
+        return new LengthAwarePaginator($details, count($details), 10);
     }
 }
 
