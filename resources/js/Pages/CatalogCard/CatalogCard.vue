@@ -1,13 +1,13 @@
 <template>
     <div class="grid grid-cols-7  w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10">
-        <!--img
-            v-if="detail.dt_foto.length === 0"
+        <img
+            v-if="detail.dt_cargo"
             :alt="detail"
             class="w-full object-cover object-center"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-        /!-->
+            :src="`../../../../storage/images/${detail.dt_cargo}.jpg`"
+        />
         <img
-
+            v-if="detail.dt_cargo === null"
             src="../../../../public/build/no-photo--lg.png"
             alt="#"
             class="w-[120px] object-cover object-center"
@@ -19,7 +19,7 @@
                 <h3
                     class="font-manrope  font-semibold text-4xl leading-9 text-black mb-4"
                 >
-                    <a use:inertia-vue3 :href="`product/${detail.dt_invoice}`">
+                    <a :href="`product/${detail.dt_invoice}`">
                         <span aria-hidden="true" />
                         {{ editTitle(detail.dt_typec) }}
                         {{ detail.dt_invoice }}
