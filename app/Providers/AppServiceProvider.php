@@ -8,6 +8,8 @@ use App\Services\CartService;
 use App\Services\DetailService;
 use App\Services\NewsService;
 use App\Services\OrderService;
+use App\Services\PriceService;
+use App\Services\ProductService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -25,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NewsService::class);
         $this->app->bind(DetailService::class);
         $this->app->bind(UserService::class);
+        $this->app->bind(ProductService::class);
+        $this->app->bind(PriceService::class);
     }
 
     /**
