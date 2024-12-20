@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('price', function (Blueprint $table) {
-            $table->foreignId('code')->references('dt_code')->on('detail');
+            $table->foreignId('code');
             $table->string('zakup');
             $table->string('opt');
             $table->string('prod');
