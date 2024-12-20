@@ -8,8 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('alt_cz', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id');
+            $table->id('id');
             $table->dateTime('datep');
             $table->string('tmp');
             $table->string('hcparts');
