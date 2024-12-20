@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,4 +39,9 @@ class Detail extends Model
         'dt_tp_ptype',
         'lt_dt_acode',
     ];
+
+    public function scopeInvoice(Builder $query,string $invoiceCode):void
+    {
+        $query->where('dt_invoice', '=', $invoiceCode);
+    }
 }
