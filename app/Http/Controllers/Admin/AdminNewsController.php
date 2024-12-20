@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class NewsAdminController extends Controller
+class AdminNewsController extends Controller
 {
     public function __construct(protected NewsService $newsService)
     {}
 
     public function index():Response
     {
-        return Inertia::render('Admin/News/NewsList', ['news' => $this->newsService->getAll()]);
+        return Inertia::render('Admin/News/NewsList', ['news' => $this->newsService->getAll(12)]);
     }
 
     public function store(NewsFormRequest $request){

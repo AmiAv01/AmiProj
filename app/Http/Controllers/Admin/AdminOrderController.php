@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class OrderAdminController extends Controller
+class AdminOrderController extends Controller
 {
     public function __construct(protected OrderService $orderService)
     {

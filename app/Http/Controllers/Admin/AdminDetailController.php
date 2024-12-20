@@ -9,7 +9,7 @@ use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DetailController extends Controller
+class AdminDetailController extends Controller
 {
     public function __construct(protected DetailService $detailService)
     {
@@ -18,23 +18,12 @@ class DetailController extends Controller
 
     public function index()
     {
-        return Inertia::render('Admin/Detail/DetailList', ['details' => $this->detailService->getByBrand(), 'brands' => Firm::all()]);
-    }
-
-    public function store(Request $request)
-    {
-
-    }
-
-    public function update(Request $request, $id)
-    {
-
+        return Inertia::render('Admin/Detail/DetailList', ['details' => $this->detailService->getByBrand(12), 'brands' => Firm::all()]);
     }
 
     public function delete(Request $request, $id)
     {
-        //dd($id);
-        $detail = Detail::where('dt_id', $id)->delete();
+        Detail::where('dt_id', $id)->delete();
 
         return redirect()->route('admin.details.index')->with('success', 'Product deleted successfully');
     }
