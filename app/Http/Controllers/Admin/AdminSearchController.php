@@ -6,37 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Services\DetailService;
 use App\Services\NewsService;
 use App\Services\OrderService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AdminSearchController extends Controller
 {
-    public function __construct(protected OrderService $orderService, protected DetailService $detailService, protected NewsService $newsService)
-    {
 
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, OrderService $orderService, DetailService $detailService, NewsService $newsService, UserService $userService)
     {
         $search = $request->input('searchQ');
         $category = $request->input('category');
         Log::info(strval($request));
-        switch ($category) {
-            case 'details':
-                $details = ($search) ? $this->detailService->getBySearching($search) : $this->detailService->getAll();
-
-                return ['details' => $details];
-                break;
-            case 'orders':
-                $orders = ($search) ? $this->orderService->getBySearching($search) : $this->orderService->getAll();
-
-                return ['orders' => $orders];
-                break;
-            case 'news':
-                $news = ($search) ? $this->newsService->getBySearching($search) : $this->newsService->getAll();
-
-                return ['news' => $news];
-
-        }
+        return match($category){
+            'details' => ['details' => ($search) ? $detailService->getBySearching($search) : $detailService->getAll(12)],
+            'orders' => ['orders' => ($search) ? $orderService->getBySearching($search) : $orderService->getAll(12)],
+            'news' => ['news' => ($search) ? $newsService->getBySearching($search) : $newsService->getAll(12)],
+            'users' => ['users' => ($search) ? $userService->getBySearching($search) : $userService->getAll(12)],
+        };
     }
 }
