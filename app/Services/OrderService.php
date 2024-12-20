@@ -14,9 +14,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class OrderService
 {
-    public function getAll(): Collection
+    public function getAll($perPage): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')->paginate(12);
+        return Order::join('user', 'order.created_by', '=', 'user.id')->paginate($perPage);
     }
 
     public function getByUserId(string $userId): Collection
@@ -55,7 +55,7 @@ final class OrderService
             ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
     }
 
-    public function getBySearching(string $search): Collection
+    public function getBySearching(string $search): LengthAwarePaginator
     {
         Log::info(strval($search));
 

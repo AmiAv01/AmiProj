@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Log;
 
 final class NewsService
 {
-    public function getAll():LengthAwarePaginator
+    public function getAll($perPage):LengthAwarePaginator
     {
-        return News::join('user', 'news.author', '=', 'user.id')->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate(12);
+        return News::join('user', 'news.author', '=', 'user.id')->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate($perPage);
     }
 
     public function store(array $request, int $adminId):News
