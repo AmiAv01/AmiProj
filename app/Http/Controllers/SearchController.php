@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchFormRequest;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 
@@ -11,11 +12,8 @@ class SearchController extends Controller
     {
     }
 
-    public function index(Request $request): array
+    public function index(SearchFormRequest $request): array
     {
-        $request->validate([
-            'searchQ' => 'string|nullable|max:255',
-        ]);
         $search = $request->input('searchQ');
 
         return [
