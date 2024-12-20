@@ -18,91 +18,29 @@ final class DetailService
         return Detail::paginate($perPage);
     }
 
-    public function getById(int $id): Collection
-    {
-        return Detail::where('dt_id', '=', $id)->get();
-    }
-
-    public function getByFilters(array $categories): LengthAwarePaginator
+    public function getByFilters(array $categories, int $perPage): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
-        return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
+        return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate($perPage)->withQueryString();
     }
 
-    public function getByBrand(): LengthAwarePaginator
+    public function getByBrand(int $perPage): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
-            ->join('stk', 'stk.code', '=', 'detail.dt_code' )->paginate(12)->withQueryString();
+            ->join('stk', 'stk.code', '=', 'detail.dt_code' )->paginate($perPage)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Collection
     {
-        return Detail::where('dt_invoice', '=', $invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )->get();
+        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )->get();
     }
 
-    public function getByCodeFromOems(string $code): Oems
+
+    public function getBySearching(mixed $search)
     {
-        Log::info($code);
-        return Oems::where('dt_invoice', '=', $code)->orWhere('dt_oem', '=', $code)->first();
     }
 
-    public function getSameDetails($id): array
-    {
-        $detail = $this->getByInvoice($id);
-
-        $brand = $detail->pluck('dt_typec')[0];
-        if ($brand === 'ГЕНЕРАТОР') {
-            $ids = [];
-            $generators = AltCz::where('hcparts', '=', $id)->get()->toArray();
-            Log::info($generators);
-            foreach ($generators as $generator){
-                array_push($ids, $generator['dt_code']);
-            }
-            $ids = array_unique($ids);
-            Log::info($ids);
-            unset($ids[array_search('', $ids)]);
-            $details = Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->get()->toArray();
-            Log::info($details);
-            return $details;
-        }
-
-        return [];
-    }
-
-    public function getAnalogs($id):array
-    {
-        $detailsFromOems = Oems::where('dt_invoice', '=', $id)->orWhere('dt_oem', '=', $id)->get()->toArray();
-        $ids = [];
-        $i = 0;
-        foreach ($detailsFromOems as $detail) {
-            if ($detail['dt_oem'] === $id ) {
-                $ids[$i] = $detail['dt_invoice'];
-                $i++;
-            } elseif($detail['dt_invoice'] === $id) {
-                $ids[$i] = $detail['dt_oem'];
-                $i++;
-            }
-        }
-        $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)->get()->toArray();
-        return $details;
-    }
-
-    public function getCargoFromAnalogs(array $details):array
-    {
-        $codeIds = [];
-        foreach ($details as $detail){
-            array_push($codeIds, $detail['dt_cargo']);
-            array_push($codeIds, $detail['dt_oem']);
-            array_push($codeIds, $detail['dt_invoice']);
-        }
-        $detailsFromOems = Oems::whereIn('dt_invoice', array_unique($codeIds))
-            ->orWhereIn('dt_oem', array_unique($codeIds))->where('fr_code', '=', 'CARGO')
-            ->where('dt_parent', '=', 'CARGO')->get();
-        $cargoIds = array_unique($detailsFromOems->pluck('dt_invoice')->toArray());
-        Log::info($cargoIds);
-        return array_values($cargoIds);
-    }
 }
