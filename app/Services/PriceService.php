@@ -8,11 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 final class PriceService{
-    public function getPrice(int $detailId, int $userId): int | string {
-        if ($userId){
-            return '';
-        }
-        $detailCode = Detail::where('dt_id', $detailId)->value('dt_code');
+    public function getPrice(int $detailCode, int $userId): int | string {
         $userFormula = User::where('id', '=' ,$userId)->value('formula');
         $price = $this->getPriceByType(strtolower(substr($userFormula, 0, 1)), $detailCode);
         Log::info($price);
