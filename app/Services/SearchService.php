@@ -31,23 +31,15 @@ final class SearchService{
     public function getInfoAboutDetailFromOems(array | Oems $detail,string $searchQuery): array
     {
         $resultData = [];
-        if (str_starts_with( $detail['dt_oem'], $searchQuery)) {
-            $resultData['dt_code'] = $detail['dt_oem'];
-            $resultData['dt_firm'] = $detail['fr_code'];
-            $resultData['dt_typec'] = $detail['dt_typec'];
-        } else {
-            $resultData['dt_code'] = $detail['dt_invoice'];
-            $resultData['dt_firm'] = $detail['dt_parent'];
-            $resultData['dt_typec'] = $detail['dt_typec'];
-        }
+        $isStartWithOem = str_starts_with( $detail['dt_oem'], $searchQuery);
+        $resultData['dt_code'] = ($isStartWithOem) ? $detail['dt_oem'] : $detail['dt_invoice'];
+        $resultData['dt_firm'] = ($isStartWithOem) ? $detail['fr_code'] : $detail['dt_parent'];
+        $resultData['dt_typec'] = $detail['dt_typec'];
         return $resultData;
     }
 
     public function getBySearchingWithPagination(string $searchQuery): LengthAwarePaginator
     {
-        /*$detailsFromOems = Oems::search($searchQuery)->get();
-        $ids = array_unique(array_merge($detailsFromOems->pluck('dt_oem')->toArray(), $detailsFromOems->pluck('dt_invoice')->toArray()));
-        $details = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->select('dt_invoice', 'dt_oem', 'dt_typec', 'fr_code', 'dt_cargo')->paginate(12)->withQueryString();*/
         $details = $this->getBySearching($searchQuery);
         return new LengthAwarePaginator($details, count($details), 10);
     }
