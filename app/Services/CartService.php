@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\CartDTO;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Darryldecode\Cart\Facades\CartFacade;
@@ -12,21 +13,21 @@ final class CartService
 
     public function storeCart(int $userId): Cart
     {
-        $cart = Cart::create([
+        return Cart::create([
             'user_id' => $userId
         ]);
-        return $cart;
+
     }
 
-    public function addToCart(int $userId, int $productId): CartItem
+    public function addToCart(int $userId, CartDTO $dto): CartItem
     {
-        $cart = Cart::where('user_id', '=', $userId)->first();
-        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $productId, 'quantity' => 1]);
+        $cart = Cart::user($userId)->first();
+        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity]);
     }
 
     public function getCartItems(int $userId): array
     {
-        $cart = Cart::where('user_id', '=', $userId)->first();
+        $cart = Cart::user($userId)->first();
         $cartItems = $cart->items;
         $details = [];
         $i = 0;
@@ -37,20 +38,20 @@ final class CartService
         return $details;
     }
 
-    public function updateQuantity(int $userId, int $productId, int $quantity){
-        $cart = Cart::where('user_id', '=', $userId)->first();
-        $cartProduct = $cart->items->where('dt_id', '=', $productId)->first();
-        return $cartProduct->update(['quantity' => $quantity]);
+    public function updateQuantity(int $userId, CartDTO $dto){
+        $cart = Cart::user($userId)->first();
+        $cartProduct = $cart->items->where('dt_id', '=', $dto->productId)->first();
+        return $cartProduct->update(['quantity' => $dto->quantity]);
     }
 
     public function deleteProductFromCart(int $userId, int $productId){
-        $cart = Cart::where('user_id', '=', $userId)->first();
+        $cart = Cart::user($userId)->first();
         $cartProduct = $cart->items->where('dt_id', '=', $productId)->first();
         return $cartProduct->delete();
     }
 
     public function clearCart(int $userId):void{
-        $cart = Cart::where('user_id', '=', $userId)->first();
+        $cart = Cart::user($userId)->first();
         $cartItems = $cart->items;
         foreach ($cartItems as $cartItem){
             Log::info($cartItem);
