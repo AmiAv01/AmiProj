@@ -7,17 +7,18 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class AdminAuthController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(): Response
     {
         return Inertia::render('Admin/Auth/Login');
     }
 
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'isAdmin' => true])) {
+        if (Auth::attempt(['email' => $request->validated('email'), 'password' => $request->validated('password'), 'isAdmin' => true])) {
             return redirect()->route('admin.dashboard');
         }
 
