@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\NewsPostDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsFormRequest;
+use App\Http\Resources\NewsPostResource;
 use App\Services\NewsService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -20,20 +23,18 @@ class AdminNewsController extends Controller
         return Inertia::render('Admin/News/NewsList', ['news' => $this->newsService->getAll(12)]);
     }
 
-    public function store(NewsFormRequest $request){
-        $request->validated();
-        return $this->newsService->store($request->all(), auth()->id());
+    public function store(NewsFormRequest $request): NewsPostResource{
+        $post = $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
+        return NewsPostResource::make($post);
     }
 
-    public function update(NewsFormRequest $request,int $post)
+    public function update(NewsFormRequest $request,int $post): NewsPostResource
     {
-
-        $request->validated();
-        Log::info($request);
-        return $this->newsService->update($request->all(), $post);
+        $post = $this->newsService->update(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), $post);
+        return NewsPostResource::make($post);
     }
 
-    public function destroy(int $post){
+    public function destroy(int $post): bool{
         return $this->newsService->destroy($post);
     }
 }
