@@ -8,10 +8,9 @@ use App\Services\CartService;
 class ClearCartController extends Controller
 {
     public function __construct(protected CartService $cartService)
-    {
-    }
+    {}
 
-    public function index(){
+    public function index(): array{
         $this->cartService->clearCart(auth()->id());
         return ['items' => $this->cartService->getCartItems(auth()->id())];
     }
