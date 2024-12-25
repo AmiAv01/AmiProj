@@ -9,27 +9,11 @@ use Inertia\Inertia;
 class NewsController extends Controller
 {
     public function __construct(protected NewsService $newsService)
-    {
-
-    }
+    {}
 
     public function index()
     {
-        return Inertia::render('News/NewsList', ['posts' => $this->newsService->getAll()]);
+        return Inertia::render('News/NewsList', ['posts' => $this->newsService->getAll(12)]);
     }
 
-    public function store()
-    {
-
-    }
-
-    public function show()
-    {
-
-    }
-
-    public function update()
-    {
-
-    }
 }
