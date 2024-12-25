@@ -10,7 +10,7 @@ class AdminApproveUserController extends Controller
     public function __construct(protected UserService $userService)
     {}
 
-    public function index(int $id){
+    public function index(int $id): bool{
         return $this->userService->approveUser($id);
     }
 }
