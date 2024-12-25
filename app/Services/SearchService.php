@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\SearchQueryDTO;
 use App\Models\Detail;
 use App\Models\Oems;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -38,9 +39,9 @@ final class SearchService{
         return $resultData;
     }
 
-    public function getBySearchingWithPagination(string $searchQuery): LengthAwarePaginator
+    public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
-        $details = $this->getBySearching($searchQuery);
+        $details = $this->getBySearching($dto->searchQuery);
         return new LengthAwarePaginator($details, count($details), 10);
     }
 }
