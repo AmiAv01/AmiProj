@@ -3,21 +3,19 @@
 namespace App\Services;
 
 use App\DTO\SearchQueryDTO;
-use App\Models\Detail;
 use App\Models\Oems;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Collection;
 
 final class SearchService{
-    public function getBySearching(string $searchQuery): array
+    public function getBySearching(SearchQueryDTO $dto): array
     {
-        $detailsFromOems = Oems::where('dt_invoice', 'like', "$searchQuery%")->orWhere('dt_oem', 'like', "$searchQuery%")->get()->toArray();
+        $detailsFromOems = Oems::where('dt_invoice', 'like', "$dto->searchQuery%")->orWhere('dt_oem', 'like', "$dto->searchQuery%")->get()->toArray();
         $data = [];
         $result = [];
         $i = 0;
         foreach ($detailsFromOems as $detail) {
-            $data[$i] = $this->getInfoAboutDetailFromOems($detail, $searchQuery);
+            $data[$i] = $this->getInfoAboutDetailFromOems($detail, $dto->searchQuery);
             $i++;
         }
         usort($data, function ($a, $b) {
@@ -41,7 +39,7 @@ final class SearchService{
 
     public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
-        $details = $this->getBySearching($dto->searchQuery);
+        $details = $this->getBySearching($dto);
         return new LengthAwarePaginator($details, count($details), 10);
     }
 }
