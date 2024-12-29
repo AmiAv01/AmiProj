@@ -1,13 +1,6 @@
 <template>
     <div class="grid grid-cols-7  w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10">
         <img
-            v-if="detail.dt_cargo"
-            :alt="detail"
-            class="w-full object-cover object-center"
-            :src="`../../../../storage/images/${detail.dt_cargo}.jpg`"
-        />
-        <img
-            v-if="detail.dt_cargo === null"
             src="../../../../public/build/no-photo--lg.png"
             alt="#"
             class="w-[120px] object-cover object-center"
