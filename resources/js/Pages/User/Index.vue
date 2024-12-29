@@ -1,13 +1,13 @@
 <template>
     <layout>
         <section>
-            <div class="w-full" scroll-region></div>
+            <div class="w-full"></div>
         </section>
-        <HeroSection />
+        <hero-section />
         <section>
-            <ProductList v-bind:details="details" />
-            <LogoClouds />
-            <News />
+            <product-list v-bind:details="details" />
+            <logo-clouds />
+            <news />
         </section>
     </layout>
 </template>
@@ -19,7 +19,14 @@ import News from "@/Shared/News.vue";
 
 import HeroSection from "@/Pages/User/HeroSection.vue";
 
-export default {};
+export default {
+    components: {
+        'hero-section': HeroSection,
+        'product-list': ProductList,
+        'logo-clouds': LogoClouds,
+        'news': News
+    }
+};
 </script>
 
 <script setup>
