@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,20 +18,13 @@ class GeneratorController extends Controller
 
     }
 
-    public function index(Request $request): Response
+    public function index(DetailsFilterRequest $request): Response
     {
-        try{
-            $request->validate([
-                'filter' => 'array',
-            ]);
             return Inertia::render('Catalog/Index', [
-                'details' => $this->detailService->getByFilters(['ГЕНЕРАТОР']),
+                'details' => $this->detailService->getByFilters(['ГЕНЕРАТОР'], 12),
                 'title' => 'Генераторы',
-                'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
+                'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
             ]);
-        } catch (\Throwable $exception) {
-            Log::error('validation error');
-        }
 
     }
 }

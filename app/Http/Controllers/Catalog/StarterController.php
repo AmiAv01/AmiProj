@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,17 +17,14 @@ class StarterController extends Controller
 
     }
 
-    public function index(Request $request): Response
+    public function index(DetailsFilterRequest $request): Response
     {
-        $request->validate([
-            'filter' => 'array',
-        ]);
-        $details = $this->detailService->getByFilters(['СТАРТЕР'], []);
+        $details = $this->detailService->getByFilters(['СТАРТЕР'], 12);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => 'Стартеры',
-            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
+            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
         ]);
     }
 }

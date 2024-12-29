@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,20 +29,14 @@ class StarterPartsController extends Controller
     {
     }
 
-    public function index(string $category, Request $request): Response
+    public function index(string $category, DetailsFilterRequest $request): Response
     {
-        $request->validate([
-            'filter' => 'array',
-        ]);
-        if (! array_key_exists($category, $this->categories)) {
-            return abort(404);
-        }
-        $details = $this->detailService->getByFilters(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], []);
+        $details = $this->detailService->getByFilters(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], 12);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => $this->names[$category],
-            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
+            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter')))
         ]);
     }
 }

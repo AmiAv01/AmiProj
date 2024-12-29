@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\DTO\FilterDTO;
+use App\DTO\SearchQueryDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchCatalogFormRequest;
+use App\Http\Requests\SearchFormRequest;
 use App\Services\DetailService;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
@@ -17,20 +21,15 @@ class CatalogSearchedController extends Controller
 
     }
 
-    public function index(Request $request): Response
+    public function index(SearchCatalogFormRequest $request): Response
     {
-        $request->validate([
-            'filter' => 'array',
-            'search' => 'string|nullable|max:255',
-        ]);
-        $search = $request->input('searchQ');
-        $details = $this->searchService->getBySearchingWithPagination($search);
-        Log::info($details);
+        $search = $request->validated('searchQ');
+        $details = $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search));
 
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
             'details' => $details,
             'title' => "Поиск по $search",
-            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
+            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
         ]);
     }
 }
