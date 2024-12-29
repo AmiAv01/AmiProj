@@ -17,13 +17,6 @@
                         class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
                     >
                         <img
-                            v-if="detail.dt_foto.length == 0"
-                            :src="`${detail.dt_code}`"
-                            :alt="detail"
-                            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                        <img
-                            v-else=""
                             src="../../../../public/build/no-photo--lg.png"
                             alt="#"
                             class="h-full w-full object-cover object-center lg:h-full lg:w-full"
@@ -53,14 +46,13 @@
                     </div>
                 </div>
             </div>
-            <Pagination :links="details.links" />
+            <pagination :links="details.links" />
         </div>
     </div>
 </template>
 
 <script>
 import { editDetailTitle } from "@/Services/TitleService";
-
 export default {
     methods: {
         editTitle(res) {
@@ -74,5 +66,5 @@ export default {
 defineProps({
     details: Object,
 });
-import Pagination from "@/Shared/Pagination.vue";
+
 </script>
