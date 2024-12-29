@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\FilterDTO;
 use App\Models\AltCz;
 use App\Models\Detail;
 use App\Models\Firm;
@@ -35,6 +36,11 @@ final class DetailService
     public function getByInvoice(string $invoice): Collection
     {
         return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )->get();
+    }
+
+    public function getClientBrands(FilterDTO $dto): array | null
+    {
+        return $dto->filter ?: null;
     }
 
 
