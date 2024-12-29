@@ -11,7 +11,6 @@
                     class="flex flex-col items-center rounded-[15px] px-12 py-8"
                 >
                     <svg
-                        version="1.0"
                         xmlns="http://www.w3.org/2000/svg"
                         class="w-[300px] h-[120px] fill-white"
                         viewBox="0 0 920.000000 372.000000"
@@ -238,7 +237,6 @@ l-25 0 0 -190 0 -190 25 0 25 0 0 120 c0 87 4 131 16 160 17 43 61 74 88 64 8
                     class="flex flex-col items-center rounded-[15px] px-12 py-8"
                 >
                     <svg
-                        version="1.0"
                         xmlns="http://www.w3.org/2000/svg"
                         class="w-[300px] h-[120px] fill-white"
                         viewBox="0 0 600.000000 365.000000"
@@ -332,7 +330,6 @@ l207 84 0 44 c0 31 -4 43 -12 39 -203 -85 -383 -157 -389 -157 -15 0 -11 248
                     class="flex flex-col items-center rounded-[15px] px-12 py-8"
                 >
                     <svg
-                        version="1.0"
                         xmlns="http://www.w3.org/2000/svg"
                         class="w-[300px] h-[120px] fill-white"
                         viewBox="0 0 242.000000 138.000000"
