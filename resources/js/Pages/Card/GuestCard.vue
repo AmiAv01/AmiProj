@@ -4,12 +4,6 @@
             <div class="w-full px-4 2xl:px-0">
                 <div class="lg:grid px-4 lg:grid-cols-3 lg:gap-8 xl:gap-16">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                        <!--img
-                            v-if="detail.dt_foto.length === 0"
-                            class="w-full hidden dark:block"
-                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                            alt=""
-                        /!-->
                         <img
 
                             class="w-full dark:hidden"
