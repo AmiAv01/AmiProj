@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\OrderDTO;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -24,16 +25,16 @@ final class OrderService
         return Order::where('created_by', '=', $userId)->get();
     }
 
-    public function createOrder(int $userId, int $price):Order
+    public function createOrder(OrderDTO $dto):Order
     {
-        $order = Order::create(['total_price' => $price, 'status' => 'Новый', 'created_by' => $userId, 'updated_by' => $userId]);
-        $cart =  Cart::where('user_id', '=', $userId)->first();
+        $order = Order::create(['total_price' => $dto->totalPrice, 'status' => 'Новый', 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
+        $cart =  Cart::user($dto->userId)->first();
         $cartItems = $cart->items;
         foreach ($cartItems as $item) {
             $order->items()->create([
                 'detail_id' => $item->product['dt_id'],
                 'quantity' => $item->quantity,
-                'unit_price' => $item->quantity * $item->price,
+                'unit_price' => $item->price,
             ]);
         }
         return $order;
