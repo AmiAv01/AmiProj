@@ -11,7 +11,6 @@ class Detail extends Model
     use HasFactory;
 
     public $table = 'detail';
-
     protected $fillable = [
         'dt_id',
         'dt_code',
