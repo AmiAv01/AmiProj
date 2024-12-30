@@ -108,11 +108,9 @@ export default {
         addInCart() {
             axios
                 .post("/cart", {
-                    id: this.detail[0].dt_id,
-                    typec: this.detail[0].dt_typec,
-                    invoice: this.detail[0].dt_invoice,
-                    cargo: this.detail[0].dt_cargo,
-                    fr_code: this.detail[0]._code,
+                    id: this.detail.dt_id,
+                    quantity: 1,
+                    price: this.price
                 })
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
