@@ -10,19 +10,17 @@ use Illuminate\Support\Facades\Log;
 
 final class CartService
 {
-
     public function storeCart(int $userId): Cart
     {
         return Cart::create([
             'user_id' => $userId
         ]);
-
     }
 
     public function addToCart(int $userId, CartDTO $dto): CartItem
     {
         $cart = Cart::user($userId)->first();
-        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity]);
+        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $dto->productPrice]);
     }
 
     public function getCartItems(int $userId): array

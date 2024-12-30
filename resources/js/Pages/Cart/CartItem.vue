@@ -28,7 +28,7 @@
                         <p
                             class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 "
                         >
-                            100 BYN
+                            {{ item.price }}
                         </p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <p
                         class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
-                        {{ 100 * item.quantity }} BYN
+                        {{ item.price * item.quantity }} BYN
                     </p>
                     <button @click="deleteFromCart" class="cursor-pointer">
                         <svg
