@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminApproveUserController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCurrencyController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Desktop\DesktopController;
@@ -100,6 +101,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
     Route::delete('/users',[AdminUserController::class, 'destroy'])->name('admin.users.delete');
+
+    //currency route
+    Route::get('currency', [AdminCurrencyController::class, 'index'])->name('admin.currency.index');
+    Route::post('currency', [AdminCurrencyController::class, 'update'])->name('admin.currency.update');
 
     Route::put('/approve/{user}', [AdminApproveUserController::class, 'index'])->name('admin.approve.index');
 });
