@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Firm;
 use App\Models\User;
 use App\Services\CartService;
+use App\Services\CurrencyService;
 use App\Services\DetailService;
 use App\Services\NewsService;
 use App\Services\OrderService;
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserService::class);
         $this->app->bind(ProductService::class);
         $this->app->bind(PriceService::class);
+        $this->app->bind(CurrencyService::class);
     }
 
     /**
