@@ -4,13 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CartFormRequest extends FormRequest
+class CartFormCreateRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'id' => 'required',
+            'id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
+            'price' => 'required|string|min:1',
         ];
     }
 
