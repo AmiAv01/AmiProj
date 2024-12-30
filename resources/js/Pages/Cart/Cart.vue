@@ -72,7 +72,7 @@ export default {
         },
         getTotalPrice() {
             return Object.values(this.details).reduce(
-                (sum, obj) => sum + 100 * obj.quantity,
+                (sum, obj) => sum + obj.price * obj.quantity,
                 0
             );
         },
