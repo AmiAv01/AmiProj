@@ -24,7 +24,7 @@ class OrderController extends Controller
         return Inertia::render('Order/OrderList', ['orders' => $this->orderService->getByUserId($userId)]);
     }
 
-    public function store(OrderRequest $request): Order
+    public function store(OrderRequest $request): OrderResource
     {
         $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), auth()->id()));
         return OrderResource::make($order);
