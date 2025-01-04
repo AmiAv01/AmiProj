@@ -18,9 +18,6 @@
                         {{ detail.dt_invoice }}
                     </a>
                 </h3>
-                <!--p class="font-normal text-xl leading-8 text-gray-500">
-                    Артикул: {{ detail.dt_invoice }}
-                </p!-->
                 <p class="font-normal text-2xl leading-8 text-gray-500">
                     Cargo: {{ detail.dt_cargo }}
                 </p>
@@ -33,8 +30,6 @@
             >
                 {{ detail.oem }}
             </p>
-
-
         </div>
         <div class="col-start-5 col-end-7 row-start-1 row-end-2">
             <menu-button
