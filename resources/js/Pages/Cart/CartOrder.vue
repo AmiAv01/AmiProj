@@ -33,42 +33,40 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-export default {
-    data(){
-        return {
-            isShow: false,
-        }
+import {ref} from "vue";
+import {useCartStore} from "@/Store/cartStore.js";
+
+const store = useCartStore();
+let isShow = ref(false);
+const props = defineProps({
+    count: {
+        type: Number,
+        default: 0,
     },
-    props: {
-        count: {
-            type: Number,
-            default: 0,
-        },
-        price: {
-            type: Number,
-            default: 0,
-        },
-    },
-    methods: {
-        makeOrder() {
-            axios.all([
-                axios.post("/order", { totalPrice: this.price })
-                    .then((res) => {
-                        console.log(res);
-                        this.isShow = true;
-                    }).catch((err) => console.log(err)),
-                axios.put('/clear')
-                    .then((res) => {
-                        console.log(res);
-                        window.location.reload();
-                    }).catch((err) => console.log(err))
-            ])
-        },
-        hideModal(param){
-            this.isShow = param;
-        }
-    },
-};
+    price: {
+        type: Number,
+        default: 0,
+    }
+})
+
+function makeOrder() {
+        axios.all([
+            axios.post("/order", { totalPrice: props.price })
+                .then((res) => {
+                    console.log(res);
+                    isShow = true;
+                }).catch((err) => console.log(err)),
+            axios.put('/clear')
+                .then((res) => {
+                    console.log(res);
+                    store.setDetails([]);
+                }).catch((err) => console.log(err))
+        ])}
+
+function hideModal(param){
+    isShow = param;
+}
+
 </script>

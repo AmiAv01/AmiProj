@@ -32,9 +32,9 @@
                         </p>
                     </div>
                 </div>
-                <input-number
-                    @change="changeQuantity"
+                <InputQuantity
                     :quantity="`${item.quantity}`"
+                    :detailId="`${item.dt_id}`"
                 />
                 <div
                     class="flex flex-col justify-center ml-[50px] items-center"
@@ -42,9 +42,9 @@
                     <p
                         class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
-                        {{ item.price * item.quantity }} BYN
+                        {{ parseFloat(item.price) * item.quantity }} BYN
                     </p>
-                    <button @click="deleteFromCart" class="cursor-pointer">
+                    <button @click="store.deleteDetailFromCart(item.dt_id)" class="cursor-pointer">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -70,48 +70,20 @@
     </div>
 </template>
 
-<script>
-import InputNumber from "@/Components/InputNumber.vue";
-import axios from "axios";
+<script setup>
 import { editDetailTitle } from "@/Services/TitleService";
-export default {
-    data() {
-        return {
-            quantity: this.item.quantity,
-        };
-    },
-    components: {
-        "input-number": InputNumber,
-    },
-    props: {
+import { useCartStore} from "@/Store/cartStore.js";
+import InputQuantity from "@/Components/InputQuantity.vue";
+
+const store = useCartStore();
+const props = defineProps({
         item: {},
-    },
-    created() {
-        console.log(this.item);
-    },
-    methods: {
-        deleteFromCart() {
-            axios
-                .delete(`/cart/${this.item.dt_id}`)
-                .then((res) => {
-                    //console.log(res.data);
-                    this.$emit("getItems", res.data);
-                })
-                .catch((err) => console.log(err));
-        },
-        changeQuantity(count) {
-            console.log(`count: ${count}`);
-            axios
-                .put(`/cart/${this.item.dt_id}`, { quantity: count })
-                .then((res) => {
-                    console.log(res);
-                    this.$emit("getItems", res.data);
-                })
-                .catch((err) => console.log(err));
-        },
-        editTitle(res) {
-            return editDetailTitle(res);
-        },
-    },
-};
+    });
+
+console.log(props.item);
+
+function editTitle(res) {
+    return editDetailTitle(res);
+}
+
 </script>
