@@ -39,8 +39,9 @@
             </button>
             <input
                 type="text"
-                @input="changeQuantity"
                 v-model="count"
+                min="1"
+                @input="changeQuantity"
                 class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[73px] min-w-[60px] placeholder:text-gray-900 py-[9px] text-center bg-transparent"
             />
             <button
@@ -81,36 +82,30 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            count: 1,
-        };
+<script setup>
+import { useCartStore} from "@/Store/cartStore.js";
+import {ref} from "vue";
+
+const store = useCartStore();
+const props = defineProps({
+    quantity: {
+        type: Number,
+        default: 1,
     },
-    props: {
-        quantity: {
-            type: Number,
-            default: 1,
-        },
-    },
-    methods: {
-        incCount() {
-            this.count++;
-            this.$emit("change", this.count);
-        },
-        decCount() {
-            if (this.count > 1) {
-                this.count--;
-                this.$emit("change", this.count);
-            }
-        },
-        changeQuantity() {
-            this.$emit("change", this.count);
-        },
-    },
-    mounted() {
-        this.count = this.quantity;
-    },
-};
+    detailId: {
+        type: String,
+    }});
+let count = ref(props.quantity);
+console.log(count.value);
+
+function incCount() {
+    store.changeDetailQuantity(props.detailId, ++count.value);
+}
+function decCount() {
+    store.changeDetailQuantity(props.detailId, --count.value);
+}
+function changeQuantity(){
+    store.changeDetailQuantity(props.detailId, count.value);
+}
+
 </script>
