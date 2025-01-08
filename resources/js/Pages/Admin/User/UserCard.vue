@@ -20,7 +20,7 @@
                 <p class="text-center py-4 border-b-2 text-4xl  font-bold">
                     Заказы
                 </p>
-                <order-list :orders="orders"/>
+                <UserOrderItems :orders="orders"/>
             </div>
             <div class="border-2 mt-10 rounded-lg">
                 <p class="text-center py-4 border-b-2 text-4xl  font-bold">
@@ -32,26 +32,15 @@
     </admin-layout>
 </template>
 
-<script>
-import UserOrderItems from "@/Pages/Admin/User/UserOrderItems.vue";
-export default {
-    components: {
-        "order-list": UserOrderItems,
-    },
-    created() {
-        console.log(this.order);
-        console.log(this.details);
-    },
-};
-</script>
-
 <script setup>
+import UserOrderItems from "@/Pages/Admin/User/UserOrderItems.vue";
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import DetailList from "@/Shared/DetailList.vue";
 
-defineProps({
+const props = defineProps({
     orders: Array,
     cart: Array,
     user: Object,
 });
 </script>
+

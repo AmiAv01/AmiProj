@@ -46,58 +46,50 @@
     </modal>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-export default {
-    data() {
-        return {
-            currentTitle: this.title,
-            currentDescription: this.description,
-        };
-    },
-    props: {
-        title: {
-            type: String,
-            default: "",
-        },
-        description: {
-            type: String,
-            default: "",
-        },
-        isShow: {
-            type: Boolean,
-            default: false,
-        },
-        postId: {
-            type: Number,
-            default: 0,
-        },
-        actionTitle: {
-            type: String,
-            default: '',
-        }
-    },
-    emits: {
-        closeModal: false
-    },
-    methods: {
-        closeModal() {
-            this.$emit("closeModal");
-        },
-        editPost() {
-            console.log(this.postId)
-            axios
-                .patch(`/admin/news/${this.postId}`, {
-                    title: this.currentTitle,
-                    description: this.currentDescription,
-                })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-        },
-    },
+import {ref} from "vue";
 
-    created() {
-        console.log(this.postId);
+const props = defineProps({
+    title: {
+        type: String,
+        default: "",
     },
-};
+    description: {
+        type: String,
+        default: "",
+    },
+    isShow: {
+        type: Boolean,
+        default: false,
+    },
+    postId: {
+        type: Number,
+        default: 0,
+    },
+    actionTitle: {
+        type: String,
+        default: '',
+    }
+})
+
+const emit = defineEmits(['closeModal'])
+
+const currentTitle = ref("")
+const currentDescription = ref("")
+
+const closeModal = () => {
+    emit("closeModal");
+}
+
+const editPost = () => {
+    console.log(props.postId)
+    axios
+        .patch(`/admin/news/${props.postId}`, {
+            title: currentTitle.value,
+            description: currentDescription.value,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+}
 </script>

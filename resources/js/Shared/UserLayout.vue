@@ -1,6 +1,6 @@
 <template>
     <Header> </Header>
-    <main scroll-region>
+    <main >
         <slot />
     </main>
     <Footer></Footer>

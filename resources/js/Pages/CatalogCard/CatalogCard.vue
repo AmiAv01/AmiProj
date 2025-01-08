@@ -59,28 +59,24 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { editDetailTitle } from "@/Services/TitleService";
 
-export default {
-    props: {
-        detail: Object,
-    },
-    methods: {
-        addInCart() {
-            axios
-                .post("/cart", {
-                    id: this.detail.dt_id,
-                })
-                .then((res) => {
-                    console.log(res);
-                    this.$emit('showPush', true);
-                })
-                .catch((err) => console.log(err));
-        },
-        editTitle(res) {
-            return editDetailTitle(res);
-        },
-    },
-};
+const props = defineProps({
+    detail: Object,
+})
+
+const addInCart = () => {
+    axios
+        .post("/cart", {
+            id: this.detail.dt_id,
+        })
+        .then((res) => {
+            console.log(res);
+            this.$emit('showPush', true);
+        })
+        .catch((err) => console.log(err));
+}
+const editTitle = (res) => editDetailTitle(res)
+
 </script>

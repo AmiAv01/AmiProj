@@ -31,35 +31,34 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import debounce from "lodash.debounce";
-export default {
-    data() {
-        return {
-            searchQuery: "",
-        };
+import {ref} from "vue";
+
+const props = defineProps({
+    placeholder: {
+        type: String,
+        default: "Search",
     },
-    props: {
-        placeholder: {
-            type: String,
-            default: "Search",
-        },
-        link: {
-            type: String,
-            default: "#",
-        },
+    link: {
+        type: String,
+        default: "#",
     },
-    methods: {
-        getSearchingDetails: debounce(function () {
-            axios
-                .get(`${this.link}=${this.searchQuery}`)
-                .then((res) => {
-                    console.log(res.data);
-                    this.$emit("setData", res.data);
-                })
-                .catch((err) => console.log(err));
-        }, 1500),
-    },
-};
+})
+
+const emit = defineEmits(['setData']);
+
+let searchQuery = ref("");
+
+const getSearchingDetails = debounce(() => {
+    axios
+        .get(`${props.link}=${searchQuery.value}`)
+        .then((res) => {
+            console.log(res.data);
+            emit("setData", res.data);
+        })
+        .catch((err) => console.log(err));
+}, 1500);
+
 </script>

@@ -22,27 +22,16 @@
     </admin-layout>
 </template>
 
-<script>
-    import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
+<script setup>
+import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 
-    export default {
-        components: {AdminLayout},
-        data(){
-            return {
-                currencyValue: 0
-            }
-        },
-        methods: {
-            changeCurrency(){
-                axios.post(`/admin/currency`, {currency: this.currencyValue})
-                    .then(res => console.log(res.data))
-                    .catch(err => console.error(err))
-            }
-        }
-    }
+let currencyValue = 0;
+
+function changeCurrency(){
+    axios.post(`/admin/currency`, {currency: currencyValue})
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err))
+}
+
 </script>
 
-
-<style scoped>
-
-</style>

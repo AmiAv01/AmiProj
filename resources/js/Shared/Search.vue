@@ -87,53 +87,46 @@
     </form>
 </template>
 
-<script>
-import axios from "axios";
-import debounce from "lodash.debounce";
-import { editDetailTitle } from "@/Services/TitleService";
-import {otherParts} from "@/Store/index.js";
+<script setup>
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+import { editDetailTitle } from '@/Services/TitleService';
+import { otherParts } from '@/Store/index.js';
 
-export default {
-    computed: {
-        otherParts() {
-            return otherParts
-        }
+const props = defineProps({
+    link: {
+        type: String,
+        default: "",
     },
-    props: {
-        link: {
-            type: String,
-            default: "",
-        },
-    },
-    data() {
-        return {
-            searchQuery: "",
-            details: [],
-            search: '',
-            categoryList: []
-        };
-    },
-    methods: {
-        getSearchingDetails: debounce(function () {
-            let categories = Array.from(otherParts.keys()).filter(key => key.includes(this.searchQuery));
-            this.categoryList = Array.from(categories);
-            if (this.searchQuery === "") {
-                this.details = [];
-                this.categoryList = [];
-            } else {
-                axios
-                    .get(`${this.link}=${this.searchQuery}`)
-                    .then((res) => {
-                        console.log(res.data.details);
-                        this.details = res.data.details;
-                        this.search = res.data.search;
-                    })
-                    .catch((err) => console.log(err));
-            }
-        }, 1000),
-        editTitle(res) {
-            return editDetailTitle(res);
-        },
-    },
-};
+});
+
+const searchQuery = ref('');
+const details = ref([]);
+const search = ref('');
+const categoryList = ref([]);
+
+const otherPartsData = computed(() => otherParts);
+
+const getSearchingDetails = debounce(() => {
+    let categories = Array.from(otherPartsData.value.keys()).filter(key => key.includes(searchQuery.value));
+    categoryList.value = Array.from(categories);
+    if (searchQuery.value === "") {
+        details.value = [];
+        categoryList.value = [];
+    } else {
+        axios
+            .get(`${props.link}=${searchQuery.value}`)
+            .then((res) => {
+                console.log(res.data.details);
+                details.value = res.data.details;
+                search.value = res.data.search;
+            })
+            .catch((err) => console.log(err));
+    }
+}, 1000);
+
+const editTitle = (res) => editDetailTitle(res);
 </script>
+
+

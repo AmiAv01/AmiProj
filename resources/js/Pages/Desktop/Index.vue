@@ -5,31 +5,25 @@
             <div class="flex flex-col">
                 <p class="text-4xl font-bold text-center p-6">Инструкция по установке</p>
                 <div class="flex justify-between">
-                    <menu-button :href="`http://amiauto.by/updates/instruction.pdf`" :attributes="`px-16 py-6 mr-3 text-xl font-medium`">
-                        pdf-версия
-                    </menu-button>
-                    <menu-button :href="`http://amiauto.by/updates/instruction.doc`" :attributes="`px-16 py-6 mr-3 text-xl font-medium`">
-                        doc-версия
-                    </menu-button>
+                    <MenuButton v-for="[key, value] of menuItems" :href="`${value}`" :attributes="`px-16 py-6 mr-3 text-xl font-medium`">
+                        {{key}}
+                    </MenuButton>
                 </div>
             </div>
             <div>
                 <p class="text-4xl font-bold text-center p-6">Скачать для Windows</p>
-                <menu-button :attributes="`px-16 py-6 mr-3 text-xl font-medium justify-center `" :href="`http://amiauto.by/updates/plist.exe`">Скачать</menu-button>
+                <MenuButton :attributes="`px-16 py-6 mr-3 text-xl font-medium justify-center `" :href="`http://amiauto.by/updates/plist.exe`">Скачать</MenuButton>
             </div>
         </div>
     </layout>
 </template>
 
-<script>
+<script setup>
 import Layout from "@/Shared/UserLayout.vue";
 import MenuButton from "@/Components/MenuButton.vue";
 
-export default {
-    components: {MenuButton, Layout},
-    setup() {
+const menuItems = new Map([
+    ['pdf-версия', 'http://amiauto.by/updates/instruction.pdf'],
+    ['doc-версия', 'http://amiauto.by/updates/instruction.doc']])
 
-        return {}
-    }
-}
 </script>

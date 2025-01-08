@@ -3,34 +3,24 @@
         <section>
             <div class="w-full"></div>
         </section>
-        <hero-section />
+        <HeroSection />
         <section>
-            <product-list v-bind:details="details" />
-            <logo-clouds />
-            <news />
+            <ProductList v-bind:details="details" />
+            <LogoClouds/>
+            <News/>
         </section>
     </layout>
 </template>
 
-<script>
+<script setup>
 import LogoClouds from "./LogoClouds.vue";
 import ProductList from "./ProductList.vue";
 import News from "@/Shared/News.vue";
-
 import HeroSection from "@/Pages/User/HeroSection.vue";
 
-export default {
-    components: {
-        'hero-section': HeroSection,
-        'product-list': ProductList,
-        'logo-clouds': LogoClouds,
-        'news': News
-    }
-};
-</script>
-
-<script setup>
-defineProps({
+const props = defineProps({
     details: Object,
 });
+
 </script>
+

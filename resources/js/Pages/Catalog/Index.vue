@@ -12,7 +12,7 @@
                     <div v-if="details.data"
                         class=" grid grid-cols-1 gap-x-4 gap-y-2 w-[1200px]  border-gray-200"
                     >
-                        <catalog-card
+                        <CatalogCard
                             @showPush="showModal"
 
                             v-for="detail in details.data"
@@ -28,7 +28,7 @@
                 </div>
                 <pagination :links="details.links"  />
             </div>
-            <brand-selector
+            <BrandSelector
                 :categories="categories.brands"
                 :clientBrands="clientBrands"
             />
@@ -36,39 +36,25 @@
     </layout>
 </template>
 
-<script>
+<script setup>
 import CatalogCard from "@/Pages/CatalogCard/CatalogCard.vue";
 import BrandSelector from "@/Shared/BrandSelector/Index.vue";
-export default {
-    components: {
-        "catalog-card": CatalogCard,
-        "brand-selector": BrandSelector,
-    },
-    data() {
-        return {
-            checked: [],
-            isShow: false,
-            selectedDetails: this.details,
-        };
-    },
-    methods: {
-        hideModal(param){
-            console.log(param);
-            this.isShow = param;
-        },
-        showModal(param){
-            console.log(param);
-            this.isShow = param;
-        },
-    },
-};
-</script>
+import {ref} from "vue";
 
-<script setup>
-defineProps({
+const props = defineProps({
     details: Object,
     title: String,
     categories: Object,
     clientBrands: Object,
 });
+
+const checked = ref([]);
+let isShow = ref(false);
+const selectedDetails = ref(props.details);
+
+const hideModal = (param) => isShow = param;
+
+const showModal = (param) => isShow = param;
+
 </script>
+

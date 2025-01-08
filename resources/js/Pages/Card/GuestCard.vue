@@ -40,24 +40,10 @@
     </layout>
 </template>
 
-<script>
+<script setup>
 import { editDetailTitle } from "@/Services/TitleService";
 
-export default {
-    created() {
-        console.log(this.sameDetails);
-    },
-    methods: {
-        editTitle(str) {
-            return editDetailTitle(str);
-        },
-    },
-};
-</script>
-
-<script setup>
-
-defineProps({
+const props = defineProps({
     detail: {
         type: Array,
     },
@@ -65,4 +51,7 @@ defineProps({
         type: Boolean,
     },
 });
+const editTitle = (res) => editDetailTitle(res)
+
 </script>
+

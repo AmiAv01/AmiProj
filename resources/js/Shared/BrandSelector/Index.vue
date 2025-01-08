@@ -28,7 +28,7 @@
                 </li>
             </ul>
             <menu-button
-                :href="`${this.currentUrl}?filter[id]=${this.checked.join()}`"
+                :href="`${currentUrl}?filter[id]=${checked.join()}`"
                 :attributes="`px-5 py-2.5 mx-auto text-lg mt-4`"
             >
                 Подобрать
@@ -40,60 +40,54 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-export default {
-    data() {
-        return {
-            searchQuery: "",
-            searchedCategories: this.categories,
-            checked: [],
-            currentUrl: null,
-        };
+import {computed, onMounted, ref} from "vue";
+
+const props = defineProps({
+    categories: {
+        type: Array,
     },
-    props: {
-        categories: {
-            type: Array,
-        },
-        clientBrands: {
-            type: Object,
-            default: null,
-        },
-        bgHeaderColor: {
-            type: String,
-            default: "bg-green-700",
-        },
-        bgBodyColor: {
-            type: String,
-            default: "bg-green-300",
-        },
+    clientBrands: {
+        type: Object,
+        default: null,
     },
-    methods: {
-        searchCategory() {
-            console.log(this.categories);
-            this.searchedCategories = [...this.categories].filter((name) =>
-                name.fr_name
-                    .toLowerCase()
-                    .includes(this.searchQuery.toLowerCase())
-            );
-        },
-        getCheckbox() {
-            console.log(this.checked);
-        },
-        getFilteredData() {
-            axios.get().then((res) => console.log(res));
-        },
-        resetChecked() {
-            this.checked = [];
-        },
+    bgHeaderColor: {
+        type: String,
+        default: "bg-green-700",
     },
-    created: function () {
-        this.currentUrl = window.location.pathname;
-        console.log(`Current URL => ${this.currentUrl}`);
-        console.log(this.clientBrands);
-        if (this.clientBrands !== null) {
-            this.checked = this.clientBrands["id"].split(",");
-        }
-    },
-};
+    bgBodyColor: {
+        type: String,
+        default: "bg-green-300",
+    }
+})
+
+const searchQuery = ref('');
+const checked = ref([]);
+const currentUrl = ref(null);
+
+const searchedCategories = computed(() => {
+    return props.categories.filter((name) => name.fr_name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+});
+
+const getCheckbox = () => {
+    console.log(this.checked);
+}
+
+const getFilteredData = () => {
+    axios.get().then((res) => console.log(res));
+}
+const resetChecked = () => {
+    this.checked = [];
+}
+
+onMounted(() => {
+    currentUrl.value = window.location.pathname;
+    console.log(`Current URL => ${currentUrl.value}`);
+    console.log(props.clientBrands);
+    if (props.clientBrands !== null) {
+        this.checked = props.clientBrands["id"].split(",");
+    }
+})
+
 </script>

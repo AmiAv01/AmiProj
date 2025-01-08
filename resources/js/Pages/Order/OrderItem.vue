@@ -47,23 +47,10 @@
     </div>
 </template>
 
-<script>
-import InputNumber from "@/Components/InputNumber.vue";
-import axios from "axios";
-export default {
-    data() {
-        return {
-            quantity: this.item.quantity,
-        };
-    },
-    components: {
-        "input-number": InputNumber,
-    },
-    props: {
-        item: {},
-    },
-    created() {
-        console.log(this.item);
-    },
-};
+<script setup>
+
+const props = defineProps({
+    item: {},
+})
+
 </script>

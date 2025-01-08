@@ -1,5 +1,5 @@
 <template>
-    <admin-layout>
+    <AdminLayout>
         <section class="p-3 sm:p-5">
             <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
                 <div
@@ -8,7 +8,7 @@
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
                     >
-                        <search
+                        <Search
                             :placeholder="`Найти пользователя`"
                             :link="`../admin/api/search?category=users&searchQ`"
                             @setData="searchData"
@@ -31,7 +31,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <user-item
+                            <UserItem
                                 v-for="(user, index) in searchUser.data"
                                 :user="user"
                                 :key="user.id"
@@ -39,51 +39,32 @@
                             </tbody>
                         </table>
                     </div>
-
                     <Pagination :links="searchUser.links" />
                 </div>
             </div>
         </section>
-    </admin-layout>
+    </AdminLayout>
 </template>
 
-<script>
+<script setup>
 import Pagination from "@/Shared/Pagination.vue";
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import Search from "@/Pages/Admin/Search.vue";
-import Modal from "@/Components/Modal.vue";
 import UserItem from "@/Pages/Admin/User/UserItem.vue";
+import {ref} from "vue";
 
-export default {
-    data() {
-        return {
-            searchUser: this.users,
-            isShow: false
-        };
-    },
-    components: {
-        search: Search,
-        "user-item": UserItem,
-        modal: Modal,
-        "admin-layout": AdminLayout,
-    },
-    props: {
-        users: {
-            type: Array,
-            default: [],
-        },
-    },
-    created() {
-        console.log(this.users);
-    },
-    methods: {
-        searchData(data) {
-            console.log(data.users);
-            this.searchUser = data.users;
-        },
-        showModal() {
-            this.isShow = true;
-        },
-    },
-};
+const props = defineProps({
+    users: {
+        type: Array,
+        default: [],
+    }
+})
+
+let searchUser = ref(props.users);
+
+function searchData(data) {
+    console.log(data.users);
+    searchUser.value = data.users;
+}
+
 </script>

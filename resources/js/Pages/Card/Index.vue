@@ -91,51 +91,17 @@
         </section>
         <section class="p-6">
             <p class="text-center font-bold text-5xl mb-8">Похожие запчасти</p>
-            <analogs :details="analogs"/>
+            <Analogs :details="analogs"/>
         </section>
     </layout>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
-
-export default {
-    created() {
-        console.log(this.sameDetails);
-    },
-    methods: {
-        addInCart() {
-            axios
-                .post("/cart", {
-                    id: this.detail.dt_id,
-                    quantity: 1,
-                    price: this.price
-                })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-        },
-        editTitle(str) {
-            return editDetailTitle(str);
-        },
-        isHasDetails() {
-            if (
-                this.detail.dt_typec === "ГЕНЕРАТОР" ||
-                this.detail.dt_typec === "СТАРТЕР"
-            ) {
-                return true;
-            }
-            return false;
-        },
-    },
-};
-</script>
-
-<script setup>
-import DetailList from "@/Shared/DetailList.vue";
 import Analogs from "@/Pages/Card/Analogs.vue";
 
-defineProps({
+const props = defineProps({
     sameDetails: {
         type: Array,
     },
@@ -146,7 +112,7 @@ defineProps({
         type: Array,
     },
     cargoIds: {
-       type: Array,
+        type: Array,
     },
     isEmpty:{
         type: Boolean,
@@ -155,4 +121,24 @@ defineProps({
         type: Number
     }
 });
+
+const addInCart = () =>  {
+    axios
+        .post("/cart", {
+            id: this.detail.dt_id,
+            quantity: 1,
+            price: this.price
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+}
+
+const editTitle = (res) => editDetailTitle(res)
+const isHasDetails = () => {
+    return (
+        this.detail.dt_typec === "ГЕНЕРАТОР" ||
+        this.detail.dt_typec === "СТАРТЕР"
+    );
+}
 </script>
+

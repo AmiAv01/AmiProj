@@ -25,7 +25,7 @@
                     Приобретённые детали
                 </p>
                 <div class="px-12 h-[500px] overflow-y-auto">
-                    <order-item
+                    <OrderItem
                         v-for="(detail, index) in details"
                         :item="detail"
                         :key="index"
@@ -36,22 +36,14 @@
     </layout>
 </template>
 
-<script>
-import OrderItem from "./OrderItem.vue";
-export default {
-    components: {
-        "order-item": OrderItem,
-    },
-    created() {
-        console.log(this.order);
-        console.log(this.details);
-    },
-};
-</script>
-
 <script setup>
-defineProps({
+import OrderItem from "./OrderItem.vue";
+
+const props = defineProps({
     order: Object,
     details: Array,
 });
+
 </script>
+
+

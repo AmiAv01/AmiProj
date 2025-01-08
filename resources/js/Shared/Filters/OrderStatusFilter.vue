@@ -34,22 +34,16 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            statuses: ["Новый", "Принят", "Выполнен"],
-            currentUrl: null,
-            checked: [],
-        };
-    },
-    created: function () {
-        this.currentUrl = window.location.pathname;
-        console.log(`Current URL => ${this.currentUrl}`);
-        console.log(this.clientBrands);
-        /*if (this.clientBrands !== null) {
-            this.checked = this.clientBrands["id"].split(",");
-        }*/
-    },
-};
+<script setup>
+
+import {onMounted, ref} from "vue";
+
+const currentUrl = ref(null);
+const statuses = ["Новый", "Принят", "Выполнен"];
+const checked = ref([]);
+
+onMounted(() => {
+    currentUrl.value = window.location.pathname;
+    console.log(`Current URL => ${currentUrl.value}`);
+})
 </script>

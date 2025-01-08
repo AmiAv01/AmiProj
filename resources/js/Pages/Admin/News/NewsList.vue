@@ -1,5 +1,5 @@
 <template>
-    <admin-layout>
+    <AdminLayout>
         <section class="p-3 sm:p-5">
             <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
                 <div
@@ -8,7 +8,7 @@
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
                     >
-                        <search
+                        <Search
                             :placeholder="`Найти новость`"
                             :link="`../admin/api/search?category=news&searchQ`"
                             @setData="searchData"
@@ -28,19 +28,11 @@
                                 class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                             >
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">#</th>
-                                    <th scope="col" class="px-4 py-3">Заголовок</th>
-                                    <th scope="col" class="px-4 py-3">Дата</th>
-                                    <th scope="col" class="px-4 py-3">
-                                        Описание
-                                    </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        Автор
-                                    </th>
+                                    <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <news-item
+                                <NewsItem
                                     v-for="(post) in searchNews.data"
                                     :post="post"
                                     :key="post.id"
@@ -48,59 +40,43 @@
                             </tbody>
                         </table>
                     </div>
-
                     <Pagination :links="searchNews.links" />
                 </div>
             </div>
-            <news-form
+            <NewsAddForm
                 @closeModal="isShow = false"
                 :show="isShow"
                 :actionTitle="`Добавить`"
             />
         </section>
-    </admin-layout>
+    </AdminLayout>
 </template>
 
-<script>
+<script setup>
 import Pagination from "@/Shared/Pagination.vue";
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import Search from "@/Pages/Admin/Search.vue";
-import Modal from "@/Components/Modal.vue";
 import NewsItem from "@/Pages/Admin/News/NewsItem.vue";
 import NewsAddForm from "@/Shared/Forms/NewsAddForm.vue";
+import {ref} from "vue";
 
-export default {
-    data() {
-        return {
-            searchNews: this.news,
-            isShow: false
-        };
-    },
-    components: {
-        search: Search,
-        "news-item": NewsItem,
-        "news-form": NewsAddForm,
-        modal: Modal,
-        "admin-layout": AdminLayout,
-    },
-    props: {
-        news: {
-            type: Array,
-            default: [],
-        },
-    },
+const props = defineProps({
+    news: {
+        type: Array,
+        default: [],
+    }
+})
 
-    created() {
-        console.log(this.news.links);
-    },
-    methods: {
-        searchData(data) {
-            console.log(data.news);
-            this.searchNews = data.news;
-        },
-        showModal() {
-            this.isShow = true;
-        },
-    },
-};
+let searchNews = ref(props.news);
+let isShow = false;
+let columnNames = ['#', 'Заголовок', 'Дата', 'Описание', 'Автор'];
+
+function searchData(data) {
+
+    searchNews.value = data.news;
+    console.log(searchNews.value);
+}
+function showModal() {
+    isShow = true;
+}
 </script>

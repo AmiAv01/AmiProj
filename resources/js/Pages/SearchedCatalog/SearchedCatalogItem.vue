@@ -27,17 +27,12 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { editDetailTitle } from "@/Services/TitleService";
 
-export default {
-    props: {
-        detail: Object,
-    },
-    methods: {
-        editTitle(res) {
-            return editDetailTitle(res);
-        },
-    }
-};
+const props = defineProps({
+    detail: Object,
+})
+
+const editTitle = (res) =>  editDetailTitle(res);
 </script>

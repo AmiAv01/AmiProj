@@ -13,20 +13,11 @@
                             class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                         >
                         <tr>
-                            <th scope="col" class="px-4 py-3">#</th>
-                            <th scope="col" class="px-4 py-3">Стоимость</th>
-                            <th scope="col" class="px-4 py-3">
-                                Статус
-                            </th>
-                            <th scope="col" class="px-4 py-3">
-                                Имя
-                            </th>
-                            <th scope="col" class="px-4 py-3">Email</th>
-                            <th scope="col" class="px-4 py-3">Дата</th>
+                            <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <order-item
+                        <OrderItem
                             v-for="(order) in orders"
                             :key="`${order.id}`"
                             :order="order"/>
@@ -38,27 +29,14 @@
     </section>
 </template>
 
-<script>
-import Search from "@/Pages/Admin/Search.vue";
+<script setup>
 import OrderItem from "@/Pages/Admin/Orders/OrderItem.vue";
-export default {
-    data() {
-        return {
-            searchOrders: this.orders,
-        };
-    },
-    components: {
-        "order-item": OrderItem,
-        search: Search,
-    },
-    props: {
-        orders: {
-            type: Array,
-            default: [],
-        },
-    },
-    created() {
-        console.log(this.orders);
-    },
-};
+
+const props = defineProps({orders: {
+        type: Array,
+        default: [],
+    }})
+
+let columnNames = ['#', 'Стоимость', 'Статус', 'Имя', 'Email', 'Дата'];
+
 </script>

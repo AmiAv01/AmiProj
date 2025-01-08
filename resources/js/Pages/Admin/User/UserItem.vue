@@ -60,48 +60,39 @@
                 </div>
             </div>
             <button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 p-2 ml-2`">Подтвердить</button>
-            <menu-button/>
+            <MenuButton/>
         </td>
     </tr>
 </template>
 
-<script>
-import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
+<script setup>
 import MenuButton from "@/Components/MenuButton.vue";
 
-export default {
-    data() {
-        return {
-            isShow: false,
-        };
-    },
-    props: {
-        user: {
-            type: Object,
-            default: null,
-        },
-    },
-    components: {
-        MenuButton,
-        "news-form": NewsEditForm,
-    },
-    methods: {
-        showModal() {
-            this.isShow = true;
-        },
-        deleteUser(id){
-            axios.delete(`/admin/users/${id}`)
-                .then(res => console.log(res.data))
-                .catch(err => console.log(err))
-        },
-        approveUser(id){
-            axios.put(`/admin/approve/${id}`)
-                .then(res => {
-                    console.log(res.data);
-                    window.location.reload();
-                })
-                .catch(err => console.log(err))
-        }
-    },
-};
+const props = defineProps({
+    user: {
+        type: Object,
+        default: null,
+    }});
+
+let isShow = false;
+
+function showModal() {
+    this.isShow = true;
+}
+
+function deleteUser(id){
+    axios.delete(`/admin/users/${id}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+}
+
+function approveUser(id){
+    axios.put(`/admin/approve/${id}`)
+        .then(res => {
+            console.log(res.data);
+            window.location.reload();
+        })
+        .catch(err => console.log(err))
+}
+
 </script>

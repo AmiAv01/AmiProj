@@ -240,28 +240,21 @@
             </div>
         </nav>
         <div class="max-w-screen-xl mx-auto px-6 py-5">
-            <search :link="`../api/search?searchQ`" />
+            <Search :link="`../api/search?searchQ`" />
         </div>
         <NavMenu />
     </header>
 </template>
 
 <script setup>
+import NavMenu from "@/Shared/Nav/NavMenu.vue";
+import Search from "./Search.vue";
+import { onMounted } from "vue";
+import { initFlowbite } from "flowbite";
+
 onMounted(() => {
     initFlowbite();
 });
 defineProps({});
 </script>
 
-<script>
-import Search from "./Search.vue";
-import { onMounted } from "vue";
-import { initFlowbite } from "flowbite";
-import NavMenu from "./Nav/NavMenu.vue";
-
-export default {
-    components: {
-        search: Search,
-    },
-};
-</script>

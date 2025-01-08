@@ -34,45 +34,24 @@
                 </div>
             </form>
             <ul>
-                <li>
-                    <admin-button
-                        :href="`admin.details.index`"
+                <li v-for="[key, value] in menuItems">
+                    <AdminButton
+                        :href="`${value}`"
                         class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        >Запчасти</admin-button
-                    >
+                    >{{key}}</AdminButton>
                 </li>
-                <li>
-                    <admin-button
-                        :href="`admin.orders.index`"
-                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        >Заказы</admin-button
-                    >
-                </li>
-                <li>
-                    <admin-button
-                        :href="`admin.news.index`"
-                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        >Новости</admin-button
-                    >
-                </li>
-                <li>
-                    <admin-button
-                        :href="`admin.users.index`"
-                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                    >Пользователи</admin-button>
-                    >
-            </li>
             </ul>
         </div>
     </aside>
 </template>
 
-<script>
+<script setup>
 import AdminButton from "@/Components/AdminButton.vue";
 
-export default {
-    components: {
-        "admin-button": AdminButton,
-    },
-};
+const menuItems = new Map([
+    ['Запчасти', 'admin.details.index'],
+    ['Заказы', 'admin.orders.index'],
+    ['Новости', 'admin.news.index'],
+    ['Пользователи', 'admin.users.index'],
+    ['Курс валют', 'admin.currency.index']]);
 </script>

@@ -11,10 +11,7 @@
                     class="text-xl text-white uppercase bg-green-700 rounded-lg"
                 >
                     <tr class="rounded-[15px]">
-                        <th scope="col" class="px-8 py-6">№ заказа</th>
-                        <th scope="col" class="px-8 py-6">Дата</th>
-                        <th scope="col" class="px-8 py-6">Сумма</th>
-                        <th scope="col" class="px-8 py-6">Статус</th>
+                        <th v-for="name of columnNames" scope="col" class="px-8 py-6">{{name}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,22 +41,16 @@
     </layout>
 </template>
 
-<script>
-export default {
-    created() {
-        console.log(this.orders);
-    },
-    methods: {
-        setLink(id) {
-            console.log(id);
-            window.location = `order/${id}`;
-        },
-    },
-};
-</script>
-
 <script setup>
-defineProps({
+
+const props = defineProps({
     orders: Array,
 });
+
+const columnNames = ['№ заказа', 'Дата', 'Сумма', 'Статус']
+const setLink = (id) => {
+    console.log(id);
+    window.location = `order/${id}`;
+}
 </script>
+

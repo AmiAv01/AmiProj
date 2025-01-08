@@ -26,7 +26,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <order-item
+                            <OrderItem
                                 v-for="(order) in orders"
                                 :key="`${order.id}`"
                                 :order="order"/>
@@ -38,27 +38,14 @@
         </section>
 </template>
 
-<script>
-import Search from "@/Pages/Admin/Search.vue";
+<script setup>
 import OrderItem from "@/Pages/Admin/Orders/OrderItem.vue";
-export default {
-    data() {
-        return {
-            searchOrders: this.orders,
-        };
-    },
-    components: {
-        "order-item": OrderItem,
-        search: Search,
-    },
-    props: {
-        orders: {
-            type: Array,
-            default: [],
-        },
-    },
-    created() {
-        console.log(this.orders);
-    },
-};
+
+const props = defineProps({
+    orders: {
+        type: Array,
+        default: [],
+    }
+})
+
 </script>

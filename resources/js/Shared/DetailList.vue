@@ -6,11 +6,6 @@
             class="bg-white w-full p-4 flex border-b-2"
         >
             <div class="mr-4">
-                <!--img
-                    v-if="detail.dt_foto"
-                    :alt="detail"
-                    class="w-10 h-10 object-cover object-center"
-                /!-->
                 <img
                     src="../../../public/build/no-photo--lg.png"
                     alt="#"
@@ -20,7 +15,6 @@
             <div class="flex flex-col">
                 <p class="font-manrope font-semibold text-lg text-black mb-2">
                     <a
-                        use:inertia-vue3
                         :href="`../../catalog/product/${detail.dt_invoice}`"
                     >
                         <span aria-hidden="true" />
@@ -42,13 +36,9 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        details: Array,
-    },
-    created() {
-        console.log(!this.details);
-    }
-};
+<script setup>
+
+const props = defineProps({
+    details: Array,
+})
 </script>

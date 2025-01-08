@@ -1,5 +1,5 @@
 <template>
-    <layout>
+    <Layout>
         <div class="bg-white py-24 sm:py-32">
             <div class="mx-auto max-w-7xl">
                 <div class="mx-auto max-w-2xl lg:mx-0">
@@ -45,19 +45,16 @@
                 </div>
             </div>
         </div>
-    </layout>
+    </Layout>
 </template>
 
-<script>
+<script setup>
 import Layout from "@/Shared/UserLayout.vue";
 
-export default {
-    components: {Layout},
-    props: {
-        posts: {
-            type: Array,
-            default: [],
-        },
-    },
-};
+const props = defineProps({
+    posts: {
+        type: Array,
+        default: [],
+    }
+})
 </script>

@@ -48,42 +48,38 @@
     </modal>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-export default {
-    data() {
-        return {
-            currentTitle: "",
-            currentDescription: "",
-        };
-    },
-    props: {
-        isShow: {
-            type: Boolean,
-            default: false,
-        },
-        actionTitle: {
-            type: String,
-            default: '',
-        }
-    },
+import {ref} from "vue";
 
-    methods: {
-        closeModal() {
-            this.$emit("closeModal");
-        },
-        addPost() {
-            axios
-                .post(`/admin/news/store`, {
-                    title: this.currentTitle,
-                    description: this.currentDescription,
-                })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-        },
+const props = {
+    isShow: {
+        type: Boolean,
+        default: false,
     },
-    created() {
-        console.log(this.postId);
-    },
-};
+    actionTitle: {
+        type: String,
+        default: '',
+    }
+}
+
+const emit = defineEmits(['closeModal'])
+
+const currentTitle = ref("")
+const currentDescription = ref("")
+
+const closeModal = () => {
+    emit("closeModal");
+}
+
+const addPost = () => {
+    axios
+        .post(`/admin/news/store`, {
+            title: currentTitle.value,
+            description: currentDescription.value,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+}
+
 </script>
