@@ -24,7 +24,7 @@ class ProductController extends Controller
             if (!auth()->check()){
                 return Inertia::render('Card/GuestCard', ['detail' => $detail[0], 'isEmpty' => false]);
             }
-            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $this->productService->getSameDetails($id),
+            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $this->productService->getSameDetails($detail[0]),
                 'analogs' => $analogs, 'isEmpty' => false, 'price' => $this->priceService->getPrice($detail[0]->dt_code, (auth()->check() && auth()->user()->id))]);
         }
         return Inertia::render('Card/Index', ['detail' => $this->productService->getProductInfoFromOems($this->searchService, $id),
