@@ -23,6 +23,7 @@
         "debounce": "^2.1.0",
         "flowbite": "^2.2.0",
         "lodash.debounce": "^4.0.8",
+        "pinia": "^2.3.0",
         "sweetalert2": "^11.10.1",
         "vuex": "^4.1.0"
     }
