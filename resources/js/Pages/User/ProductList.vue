@@ -16,7 +16,6 @@
 </template>
 
 <script setup>
-import { editDetailTitle } from "@/Services/TitleService";
 import ProductItem from "@/Pages/User/ProductItem.vue";
 
 const props = defineProps({
