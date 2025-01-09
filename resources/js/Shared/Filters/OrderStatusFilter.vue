@@ -22,7 +22,7 @@
                 </li>
             </ul>
             <menu-button
-                :href="`${this.currentUrl}?filter[id]=${this.checked.join()}`"
+                :href="`${this.currentUrl}?filter[id]=${checked.join()}`"
                 :attributes="`px-5 py-2.5 mx-auto text-lg mt-4`"
             >
                 Подобрать
