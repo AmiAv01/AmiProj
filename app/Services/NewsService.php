@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 final class NewsService
 {
-    public function getAll($perPage):LengthAwarePaginator
+    public function getAll(int $perPage):LengthAwarePaginator
     {
         return News::join('user', 'news.author', '=', 'user.id')->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate($perPage);
     }
@@ -21,9 +21,10 @@ final class NewsService
         return News::create(['title' => $dto->title, 'date' => $dto->dateTime ,'description' => $dto->description, 'author' => $adminId]);
     }
 
-    public function getBySearching(string $search)
+    public function getBySearching(string $search, int $perPage):LengthAwarePaginator
     {
-        return News::where('title', 'like', "%$search%")->paginate(12)->withQueryString();
+        return News::where('title', 'like', "%$search%")->join('user', 'news.author', '=', 'user.id')
+            ->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate($perPage)->withQueryString();
     }
 
     public function update(NewsPostDTO $dto, int $id):bool

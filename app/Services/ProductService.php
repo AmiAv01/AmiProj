@@ -5,25 +5,27 @@ namespace App\Services;
 use App\Models\AltCz;
 use App\Models\Detail;
 use App\Models\Oems;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
 
-    public function getSameDetails($id): array
+    public function getSameDetails(Detail $detail): array
     {
-        $detail = Detail::invoice($id)->first();
-        $brand = $detail->pluck('dt_typec')[0];
+        $brand = $detail->dt_typec;
+        Log::info($brand);
         if ($brand === 'ГЕНЕРАТОР') {
             $ids = [];
-            $generators = AltCz::where('hcparts', '=', $id)->get()->toArray();
+            $generators = AltCz::where('hcparts', '=', $detail->dt_invoice)->get()->toArray();
             foreach ($generators as $generator){
                 array_push($ids, $generator['dt_code']);
             }
             $ids = array_unique($ids);
             unset($ids[array_search('', $ids)]);
-            return Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->get()->toArray();
+            $details =  Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)
+                ->select(['dt_invoice', 'dt_typec', 'dt_typec', 'dt_cargo', 'fr_code'])->get()->toArray();
+            return $details;
         }
-
         return [];
     }
 

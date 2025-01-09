@@ -17,12 +17,14 @@ final class OrderService
 {
     public function getAll($perPage): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')->paginate($perPage);
+        return Order::join('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
     }
 
     public function getByUserId(string $userId): Collection
     {
-        return Order::where('created_by', '=', $userId)->get();
+        return Order::where('created_by', '=', $userId)->join('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.created_at', 'order.status', 'order.total_price','user.name', 'user.email'])->get();
     }
 
     public function createOrder(OrderDTO $dto):Order
@@ -42,18 +44,20 @@ final class OrderService
 
     public function getById(int $id): Collection
     {
-        return Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')->get();
+        return Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->get();
     }
 
     public function getOrderItems(int $id): Collection
     {
-        return OrderItem::where('order_id', '=', $id)->join('detail', 'order_item.detail_id', '=', 'detail.dt_id')->get();
+        return OrderItem::where('order_id', '=', $id)->join('detail', 'order_item.detail_id', '=', 'detail.dt_id')
+            ->select(['detail.dt_typec', 'detail.dt_invoice', 'detail.dt_cargo', 'detail.fr_code', 'order_item.unit_price', 'order_item.quantity'])->get();
     }
 
     public function getByStatus(): LengthAwarePaginator
     {
         return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->join('user', 'order.created_by', '=', 'user.id')
-            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
+            ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])->paginate(12)->withQueryString();
     }
 
     public function getBySearching(string $search): LengthAwarePaginator
