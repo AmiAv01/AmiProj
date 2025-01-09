@@ -9,6 +9,6 @@ final class CurrencyService
 {
     public function update(CurrencyDTO $dto):bool
     {
-        return Currency::where('code', '=', 'EUR')->first()->update(['value'=>$dto->currency]);
+        return Currency::where('code', '=', 'EUR')->first()->update(['value' => $dto->currency]);
     }
 }
