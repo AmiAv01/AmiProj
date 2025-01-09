@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { editDetailTitle } from "@/Services/TitleService";
+import { editDetailTitle } from "@/Services/TitleService.js";
 
 const props = defineProps({
     detail: Object,
@@ -80,3 +80,98 @@ const addInCart = () => {
 const editTitle = (res) => editDetailTitle(res)
 
 </script>
+
+<style scoped>
+@media (max-width: 640px) {
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+    .text-2xl {
+        font-size: 1rem;
+    }
+    .text-3xl {
+        font-size: 1.25rem;
+    }
+    .leading-9 {
+        line-height: 1.25rem;
+    }
+    .leading-8 {
+        line-height: 1rem;
+    }
+    .leading-10 {
+        line-height: 1.5rem;
+    }
+    .w-[120px] {
+        width: 80px;
+    }
+    .pb-2 {
+        padding-bottom: 1rem;
+    }
+    .mt-10 {
+        margin-top: 2rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .text-4xl {
+        font-size: 2rem;
+    }
+    .text-2xl {
+        font-size: 1.25rem;
+    }
+    .text-3xl {
+        font-size: 1.75rem;
+    }
+    .leading-9 {
+        line-height: 1.5rem;
+    }
+    .leading-8 {
+        line-height: 1.25rem;
+    }
+    .leading-10 {
+        line-height: 2rem;
+    }
+    .w-[120px] {
+        width: 100px;
+    }
+    .pb-2 {
+        padding-bottom: 1.5rem;
+    }
+    .mt-10 {
+        margin-top: 3rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-4xl {
+        font-size: 2.5rem;
+    }
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    .text-3xl {
+        font-size: 2rem;
+    }
+    .leading-9 {
+        line-height: 2rem;
+    }
+    .leading-8 {
+        line-height: 1.5rem;
+    }
+    .leading-10 {
+        line-height: 2.5rem;
+    }
+    .w-[120px] {
+        width: 120px;
+    }
+    .pb-2 {
+        padding-bottom: 2rem;
+    }
+    .mt-10 {
+        margin-top: 4rem;
+    }
+}
+</style>
+
+
+

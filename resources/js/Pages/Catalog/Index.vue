@@ -12,7 +12,7 @@
                     <div v-if="details.data"
                         class=" grid grid-cols-1 gap-x-4 gap-y-2 w-[1200px]  border-gray-200"
                     >
-                        <CatalogCard
+                        <CatalogItem
                             @showPush="showModal"
 
                             v-for="detail in details.data"
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import CatalogCard from "@/Pages/CatalogCard/CatalogCard.vue";
+import CatalogItem from "@/Pages/Catalog/CatalogItem.vue";
 import BrandSelector from "@/Shared/BrandSelector/Index.vue";
 import {ref} from "vue";
 
@@ -58,3 +58,42 @@ const showModal = (param) => isShow = param;
 
 </script>
 
+<style scoped>
+@media (max-width: 640px)
+{
+    .text-5xl {
+        font-size: 2.25rem;
+    }
+    .py-12 {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    .w-full { width: 100%; }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .text-5xl {
+        font-size: 3rem;
+    }
+    .py-12 {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+    .w-full {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-5xl {
+        font-size: 4rem;
+    }
+    .py-12 {
+        padding-top: 8rem;
+        padding-bottom: 8rem;
+    }
+    .w-full {
+        width: 100%;
+    }
+}
+</style>
