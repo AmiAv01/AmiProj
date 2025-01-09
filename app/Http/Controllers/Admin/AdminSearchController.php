@@ -25,6 +25,6 @@ class AdminSearchController extends Controller
         $search = $request->validated('searchQ');
         $category = $request->validated('category');
         $service = $this->adminService->chooseService($category);
-        return ["$category" => ($search) ? $service->getBySearching($search) : $service->getAll(12)];
+        return ["$category" => ($search) ? $service->getBySearching($search, 12) : $service->getAll(12)];
     }
 }
