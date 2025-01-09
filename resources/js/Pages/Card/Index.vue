@@ -136,8 +136,8 @@ const addInCart = () =>  {
 const editTitle = (res) => editDetailTitle(res)
 const isHasDetails = () => {
     return (
-        this.detail.dt_typec === "ГЕНЕРАТОР" ||
-        this.detail.dt_typec === "СТАРТЕР"
+        props.detail.dt_typec === "ГЕНЕРАТОР" ||
+        props.detail.dt_typec === "СТАРТЕР"
     );
 }
 </script>
