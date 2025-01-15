@@ -34,3 +34,7 @@ export let otherParts = new Map([["Стартеры", "/catalog/starters"], ["Г
     ["Сальники", "/catalog/generator_parts/gland"], ["Статорные обмотки", "/catalog/generator_parts/winding"],
     ["Шкивы", "/catalog/generator_parts/pulley"], ["Щётки генератора", "/catalog/generator_parts/brush"],
     ["Щёточные узлы", "/catalog/generator_parts/holder"]]);
+
+export const menuItems = new Map([['Новости', '/news'], ['О нас', '/info'], ['Скачать', '/desktop']]);
+export const subCategories = new Map([['Генераторы', '/catalog/generators'], ['Стартеры', '/catalog/starters'],
+    ['Подшипники', '/catalog/bearings'], ['Прочее', '/catalog/other']]);
