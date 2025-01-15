@@ -37,13 +37,5 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        Inertia::composer('Catalog/Index', function (ResponseFactory $inertia) {
-            $inertia->with([
-                'categories' => [
-                    'brands' => Firm::all(),
-                ],
-            ]);
-        });
-    }
+    {}
 }
