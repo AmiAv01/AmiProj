@@ -6,6 +6,7 @@ use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
+use App\Services\FirmService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,7 +26,7 @@ class StarterPartsController extends Controller
         'repair' => 'Ремкомплекты', 'glands' => 'Сальники стартера', 'stator' => 'Статоры', 'brush' => 'Щётки стартера', 'holder' => 'Щёткодержатели стартера',
         'anchor' => 'Якори стартера'];
 
-    public function __construct(protected DetailService $detailService)
+    public function __construct(protected DetailService $detailService, protected FirmService $firmService)
     {
     }
 
@@ -36,6 +37,7 @@ class StarterPartsController extends Controller
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => $this->names[$category],
+            'categories' => ['brands' => $this->firmService->getAll()],
             'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter')))
         ]);
     }

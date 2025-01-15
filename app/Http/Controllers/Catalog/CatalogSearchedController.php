@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchCatalogFormRequest;
 use App\Http\Requests\SearchFormRequest;
 use App\Services\DetailService;
+use App\Services\FirmService;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,7 @@ use Inertia\Response;
 
 class CatalogSearchedController extends Controller
 {
-    public function __construct(protected SearchService $searchService)
+    public function __construct(protected SearchService $searchService, protected FirmService $firmService)
     {
 
     }
@@ -29,6 +30,7 @@ class CatalogSearchedController extends Controller
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
             'details' => $details,
             'title' => "Поиск по $search",
+            'categories' => ['brands' => $this->firmService->getAll()],
             'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
         ]);
     }
