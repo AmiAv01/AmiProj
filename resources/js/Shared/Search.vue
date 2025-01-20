@@ -1,7 +1,7 @@
 <template>
     <form>
-        <div class="flex flex-wrap">
-            <div class="relative w-[60%]">
+        <div class="flex flex-wrap justify-around">
+            <div class="relative w-full md:w-[60%]">
                 <input
                     type="search"
                     id="search-dropdown"
@@ -66,7 +66,7 @@
                     <span class="pl-2 text-md">Найти</span>
                 </inertia-link>
             </div>
-            <div class="flex space-x-2 ml-[80px]">
+            <div class="flex space-x-2 mt-2">
                 <svg
                     class="w-6 h-6 text-white dark:text-white"
                     aria-hidden="true"
@@ -128,5 +128,8 @@ const getSearchingDetails = debounce(() => {
 
 const editTitle = (res) => editDetailTitle(res);
 </script>
+
+
+
 
 

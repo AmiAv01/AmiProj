@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import BrandSelector from "@/Shared/BrandSelector/Index.vue";
+import BrandSelector from "@/Shared/Filters/BrandFilter.vue";
 import SearchedCatalogItem from "@/Pages/SearchedCatalog/SearchedCatalogItem.vue";
 import {ref} from "vue";
 

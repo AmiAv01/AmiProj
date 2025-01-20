@@ -37,10 +37,10 @@
                     :detailId="`${item.dt_id}`"
                 />
                 <div
-                    class="flex flex-col justify-center ml-[50px] items-center"
+                    class="flex md:flex-col mt-6 md:mt-0 flex-row justify-center ml-[50px] items-center"
                 >
                     <p
-                        class="font-bold text-lg mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
+                        class="font-bold text-lg mr-2 md:mr-0 md:mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
                         {{ parseFloat(item.price) * item.quantity }} BYN
                     </p>

@@ -1,6 +1,6 @@
 <template>
-    <footer class="bg-slate-900">
-        <div class="w-[1300px] mx-auto flex justify-around pb-32 pt-16">
+    <footer class="w-full bg-slate-900">
+        <div class=" mx-auto w-full flex flex-wrap justify-around pb-32 pt-16">
             <div class="">
                 <p class="text-white text-2xl mb-2">Ами-Авто</p>
                 <p class="mb-2 text-white">

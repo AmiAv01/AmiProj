@@ -1,11 +1,11 @@
 <template>
     <layout>
         <p class="text-5xl font-bold text-center p-6">Сервисная программа</p>
-        <div class="flex justify-around p-8">
+        <div class="flex justify-around flex-wrap p-8">
             <div class="flex flex-col">
                 <p class="text-4xl font-bold text-center p-6">Инструкция по установке</p>
-                <div class="flex justify-between">
-                    <MenuButton v-for="[key, value] of menuItems" :href="`${value}`" :attributes="`px-16 py-6 mr-3 text-xl font-medium`">
+                <div class="flex sm:justify-between justify-center flex-wrap">
+                    <MenuButton v-for="[key, value] of menuItems" :href="`${value}`" :attributes="`px-16 py-6 mr-3 mt-2 sm:mt-0 text-xl font-medium`">
                         {{key}}
                     </MenuButton>
                 </div>

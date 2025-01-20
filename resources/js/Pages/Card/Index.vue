@@ -1,8 +1,8 @@
 <template>
     <layout>
-        <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+        <section class="py-8 bg-white md:py-16  antialiased">
             <div class="w-full px-4 2xl:px-0">
-                <div class="lg:grid px-4 lg:grid-cols-3 lg:gap-8 xl:gap-16">
+                <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16 ">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <!--img
                             v-if="detail.dt_foto.length === 0"
@@ -12,21 +12,21 @@
                         /!-->
                         <img
 
-                            class="w-full dark:hidden"
+                            class="w-full "
                             src="../../../../public/build/no-photo--lg.png"
                             alt="#"
                         />
                     </div>
 
-                    <div  class="mt-6 sm:mt-8 lg:mt-0">
+                    <div  class="mt-6 sm:mt-8 2xl:mt-0">
                         <h1
-                            class="text-4xl font-semibold text-gray-900 dark:text-white "
+                            class="text-4xl font-semibold text-gray-900  "
                         >
                             {{ editTitle(detail.dt_typec) }}
                             {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                             {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
-                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900 dark:text-white mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
+                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900  mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
                         <div v-if="!isEmpty">
                             <p class="font-normal text-2xl leading-8 text-gray-500" v-if="$page.props.auth.user">
                                 OEM: <strong>{{ detail.dt_oem }}</strong>
@@ -46,7 +46,7 @@
 
                             <div class="mt-4 sm:items-center sm:gap-4 sm:flex" v-if="$page.props.auth.user">
                                 <p
-                                    class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+                                    class="text-2xl font-extrabold text-gray-900 sm:text-3xl "
                                 >
                                     {{price ? price : 0}} BYN
                                 </p>
@@ -72,12 +72,12 @@
                         </div>
 
                         <hr
-                            class="my-6 md:my-8 border-gray-200 dark:border-gray-800"
+                            class="my-6 md:my-8 border-gray-200 "
                         />
                     </div>
                     <div
                         v-if="!!isHasDetails()"
-                        class="rounded-lg border-2 w-[80%]"
+                        class="rounded-lg border-2 w-[80%] mx-auto 2xl:mx-0"
                     >
                         <p class="text-2xl px-4 py-4 text-center border-b-2">
                             <strong>Деталировка</strong>
@@ -125,7 +125,7 @@ const props = defineProps({
 const addInCart = () =>  {
     axios
         .post("/cart", {
-            id: this.detail.dt_id,
+            id: props.detail.dt_id,
             quantity: 1,
             price: this.price
         })

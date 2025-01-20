@@ -1,6 +1,6 @@
-<template>
+<template class="w-full">
     <Header> </Header>
-    <main >
+    <main class="w-full">
         <slot />
     </main>
     <Footer></Footer>

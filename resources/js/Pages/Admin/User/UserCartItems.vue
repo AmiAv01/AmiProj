@@ -3,14 +3,14 @@
         <div class="w-full">
             <!-- Start coding here -->
             <div
-                class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
+                class="bg-white relative shadow-md sm:rounded-lg overflow-hidden"
             >
                 <div class="overflow-x-auto">
                     <table
-                        class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                        class="w-full text-sm text-left text-gray-500 "
                     >
                         <thead
-                            class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                            class="text-xs text-gray-700  bg-gray-50 "
                         >
                         <tr>
                             <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>

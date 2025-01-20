@@ -1,12 +1,11 @@
 <template>
     <div class="bg-white">
-        <div class="mx-auto w-[1300px] py-16 sm:py-16">
+        <div class="mx-auto w-[80%]  py-16 sm:py-16">
             <p class="text-5xl mb-10 font-bold tracking-tight text-gray-900">
                 Наши запчасти
             </p>
-
             <div
-                class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
+                class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
             >
                 <ProductItem v-for="detail in details.data" :detail="detail"/>
             </div>

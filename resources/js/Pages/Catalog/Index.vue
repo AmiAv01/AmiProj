@@ -3,18 +3,25 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
     </push>
     <layout :title="title">
-        <div class="bg-white flex justify-around py-12 sm:py-12">
-            <div>
-                <div class="mx-auto max-w-xl ">
+        <div class="bg-white w-full max-w-7xl flex justify-between py-12 px-12 lg:flex-row flex-row-reverse flex-wrap">
+            <BrandFilter
+                @closeModal="closeBrandFilter"
+                :is-show="showBrandSelector"
+                :is-mobile="showMobileFilter"
+                :categories="categories.brands"
+                :clientBrands="clientBrands"
+            />
+            <div class="ml-12">
+                <div class="max-w-7xl relative">
                     <p class="text-5xl font-bold tracking-tight text-gray-900 mb-10">
                         {{ title }}
                     </p>
+                    <button @click="toggleMobile" v-show="showFilterButton" class=" align-self-start z-30 sm:top-0 rounded-xl bg-green-600 hover:bg-green-700  text-white border-2 border-gray-300 w-[200px] h-[50px] ">Фильтр</button>
                     <div v-if="details.data"
-                        class=" grid grid-cols-1 gap-x-4 gap-y-2 w-[1200px]  border-gray-200"
+                        class="w-full   px-4 lg:p-0 border-gray-200"
                     >
                         <CatalogItem
                             @showPush="showModal"
-
                             v-for="detail in details.data"
                             :key="detail.dt_id"
                             :detail="detail"
@@ -28,18 +35,14 @@
                 </div>
                 <pagination :links="details.links"  />
             </div>
-            <BrandSelector
-                :categories="categories.brands"
-                :clientBrands="clientBrands"
-            />
         </div>
     </layout>
 </template>
 
 <script setup>
 import CatalogItem from "@/Pages/Catalog/CatalogItem.vue";
-import BrandSelector from "@/Shared/BrandSelector/Index.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import BrandFilter from "@/Shared/Filters/BrandFilter.vue";
 
 const props = defineProps({
     details: Object,
@@ -49,51 +52,33 @@ const props = defineProps({
 });
 
 const checked = ref([]);
-let isShow = ref(false);
+let showBrandSelector = ref(false);
+let showFilterButton = ref(false);
+const isShow = ref(false);
+const showMobileFilter = ref(false);
 const selectedDetails = ref(props.details);
 
-const hideModal = (param) => isShow = param;
+onMounted(() => {
+    window.addEventListener('resize', handleWindowResize);
+    handleWindowResize();
+});
 
-const showModal = (param) => isShow = param;
+const handleWindowResize = () => {
+    showBrandSelector.value = (window.innerWidth >= 1124);
+    showFilterButton.value = (window.innerWidth <= 1124);
+    showMobileFilter.value = (window.innerWidth <=1124);
+}
 
+const hideModal = (param) => isShow.value = param;
+
+const showModal = (param) => isShow.value = param;
+const toggleMobile = () => {
+    showBrandSelector.value = !showBrandSelector.value;
+}
+
+const closeBrandFilter = () => {
+    console.log(isShow.value);
+    showBrandSelector.value = false;
+}
 </script>
 
-<style scoped>
-@media (max-width: 640px)
-{
-    .text-5xl {
-        font-size: 2.25rem;
-    }
-    .py-12 {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-    }
-    .w-full { width: 100%; }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-    .text-5xl {
-        font-size: 3rem;
-    }
-    .py-12 {
-        padding-top: 6rem;
-        padding-bottom: 6rem;
-    }
-    .w-full {
-        width: 100%;
-    }
-}
-
-@media (min-width: 1025px) {
-    .text-5xl {
-        font-size: 4rem;
-    }
-    .py-12 {
-        padding-top: 8rem;
-        padding-bottom: 8rem;
-    }
-    .w-full {
-        width: 100%;
-    }
-}
-</style>

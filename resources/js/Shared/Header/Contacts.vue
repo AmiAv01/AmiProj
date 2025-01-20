@@ -1,7 +1,7 @@
 <template>
     <a
         href="#"
-        class="flex items-center py-2 px-3 md:p-0 rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+        class="flex items-center py-2 mb-2 px-3 md:p-0 rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
     >Контакты<svg
         class="w-2.5 h-2.5 ms-1 group-hover:rotate-180"
         aria-hidden="true"
@@ -56,4 +56,6 @@
         </div>
     </div>
 </template>
+
+
 

@@ -24,7 +24,7 @@
                                 Товары, {{ count }} шт.
                             </h2>
                         </div>
-                        <div class="h-[500px] overflow-y-auto">
+                        <div class="h-[300px] xl:h-[500px] overflow-y-auto ">
                             <CartItem
                                 v-for="(detail, index) in store.cartData"
                                 :key="index"

@@ -1,12 +1,12 @@
 <template>
     <layout>
-        <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+        <section class="py-8 bg-white md:py-1 antialiased">
             <div class="w-full px-4 2xl:px-0">
                 <div class="lg:grid px-4 lg:grid-cols-3 lg:gap-8 xl:gap-16">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
 
-                            class="w-full dark:hidden"
+                            class="w-full"
                             src="../../../../public/build/no-photo--lg.png"
                             alt="#"
                         />
@@ -20,7 +20,7 @@
                             {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                             {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
-                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900 dark:text-white mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
+                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900 mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
                         <div v-if="!isEmpty">
                             <p class="font-normal text-2xl leading-8 text-gray-500">
                                 CARGO: <strong>{{ detail.dt_cargo }}</strong>

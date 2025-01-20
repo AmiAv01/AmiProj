@@ -1,9 +1,9 @@
 <template>
-    <div class="grid grid-cols-4 w-[80%] mx-auto">
+    <div class="grid grid-cols sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-[80%] mx-auto">
         <div
             v-for="detail in details"
             :key="detail.dt_id"
-            class="bg-white w-full p-4 flex border-b-2 flex-col"
+            class="bg-white w-full p-4 flex border-b-2 flex-col items-center"
         >
             <div class="mr-4 mb-4">
                 <img
@@ -12,7 +12,7 @@
                     class="w-[250px] h-[250px] rounded-lg object-cover object-center "
                 />
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col ">
                 <p class="font-manrope font-semibold text-lg text-black mb-2">
                     <a
                         :href="`../../catalog/product/${detail.dt_invoice}`"

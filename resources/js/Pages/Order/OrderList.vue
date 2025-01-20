@@ -5,7 +5,7 @@
         </p>
         <div class="relative overflow-x-auto w-[80%] mx-auto pb-10 rounded-lg">
             <table
-                class="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                class="w-full text-lg text-left rtl:text-right text-gray-500"
             >
                 <thead
                     class="text-xl text-white uppercase bg-green-700 rounded-lg"
@@ -19,11 +19,11 @@
                         v-for="(order, index) in orders"
                         :key="index"
                         @click="setLink(order.id)"
-                        class="bg-white w-full border-b text-lg dark:bg-gray-800 cursor-pointer dark:border-gray-700"
+                        class="bg-white w-full border-b text-lg  cursor-pointer "
                     >
                         <th
                             scope="row"
-                            class="px-8 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            class="px-8 py-6 font-medium text-gray-900 whitespace-nowrap "
                         >
                             {{ order.id }}
                         </th>
