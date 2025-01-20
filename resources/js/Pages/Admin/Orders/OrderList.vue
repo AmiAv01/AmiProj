@@ -3,7 +3,7 @@
         <section class="p-3 sm:p-5">
             <div class="flex justify-around px-4 lg:px-12">
                 <div
-                    class="bg-white w-[75%] dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
+                    class="bg-white w-[75%]  relative shadow-md sm:rounded-lg overflow-hidden"
                 >
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
@@ -16,10 +16,10 @@
                     </div>
                     <div class="overflow-x-auto">
                         <table
-                            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                            class="w-full text-sm text-left text-gray-500 "
                         >
                             <thead
-                                class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                class="text-xs text-gray-700  bg-gray-50 "
                             >
                                 <tr>
                                     <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>

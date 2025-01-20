@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="bg-black border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50"
+        class="bg-black border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50"
     >
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
@@ -45,16 +45,16 @@
                 </button>
                 <!-- Dropdown menu -->
                 <div
-                    class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                    class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow"
                     id="user-dropdown"
                 >
                     <div class="px-4 py-3">
                             <span
-                                class="block text-sm text-gray-900 dark:text-white"
+                                class="block text-sm text-gray-900"
                             >{{ $page.props.auth.user.name }}</span
                             >
                         <span
-                            class="block text-sm text-gray-500 truncate dark:text-gray-400"
+                            class="block text-sm text-gray-500 truncate"
                         >{{ $page.props.auth.user.email }}</span
                         >
                     </div>
@@ -62,7 +62,7 @@
                         <li>
                             <inertia-link
                                 :href="route('profile.edit')"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >Настройки</inertia-link
                             >
                         </li>
@@ -70,7 +70,7 @@
                             <inertia-link
                                 :href="route('logout')"
                                 method="post"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >Выход</inertia-link
                             >
                         </li>

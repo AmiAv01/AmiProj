@@ -1,10 +1,10 @@
 <template>
     <aside
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0"
         aria-label="Sidenav"
         id="drawer-navigation"
     >
-        <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+        <div class="overflow-y-auto py-5 px-3 h-full bg-white">
             <form action="#" method="GET" class="md:hidden mb-2">
                 <label for="sidebar-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -12,7 +12,7 @@
                         class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"
                     >
                         <svg
-                            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                            class="w-5 h-5 text-gray-500"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@
                         type="text"
                         name="search"
                         id="sidebar-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 "
                         placeholder="Search"
                     />
                 </div>
@@ -37,7 +37,7 @@
                 <li v-for="[key, value] in menuItems">
                     <AdminButton
                         :href="`${value}`"
-                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 "
                     >{{key}}</AdminButton>
                 </li>
             </ul>

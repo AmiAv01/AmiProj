@@ -3,7 +3,7 @@
         <section class="p-3 sm:p-5">
             <div class="mx-auto px-4 justify-between lg:px-12 flex">
                 <div
-                    class="bg-white w-[80%] dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
+                    class="bg-white w-[80%]  relative shadow-md sm:rounded-lg overflow-hidden"
                 >
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
@@ -16,10 +16,10 @@
                     </div>
                     <div class="overflow-x-auto">
                         <table
-                            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                            class="w-full text-sm text-left text-gray-500 "
                         >
                             <thead
-                                class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                class="text-xs text-gray-700  bg-gray-50"
                             >
                                 <tr>
                                     <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>
@@ -44,7 +44,7 @@
 <script setup>
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import Search from "@/Pages/Admin/Search.vue";
-import BrandSelector from "@/Shared/BrandSelector/Index.vue";
+import BrandSelector from "@/Shared/Filters/BrandFilter.vue";
 import DetailItem from "@/Pages/Admin/Detail/DetailItem.vue";
 import {ref} from "vue";
 

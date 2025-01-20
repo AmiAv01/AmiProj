@@ -1,8 +1,8 @@
 <template>
-    <tr class="border-b dark:border-gray-700">
+    <tr class="border-b ">
         <th
             scope="row"
-            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
         >
             <a :href="`/admin/users/${user.id}`">
                 {{ user.id }}
@@ -18,7 +18,7 @@
             <button
                 :id="`${user.id}-button`"
                 :data-dropdown-toggle="`${user.id}`"
-                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none "
                 type="button"
             >
                 <svg
@@ -35,16 +35,16 @@
             </button>
             <div
                 :id="`${user.id}`"
-                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow "
             >
                 <ul
-                    class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    class="py-1 text-sm text-gray-700 "
                     :aria-labelledby="`${user.id}-button`"
                 >
                     <li>
                         <button
                             @click="showModal(user.id)"
-                            class="flex w-full py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            class="flex w-full py-2 px-4 hover:bg-gray-100 "
                         >
                             Изменить
                         </button>
@@ -53,13 +53,13 @@
                 <div class="py-1">
                     <button
                         @click = "deleteUser(user.id)"
-                        class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 "
                     >
                         Удалить
                     </button>
                 </div>
             </div>
-            <button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 p-2 ml-2`">Подтвердить</button>
+            <button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center p-2 ml-2`">Подтвердить</button>
             <MenuButton/>
         </td>
     </tr>
