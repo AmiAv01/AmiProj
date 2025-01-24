@@ -11,6 +11,14 @@
                     <p class="text-gray-700 text-2xl mr-4">Email:</p>
                     <p class="text-2xl">{{ user.email }}</p>
                 </div>
+                <div  class="flex">
+                    <p>Formula</p>
+                    <form action="" class >
+                        <input type="text">
+                        <button @click="changeFormula">Изменить</button>
+                    </form>
+                </div>
+
                 <div class="flex">
                     <p class="text-gray-700 text-2xl mr-4">Админ:</p>
                     <p class="text-2xl">{{ (user.isAdmin === 1) ? "Да" : "Нет" }}</p>

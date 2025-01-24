@@ -3,7 +3,7 @@
         <section class="p-3 sm:p-5">
             <div class="mx-auto px-4 justify-between lg:px-12 flex">
                 <div
-                    class="bg-white w-[80%]  relative shadow-md sm:rounded-lg overflow-hidden"
+                    class="bg-white w-full x2l:w-[80%] relative shadow-md sm:rounded-lg overflow-hidden"
                 >
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"

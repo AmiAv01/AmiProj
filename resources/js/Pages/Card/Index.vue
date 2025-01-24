@@ -4,17 +4,10 @@
             <div class="w-full px-4 2xl:px-0">
                 <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16 ">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                        <!--img
-                            v-if="detail.dt_foto.length === 0"
-                            class="w-full hidden dark:block"
-                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                            alt=""
-                        /!-->
                         <img
-
-                            class="w-full "
-                            src="../../../../public/build/no-photo--lg.png"
-                            alt="#"
+                            class="w-full"
+                            :src="imageUrl"
+                            alt=""
                         />
                     </div>
 
@@ -26,9 +19,9 @@
                             {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                             {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
-                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900  mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
+                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900  mb-8">(CARGO # <span> {{Array.from(cargoIds).join()}} </span>)</p>
                         <div v-if="!isEmpty">
-                            <p class="font-normal text-2xl leading-8 text-gray-500" v-if="$page.props.auth.user">
+                            <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 OEM: <strong>{{ detail.dt_oem }}</strong>
                             </p>
                             <p class="font-normal text-2xl leading-8 text-gray-500">
@@ -37,14 +30,14 @@
                             <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 Бренд: <strong>{{ detail.fr_code }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-blue-700" v-if="$page.props.auth.user">
+                            <p class="font-normal text-2xl leading-8 text-blue-700" >
                                 <strong>{{ detail.dt_comment }}</strong>
                             </p>
                             <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 Наличие: <strong>{{detail.ostc  ? detail.ostc : 0}}</strong>
                             </p>
 
-                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex" v-if="$page.props.auth.user">
+                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex" >
                                 <p
                                     class="text-2xl font-extrabold text-gray-900 sm:text-3xl "
                                 >
@@ -53,7 +46,7 @@
                             </div>
 
                             <div
-                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8" v-if="$page.props.auth.user"
+                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
                             >
                                 <cart-button
                                     @click="addInCart"
@@ -62,10 +55,9 @@
                                     role="button"
                                 >
                                 </cart-button>
-                                <p v-if="detail.dt_ost !== 0 " class="text-2xl text-green-400">Есть в наличии</p>
-                                <p v-else class="text-2xl text-red-400">Нет в наличии</p>
+                                <p v-if="detail.ostc !== ''" class="text-2xl text-green-400">Есть в наличии</p>
+                                <p v-if="detail.ostc === ''" class="text-2xl text-red-400">Нет в наличии</p>
                             </div>
-                            <p class="text-3xl mt-6 text-green-400" v-if="!$page.props.auth.user">Наличие уточнять</p>
                         </div>
                         <div v-else>
                             <p class="text-2xl text-red-400">Нет в наличии</p>
@@ -100,6 +92,7 @@
 import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
     sameDetails: {
@@ -119,15 +112,19 @@ const props = defineProps({
     },
     price: {
         type: Number
+    },
+    imageUrl: {
+        type: String
     }
 });
+
 
 const addInCart = () =>  {
     axios
         .post("/cart", {
             id: props.detail.dt_id,
             quantity: 1,
-            price: this.price
+            price: props.price
         })
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
@@ -140,5 +137,9 @@ const isHasDetails = () => {
         props.detail.dt_typec === "СТАРТЕР"
     );
 }
+
+onMounted(() => {
+    console.log(props.detail)
+})
 </script>
 

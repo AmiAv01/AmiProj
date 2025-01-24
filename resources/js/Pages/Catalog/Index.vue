@@ -3,7 +3,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
     </push>
     <layout :title="title">
-        <div class="bg-white w-full max-w-7xl flex justify-between py-12 px-12 lg:flex-row flex-row-reverse flex-wrap">
+        <div class="bg-white w-full justify-around max-w-7xl flex py-12 px-12 lg:flex-row flex-row-reverse flex-wrap">
             <BrandFilter
                 @closeModal="closeBrandFilter"
                 :is-show="showBrandSelector"

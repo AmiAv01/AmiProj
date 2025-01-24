@@ -3,9 +3,9 @@
         <p class="text-5xl font-bold tracking-tight text-gray-900 mb-10">
             Курс валют
         </p>
-        <div class="flex">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start">
             <input
-                class="shadow appearance-none border rounded w-[300px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                class="shadow appearance-none border rounded-md w-[300px] h-[50px] px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="number"
                 step="0.1"
                 min="1"
@@ -14,7 +14,7 @@
             />
             <button
                 @click="changeCurrency"
-                class="bg-green-700 ml-2 rounded-lg text-white px-5 py-2.5 text-lg "
+                class="bg-green-700 ml-2 rounded-lg mt-2 sm:mt-0 text-white w-[150px] max-w-[150px] h-[50px]  text-lg "
             >
                 Изменить
             </button>

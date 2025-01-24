@@ -1,9 +1,10 @@
 <template>
     <aside
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 lg:translate-x-0"
         aria-label="Sidenav"
         id="drawer-navigation"
     >
+
         <div class="overflow-y-auto py-5 px-3 h-full bg-white">
             <form action="#" method="GET" class="md:hidden mb-2">
                 <label for="sidebar-search" class="sr-only">Search</label>
@@ -34,7 +35,7 @@
                 </div>
             </form>
             <ul>
-                <li v-for="[key, value] in menuItems">
+                <li v-for="[key, value] in adminMenuItems">
                     <AdminButton
                         :href="`${value}`"
                         class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 "
@@ -47,11 +48,6 @@
 
 <script setup>
 import AdminButton from "@/Components/AdminButton.vue";
+import {adminMenuItems} from "@/Store/index.js";
 
-const menuItems = new Map([
-    ['Запчасти', 'admin.details.index'],
-    ['Заказы', 'admin.orders.index'],
-    ['Новости', 'admin.news.index'],
-    ['Пользователи', 'admin.users.index'],
-    ['Курс валют', 'admin.currency.index']]);
 </script>

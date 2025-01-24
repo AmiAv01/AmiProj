@@ -1,9 +1,9 @@
 <template>
     <AdminLayout>
         <section class="p-3 sm:p-5">
-            <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+            <div class="mx-auto  px-4 lg:px-12">
                 <div
-                    class="bg-white  relative shadow-md sm:rounded-lg overflow-hidden"
+                    class="bg-white w-full 2xl:w-[80%]  relative shadow-md sm:rounded-lg overflow-hidden"
                 >
                     <div
                         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"

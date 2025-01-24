@@ -76,6 +76,17 @@
                         </li>
                     </ul>
                 </div>
+                <div v-if="!isMenuOpen" class="w-full flex justify-end relative">
+                    <button @click="toggleBurgerMenu" value="hamburger" class="group relative h-[30px] w-[30px] rounded mr-4 hover:bg-gray-400 ">
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white translate-y-[-8px]'
+                            : 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white  translate-y-0 -rotate-45'"></span>
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white'
+                            : 'rotate-360 -translate-x-20px opacity-0 block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white' "></span>
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white translate-y-[8px]'
+                            : 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white  translate-y-0 rotate-45'"></span>
+                    </button>
+                </div>
+                <AdminBurgerMenu :is-show="isBurgerMenuOpen"/>
             </div>
         </div>
     </nav>
@@ -84,9 +95,26 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 import {initFlowbite} from "flowbite";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
+import AdminBurgerMenu from "@/Pages/Admin/Components/AdminBurgerMenu.vue";
+
+const isMenuOpen = ref(true);
+const isBurgerMenuOpen = ref(false);
+const innerWidth = ref(window.innerWidth);
 
 onMounted(() => {
     initFlowbite();
+    window.addEventListener('resize', handleWindowResize);
+    handleWindowResize();
 });
+
+const handleWindowResize = () => {
+    innerWidth.value = window.innerWidth;
+    console.log(window.innerWidth)
+    isMenuOpen.value = (innerWidth.value > 1024)
+}
+
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value
+}
 </script>

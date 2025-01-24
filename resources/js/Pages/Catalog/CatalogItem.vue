@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-wrap w-full pb-2 border-b items-center justify-between max-w-4xl border-gray-300 group mt-10">
+    <div class="flex flex-wrap w-full pb-2 border-b items-center justify-between  border-gray-300 group mt-10">
         <div
             class="flex flex-col sm:flex-row"
         >
@@ -54,7 +54,6 @@
                 </svg>
                 Войти
             </menu-button>
-            <cart-button :attributes="` self-start`" v-else @click="addInCart" />
         </div>
     </div>
 </template>
@@ -66,19 +65,7 @@ const props = defineProps({
     detail: Object,
 })
 
-const addInCart = () => {
-    axios
-        .post("/cart", {
-            id: props.detail.dt_id,
-            quantity: 1,
-            price: '1'
-        })
-        .then((res) => {
-            console.log(res);
-            this.$emit('showPush', true);
-        })
-        .catch((err) => console.log(err));
-}
+
 const editTitle = (res) => editDetailTitle(res)
 
 </script>
