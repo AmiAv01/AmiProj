@@ -38,3 +38,10 @@ export let otherParts = new Map([["Стартеры", "/catalog/starters"], ["Г
 export const menuItems = new Map([['Новости', '/news'], ['О нас', '/info'], ['Скачать', '/desktop']]);
 export const subCategories = new Map([['Генераторы', '/catalog/generators'], ['Стартеры', '/catalog/starters'],
     ['Подшипники', '/catalog/bearings'], ['Прочее', '/catalog/other']]);
+
+export const adminMenuItems = new Map([
+    ['Запчасти', 'admin.details.index'],
+    ['Заказы', 'admin.orders.index'],
+    ['Новости', 'admin.news.index'],
+    ['Пользователи', 'admin.users.index'],
+    ['Курс валют', 'admin.currency.index']]);
