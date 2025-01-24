@@ -1,5 +1,5 @@
 <template>
-    <footer class="w-full bg-slate-900">
+    <footer class="w-full bg-slate-900 mb-[-10px]">
         <div class=" mx-auto w-full flex flex-wrap justify-around pb-32 pt-16">
             <div class="">
                 <p class="text-white text-2xl mb-2">Ами-Авто</p>
