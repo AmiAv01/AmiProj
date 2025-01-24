@@ -20,8 +20,7 @@ class OrderController extends Controller
 
     public function index(): Response
     {
-        $userId = auth()->check() ? auth()->user()->id : null;
-        return Inertia::render('Order/OrderList', ['orders' => $this->orderService->getByUserId($userId)]);
+        return Inertia::render('Order/OrderList', ['orders' => $this->orderService->getByUserId(auth()->id())]);
     }
 
     public function store(OrderRequest $request): OrderResource
