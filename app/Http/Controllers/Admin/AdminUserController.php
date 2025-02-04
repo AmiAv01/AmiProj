@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminUserRequest;
 use App\Http\Requests\NewsFormRequest;
 use App\Services\CartService;
 use App\Services\NewsService;
@@ -29,6 +30,11 @@ class AdminUserController extends Controller
     {
         return Inertia::render('Admin/User/UserCard', ['user' => $this->userService->getById($user), 'cart' => $this->cartService->getCartItems($user),
             'orders' => $this->orderService->getByUserId($user)]);
+    }
+
+    public function update(int $user, AdminUserRequest $request)
+    {
+        return $this->userService->update($user, $request->validated('formula'));
     }
 
     public function destroy(int $post)
