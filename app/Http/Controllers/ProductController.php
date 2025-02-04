@@ -24,10 +24,13 @@ class ProductController extends Controller
             if (!auth()->check()){
                 return Inertia::render('Card/GuestCard', ['detail' => $detail[0], 'isEmpty' => false]);
             }
-            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $this->productService->getSameDetails($detail[0]),
-                'analogs' => $analogs, 'isEmpty' => false, 'price' => $this->priceService->getPrice($detail[0]->dt_code, (auth()->check() && auth()->user()->id))]);
+            return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $this->productService->getSameDetails($detail[0]->dt_typec, $id),
+                'analogs' => $analogs, 'isEmpty' => false, 'imageUrl' => $this->productService->getImageUrl($detail[0]->dt_foto),
+                'price' => $this->priceService->getPrice($detail[0]->dt_code, (auth()->check() && auth()->user()->id))]);
         }
-        return Inertia::render('Card/Index', ['detail' => $this->productService->getProductInfoFromOems($this->searchService, $id),
-            'sameDetails' => [], 'analogs' => $analogs, 'cargoIds' => $this->productService->getCargoFromAnalogs($analogs), 'isEmpty' => true]);
+        $detailFromOems = $this->productService->getProductInfoFromOems($this->searchService, $id);
+        return Inertia::render('Card/Index', ['detail' => $detailFromOems,
+            'sameDetails' => $this->productService->getSameDetails($detailFromOems['dt_typec'], $id), 'analogs' => $analogs, 'cargoIds' => $this->productService->getCargoFromAnalogs($analogs), 'isEmpty' => true,
+            'imageUrl' => $this->productService->getImageUrl()]);
     }
 }

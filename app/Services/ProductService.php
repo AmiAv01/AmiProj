@@ -5,28 +5,19 @@ namespace App\Services;
 use App\Models\AltCz;
 use App\Models\Detail;
 use App\Models\Oems;
+use App\Models\RozCz;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
 
-    public function getSameDetails(Detail $detail): array
+    public function getSameDetails(string $detailType, string $detailInvoice): array
     {
-        $brand = $detail->dt_typec;
-        Log::info($brand);
-        if ($brand === 'ГЕНЕРАТОР') {
-            $ids = [];
-            $generators = AltCz::where('hcparts', '=', $detail->dt_invoice)->get()->toArray();
-            foreach ($generators as $generator){
-                array_push($ids, $generator['dt_code']);
-            }
-            $ids = array_unique($ids);
-            unset($ids[array_search('', $ids)]);
-            $details =  Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)
-                ->select(['dt_invoice', 'dt_typec', 'dt_typec', 'dt_cargo', 'fr_code'])->get()->toArray();
-            return $details;
-        }
-        return [];
+        return match($detailType){
+            'ГЕНЕРАТОР' => $this->getSameDetailsForGenerator($detailInvoice),
+            'СТАРТЕР' => $this->getSameDetailsForStarters($detailInvoice),
+            default => [],
+        };
     }
 
     public function getAnalogs($id):array
@@ -61,8 +52,50 @@ class ProductService
         return array_values($cargoIds);
     }
 
-    public function getProductInfoFromOems(SearchService $searchService, string $code){
+    public function getProductInfoFromOems(SearchService $searchService, string $code): array{
         $detailFromOems = Oems::ofCode($code)->first();
         return $searchService->getInfoAboutDetailFromOems($detailFromOems, $code);
+    }
+
+    private function getSameDetailsForGenerator(string $detailInvoice):array
+    {
+        $ids = [];
+        $generators = AltCz::where('hcparts', '=', $detailInvoice)->get()->toArray();
+        foreach ($generators as $generator){
+            if (!str_starts_with($generator['dt_code'], '-')){
+                $ids[] = $generator['dt_code'];
+            }
+        }
+        $ids = array_unique($ids);
+        unset($ids[array_search('', $ids)]);
+        return Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)
+            ->select(['dt_invoice', 'dt_typec', 'dt_typec', 'dt_cargo', 'fr_code'])->get()->toArray();
+    }
+
+    private function getSameDetailsForStarters(string $detailInvoice):array
+    {
+        $ids = [];
+        $starters = RozCz::where('hcparts', '=', $detailInvoice)->get()->toArray();
+        foreach ($starters as $starter){
+            if (!str_starts_with($starter['dt_code'], '-')){
+                $ids[] = $starter['dt_code'];
+            }
+        }
+        $ids = array_unique($ids);
+        unset($ids[array_search('', $ids)]);
+        return Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)
+            ->select(['dt_invoice', 'dt_typec', 'dt_typec', 'dt_cargo', 'fr_code'])->get()->toArray();
+    }
+
+    public function getImageUrl(string $imageName = ''):string {
+        Log::info($imageName);
+        return ($imageName !== '') ? url('storage/images/' . $this->parseImagePath($imageName) . '.jpg') : url('storage/images/no-photo--lg' . '.png');
+    }
+
+    private function parseImagePath(string $imagePath):string{
+        if (!str_contains($imagePath, ',')){
+            return strtolower($imagePath);
+        }
+        return strtolower(stristr($imagePath, ',', true));
     }
 }
