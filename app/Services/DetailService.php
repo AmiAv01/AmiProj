@@ -36,7 +36,7 @@ final class DetailService
     public function getByInvoice(string $invoice): Collection
     {
         return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )
-            ->select(['dt_id', 'dt_invoice','dt_code', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
+            ->select(['dt_id', 'dt_invoice','dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
     }
 
     public function getClientBrands(FilterDTO $dto): array | null
@@ -48,5 +48,4 @@ final class DetailService
     public function getBySearching(mixed $search)
     {
     }
-
 }
