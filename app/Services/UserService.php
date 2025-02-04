@@ -40,4 +40,9 @@ final class UserService
         }
         return false;
     }
+
+    public function update(int $userId, string $formula):bool
+    {
+        return User::where('id', '=', $userId)->update(['formula' => $formula]);
+    }
 }
