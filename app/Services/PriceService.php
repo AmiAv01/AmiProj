@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Currency;
 use App\Models\Price;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 use Log;
 use Money\Money;
 
@@ -28,7 +30,9 @@ final class PriceService{
         if ($sign === ''){
             return $price;
         }
-        return  ($sign === '+') ? bcadd($price, bcmul($price, $percent/100)) : bcsub($price, bcmul($price, $percent/100));
+        $currency = Crypt::decrypt(Currency::where('code', '=', 'EUR')->value('value')->get());
+        $computedPercent = bcmul($price, $percent / 100);
+        return  ($sign === '+') ? bcmul(bcadd($price, $computedPercent), $currency) : bcmul(bcsub($price, $computedPercent), $currency);
     }
 }
 
