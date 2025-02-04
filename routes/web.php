@@ -100,6 +100,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     //users route
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
+    Route::put('users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users',[AdminUserController::class, 'destroy'])->name('admin.users.delete');
 
     //currency route
