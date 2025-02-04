@@ -2,40 +2,69 @@
 
 namespace App\Services;
 
+use App\DTO\CartDTO;
+use App\Models\Cart;
+use App\Models\CartItem;
 use Darryldecode\Cart\Facades\CartFacade;
+use Illuminate\Support\Facades\Log;
 
-class CartService
+final class CartService
 {
-    public function index($cookie)
+    public function storeCart(int $userId): Cart
     {
-        return CartFacade::session($cookie['laravel_session'])->getContent();
+        return Cart::create([
+            'user_id' => $userId
+        ]);
     }
 
-    public function store($cookie, $request)
+    public function addToCart(int $userId, CartDTO $dto): CartItem
     {
-        if (! CartFacade::session($cookie['laravel_session'])) {
-            CartFacade::sesion($cookie['laravel_session']);
+        $cart = Cart::user($userId)->first();
+        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $dto->productPrice]);
+    }
+
+    public function getCartItems(int $userId): array
+    {
+        $cart = Cart::user($userId)->first();
+        $cartItems = $cart->items;
+        $details = [];
+        $i = 0;
+        foreach ($cartItems as $cartItem){
+            $details[$i] = array_merge($cartItem->toArray(), $cartItem->product->toArray());
+            $i++;
         }
-        CartFacade::session($cookie['laravel_session'])->add([
-            'id' => $request['id'],
-            'name' => $request['typec'],
-            'price' => 100,
-            'quantity' => 1,
-            'attributes' => ['fr_code' => $request['fr_code'], 'cargo' => $request['cargo'], 'invoice' => $request['invoice']],
-        ]);
-
-        return $request;
+        return $details;
     }
 
-    public function update($cookie, $id, $request)
+    public function updateQuantity(int $userId, CartDTO $dto){
+        $cart = Cart::user($userId)->first();
+        $cartProduct = $cart->items->where('dt_id', '=', $dto->productId)->first();
+        return $cartProduct->update(['quantity' => $dto->quantity]);
+    }
+
+    public function deleteProductFromCart(int $userId, int $productId){
+        $cart = Cart::user($userId)->first();
+        $cartProduct = $cart->items->where('dt_id', '=', $productId)->first();
+        return $cartProduct->delete();
+    }
+
+    public function clearCart(int $userId):void{
+        $cart = Cart::user($userId)->first();
+        $cartItems = $cart->items;
+        foreach ($cartItems as $cartItem){
+            Log::info($cartItem);
+            $cartItem->delete();
+        }
+    }
+
+    public function getQuantity(int $cartId)
     {
-        CartFacade::session($cookie['laravel_session'])->update($id, [
-            'quantity' => ['relative' => false, 'value' => $request['quantity']],
-        ]);
+
     }
 
-    public function destroy($cookie, $id)
+    public function getResultPrice(int $cartId)
     {
-        CartFacade::session($cookie['laravel_session'])->remove($id);
+
     }
+
 }

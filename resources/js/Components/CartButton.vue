@@ -2,7 +2,8 @@
     <button
         @click="addInCart"
         title=""
-        class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 0 font-medium rounded-lg px-5 py-2.5 flex items-center justify-center"
+        :class="`${attributes}`"
+        class="bg-green-700 hover:bg-green-500 text-lg  text-white mt-4 md:mt-0 bg-primary-700 hover:bg-primary-800 0 font-medium rounded-lg px-5 py-2.5 flex items-center justify-center"
         role="button"
     >
         <svg
@@ -27,12 +28,16 @@
     </button>
 </template>
 
-<script>
-export default {
-    methods: {
-        addInCart() {
-            this.$emit("addInCart");
-        },
-    },
-};
+<script setup>
+
+const props = defineProps({
+    attributes: {
+        type: String,
+        default: ''
+    }
+})
+const emits = defineEmits(['addInCart'])
+function addInCart(){
+    emits("addInCart");
+}
 </script>

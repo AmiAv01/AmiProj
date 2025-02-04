@@ -2,41 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\SearchQueryDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminSearchRequest;
+use App\Http\Requests\SearchCatalogFormRequest;
+use App\Http\Requests\SearchFormRequest;
+use App\Services\AdminService;
 use App\Services\DetailService;
 use App\Services\NewsService;
 use App\Services\OrderService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AdminSearchController extends Controller
 {
-    public function __construct(protected OrderService $orderService, protected DetailService $detailService, protected NewsService $newsService)
+    public function __construct(protected AdminService $adminService)
+    {}
+
+    public function index(AdminSearchRequest $request)
     {
-
-    }
-
-    public function index(Request $request)
-    {
-        $search = $request->input('searchQ');
-        $category = $request->input('category');
-        Log::info(strval($request));
-        switch ($category) {
-            case 'details':
-                $details = ($search) ? $this->detailService->getBySearching($search) : $this->detailService->getAll();
-
-                return ['details' => $details];
-                break;
-            case 'orders':
-                $orders = ($search) ? $this->orderService->getBySearching($search) : $this->orderService->getAll();
-
-                return ['orders' => $orders];
-                break;
-            case 'news':
-                $news = ($search) ? $this->newsService->getBySearching($search) : $this->newsService->getAll();
-
-                return ['news' => $news];
-
-        }
+        $search = $request->validated('searchQ');
+        $category = $request->validated('category');
+        $service = $this->adminService->chooseService($category);
+        return ["$category" => ($search) ? $service->getBySearching($search, 12) : $service->getAll(12)];
     }
 }

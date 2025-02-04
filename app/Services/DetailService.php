@@ -2,70 +2,50 @@
 
 namespace App\Services;
 
-use App\Models\AltCz;
+use App\DTO\FilterDTO;
 use App\Models\Detail;
 use App\Models\Firm;
-use App\Models\Oems;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-
-class DetailService
+use Illuminate\Pagination\LengthAwarePaginator;
+final class DetailService
 {
-    public function getAll()
+    public function getAll(int $perPage): LengthAwarePaginator
     {
-        return Detail::paginate(12);
+        return Detail::select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage);
     }
 
-    public function getById(int $id)
+    public function getByFilters(array $categories, int $perPage): LengthAwarePaginator
     {
-        return Detail::where('dt_id', '=', $id)->get();
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+        return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
+            ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage)->withQueryString();
     }
 
-    public function getByFilters(array $categories)
+    public function getByBrand(int $perPage): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
-        return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->paginate(12)->withQueryString();
+        return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
+            ->join('stk', 'stk.code', '=', 'detail.dt_code' )
+            ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_invoice','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
-    public function getByBrand(Collection $details)
+    public function getByInvoice(string $invoice): Collection
     {
-        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
-
-        return $details->whereIn('fr_code', $brands->pluck('fr_name')->toArray())->withQueryString();
+        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )
+            ->select(['dt_id', 'dt_invoice','dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
     }
 
-    public function getByInvoice(string $invoice)
+    public function getClientBrands(FilterDTO $dto): array | null
     {
-        return Detail::where('dt_invoice', '=', $invoice)->get();
+        return $dto->filter ?: null;
     }
 
-    public function getByInvoiceFromOems(string $invoice){
-        return Oems::where('dt_invoice', '=', $invoice)->first();
-    }
 
-    public function getSameDetails($id)
+    public function getBySearching(mixed $search)
     {
-        $detail = $this->getByInvoice($id);
-
-        $brand = $detail->pluck('dt_typec')[0];
-        if ($brand === 'ГЕНЕРАТОР') {
-            $ids = [];
-            $generators = AltCz::where('hcparts', '=', $id)->get()->toArray();
-            Log::info($generators);
-            foreach ($generators as $generator){
-                array_push($ids, $generator['dt_code']);
-            }
-            $ids = array_unique($ids);
-            Log::info($ids);
-            unset($ids[array_search('', $ids)]);
-            $details = Detail::whereIn('dt_cargo', $ids)->orWhereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->get()->toArray();
-            Log::info($details);
-            return $details;
-        }
-
-        return [];
     }
 }

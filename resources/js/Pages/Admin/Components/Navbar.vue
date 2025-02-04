@@ -1,17 +1,9 @@
 <template>
     <nav
-        class="bg-black border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50"
+        class="bg-black border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50"
     >
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
-                <button
-                    data-drawer-target="drawer-navigation"
-                    data-drawer-toggle="drawer-navigation"
-                    aria-controls="drawer-navigation"
-                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                    <span class="sr-only">Toggle sidebar</span>
-                </button>
                 <Link
                     :href="route('admin.dashboard')"
                     class="flex items-center justify-between mr-4"
@@ -37,33 +29,92 @@
                     />
                 </Link>
             </div>
-            <div class="flex items-center lg:order-2">
+            <div
+                class="flex w-[260px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+            >
                 <button
                     type="button"
-                    data-drawer-toggle="drawer-navigation"
-                    aria-controls="drawer-navigation"
-                    class="p-2 mr-1 text-gray-500 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    class="flex text-sm bg-gray-800 rounded-full"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom"
                 >
-                    <span class="sr-only">Toggle search</span>
-                    <svg
-                        aria-hidden="true"
-                        class="w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            clip-rule="evenodd"
-                            fill-rule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        ></path>
-                    </svg>
+                    <span class="sr-only">Open user menu</span>
+                    <i class="fa-solid fa-user text-white text-xl"></i>
                 </button>
+                <!-- Dropdown menu -->
+                <div
+                    class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow"
+                    id="user-dropdown"
+                >
+                    <div class="px-4 py-3">
+                            <span
+                                class="block text-sm text-gray-900"
+                            >{{ $page.props.auth.user.name }}</span
+                            >
+                        <span
+                            class="block text-sm text-gray-500 truncate"
+                        >{{ $page.props.auth.user.email }}</span
+                        >
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <inertia-link
+                                :href="route('profile.edit')"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >Настройки</inertia-link
+                            >
+                        </li>
+                        <li>
+                            <inertia-link
+                                :href="route('logout')"
+                                method="post"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >Выход</inertia-link
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div v-if="!isMenuOpen" class="w-full flex justify-end relative">
+                    <button @click="toggleBurgerMenu" value="hamburger" class="group relative h-[30px] w-[30px] rounded mr-4 hover:bg-gray-400 ">
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white translate-y-[-8px]'
+                            : 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white  translate-y-0 -rotate-45'"></span>
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white'
+                            : 'rotate-360 -translate-x-20px opacity-0 block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white' "></span>
+                        <span :class="!isBurgerMenuOpen ? 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white translate-y-[8px]'
+                            : 'block h-[2px] w-[25px] m-auto absolute top-0 left-0 right-0 bottom-0 transition-all delay-400 ease-in-out rounded bg-white  translate-y-0 rotate-45'"></span>
+                    </button>
+                </div>
+                <AdminBurgerMenu :is-show="isBurgerMenuOpen"/>
             </div>
         </div>
     </nav>
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
+import {initFlowbite} from "flowbite";
+import {onMounted, ref} from "vue";
+import AdminBurgerMenu from "@/Pages/Admin/Components/AdminBurgerMenu.vue";
+
+const isMenuOpen = ref(true);
+const isBurgerMenuOpen = ref(false);
+const innerWidth = ref(window.innerWidth);
+
+onMounted(() => {
+    initFlowbite();
+    window.addEventListener('resize', handleWindowResize);
+    handleWindowResize();
+});
+
+const handleWindowResize = () => {
+    innerWidth.value = window.innerWidth;
+    console.log(window.innerWidth)
+    isMenuOpen.value = (innerWidth.value > 1024)
+}
+
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value
+}
 </script>

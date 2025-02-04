@@ -13,7 +13,6 @@
                     class="mr-1 mb-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-blue-200 focus:border-primary focus:text-primary"
                     :class="{ 'bg-blue-200': link.active }"
                     :href="link.url"
-                    preserve-scroll
                     v-html="link.label"
                 />
             </template>

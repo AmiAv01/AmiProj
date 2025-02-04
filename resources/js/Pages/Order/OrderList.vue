@@ -5,16 +5,13 @@
         </p>
         <div class="relative overflow-x-auto w-[80%] mx-auto pb-10 rounded-lg">
             <table
-                class="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                class="w-full text-lg text-left rtl:text-right text-gray-500"
             >
                 <thead
                     class="text-xl text-white uppercase bg-green-700 rounded-lg"
                 >
                     <tr class="rounded-[15px]">
-                        <th scope="col" class="px-8 py-6">№ заказа</th>
-                        <th scope="col" class="px-8 py-6">Дата</th>
-                        <th scope="col" class="px-8 py-6">Сумма</th>
-                        <th scope="col" class="px-8 py-6">Статус</th>
+                        <th v-for="name of columnNames" scope="col" class="px-8 py-6">{{name}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,11 +19,11 @@
                         v-for="(order, index) in orders"
                         :key="index"
                         @click="setLink(order.id)"
-                        class="bg-white w-full border-b text-lg dark:bg-gray-800 cursor-pointer dark:border-gray-700"
+                        class="bg-white w-full border-b text-lg  cursor-pointer "
                     >
                         <th
                             scope="row"
-                            class="px-8 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            class="px-8 py-6 font-medium text-gray-900 whitespace-nowrap "
                         >
                             {{ order.id }}
                         </th>
@@ -44,22 +41,16 @@
     </layout>
 </template>
 
-<script>
-export default {
-    created() {
-        console.log(this.orders);
-    },
-    methods: {
-        setLink(id) {
-            console.log(id);
-            window.location = `order/${id}`;
-        },
-    },
-};
-</script>
-
 <script setup>
-defineProps({
+
+const props = defineProps({
     orders: Array,
 });
+
+const columnNames = ['№ заказа', 'Дата', 'Сумма', 'Статус']
+const setLink = (id) => {
+    console.log(id);
+    window.location = `order/${id}`;
+}
 </script>
+

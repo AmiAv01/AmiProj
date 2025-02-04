@@ -6,7 +6,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg
                         aria-hidden="true"
-                        class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                        class="w-5 h-5 text-gray-500 "
                         fill="currentColor"
                         viewbox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
@@ -20,8 +20,8 @@
                 </div>
                 <input
                     type="text"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Search"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 focus:ring-primary-500 "
+                    :placeholder="`${placeholder}`"
                     required
                     @input="getSearchingDetails"
                     v-model="searchQuery"
@@ -31,35 +31,34 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import debounce from "lodash.debounce";
-export default {
-    data() {
-        return {
-            searchQuery: "",
-        };
+import {ref} from "vue";
+
+const props = defineProps({
+    placeholder: {
+        type: String,
+        default: "Search",
     },
-    props: {
-        placeholder: {
-            type: String,
-            default: "Search",
-        },
-        link: {
-            type: String,
-            default: "#",
-        },
+    link: {
+        type: String,
+        default: "#",
     },
-    methods: {
-        getSearchingDetails: debounce(function () {
-            axios
-                .get(`${this.link}=${this.searchQuery}`)
-                .then((res) => {
-                    console.log(res.data);
-                    this.$emit("setData", res.data);
-                })
-                .catch((err) => console.log(err));
-        }, 1500),
-    },
-};
+})
+
+const emit = defineEmits(['setData']);
+
+let searchQuery = ref("");
+
+const getSearchingDetails = debounce(() => {
+    axios
+        .get(`${props.link}=${searchQuery.value}`)
+        .then((res) => {
+            console.log(res.data);
+            emit("setData", res.data);
+        })
+        .catch((err) => console.log(err));
+}, 1500);
+
 </script>

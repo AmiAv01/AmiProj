@@ -1,29 +1,30 @@
 <template>
     <layout>
         <section>
-            <div class="w-full" scroll-region></div>
+            <div class="w-full"></div>
         </section>
         <HeroSection />
         <section>
             <ProductList v-bind:details="details" />
-            <LogoClouds />
-            <News />
+            <LogoClouds/>
+            <NewsList :posts="posts"/>
         </section>
     </layout>
 </template>
 
-<script>
+<script setup>
 import LogoClouds from "./LogoClouds.vue";
 import ProductList from "./ProductList.vue";
-import News from "@/Shared/News.vue";
-
 import HeroSection from "@/Pages/User/HeroSection.vue";
+import NewsList from "@/Pages/News/NewsList.vue";
 
-export default {};
-</script>
-
-<script setup>
-defineProps({
+const props = defineProps({
     details: Object,
+    posts: {
+        type: Array,
+        default: [],
+    }
 });
+
 </script>
+

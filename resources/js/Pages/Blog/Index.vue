@@ -1,15 +1,10 @@
 <template>
     <layout>
-        <news />
+        <News />
     </layout>
 </template>
 
-<script>
+<script setup>
 import News from "@/Shared/News.vue";
 
-export default {
-    components: {
-        news: News,
-    },
-};
 </script>

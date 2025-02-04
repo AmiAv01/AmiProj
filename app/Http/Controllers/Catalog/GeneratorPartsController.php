@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
+use App\Services\FirmService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class GeneratorPartsController extends Controller
 {
@@ -20,21 +24,19 @@ class GeneratorPartsController extends Controller
         'insulator' => 'Изоляторы', 'cover' => 'Крышки', 'regulator' => 'Регуляторы', 'rotor' => 'Роторы', 'terminal' => 'Терминалы',
         'gland' => 'Сальники', 'winding' => 'Статорные обмотки', 'pulley' => 'Шкивы', 'brush' => 'Щётки генератора', 'holder' => 'Щёточные узлы'];
 
-    public function __construct(protected DetailService $detailService)
+    public function __construct(protected DetailService $detailService, protected FirmService $firmService)
     {
     }
 
-    public function index(string $category, Request $request)
+    public function index(string $category, DetailsFilterRequest $request): Response
     {
-        if (! array_key_exists($category, $this->categories)) {
-            return abort(404);
-        }
-        $details = $this->detailService->getByFilters(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], []);
+        $details = $this->detailService->getByFilters(is_array($this->categories[$category]) ? $this->categories[$category] : [$this->categories[$category]], 12);
 
         return Inertia::render('Catalog/Index', [
             'details' => $details,
             'title' => $this->names[$category],
-            'clientBrands' => ($request->query('filter')) ? $request->query('filter') : null,
+            'categories' => ['brands' => $this->firmService->getAll()],
+            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
         ]);
     }
 }

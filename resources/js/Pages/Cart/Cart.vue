@@ -24,72 +24,51 @@
                                 Товары, {{ count }} шт.
                             </h2>
                         </div>
-                        <div class="h-[500px] overflow-y-auto">
-                            <cart-item
-                                v-for="(detail, index) in details"
+                        <div class="h-[300px] xl:h-[500px] overflow-y-auto ">
+                            <CartItem
+                                v-for="(detail, index) in store.cartData"
                                 :key="index"
                                 :item="detail"
-                                @getItems="getItems"
                             />
                         </div>
                     </div>
-                    <cart-order :count="count" :price="price" />
+                    <CartOrder :count="count" :price="price" />
                 </div>
             </div>
         </section>
     </layout>
 </template>
 
-<script>
+<script setup>
 import CartItem from "./CartItem.vue";
 import CartOrder from "./CartOrder.vue";
-export default {
-    data() {
-        return {
-            details: [],
-            count: 0,
-            price: 0,
-        };
-    },
-    components: {
-        "cart-item": CartItem,
-        "cart-order": CartOrder,
-    },
-    created() {
-        console.log(this.items);
-        this.details = this.items;
-    },
-    methods: {
-        getItems(data) {
-            console.log(data.items);
-            this.details = data.items;
-        },
-        getTotalQuantity() {
-            return Object.values(this.details).reduce(
-                (sum, obj) => sum + obj.quantity,
-                0
-            );
-        },
-        getTotalPrice() {
-            return Object.values(this.details).reduce(
-                (sum, obj) => sum + obj.price * obj.quantity,
-                0
-            );
-        },
-    },
-    computed: {
-        count() {
-            return this.getTotalQuantity();
-        },
-        price() {
-            return this.getTotalPrice();
-        },
-    },
-};
-</script>
+import {computed} from "vue";
+import { useCartStore} from "@/Store/cartStore.js";
 
-<script setup>
-defineProps({
+const store = useCartStore();
+const props = defineProps({
     items: Array,
 });
+
+store.setDetails(props.items);
+console.log(props.items);
+
+function getTotalQuantity(items) {
+    console.log(items)
+    return Object.values(items).reduce(
+        (sum, obj) => sum + obj.quantity,
+        0
+    );
+}
+function getTotalPrice(items) {
+    return Object.values(items).reduce(
+        (sum, obj) => sum + parseFloat(obj.price).toFixed(3) * obj.quantity,
+        0
+    );
+}
+
+let count = computed(() => getTotalQuantity(store.cartData));
+let price = computed(() => getTotalPrice(store.cartData));
+
 </script>
+

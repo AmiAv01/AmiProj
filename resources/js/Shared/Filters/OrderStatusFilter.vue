@@ -22,7 +22,7 @@
                 </li>
             </ul>
             <menu-button
-                :href="`${this.currentUrl}?filter[id]=${this.checked.join()}`"
+                :href="`${this.currentUrl}?filter[id]=${checked.join()}`"
                 :attributes="`px-5 py-2.5 mx-auto text-lg mt-4`"
             >
                 Подобрать
@@ -34,22 +34,16 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            statuses: ["Новый", "Принят", "Выполнен"],
-            currentUrl: null,
-            checked: [],
-        };
-    },
-    created: function () {
-        this.currentUrl = window.location.pathname;
-        console.log(`Current URL => ${this.currentUrl}`);
-        console.log(this.clientBrands);
-        /*if (this.clientBrands !== null) {
-            this.checked = this.clientBrands["id"].split(",");
-        }*/
-    },
-};
+<script setup>
+
+import {onMounted, ref} from "vue";
+
+const currentUrl = ref(null);
+const statuses = ["Новый", "Принят", "Выполнен"];
+const checked = ref([]);
+
+onMounted(() => {
+    currentUrl.value = window.location.pathname;
+    console.log(`Current URL => ${currentUrl.value}`);
+})
 </script>

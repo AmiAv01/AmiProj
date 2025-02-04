@@ -8,7 +8,6 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('roz_cz', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('id');
             $table->dateTime('datep');
             $table->string('tmp');
