@@ -13,7 +13,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        return Inertia::render('News/NewsList', ['posts' => $this->newsService->getAll(12)]);
+        return Inertia::render('News/News', ['posts' => $this->newsService->getAll(12)]);
     }
 
 }
