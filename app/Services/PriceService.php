@@ -11,27 +11,34 @@ use Money\Money;
 
 final class PriceService{
     public function getPrice(int $detailCode, int $userId): int | string | Money {
-        $userFormula = User::where('id', '=' ,$userId)->value('formula');
+        $userFormula = Crypt::decrypt(User::where('id', '=' ,$userId)->value('formula'));
         $price = $this->getPriceByType(strtolower(substr($userFormula, 0, 1)), $detailCode);
         Log::info($price);
-        return  $this->getSpecialPrice($price, substr($userFormula, 1,1), substr($userFormula, 2, strpos($userFormula,"%")));
+        return  $this->getSpecialPrice($price, substr($userFormula, 1,1), $this->getPercent($userFormula));
     }
 
-    public function parsePrice(string $price){
+    private function parsePrice(string $price):string{
         return str_replace(',','.',$price);
+    }
+
+    public function getPercent(string $formula): string | int
+    {
+        return substr($formula, 2, strpos($formula,"%")) ?: 0;
     }
 
     public function getPriceByType(string $priceType, int $detailCode): string{
         return ($priceType === 'o') ? Price::where('code', '=', $detailCode)->value('opt') : Price::where('code', '=', $detailCode)->value('zakup');
     }
 
-    public function getSpecialPrice(string $price, string $sign, string $percent): string
+    private function getSpecialPrice(string $price, string $sign, string $percent): string
     {
+        $currency = Currency::where('code', '=', 'EUR')->value('value');
         if ($sign === ''){
-            return $price;
+            return bcmul($this->parsePrice($price), $this->parsePrice($currency));
         }
-        $currency = Crypt::decrypt(Currency::where('code', '=', 'EUR')->value('value')->get());
         $computedPercent = bcmul($price, $percent / 100);
+        Log::info($computedPercent);
+        Log::info($currency);
         return  ($sign === '+') ? bcmul(bcadd($price, $computedPercent), $currency) : bcmul(bcsub($price, $computedPercent), $currency);
     }
 }
