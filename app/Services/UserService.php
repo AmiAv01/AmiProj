@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 final class UserService
@@ -22,7 +23,12 @@ final class UserService
     }
 
     public function getById(int $id){
-        return User::findOrFail($id);
+        return User::where('id', '=', $id)->select(['name', 'email', 'isAdmin', 'id'])->first();
+    }
+
+    public function getUserFormula(int $id)
+    {
+        return Crypt::decrypt(User::where('id', '=', $id)->pluck('formula')->first());
     }
 
     public function destroy(int $id):bool
@@ -43,6 +49,6 @@ final class UserService
 
     public function update(int $userId, string $formula):bool
     {
-        return User::where('id', '=', $userId)->update(['formula' => $formula]);
+        return User::where('id', '=', $userId)->update(['formula' => Crypt::encrypt($formula)]);
     }
 }
