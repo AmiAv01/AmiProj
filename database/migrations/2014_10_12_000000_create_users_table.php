@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('isAdmin')->default(0);
             $table->boolean('approved')->default(false);
-            $table->string('formula', 6);
+            $table->string('formula', 255)->default(Crypt::encrypt('O'));
             $table->rememberToken();
             $table->timestamps();
         });

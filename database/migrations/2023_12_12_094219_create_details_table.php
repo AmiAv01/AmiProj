@@ -25,8 +25,6 @@ return new class extends Migration
             $table->integer('dt_baza');
             $table->integer('dt_cena');
             $table->integer('dt_prod');
-            $table->integer('dt_ost');
-            $table->integer('dt_ostc');
             $table->string('dt_typec', 100);
             $table->integer('dt_bp');
             $table->string('dt_cargo', 50);

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart', function (Blueprint $table) {
-            $table->unsignedBigInteger('cart_id')->primary();
+            $table->id();
             $table->foreignId('user_id')->constrained('user');
             $table->timestamps();
         });
