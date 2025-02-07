@@ -6,7 +6,10 @@ use App\Models\AltCz;
 use App\Models\Detail;
 use App\Models\Oems;
 use App\Models\RozCz;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProductService
 {
@@ -89,7 +92,8 @@ class ProductService
 
     public function getImageUrl(string $imageName = ''):string {
         Log::info($imageName);
-        return ($imageName !== '') ? url('storage/images/' . $this->parseImagePath($imageName) . '.jpg') : url('storage/images/no-photo--lg' . '.png');
+        $image = $this->findImage($imageName);
+        return ($image !== '') ? url('storage/images/' . $this->parseImagePath($image) . '.jpg') : url('storage/images/no-photo--lg' . '.png');
     }
 
     private function parseImagePath(string $imagePath):string{
@@ -97,5 +101,19 @@ class ProductService
             return strtolower($imagePath);
         }
         return strtolower(stristr($imagePath, ',', true));
+    }
+
+    private function findImage(string $imagePath):string{
+        $imagePathArr = explode(',', $imagePath);
+        $imageFile = '';
+        $isExist = false;
+        foreach ($imagePathArr as $imagePathItem){
+            if (!$isExist){
+                Log::info($this->parseImagePath($imagePathItem) . '.jpg');
+                $isExist = Storage::disk('images')->exists($this->parseImagePath($imagePathItem) . '.jpg');
+                $imageFile = $imagePathItem;
+            }
+        }
+        return $imageFile;
     }
 }
