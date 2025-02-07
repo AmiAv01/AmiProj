@@ -11,11 +11,21 @@
                     <p class="text-gray-700 text-2xl mr-4">Email:</p>
                     <p class="text-2xl">{{ user.email }}</p>
                 </div>
-                <div  class="flex">
-                    <p>Formula</p>
-                    <form action="" class >
-                        <input type="text">
-                        <button @click="changeFormula">Изменить</button>
+                <div  class="flex flex-wrap my-4">
+                    <p class="ext-gray-700 text-2xl mr-4">Формула</p>
+                    <form class="flex flex-wrap">
+                        <input
+                            class="shadow appearance-none border rounded-md w-[300px] h-[30px] px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="text"
+                            v-model="formula"
+
+                        />
+                        <button
+                            @click.prevent="changeFormula"
+                            class="bg-green-700 ml-2 rounded-lg mt-2 sm:mt-0 text-white w-[150px] max-w-[150px] h-[30px]  text-lg "
+                        >
+                            Изменить
+                        </button>
                     </form>
                 </div>
 
@@ -44,11 +54,24 @@
 import UserOrderItems from "@/Pages/Admin/User/UserOrderItems.vue";
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 import DetailList from "@/Shared/DetailList.vue";
+import {ref} from "vue";
 
 const props = defineProps({
     orders: Array,
     cart: Array,
     user: Object,
 });
+
+const formula = ref('O');
+console.log(formula);
+
+console.log(props.user)
+
+const changeFormula = () => {
+    axios
+        .put(`/admin/users/${props.user.id}`, {formula: formula.value})
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+}
 </script>
 
