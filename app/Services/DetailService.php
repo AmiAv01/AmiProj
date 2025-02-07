@@ -19,7 +19,7 @@ final class DetailService
 
     public function getByFilters(array $categories, int $perPage): LengthAwarePaginator
     {
-        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code', true, null))->get();
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
             ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage)->withQueryString();
     }

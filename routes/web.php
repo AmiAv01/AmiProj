@@ -50,7 +50,7 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 Route::get('/api/search', [SearchController::class, 'index']);
 
-Route::group(['prefix' => 'catalog'], (function () {
+Route::group(['prefix' => 'catalog'], (function (): void {
     Route::get('/search', [CatalogSearchedController::class, 'index']);
     Route::get('/api/search', [SearchController::class, 'index']);
     Route::get('/generators', [GeneratorController::class, 'index'])->name('generator.index');
@@ -71,13 +71,13 @@ Route::middleware('auth')->resource('/cart', CartController::class)->only(['inde
 Route::middleware('auth')->put('/clear', [ClearCartController::class, 'index'])->name('cart.clear');
 Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
 
-Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'RedirectIfAdmin'], function (): void {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
     Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function (): void {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // details route
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
