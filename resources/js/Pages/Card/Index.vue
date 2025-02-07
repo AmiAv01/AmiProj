@@ -41,7 +41,7 @@
                                 <p
                                     class="text-2xl font-extrabold text-gray-900 sm:text-3xl "
                                 >
-                                    {{price ? price : 0}} BYN
+                                    {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
                                 </p>
                             </div>
 
@@ -55,8 +55,8 @@
                                     role="button"
                                 >
                                 </cart-button>
-                                <p v-if="detail.ostc !== ''" class="text-2xl text-green-400">Есть в наличии</p>
-                                <p v-if="detail.ostc === ''" class="text-2xl text-red-400">Нет в наличии</p>
+                                <p v-if="detail.ostc" class="text-2xl text-green-400">Есть в наличии</p>
+                                <p v-else class="text-2xl text-red-400">Нет в наличии</p>
                             </div>
                         </div>
                         <div v-else>
@@ -92,14 +92,14 @@
 import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 
 const props = defineProps({
     sameDetails: {
         type: Array,
     },
     detail: {
-        type: Array,
+        type: Object,
     },
     analogs: {
         type: Array,
@@ -111,7 +111,7 @@ const props = defineProps({
         type: Boolean,
     },
     price: {
-        type: Number
+        type: String
     },
     imageUrl: {
         type: String
@@ -137,9 +137,7 @@ const isHasDetails = () => {
         props.detail.dt_typec === "СТАРТЕР"
     );
 }
+console.log(props.detail.ostc)
 
-onMounted(() => {
-    console.log(props.detail)
-})
 </script>
 
