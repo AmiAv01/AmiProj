@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use app\ChangeCurrencyAction;
 use App\DTO\CurrencyDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CurrencyFormRequest;
