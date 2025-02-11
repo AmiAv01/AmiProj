@@ -65,7 +65,6 @@ const props = defineProps({
     detail: Object,
 })
 
-
 const editTitle = (res) => editDetailTitle(res)
 
 </script>
