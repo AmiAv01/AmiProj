@@ -20,10 +20,10 @@ class ProductController extends Controller
     {
         $detail = $this->detailService->getByInvoice($id);
         $analogs = $this->productService->getAnalogs($id);
+        if (!auth()->check()){
+            return Inertia::render('Card/GuestCard', ['detail' => $detail[0], 'isEmpty' => false]);
+        }
         if (!$detail->isEmpty()){
-            if (!auth()->check()){
-                return Inertia::render('Card/GuestCard', ['detail' => $detail[0], 'isEmpty' => false]);
-            }
             return Inertia::render('Card/Index', ['detail' => $detail[0], 'sameDetails' => $this->productService->getSameDetails($detail[0]->dt_typec, $id),
                 'analogs' => $analogs, 'isEmpty' => false, 'imageUrl' => $this->productService->getImageUrl($detail[0]->dt_foto),
                 'price' => $this->priceService->getPrice($detail[0]->dt_code, (auth()->check() && auth()->user()->id))]);
