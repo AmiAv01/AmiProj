@@ -1,5 +1,8 @@
 <template>
     <layout>
+        <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </push>
         <section class="py-8 bg-white md:py-16  antialiased">
             <div class="w-full px-4 2xl:px-0">
                 <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16 ">
@@ -10,7 +13,6 @@
                             alt=""
                         />
                     </div>
-
                     <div  class="mt-6 sm:mt-8 2xl:mt-0">
                         <h1
                             class="text-4xl font-semibold text-gray-900  "
@@ -49,9 +51,10 @@
                                 class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
                             >
                                 <cart-button
+                                    v-if="detail.ostc && price !== '0'"
                                     @click="addInCart"
                                     title=""
-                                    class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                                    class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800  font-medium rounded-lg px-5 py-2.5  flex items-center justify-center"
                                     role="button"
                                 >
                                 </cart-button>
@@ -92,7 +95,7 @@
 import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
-import {onMounted} from "vue";
+import {ref} from "vue";
 
 const props = defineProps({
     sameDetails: {
@@ -118,6 +121,7 @@ const props = defineProps({
     }
 });
 
+const isShow = ref(false);
 
 const addInCart = () =>  {
     axios
@@ -126,7 +130,10 @@ const addInCart = () =>  {
             quantity: 1,
             price: props.price
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+            console.log(res);
+            isShow.value = true;
+        })
         .catch((err) => console.log(err));
 }
 
@@ -137,7 +144,9 @@ const isHasDetails = () => {
         props.detail.dt_typec === "СТАРТЕР"
     );
 }
-console.log(props.detail.ostc)
 
+function hideModal(param){
+    isShow.value = param;
+}
 </script>
 
