@@ -6,7 +6,6 @@ use App\DTO\OrderDTO;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
