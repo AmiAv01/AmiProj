@@ -21,7 +21,7 @@
                 </div>
                 <div class="flex">
                     <p class="text-gray text-2xl mr-4">Дата:</p>
-                    <p class="text-2xl">{{ order[0].created_at }}</p>
+                    <p class="text-2xl">{{ new Date(order[0].created_at).toLocaleDateString() }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
