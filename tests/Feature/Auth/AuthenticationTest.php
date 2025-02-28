@@ -10,8 +10,10 @@ test('login screen can be rendered', function (): void {
 });
 
 test('users can authenticate using the login screen', function (): void {
-    $user = User::factory()->create();
-
+    $user = User::factory()->create([
+        'approved' => true
+    ]);
+    dump($user->toArray());
     $response = $this->post('/login', [
         'email' => $user->email,
         'password' => 'password',
@@ -19,6 +21,20 @@ test('users can authenticate using the login screen', function (): void {
 
     $this->assertAuthenticated();
     $response->assertRedirect(RouteServiceProvider::HOME);
+});
+
+test('users can`t authenticate using the login screen when approved field is false', function (): void {
+    $user = User::factory()->create([
+        'approved' => false
+    ]);
+    dump($user->toArray());
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertGuest();
+
 });
 
 test('users can not authenticate with invalid password', function (): void {
