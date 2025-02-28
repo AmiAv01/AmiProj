@@ -28,7 +28,7 @@ import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
 let currencyValue = 0;
 
 function changeCurrency(){
-    axios.post(`/admin/currency`, {currency: currencyValue})
+    axios.post(`/admin/resource/currency`, {currency: currencyValue})
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
 }
