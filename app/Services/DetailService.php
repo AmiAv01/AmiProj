@@ -30,13 +30,13 @@ final class DetailService
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
             ->join('stk', 'stk.code', '=', 'detail.dt_code' )
-            ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_invoice','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
+            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Collection
     {
         return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )
-            ->select(['dt_id', 'dt_invoice','dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
+            ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
     }
 
     public function getClientBrands(FilterDTO $dto): array | null
