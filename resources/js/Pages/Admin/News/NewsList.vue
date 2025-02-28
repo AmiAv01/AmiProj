@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти новость`"
-                            :link="`../admin/api/search?category=news&searchQ`"
+                            :link="`/admin/resource/api/search?category=news&searchQ`"
                             @setData="searchData"
                         />
                         <button
@@ -33,14 +33,14 @@
                             </thead>
                             <tbody>
                                 <NewsItem
-                                    v-for="(post) in searchNews.data"
+                                    v-for="(post) in store.newsData.data"
                                     :post="post"
                                     :key="post.id"
                                 />
                             </tbody>
                         </table>
                     </div>
-                    <Pagination :links="searchNews.links" />
+                    <Pagination :links="store.newsData.links" />
                 </div>
             </div>
             <NewsAddForm
@@ -59,6 +59,7 @@ import Search from "@/Pages/Admin/Search.vue";
 import NewsItem from "@/Pages/Admin/News/NewsItem.vue";
 import NewsAddForm from "@/Shared/Forms/NewsAddForm.vue";
 import {ref} from "vue";
+import {useNewsStore} from "@/Store/newsStore.js";
 
 const props = defineProps({
     news: {
@@ -67,16 +68,17 @@ const props = defineProps({
     }
 })
 
-let searchNews = ref(props.news);
-let isShow = false;
+const store = useNewsStore();
+//let searchNews = ref(props.news);
+const isShow = ref(false);
 let columnNames = ['#', 'Заголовок', 'Дата', 'Описание', 'Автор'];
 
+store.newsData = props.news;
+console.log(store.newsData)
 function searchData(data) {
-
-    searchNews.value = data.news;
-    console.log(searchNews.value);
+    store.newsData = data.news;
 }
 function showModal() {
-    isShow = true;
+    isShow.value = true;
 }
 </script>

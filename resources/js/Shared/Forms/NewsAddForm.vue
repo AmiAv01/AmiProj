@@ -38,7 +38,7 @@
                     />
                 </div>
                 <button
-                    @click ="addPost"
+                    @click.prevent ="store.addPost(currentTitle, currentDescription)"
                     class="bg-green-700 rounded-lg text-white px-5 py-2.5 mx-auto text-lg mt-4"
                 >
                     {{ actionTitle }}
@@ -49,10 +49,10 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import {ref} from "vue";
+import {useNewsStore} from "@/Store/newsStore.js";
 
-const props = {
+const props = defineProps({
     isShow: {
         type: Boolean,
         default: false,
@@ -61,25 +61,15 @@ const props = {
         type: String,
         default: '',
     }
-}
+});
 
 const emit = defineEmits(['closeModal'])
-
+const store = useNewsStore();
 const currentTitle = ref("")
 const currentDescription = ref("")
 
 const closeModal = () => {
     emit("closeModal");
-}
-
-const addPost = () => {
-    axios
-        .post(`/admin/news/store`, {
-            title: currentTitle.value,
-            description: currentDescription.value,
-        })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
 }
 
 </script>

@@ -36,7 +36,7 @@
                     />
                 </div>
                 <button
-                    @click.prevent = "editPost"
+                    @click.prevent = "store.editPost(props.postId, currentTitle, currentDescription)"
                     class="bg-green-700 rounded-lg text-white px-5 py-2.5 mx-auto text-lg mt-4"
                 >
                     {{ actionTitle }}
@@ -49,6 +49,7 @@
 <script setup>
 import axios from "axios";
 import {ref} from "vue";
+import {useNewsStore} from "@/Store/newsStore.js";
 
 const props = defineProps({
     title: {
@@ -74,22 +75,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['closeModal'])
-
-const currentTitle = ref("")
-const currentDescription = ref("")
+const store = useNewsStore();
+const currentTitle = ref(props.title)
+const currentDescription = ref(props.description)
 
 const closeModal = () => {
     emit("closeModal");
 }
 
-const editPost = () => {
-    console.log(props.postId)
-    axios
-        .patch(`/admin/news/${props.postId}`, {
-            title: currentTitle.value,
-            description: currentDescription.value,
-        })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-}
 </script>
