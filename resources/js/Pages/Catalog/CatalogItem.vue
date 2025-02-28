@@ -34,7 +34,7 @@
         <div class="">
             <menu-button
                 :attributes="`px-6 py-4 text-lg mt-4 lg:mt-0`"
-                :href="route('login')"
+                :href="`${routes.get('login')}`"
                 v-if="!$page.props.auth.user"
             >
                 <svg
@@ -60,6 +60,7 @@
 
 <script setup>
 import { editDetailTitle } from "@/Services/TitleService.js";
+import {routes} from "@/Store/routes.js";
 
 const props = defineProps({
     detail: Object,

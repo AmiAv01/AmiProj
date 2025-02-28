@@ -5,7 +5,7 @@
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
                 <Link
-                    :href="route('admin.dashboard')"
+                    :href="`${routes.get('admin.dashboard')}`"
                     class="flex items-center justify-between mr-4"
                 >
                     <svg
@@ -61,14 +61,14 @@
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
                             <inertia-link
-                                :href="route('profile.edit')"
+                                :href="`${routes.get('profile.edit')}`"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >Настройки</inertia-link
                             >
                         </li>
                         <li>
                             <inertia-link
-                                :href="route('logout')"
+                                :href="`${routes.get('logout')}`"
                                 method="post"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >Выход</inertia-link
@@ -96,6 +96,7 @@
 import {Link} from "@inertiajs/vue3";
 import {initFlowbite} from "flowbite";
 import {onMounted, ref} from "vue";
+import {routes} from "@/Store/routes.js";
 import AdminBurgerMenu from "@/Pages/Admin/Components/AdminBurgerMenu.vue";
 
 const isMenuOpen = ref(true);
