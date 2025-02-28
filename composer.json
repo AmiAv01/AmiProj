@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.4.2",
+        "ext-bcmath": "*",
+        "ext-intl": "*",
         "guzzlehttp/guzzle": "^7.9.2",
         "inertiajs/inertia-laravel": "v2.0.0",
         "laravel/framework": "11.38.0",
@@ -13,9 +15,7 @@
         "laravel/tinker": "^v2.10.0",
         "moneyphp/money": "^v4.6",
         "spatie/laravel-query-builder": "^6.3.0",
-        "tightenco/ziggy": "^1.0",
-        "ext-intl": "*",
-        "ext-bcmath": "*"
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^v3.14.10",
