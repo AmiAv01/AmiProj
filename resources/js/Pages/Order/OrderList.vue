@@ -28,7 +28,7 @@
                             {{ order.id }}
                         </th>
                         <td class="px-8 py-6">
-                            {{ order.created_at }}
+                            {{ new Date(order.created_at).toLocaleDateString() }}
                         </td>
                         <td class="px-8 py-6">
                             {{ order.total_price }}
