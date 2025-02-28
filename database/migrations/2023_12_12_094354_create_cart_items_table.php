@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cart_id')->references('id')->on('cart');
             $table->foreignId('dt_id')->references('dt_id')->on('detail');
-            $table->string('price');
+            $table->string('price', 10);
             $table->integer('quantity');
             $table->timestamps();
         });
