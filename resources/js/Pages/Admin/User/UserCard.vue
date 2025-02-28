@@ -17,7 +17,7 @@
                         <input
                             class="shadow appearance-none border rounded-md w-[300px] h-[30px] px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"
-                            v-model="formula"
+                            v-model="newFormula"
 
                         />
                         <button
@@ -60,16 +60,16 @@ const props = defineProps({
     orders: Array,
     cart: Array,
     user: Object,
+    formula: String,
 });
 
-const formula = ref('O');
-console.log(formula);
+const newFormula = ref(props.formula);
 
 console.log(props.user)
 
 const changeFormula = () => {
     axios
-        .put(`/admin/users/${props.user.id}`, {formula: formula.value})
+        .put(`/admin/resource/users/${props.user.id}`, {formula: newFormula.value})
         .then(res => console.log(res))
         .catch(err => console.log(err))
 }

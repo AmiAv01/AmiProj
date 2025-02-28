@@ -4,7 +4,7 @@
             scope="row"
             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
-            <a :href="`/admin/orders/${order.id}`">
+            <a :href="`/admin/resource/orders/${order.id}`">
                 {{ order.id }}
             </a>
         </th>

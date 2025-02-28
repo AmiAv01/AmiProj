@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти заказ`"
-                            :link="`../admin/api/search?category=orders&searchQ`"
+                            :link="`/admin/resource/api/search?category=orders&searchQ`"
                             @setData="searchData"
                         />
                     </div>

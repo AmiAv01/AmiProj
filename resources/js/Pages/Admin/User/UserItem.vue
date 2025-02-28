@@ -4,7 +4,7 @@
             scope="row"
             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
         >
-            <a :href="`/admin/users/${user.id}`">
+            <a :href="`/admin/resource/users/${user.id}`">
                 {{ user.id }}
             </a>
         </th>
@@ -81,13 +81,13 @@ function showModal() {
 }
 
 function deleteUser(id){
-    axios.delete(`/admin/users/${id}`)
+    axios.delete(`/admin/resource/users/${id}`)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
 }
 
 function approveUser(id){
-    axios.put(`/admin/approve/${id}`)
+    axios.put(`/admin/resource/approve/${id}`)
         .then(res => {
             console.log(res.data);
             window.location.reload();
