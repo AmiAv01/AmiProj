@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('dt_type', 200);
             $table->string('dt_comment', 255);
             $table->string('dt_foto', 255);
-            $table->string('dt_invoice', 100);
+            $table->string('dt_invoice', 100)->index('idx_dt_invoice');
             $table->integer('dt_netto');
-            $table->string('dt_oem');
+            $table->string('dt_oem')->index('idx_dt_oem');
             $table->integer('dt_baza');
             $table->integer('dt_cena');
             $table->integer('dt_prod');
