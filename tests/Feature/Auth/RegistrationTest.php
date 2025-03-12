@@ -15,6 +15,7 @@ test('new users can register', function (): void {
         'phoneNumber' => '1234567890',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'approved' => true,
     ]);
 
     $this->assertAuthenticated();
