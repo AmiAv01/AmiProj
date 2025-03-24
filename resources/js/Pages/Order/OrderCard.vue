@@ -5,19 +5,19 @@
                 class="flex rounded-[15px] pb-10 w-[500px] max-h-[300px] flex-col"
             >
                 <h3 class="text-5xl text-wrap sm:text-7xl py-10 font-bold text-gray-900 ">
-                    Заказ № {{ order[0].id }}
+                    Заказ № {{ order.id }}
                 </h3>
                 <div class="flex flex-col sm:flex-row">
                     <p class="text-gray-700 text-2xl mr-4">Статус заказа:</p>
-                    <p class="text-2xl">{{ order[0].status }}</p>
+                    <p class="text-2xl">{{ order.status }}</p>
                 </div>
                 <div class="flex flex-col mt-4 sm:flex-row sm:mt-0">
                     <p class="text-gray text-2xl mr-4">Дата:</p>
-                    <p class="text-2xl">{{ new Date(order[0].created_at).toLocaleDateString() }}</p>
+                    <p class="text-2xl">{{ new Date(order.created_at).toLocaleDateString() }}</p>
                 </div>
                 <div class="flex flex-col mt-4 sm:flex-row sm:mt-0">
                     <p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
-                    <p class="text-2xl">{{ order[0].total_price }} BYN</p>
+                    <p class="text-2xl">{{ order.total_price }} BYN</p>
                 </div>
             </div>
             <div class="border-2 rounded-lg mt-16 sm:mt-0">
