@@ -6,6 +6,9 @@ export const useNewsStore = defineStore('news', {
     actions: {
         setNews(items){
             this.newsData = items;
+
+        },
+        addPost(title, description){
             axios
                 .post(`/admin/resource/news/store`, {
                     title,
