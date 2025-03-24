@@ -26,8 +26,6 @@ class DetailFactory extends Factory
             'dt_baza' => $this->faker->randomNumber(),
             'dt_cena' => $this->faker->randomNumber(),
             'dt_prod' => $this->faker->randomNumber(),
-            'dt_ost' => $this->faker->randomNumber(),
-            'dt_ostc' => $this->faker->randomNumber(),
             'dt_typec' => $this->faker->word(),
             'dt_bp' => $this->faker->randomNumber(),
             'dt_cargo' => $this->faker->word(),
