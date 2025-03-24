@@ -63,10 +63,10 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal']);
 const store = useNewsStore();
-const currentTitle = ref("")
-const currentDescription = ref("")
+const currentTitle = ref("");
+const currentDescription = ref("");
 
 const closeModal = () => {
     emit("closeModal");
