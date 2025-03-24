@@ -39,7 +39,6 @@ test('email can be verified', function (): void {
 });
 
 test('email is not verified with invalid hash', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);
