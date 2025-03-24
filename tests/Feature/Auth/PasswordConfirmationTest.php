@@ -24,7 +24,6 @@ test('password can be confirmed', function (): void {
 });
 
 test('password is not confirmed with invalid password', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post('/confirm-password', [

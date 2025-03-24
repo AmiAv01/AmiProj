@@ -72,7 +72,6 @@ test('user can delete their account', function (): void {
 });
 
 test('correct password must be provided to delete account', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
