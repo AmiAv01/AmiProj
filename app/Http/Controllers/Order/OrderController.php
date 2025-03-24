@@ -25,7 +25,7 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request): OrderResource
     {
-        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), auth()->id()));
+        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый' ,auth()->id()));
         return OrderResource::make($order);
     }
 
