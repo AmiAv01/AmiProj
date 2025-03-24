@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
 test('email verification screen can be rendered', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);
@@ -17,6 +18,7 @@ test('email verification screen can be rendered', function (): void {
 });
 
 test('email can be verified', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);
@@ -37,6 +39,7 @@ test('email can be verified', function (): void {
 });
 
 test('email is not verified with invalid hash', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);

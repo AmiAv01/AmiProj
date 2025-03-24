@@ -4,12 +4,14 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 
 test('login screen can be rendered', function (): void {
+    $this->withoutExceptionHandling();
     $response = $this->get('/login');
 
     $response->assertStatus(200);
 });
 
 test('users can authenticate using the login screen', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => true
     ]);
@@ -24,6 +26,7 @@ test('users can authenticate using the login screen', function (): void {
 });
 
 test('users can`t authenticate using the login screen when approved field is false', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => false
     ]);
@@ -38,6 +41,7 @@ test('users can`t authenticate using the login screen when approved field is fal
 });
 
 test('users can not authenticate with invalid password', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $this->post('/login', [
@@ -49,6 +53,7 @@ test('users can not authenticate with invalid password', function (): void {
 });
 
 test('users can logout', function (): void {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post('/logout');
