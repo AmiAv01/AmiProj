@@ -24,7 +24,7 @@ class AdminNewsController extends Controller
     }
 
     public function store(NewsFormRequest $request): array{
-        $post = $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
+        $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
         return ['items' => $this->newsService->getAll(12)];
     }
 
