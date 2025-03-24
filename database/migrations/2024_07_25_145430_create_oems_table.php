@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('dt_invoice', 20)->index('idx_oems_invoice');
             $table->string('dt_parent', 15);
-            $table->string('dt_oem', 20)->index('idx_dt_oem');
+            $table->string('dt_oem', 20)->index('idx_oems_oem');
             $table->string('fr_code', 20);
             $table->string('dt_typec', 40);
             $table->timestamps();
