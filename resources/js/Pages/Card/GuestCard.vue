@@ -44,13 +44,14 @@ import { editDetailTitle } from "@/Services/TitleService";
 
 const props = defineProps({
     detail: {
-        type: Array,
+        type: Object,
     },
     isEmpty:{
         type: Boolean,
     },
 });
 const editTitle = (res) => editDetailTitle(res)
+console.log(props.detail)
 
 </script>
 
