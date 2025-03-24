@@ -10,7 +10,7 @@ use Log;
 use Money\Money;
 
 final class PriceService{
-    public function __construct(protected UserService $userService)
+    public function __construct(protected UserService $userService, protected CurrencyService $currencyService)
     {}
 
     public function getPrice(int $detailCode, int $userId): int | string | Money {
@@ -35,7 +35,7 @@ final class PriceService{
 
     private function getSpecialPrice(string $price, string $sign, string $percent): string
     {
-        $currency = Currency::where('code', '=', 'EUR')->value('value');
+        $currency = $this->currencyService->getCurrency();
         if ($sign === ''){
             return bcmul($price, $this->parsePrice($currency));
         }
