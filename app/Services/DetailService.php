@@ -29,13 +29,13 @@ final class DetailService
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
-            ->join('stk', 'stk.code', '=', 'detail.dt_code' )
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Collection
     {
-        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )
+        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
     }
 
@@ -45,7 +45,11 @@ final class DetailService
     }
 
 
-    public function getBySearching(mixed $search)
+    public function getBySearching(string $search, int $perPage):LengthAwarePaginator
     {
+        return Detail::where('dt_invoice', 'like', "%$search%")->orWhere('dt_oem', 'like', "%$search%")
+            ->orWhere('dt_cargo', 'like', "%$search%")->orWhere('dt_typec', '=', "$search")
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 }
