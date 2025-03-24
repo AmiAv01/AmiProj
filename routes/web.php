@@ -80,6 +80,7 @@ Route::group(['middleware' => 'removeHeader'], function(){
         // orders route
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+        Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
 
         // news route
         Route::get('/news', [AdminNewsController::class, 'index'])->name('admin.news.index');
