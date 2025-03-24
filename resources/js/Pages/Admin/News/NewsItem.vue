@@ -51,7 +51,7 @@
                 </ul>
                 <div class="py-1">
                     <button
-                        @click = "deletePost(post.id)"
+                        @click = "store.deletePost(post.id)"
                         class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 "
                     >
                         Удалить
@@ -60,7 +60,7 @@
             </div>
         </td>
     </tr>
-    <news-form
+    <NewsEditForm
         @closeModal="isShow = false"
         :show="isShow"
         :title="post.title"
@@ -70,33 +70,21 @@
     />
 </template>
 
-<script>
+<script setup>
 import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
+import {ref} from "vue";
+import {useNewsStore} from "@/Store/newsStore.js";
 
-export default {
-    data() {
-        return {
-            isShow: false,
-        };
-    },
-    props: {
-        post: {
-            type: Object,
-            default: null,
-        },
-    },
-    components: {
-        "news-form": NewsEditForm,
-    },
-    methods: {
-        showModal() {
-            this.isShow = true;
-        },
-        deletePost(id){
-            axios.delete(`/admin/news/${id}`)
-                .then(res => console.log(res.data))
-                .catch(err => console.log(err))
-        }
-    },
-};
+const isShow = ref(false);
+const store = useNewsStore();
+const props = defineProps({
+    post: {
+        type: Object,
+        default: null,
+    }
+})
+
+const showModal = () => {
+    isShow.value = true;
+}
 </script>

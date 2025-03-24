@@ -6,29 +6,26 @@
 </template>
 
 
-<script>
-import { ref } from 'vue'
-export default {
-    props: {
-        title: {
-            type: String,
-            default: ''
-        },
-        isShow: {
-            type: Boolean,
-            default: false
-        },
-        bgColor: {
-            type: String,
-            default: 'bg-green-600'
-        }
+<script setup>
+
+const props = defineProps({
+    title: {
+        type: String,
+        default: ''
     },
-    created() {
-        setTimeout(() => {
-            this.$emit('hide', false);
-        }, 1500);
+    isShow: {
+        type: Boolean,
+        default: false
     },
-}
+    bgColor: {
+        type: String,
+        default: 'bg-green-600'
+    }
+})
+
+setTimeout(() => {
+    this.$emit('hide', false);
+}, 1500);
 </script>
 
 

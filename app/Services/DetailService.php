@@ -19,7 +19,7 @@ final class DetailService
 
     public function getByFilters(array $categories, int $perPage): LengthAwarePaginator
     {
-        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
+        $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code', true, null))->get();
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
             ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage)->withQueryString();
     }
@@ -29,14 +29,14 @@ final class DetailService
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code'))->get();
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
-            ->join('stk', 'stk.code', '=', 'detail.dt_code' )
-            ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_invoice','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Collection
     {
-        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code' )
-            ->select(['dt_id', 'dt_invoice','dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
+        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
     }
 
     public function getClientBrands(FilterDTO $dto): array | null
@@ -45,7 +45,11 @@ final class DetailService
     }
 
 
-    public function getBySearching(mixed $search)
+    public function getBySearching(string $search, int $perPage):LengthAwarePaginator
     {
+        return Detail::where('dt_invoice', 'like', "%$search%")->orWhere('dt_oem', 'like', "%$search%")
+            ->orWhere('dt_cargo', 'like', "%$search%")->orWhere('dt_typec', '=', "$search")
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 }

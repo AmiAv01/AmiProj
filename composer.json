@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.4.2",
+        "ext-bcmath": "*",
+        "ext-intl": "*",
         "guzzlehttp/guzzle": "^7.9.2",
         "inertiajs/inertia-laravel": "v2.0.0",
         "laravel/framework": "11.38.0",
@@ -13,13 +15,12 @@
         "laravel/tinker": "^v2.10.0",
         "moneyphp/money": "^v4.6",
         "spatie/laravel-query-builder": "^6.3.0",
-        "tightenco/ziggy": "^1.0",
-        "ext-intl": "*",
-        "ext-bcmath": "*"
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^v3.14.10",
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.68",
         "knuckleswtf/scribe": "^4.39.0",
         "laravel/breeze": "^v2.1.5",
         "laravel/pint": "^v1.20.0",
@@ -28,6 +29,7 @@
         "nunomaduro/collision": "^v8.5.0",
         "pestphp/pest": "^v3.5.2",
         "pestphp/pest-plugin-laravel": "^v3.0.0",
+        "rector/rector": "^2.0",
         "spatie/laravel-ignition": "^2.9.0"
     },
     "autoload": {

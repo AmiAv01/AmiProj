@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id('id');
             $table->dateTime('datep');
             $table->string('tmp');
-            $table->string('hcparts');
+            $table->string('hcparts')->index('idx_hcparts');
             $table->string('brand');
             $table->string('typec');
             $table->string('dt_brand');

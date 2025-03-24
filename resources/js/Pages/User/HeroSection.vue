@@ -21,7 +21,7 @@
             <div class="flex flex-wrap items-center justify-center xl:justify-start">
                 <a
                     href="/catalog/starters"
-                    class="mt-2 sm:mt-0 inline-flex items-center justify-center px-16 py-6 mr-3 text-xl font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-900 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+                    class="mt-2 sm:mt-0 inline-flex items-center justify-center px-16 py-6 mr-3 text-xl font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-900 "
                 >
                     Стартеры
                     <svg
@@ -39,7 +39,7 @@
                 </a>
                 <a
                     href="/catalog/generators"
-                    class="mt-2 sm:mt-0 inline-flex cursor-pointer items-center justify-center px-16 py-6 text-xl font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:border-gray-700  dark:focus:ring-gray-800"
+                    class="mt-2 sm:mt-0 inline-flex cursor-pointer items-center justify-center px-16 py-6 text-xl font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100"
                 >
                     Генераторы
                     <svg

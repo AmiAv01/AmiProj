@@ -4,7 +4,7 @@
             scope="row"
             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
-            <a :href="`/admin/orders/${order.id}`">
+            <a :href="`/admin/resource/orders/${order.id}`">
                 {{ order.id }}
             </a>
         </th>
@@ -26,25 +26,20 @@
     </tr>
 </template>
 
-<script>
-import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
+<script setup>
 
-export default {
-    data() {
-        return {
-            isShow: false,
-        };
+import {ref} from "vue";
+
+const props = defineProps({
+    order: {
+        type: Object,
+        default: null,
     },
-    props: {
-        order: {
-            type: Object,
-            default: null,
-        },
-    },
-    methods: {
-        showModal() {
-            this.isShow = true;
-        },
-    },
-};
+})
+
+const isShow = ref(false);
+
+const showModal = () => {
+    isShow.value = true;
+}
 </script>

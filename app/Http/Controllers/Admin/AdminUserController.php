@@ -29,7 +29,7 @@ class AdminUserController extends Controller
     public function show(int $user): Response
     {
         return Inertia::render('Admin/User/UserCard', ['user' => $this->userService->getById($user), 'cart' => $this->cartService->getCartItems($user),
-            'orders' => $this->orderService->getByUserId($user)]);
+            'orders' => $this->orderService->getByUserId($user), 'formula' => $this->userService->getUserFormula($user)]);
     }
 
     public function update(int $user, AdminUserRequest $request)

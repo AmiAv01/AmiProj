@@ -6,7 +6,6 @@ use App\DTO\OrderDTO;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,7 +28,7 @@ final class OrderService
 
     public function createOrder(OrderDTO $dto):Order
     {
-        $order = Order::create(['total_price' => $dto->totalPrice, 'status' => 'Новый', 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
+        $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
         $cart =  Cart::user($dto->userId)->first();
         $cartItems = $cart->items;
         foreach ($cartItems as $item) {
@@ -42,10 +41,16 @@ final class OrderService
         return $order;
     }
 
-    public function getById(int $id): Collection
+    public function updateOrderStatus(int $id, OrderDTO $dto):Order{
+        $order = Order::where('id', '=', $id)->first();
+        $order->update(['status' => $dto->status]);
+        return $order;
+    }
+
+    public function getById(int $id): Order
     {
         return Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->get();
+            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
     }
 
     public function getOrderItems(int $id): Collection

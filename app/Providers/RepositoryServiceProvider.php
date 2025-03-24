@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Repositories\DetailRepository;
-use App\Repositories\Interfaces\DetailRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -13,10 +11,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            DetailRepositoryInterface::class,
-            DetailRepository::class
-        );
     }
 
     /**

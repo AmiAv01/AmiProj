@@ -39,7 +39,7 @@ import {ref} from "vue";
 import {useCartStore} from "@/Store/cartStore.js";
 
 const store = useCartStore();
-let isShow = ref(false);
+const isShow = ref(false);
 const props = defineProps({
     count: {
         type: Number,
@@ -56,7 +56,7 @@ function makeOrder() {
             axios.post("/order", { totalPrice: props.price })
                 .then((res) => {
                     console.log(res);
-                    isShow = true;
+                    isShow.value = true;
                 }).catch((err) => console.log(err)),
             axios.put('/clear')
                 .then((res) => {
@@ -66,7 +66,7 @@ function makeOrder() {
         ])}
 
 function hideModal(param){
-    isShow = param;
+    isShow.value = param;
 }
 
 </script>

@@ -115,7 +115,7 @@
 <script setup>
 import MenuItem from "@/Shared/Nav/NavMenuItem.vue";
 import {starterParts, generatorParts} from "@/Store/index.js";
-import {computed, onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import BurgerMenu from "@/Shared/BurgerMenu/BurgerMenu.vue";
 
 const isMenuOpen = ref(true);

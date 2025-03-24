@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Firm;
-use App\Models\User;
 use App\Services\CartService;
 use App\Services\CurrencyService;
 use App\Services\DetailService;
@@ -13,8 +11,7 @@ use App\Services\PriceService;
 use App\Services\ProductService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
-use Inertia\ResponseFactory;
+
 
 class AppServiceProvider extends ServiceProvider
 {

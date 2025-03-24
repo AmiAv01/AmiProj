@@ -46,7 +46,6 @@ class RegisteredUserController extends Controller
         $cart = $this->cartService->storeCart($user->id);
         event(new Registered($user));
 
-        Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

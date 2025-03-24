@@ -40,8 +40,8 @@ export const subCategories = new Map([['Генераторы', '/catalog/generat
     ['Подшипники', '/catalog/bearings'], ['Прочее', '/catalog/other']]);
 
 export const adminMenuItems = new Map([
-    ['Запчасти', 'admin.details.index'],
-    ['Заказы', 'admin.orders.index'],
-    ['Новости', 'admin.news.index'],
-    ['Пользователи', 'admin.users.index'],
-    ['Курс валют', 'admin.currency.index']]);
+    ['Запчасти', '/admin/resource/details'],
+    ['Заказы', '/admin/resource/orders'],
+    ['Новости', '/admin/resource/news'],
+    ['Пользователи', '/admin/resource/users'],
+    ['Курс валют', '/admin/resource/currency']]);

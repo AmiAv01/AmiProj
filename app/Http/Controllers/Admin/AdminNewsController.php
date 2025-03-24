@@ -23,18 +23,19 @@ class AdminNewsController extends Controller
         return Inertia::render('Admin/News/NewsList', ['news' => $this->newsService->getAll(12)]);
     }
 
-    public function store(NewsFormRequest $request): NewsPostResource{
-        $post = $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
-        return NewsPostResource::make($post);
+    public function store(NewsFormRequest $request): array{
+        $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
+        return ['items' => $this->newsService->getAll(12)];
     }
 
-    public function update(NewsFormRequest $request,int $post): NewsPostResource
+    public function update(NewsFormRequest $request, int $postId): array
     {
-        $post = $this->newsService->update(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), $post);
-        return NewsPostResource::make($post);
+        $this->newsService->update(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), $postId);
+        return ['items' => $this->newsService->getAll(12)];
     }
 
-    public function destroy(int $post): bool{
-        return $this->newsService->destroy($post);
+    public function destroy(int $postId): array{
+        $this->newsService->destroy($postId);
+        return ['items' => $this->newsService->getAll(12)];
     }
 }

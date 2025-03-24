@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import {routes} from "@/Store/routes.js";
 
 defineProps({
     canResetPassword: {
@@ -23,7 +24,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("admin.login.post"), {
+    console.log(routes.get('admin.login.post'))
+    form.post(`${routes.get('admin.login.post')}`, {
         onFinish: () => form.reset("password"),
     });
 };

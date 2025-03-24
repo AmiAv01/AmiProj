@@ -5,7 +5,6 @@ namespace App\Services;
 use App\DTO\CartDTO;
 use App\Models\Cart;
 use App\Models\CartItem;
-use Darryldecode\Cart\Facades\CartFacade;
 use Illuminate\Support\Facades\Log;
 
 final class CartService
@@ -17,16 +16,32 @@ final class CartService
         ]);
     }
 
-    public function addToCart(int $userId, CartDTO $dto): CartItem
+    public function addToCart(int $userId, CartDTO $dto): CartItem | array
     {
         $cart = Cart::user($userId)->first();
-        return CartItem::create(['cart_id' => $cart->cart_id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $dto->productPrice]);
+        if ($this->checkIfProductInCart($cart, $dto->productId)) {
+            return [];
+        }
+        return CartItem::create(['cart_id' => $cart->id, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $dto->productPrice]);
+    }
+
+    public function checkIfProductInCart(Cart $cart, int $productId): bool
+    {
+        $isExist = false;
+        $cartItems = $cart->items;
+        foreach ($cartItems as $cartItem) {
+            if ($cartItem->dt_id === $productId) {
+                $isExist = true;
+            }
+        }
+        return $isExist;
     }
 
     public function getCartItems(int $userId): array
     {
         $cart = Cart::user($userId)->first();
         $cartItems = $cart->items;
+
         $details = [];
         $i = 0;
         foreach ($cartItems as $cartItem){
