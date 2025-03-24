@@ -27,9 +27,9 @@ uses(TestCase::class, DatabaseTransactions::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+pest()->extend()
+    ->in('Feature')
+    ->beforeEach(fn () => $this->withoutVite());
 
 /*
 |--------------------------------------------------------------------------
