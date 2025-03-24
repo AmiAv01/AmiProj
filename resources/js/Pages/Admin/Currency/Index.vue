@@ -24,14 +24,25 @@
 
 <script setup>
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
+import {onMounted, ref} from "vue";
 
-let currencyValue = 0;
+const props = defineProps({
+    currency: {
+        type: String,
+        default: 0
+    }
+});
+let currencyValue = ref(0);
 
 function changeCurrency(){
-    axios.post(`/admin/resource/currency`, {currency: currencyValue})
+    axios.post(`/admin/resource/currency`, {currency: currencyValue.value})
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
 }
+
+onMounted(() => {
+    currencyValue.value = props.currency;
+})
 
 </script>
 
