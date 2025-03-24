@@ -7594,6 +7594,7 @@
                 "issues": "https://github.com/php-debugbar/php-debugbar/issues",
                 "source": "https://github.com/php-debugbar/php-debugbar/tree/v1.23.5"
             },
+            "abandoned": "php-debugbar/php-debugbar",
             "time": "2024-12-15T19:20:42+00:00"
         },
         {
