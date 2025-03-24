@@ -4,6 +4,7 @@
 use App\Models\User;
 
 test('return successful response when getting product from auth user', function () {
+    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => true
     ]);
