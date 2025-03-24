@@ -11,12 +11,16 @@ use Inertia\Response;
 
 class AdminCurrencyController extends Controller
 {
+
+    public function __construct(protected CurrencyService $currencyService)
+    {}
+
     public function index(): Response
     {
-        return Inertia::render('Admin/Currency/Index');
+        return Inertia::render('Admin/Currency/Index', ['currency' => $this->currencyService->getCurrency()]);
     }
     public function update(CurrencyFormRequest $request, CurrencyService $currencyService)
     {
-        return ['currency' => $currencyService->update(new CurrencyDTO($request->validated('currency')))];
+        return ['currency' => $this->currencyService->update(new CurrencyDTO($request->validated('currency')))];
     }
 }
