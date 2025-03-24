@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти запчасть`"
-                            :link="`/admin/resource/api/search?category=details&searchQ`"
+                            :link="`/admin/resource/api/search?category=detail&searchQ`"
                             @setData="searchData"
                         />
                     </div>
@@ -61,7 +61,7 @@ let searchedData = ref(props.details);
 let columnNames = ['#', 'Фирма', 'Тип', 'Invoice', 'Cargo', 'Ost'];
 
 function searchData(data) {
-    console.log(data);
-    searchedData.value = data.details;
+    searchedData.value = data.detail;
+    console.log(searchedData.value)
 }
 </script>

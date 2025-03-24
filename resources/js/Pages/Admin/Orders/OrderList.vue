@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти заказ`"
-                            :link="`/admin/resource/api/search?category=orders&searchQ`"
+                            :link="`/admin/resource/api/search?category=order&searchQ`"
                             @setData="searchData"
                         />
                     </div>
@@ -34,7 +34,7 @@
                         </table>
                     </div>
 
-                    <pagination :links="orders.links" />
+                    <pagination :links="searchOrders.links" />
                 </div>
                 <OrderStatusFilter />
             </div>
@@ -59,6 +59,6 @@ let searchOrders = ref(props.orders);
 let columnNames = ['#', 'Стоимость', 'Статус', 'Имя', 'Email', 'Дата'];
 
 function searchData(data) {
-    searchOrders.value = data.orders;
+    searchOrders.value = data.order;
 }
 </script>

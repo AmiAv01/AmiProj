@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти пользователя`"
-                            :link="`/admin/resource/api/search?category=users&searchQ`"
+                            :link="`/admin/resource/api/search?category=user&searchQ`"
                             @setData="searchData"
                         />
                     </div>
@@ -64,7 +64,7 @@ let searchUser = ref(props.users);
 
 function searchData(data) {
     console.log(data.users);
-    searchUser.value = data.users;
+    searchUser.value = data.user;
 }
 
 </script>
