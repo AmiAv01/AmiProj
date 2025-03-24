@@ -20,7 +20,6 @@ class DetailFactory extends Factory
             'dt_type' => $this->faker->word(),
             'dt_comment' => $this->faker->word(),
             'dt_foto' => $this->faker->word(),
-            'dt_invoice' => $this->faker->word(),
             'dt_netto' => $this->faker->randomNumber(),
             'dt_oem' => $this->faker->word(),
             'dt_baza' => $this->faker->randomNumber(),
