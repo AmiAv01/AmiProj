@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\DTO\FilterDTO;
+use App\Exceptions\DetailNotFoundException;
+use App\Exceptions\InvalidInvoiceException;
 use App\Models\Detail;
 use App\Models\Firm;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,10 +35,17 @@ final class DetailService
             ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
-    public function getByInvoice(string $invoice): Collection
+    public function getByInvoice(string $invoice): Detail|null
     {
-        return Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
-            ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->get();
+        if (empty($invoice)){
+            throw new InvalidInvoiceException($invoice);
+        }
+        $detail = Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->first();
+        if (!$detail){
+            throw new DetailNotFoundException($invoice);
+        }
+        return $detail;
     }
 
     public function getClientBrands(FilterDTO $dto): array | null
