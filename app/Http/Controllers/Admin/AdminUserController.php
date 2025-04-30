@@ -5,13 +5,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserRequest;
-use App\Http\Requests\NewsFormRequest;
-use App\Services\CartService;
-use App\Services\NewsService;
+use app\Services\Cart\CartService;
 use App\Services\OrderService;
 use App\Services\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
