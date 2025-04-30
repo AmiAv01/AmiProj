@@ -22,6 +22,7 @@
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.68",
         "knuckleswtf/scribe": "^4.39.0",
+        "larastan/larastan": "3.0",
         "laravel/breeze": "^v2.1.5",
         "laravel/pint": "^v1.20.0",
         "laravel/sail": "^v1.40.0",
