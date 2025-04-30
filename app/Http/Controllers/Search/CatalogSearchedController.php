@@ -1,30 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Catalog;
+namespace App\Http\Controllers\Search;
 
 use App\DTO\FilterDTO;
 use App\DTO\SearchQueryDTO;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchCatalogFormRequest;
-use App\Http\Requests\SearchFormRequest;
 use App\Services\DetailService;
 use App\Services\FirmService;
 use App\Services\SearchService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CatalogSearchedController extends Controller
+class CatalogSearchedController extends BaseSearchController
 {
-    public function __construct(protected SearchService $searchService, protected FirmService $firmService)
+    public function __construct(protected SearchService $searchService, protected FirmService $firmService, protected DetailService $detailService)
     {
-
+        parent::__construct($this->searchService);
     }
 
     public function index(SearchCatalogFormRequest $request): Response
     {
-        $search = $request->validated('searchQ');
+        $search = $this->getSearchQuery($request);
         $details = $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search));
 
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
