@@ -15,9 +15,7 @@ use Inertia\Response;
 class GeneratorController extends Controller
 {
     public function __construct(protected DetailService $detailService, protected FirmService $firmService)
-    {
-
-    }
+    {}
 
     public function index(DetailsFilterRequest $request): Response
     {
