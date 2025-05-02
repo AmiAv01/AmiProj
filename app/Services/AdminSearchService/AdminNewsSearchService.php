@@ -3,15 +3,21 @@
 namespace App\Services\AdminSearchService;
 
 use App\Services\NewsService;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-final class AdminNewsSearchService implements AdminSearchInterface
+final class AdminNewsSearchService extends AbstractAdminSearchService
 {
 
     public function __construct(protected NewsService $newsService)
     {}
 
-    public function search(string $searchQ, int $perPageForSearch, int $perPageForAll)
+    protected function searchWithQuery(string $query, int $perPage): LengthAwarePaginator
     {
-        return ($searchQ) ? $this->newsService->getBySearching($searchQ, $perPageForSearch) : $this->newsService->getAll($perPageForAll);
+        return $this->newsService->getBySearching($query, $perPage);
+    }
+
+    protected function getAllItems(int $perPage): LengthAwarePaginator
+    {
+        return $this->newsService->getAll($perPage);
     }
 }

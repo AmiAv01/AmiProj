@@ -6,7 +6,7 @@
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
                             class="w-full"
-                            src="../../../../public/build/no-photo--lg.png"
+                            src="public/build/no-photo--lg.png"
                             alt="#"
                         />
                     </div>
@@ -19,7 +19,6 @@
                             {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                             {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
-                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900 mb-8">(CARGO # <span> {{Array.from(this.cargoIds).join()}} </span>)</p>
                         <div v-if="!isEmpty">
                             <p class="font-normal text-2xl leading-8 text-gray-500">
                                 CARGO: <strong>{{ detail.dt_cargo }}</strong>

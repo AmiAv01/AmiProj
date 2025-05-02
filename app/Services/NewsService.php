@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\NewsPostDTO;
+use App\Exceptions\NewsNotFoundException;
 use App\Http\Requests\NewsFormRequest;
 use App\Models\News;
 use Carbon\Carbon;
@@ -30,6 +31,9 @@ final class NewsService
     public function update(NewsPostDTO $dto, int $id):bool
     {
         $news = News::find($id);
+        if (!$news){
+            throw new NewsNotFoundException($id);
+        }
         return $news->update(['title' => $dto->title, 'description' => $dto->description]);
     }
 

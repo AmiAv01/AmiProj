@@ -5,14 +5,19 @@ namespace App\Services\AdminSearchService;
 use App\Services\DetailService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-final class AdminDetailsSearchService implements AdminSearchInterface
+final class AdminDetailsSearchService extends AbstractAdminSearchService
 {
 
     public function __construct(protected DetailService $detailService)
     {}
 
-    public function search(string $searchQ, int $perPageForSearch, int $perPageForAll):LengthAwarePaginator
+    protected function searchWithQuery(string $query, int $perPage): LengthAwarePaginator
     {
-        return ($searchQ) ? $this->detailService->getBySearching($searchQ, $perPageForSearch) : $this->detailService->getByBrand($perPageForAll);
+        return $this->detailService->getBySearching($query, $perPage);
+    }
+
+    protected function getAllItems(int $perPage): LengthAwarePaginator
+    {
+        return $this->detailService->getByBrand($perPage);
     }
 }

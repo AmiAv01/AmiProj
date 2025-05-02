@@ -2,33 +2,31 @@
 
 use App\Http\Controllers\Admin\AdminApproveUserController;
 use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminCurrencyController;
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Cart\ClearCartController;
-use App\Http\Controllers\Desktop\DesktopController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AdminSearchController;
+use App\Http\Controllers\Admin\AdminCurrencyController;
 use App\Http\Controllers\Admin\AdminDetailController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminSearchController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Catalog\BearingController;
-use App\Http\Controllers\Catalog\CatalogSearchedController;
 use App\Http\Controllers\Catalog\GeneratorController;
 use App\Http\Controllers\Catalog\GeneratorPartsController;
 use App\Http\Controllers\Catalog\OtherDetailsController;
 use App\Http\Controllers\Catalog\StarterController;
 use App\Http\Controllers\Catalog\StarterPartsController;
+use App\Http\Controllers\Desktop\DesktopController;
 use App\Http\Controllers\Info\InfoController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Search\CatalogSearchedController;
+use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\User\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RemoveHeader;
 use Inertia\Inertia;
 
 Route::group(['middleware' => 'removeHeader'], function(){
@@ -59,7 +57,7 @@ Route::group(['middleware' => 'removeHeader'], function(){
     }));
 
     Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::middleware('auth')->put('/clear', [ClearCartController::class, 'index'])->name('cart.clear');
+    Route::middleware('auth')->put('/clear', ClearCartController::class)->name('cart.clear');
     Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
 
     Route::group(['prefix' => 'admin/resource', 'middleware' => 'RedirectIfAdmin'], function (): void {

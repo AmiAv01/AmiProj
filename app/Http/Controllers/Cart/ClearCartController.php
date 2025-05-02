@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Services\CartService;
+use App\Services\Cart\CartService;
+use Illuminate\Http\JsonResponse;
 
 class ClearCartController extends Controller
 {
     public function __construct(protected CartService $cartService)
     {}
 
-    public function index(): array{
-        $this->cartService->clearCart(auth()->id());
-        return ['items' => $this->cartService->getCartItems(auth()->id())];
+    public function __invoke(): JsonResponse{
+        $cart = $this->cartService->getOrCreateUserCart(auth()->id());
+        $this->cartService->clearCart($cart);
+        return response()->json(['items' => []]);
     }
 }

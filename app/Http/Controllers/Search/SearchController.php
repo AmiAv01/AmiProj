@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Search;
 
 use App\DTO\SearchQueryDTO;
 use App\Http\Requests\SearchFormRequest;
-use App\Services\SearchService;
+use Illuminate\Support\Facades\Log;
 
-class SearchController extends Controller
+class SearchController extends BaseSearchController
 {
-    public function __construct(protected SearchService $searchService)
-    {}
-
     public function index(SearchFormRequest $request): array
     {
-        $search = $request->validated('searchQ');
+        Log::info($request);
+        $search = $this->getSearchQuery($request);
         return [
             'details' => $this->searchService->getBySearching(new SearchQueryDTO($search)),
             'search' => $search,

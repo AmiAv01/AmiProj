@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidPriceTypeException;
+use App\Exceptions\PriceNotFoundException;
 use App\Models\Currency;
 use App\Models\Price;
 use App\Models\User;
@@ -16,6 +18,9 @@ final class PriceService{
     public function getPrice(int $detailCode, int $userId): int | string | Money {
         $userFormula = $this->userService->getUserFormula($userId);
         $price = $this->getPriceByType(strtolower(substr($userFormula, 0, 1)), $detailCode);
+        if ($price === ''){
+            throw new PriceNotFoundException($detailCode);
+        }
         $sign = substr($userFormula, 1,1);
         return  $this->getSpecialPrice($this->parsePrice($price), $sign, $this->getPercent($userFormula));
     }
@@ -30,6 +35,9 @@ final class PriceService{
     }
 
     public function getPriceByType(string $priceType, int $detailCode): string{
+        if (!in_array($priceType, ['o', 'z'], true)){
+            throw new InvalidPriceTypeException($priceType);
+        }
         return ($priceType === 'o') ? Price::where('code', '=', $detailCode)->value('opt') : Price::where('code', '=', $detailCode)->value('zakup');
     }
 

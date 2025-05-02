@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Services\Cart\CartService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ use Inertia\Response;
 
 class OrderController extends Controller
 {
-    public function __construct(protected OrderService $orderService)
+    public function __construct(protected OrderService $orderService, protected CartService $cartService)
     {}
 
     public function index(): Response
@@ -25,7 +26,8 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request): OrderResource
     {
-        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый' ,auth()->id()));
+        $cart = $this->cartService->getOrCreateUserCart(auth()->id());
+        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый' ,auth()->id()), $cart);
         return OrderResource::make($order);
     }
 
