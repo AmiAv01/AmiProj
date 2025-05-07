@@ -2,7 +2,7 @@
     <div class="grid grid-cols-7  w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10">
         <img
 
-            src="../../../../public/build/no-photo--lg.png"
+            src="public/build/no-photo--lg.png"
             alt="#"
             class="w-[120px] object-cover object-center"
         />

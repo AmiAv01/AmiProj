@@ -16,7 +16,7 @@
         </div>
         <div class="group relative">
             <img
-                src="/public/build/aspl.png"
+                src="public/build/aspl.png"
                 class="w-[80%] mx-auto h-[300px] border rounded-[15px] border-white"
                 alt=""
             />
