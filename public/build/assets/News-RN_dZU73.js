@@ -1,1 +1,0 @@
-import{c as t,o as a,w as e,a as o,N as r}from"./app-ClCtAMRW.js";import p from"./NewsList-CiaZxmRX.js";import"./NewsItem-Z_cN3_U3.js";const f={__name:"News",props:{posts:{type:Array,default:[]}},setup(s){return(c,_)=>(a(),t(r,null,{default:e(()=>[o(p,{posts:s.posts},null,8,["posts"])]),_:1}))}};export{f as default};
