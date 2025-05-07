@@ -41,7 +41,7 @@
                 alt=""
             />
             <span class="font-semibold">
-                amiauto.minsk@gmail.com</span
+                amiauto.minsk@gmail.com</span>
             >
         </div>
         <div
