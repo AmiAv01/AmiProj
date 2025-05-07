@@ -25,7 +25,7 @@
         >
             <img
                 src="public/A1.jpg"
-                alt=""
+                alt="#"
                 class="w-[24px] h-[24px]"
             />
             <span class="font-semibold"
