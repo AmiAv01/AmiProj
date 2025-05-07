@@ -7,7 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { createPinia } from 'pinia'
 import { Link } from '@inertiajs/inertia-vue3';
-import DetailList from "@/Shared/DetailList.vue";
+import DetailList from "@/Shared/DetailList.vue";S
 import UserLayout from "@/Shared/UserLayout.vue";
 import MenuButton from "@/Components/MenuButton.vue"
 import CartButton from "@/Components/CartButton.vue";
