@@ -24,13 +24,6 @@ export default defineConfig({
       },
     }),
     
-    // Сжатие ассетов (только для production)
-    process.env.NODE_ENV === 'production' && viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 10240 // Сжимаем файлы >10KB
-    }),
-    
     
   ].filter(Boolean),
 
