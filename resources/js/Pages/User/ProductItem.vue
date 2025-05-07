@@ -7,11 +7,7 @@
             class=" w-[80%] rounded-md bg-gray-200 group-hover:opacity-75"
         >
             <img
-<<<<<<< HEAD
-                src="/public/no-photo--lg.png"
-=======
                 src="public/build/no-photo--lg.png"
->>>>>>> ffbf040 (fix: update img path)
                 alt="#"
                 class=" object-cover object-center"
             />

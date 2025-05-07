@@ -24,7 +24,7 @@
             class="flex justify-between mb-4 py-2 border-b-2"
         >
             <img
-                src="../../../../public/A1.jpg"
+                src="public/A1.jpg"
                 alt=""
                 class="w-[24px] h-[24px]"
             />
@@ -36,7 +36,7 @@
             class="flex justify-between mb-4 py-2 border-b-2"
         >
             <img
-                src="../../../../public/gmail.png"
+                src="public/gmail.png"
                 class="w-[24px] h-[24px]"
                 alt=""
             />
@@ -48,7 +48,7 @@
             class="flex justify-between py-2 border-b-2"
         >
             <img
-                src="../../../../public/skype.png"
+                src="public/skype.png"
                 class="w-[24px] h-[24px]"
                 alt=""
             />

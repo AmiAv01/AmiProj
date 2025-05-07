@@ -9,7 +9,7 @@
                     class="flex items-center space-x-3 rtl:space-x-reverse"
                 >
                     <img
-                        src="../../../../public/logo2.png"
+                        src="public/logo2.png"
                         class="h-8"
                         alt="AmiAvto Logo"
                     />

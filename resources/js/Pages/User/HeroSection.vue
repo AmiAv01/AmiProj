@@ -16,7 +16,7 @@
                         Узнайте больше о наших запчастях
                     </p>
                 </div>
-                <img src="../../../../public/starters.jpg" class="sm:w-[350px] sm:justify-between mb-6" alt="mockup" />
+                <img src="public/starters.jpg" class="sm:w-[350px] sm:justify-between mb-6" />
             </div>
             <div class="flex flex-wrap items-center justify-center xl:justify-start">
                 <a
