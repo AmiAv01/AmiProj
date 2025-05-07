@@ -1,1 +1,0 @@
-import t from"./News-CXCi9iPH.js";import{p as e,c as a,o as r,w as n,a as c}from"./app-BUypjBix.js";import"./NewsList-K8EGsC5w.js";import"./NewsItem-3L8or3Cc.js";const f={__name:"Index",setup(s){return(_,p)=>{const o=e("layout");return r(),a(o,null,{default:n(()=>[c(t)]),_:1})}}};export{f as default};
