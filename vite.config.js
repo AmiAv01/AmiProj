@@ -57,12 +57,6 @@ export default defineConfig({
     }
   },
 
-  resolve: {
-    alias: {
-      '@': '/resources/js',
-      '~images': '/public/images' // Алиас для публичных изображений
-    }
-  },
 
   // Оптимизация для production
   optimizeDeps: {
