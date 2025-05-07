@@ -24,6 +24,7 @@
         "flowbite": "^2.5.2",
         "lodash.debounce": "^4.0.8",
         "pinia": "^2.3.0",
+        "vite-plugin-compression": "^0.5.1",
         "vuex": "^4.1.0"
     }
 }
