@@ -1,53 +1,50 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
-import viteCompression from 'vite-plugin-compression'; // Для сжатия ассетов
+import viteCompression from 'vite-plugin-compression'; 
 
 export default defineConfig({
-  // Базовый URL (актуально если проект в подпапке)
-  base: process.env.NODE_ENV === 'production' ? '/' : '',
+  base: '/build/assets',
 
   plugins: [
     laravel({
       input: 'resources/js/app.js',
       refresh: [
         'resources/views/**/*.blade.php',
-        'public/images/**/*' // Следим за изменениями изображений
+        'public/images/**/*' 
       ],
     }),
     vue({
       template: {
         transformAssetUrls: {
-          // Отключаем трансформацию абсолютных путей
           includeAbsolute: false,
         },
       },
     }),
     
-    // Сжатие ассетов (только для production)
     process.env.NODE_ENV === 'production' && viteCompression({
       algorithm: 'gzip',
       ext: '.gz',
-      threshold: 10240 // Сжимаем файлы >10KB
+      threshold: 10240 
     }),
     
     
   ].filter(Boolean),
 
   build: {
-    outDir: 'public/build', // Папка для сборки
-    emptyOutDir: true,     // Очищать перед сборкой
-    manifest: true,        // Генерировать manifest.json
-    sourcemap: false,      // Отключаем sourcemaps для production
+    outDir: 'public/build',
+    assetsDir: 'assets',
+    emptyOutDir: true,     
+    manifest: true,        
+    sourcemap: false,     
     
     rollupOptions: {
       output: {
-        // Форматы имен файлов
         assetFileNames: 'assets/[name]-[hash][extname]',
-        chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        
-        // Разделение vendor-кода
+        chunkFileNames(chunkInfo) {
+          return `assets/${chunkInfo.name}-[hash].js`;
+        },
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return 'vendor';
@@ -58,8 +55,7 @@ export default defineConfig({
   },
 
 
-  // Оптимизация для production
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'axios'] // Предкомпиляция зависимостей
+    include: ['vue', 'vue-router', 'axios']
   }
 });
