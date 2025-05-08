@@ -4,11 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import viteCompression from 'vite-plugin-compression'; 
 
 export default defineConfig({
-  base: '/build/assets',
+  base: '/build/',
 
   plugins: [
     laravel({
       input: 'resources/js/app.js',
+      buildDirectory: 'build',
       refresh: [
         'resources/views/**/*.blade.php',
         'public/images/**/*' 
@@ -33,18 +34,15 @@ export default defineConfig({
 
   build: {
     outDir: 'public/build',
-    assetsDir: 'assets',
     emptyOutDir: true,     
     manifest: true,        
     sourcemap: false,     
     
     rollupOptions: {
       output: {
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames(chunkInfo) {
-          return `assets/${chunkInfo.name}-[hash].js`;
-        },
+        assetFileNames: '[name]-[hash][extname]',
+        chunkFileNames: '[name]-[hash].js',
+        entryFileNames: '[name]-[hash].js',
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return 'vendor';
