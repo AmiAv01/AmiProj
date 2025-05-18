@@ -7,7 +7,7 @@
             class=" w-[80%] rounded-md bg-gray-200 group-hover:opacity-75"
         >
             <img
-                src="/images/build/no-photo--lg.png"
+                src="/no-photo--lg.png"
                 alt="#"
                 class=" object-cover object-center"
             />
