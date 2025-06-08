@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('oems', function (Blueprint $table) {
-            $table->id();
+            $table->id()->primary();
             $table->string('dt_invoice', 20)->index('idx_oems_invoice');
             $table->string('dt_parent', 15);
             $table->string('dt_oem', 20)->index('idx_oems_oem');
