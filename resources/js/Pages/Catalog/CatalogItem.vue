@@ -4,7 +4,7 @@
             class="flex flex-col sm:flex-row"
         >
             <img
-                src="public/build/no-photo--lg.png"
+                src="no-photo--lg.png"
                 alt="#"
                 class="w-[120px] mr-4 object-cover object-center"
             />
