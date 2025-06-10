@@ -15,8 +15,9 @@ class ProductImageService
      * @throws ImageStorageException
      * @throws DefaultImageNotFoundException
      */
-    public function getImageUrl(?string $imageName = null): string {
-        if (empty($imageName)){
+    public function getImageUrl(?string $imageName = null): string
+    {
+        if (empty($imageName)) {
             return $this->getDefaultImageUrl();
         }
         $foundImage = $this->findExistingImage($imageName);
@@ -27,8 +28,9 @@ class ProductImageService
      * @throws InvalidImagePathException
      * @throws ImageStorageException
      */
-    private function findExistingImage(string $imagePaths): ?string{
-        foreach (explode(',', $imagePaths) as $imagePath){
+    private function findExistingImage(string $imagePaths): ?string
+    {
+        foreach (explode(',', $imagePaths) as $imagePath) {
             $normalizedPath = $this->normalizeImagePath($imagePath);
             try {
                 if (Storage::disk('images')->exists($normalizedPath . '.jpg')) {
@@ -42,7 +44,8 @@ class ProductImageService
         return null;
     }
 
-    private function normalizeImagePath(string $path):string{
+    private function normalizeImagePath(string $path): string
+    {
         if (empty(trim($path))) {
             throw new InvalidImagePathException($path);
         }
@@ -50,8 +53,9 @@ class ProductImageService
         return stristr($path, ',', true) ?: $path;
     }
 
-    private function getDefaultImageUrl(): string{
-        $defaultImage = 'storage/images/no-photo--lg.png';
+    private function getDefaultImageUrl(): string
+    {
+        $defaultImage = '/no-photo--lg.png';
 
         if (!file_exists(public_path($defaultImage))) {
             throw new DefaultImageNotFoundException();
@@ -60,7 +64,8 @@ class ProductImageService
         return url($defaultImage);
     }
 
-    private function buildImageUrl(string $imagePath): string{
+    private function buildImageUrl(string $imagePath): string
+    {
         if (empty($imagePath)) {
             throw new InvalidImagePathException($imagePath);
         }
