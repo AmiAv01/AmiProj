@@ -6,7 +6,7 @@
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
                             class="w-full"
-                            src="/images/build/no-photo--lg.png"
+                            src="/no-photo--lg.png"
                             alt="#"
                         />
                     </div>
