@@ -15,7 +15,7 @@ final class CurrencyService
         if (!$currency) {
             throw new CurrencyNotFoundException('EUR');
         }
-        return $currency ?? Crypt::decrypt($currency);
+        return Crypt::decrypt($currency);
     }
 
     public function update(CurrencyDTO $dto): bool
