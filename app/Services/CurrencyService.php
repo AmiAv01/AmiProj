@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\Crypt;
 
 final class CurrencyService
 {
-    public function getCurrency(): string{
+    public function getCurrency(): string
+    {
         $currency = Currency::where('code', '=', 'EUR')->value('value');
         if (!$currency) {
             throw new CurrencyNotFoundException('EUR');
         }
-        return Crypt::decrypt($currency);
+        return $currency ?? Crypt::decrypt($currency);
     }
 
-    public function update(CurrencyDTO $dto):bool
+    public function update(CurrencyDTO $dto): bool
     {
         $currency = Currency::where('code', '=', 'EUR')->first();
         if (!$currency) {
