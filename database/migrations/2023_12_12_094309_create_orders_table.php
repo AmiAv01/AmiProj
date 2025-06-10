@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->decimal('total_price', 20, 2);
             $table->string('status', 45);
             $table->foreignIdFor(User::class, 'created_by')->nullable();

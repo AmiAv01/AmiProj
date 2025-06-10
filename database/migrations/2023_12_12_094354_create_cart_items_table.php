@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart_item', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->foreignId('cart_id')->references('id')->on('cart');
             $table->foreignId('dt_id')->references('dt_id')->on('detail');
             $table->string('price', 10);

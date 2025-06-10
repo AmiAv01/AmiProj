@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('alt_cz', function (Blueprint $table) {
-            $table->id('id')->primary();
+            $table->id('id');
             $table->dateTime('datep');
             $table->string('tmp');
             $table->string('hcparts')->index('idx_alt_hcparts');
