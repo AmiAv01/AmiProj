@@ -7,7 +7,7 @@
         >
             <div class="mr-4">
                 <img
-                    src="public/build/no-photo--lg.png"
+                    src="/no-photo--lg.png"
                     alt="#"
                     class="w-10 h-10 object-cover object-center"
                 />
