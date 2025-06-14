@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 final class DetailService
 {
     public function getAll(int $perPage): LengthAwarePaginator
@@ -32,19 +33,16 @@ final class DetailService
 
         return Detail::whereIn('fr_code', $brands->pluck('fr_name')->toArray())
             ->join('stk', 'stk.code', '=', 'detail.dt_code')
-            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
+            ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
     public function getByInvoice(string $invoice): Detail|null
     {
-        if (empty($invoice)){
+        if (empty($invoice)) {
             throw new InvalidInvoiceException($invoice);
         }
         $detail = Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->first();
-        if (!$detail){
-            throw new DetailNotFoundException($invoice);
-        }
         return $detail;
     }
 
@@ -54,11 +52,11 @@ final class DetailService
     }
 
 
-    public function getBySearching(string $search, int $perPage):LengthAwarePaginator
+    public function getBySearching(string $search, int $perPage): LengthAwarePaginator
     {
         return Detail::where('dt_invoice', 'like', "%$search%")->orWhere('dt_oem', 'like', "%$search%")
             ->orWhere('dt_cargo', 'like', "%$search%")->orWhere('dt_typec', '=', "$search")
             ->join('stk', 'stk.code', '=', 'detail.dt_code')
-            ->select(['dt_id', 'dt_invoice', 'dt_type','dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
+            ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 }
