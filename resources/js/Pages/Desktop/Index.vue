@@ -12,7 +12,7 @@
             </div>
             <div>
                 <p class="text-4xl font-bold text-center p-6">Скачать для Windows</p>
-                <MenuButton :attributes="`px-16 py-6 mr-3 text-xl font-medium justify-center `" :href="`http://amiauto.by/updates/plist.exe`">Скачать</MenuButton>
+                <MenuButton :attributes="`px-16 py-6 mr-3 text-xl font-medium justify-center `" :href="`https://amiauto.by/updates/plist.exe`">Скачать</MenuButton>
             </div>
         </div>
     </layout>
@@ -23,7 +23,7 @@ import Layout from "@/Shared/UserLayout.vue";
 import MenuButton from "@/Components/MenuButton.vue";
 
 const menuItems = new Map([
-    ['pdf-версия', 'http://amiauto.by/updates/instruction.pdf'],
-    ['doc-версия', 'http://amiauto.by/updates/instruction.doc']])
+    ['pdf-версия', 'https://amiauto.by/updates/instruction.pdf'],
+    ['doc-версия', 'https://amiauto.by/updates/instruction.doc']])
 
 </script>
