@@ -12,7 +12,7 @@
             </div>
             <div>
                 <p class="text-4xl font-bold text-center p-6">Скачать для Windows</p>
-                <a :class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 px-16 py-6 mr-3 mt-2 sm:mt-0 text-xl font-medium`" :href="`/plist.exe`" download>Скачать</a>
+                <a :class="`flex items-center justify-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 px-16 py-6 mr-3 mt-2 sm:mt-0 text-xl font-medium`" :href="`/plist.exe`" download>Скачать</a>
             </div>
         </div>
     </layout>

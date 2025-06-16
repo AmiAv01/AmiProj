@@ -42,17 +42,6 @@
             />
             <span class="font-semibold">
                 amiauto.minsk@gmail.com</span>
-            >
-        </div>
-        <div
-            class="flex justify-between py-2 border-b-2"
-        >
-            <img
-                src="/skype.png"
-                class="w-[24px] h-[24px]"
-                alt=""
-            />
-            <span class="font-semibold">ami.auto</span>
         </div>
     </div>
 </template>

@@ -26,8 +26,8 @@
                             <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 Бренд: <strong>{{ detail.fr_code }}</strong>
                             </p>
-                            <p class="text-3xl mt-6 text-green-400">Наличие уточнять</p>
                         </div>
+                        <p class="text-3xl mt-6 text-green-400">Наличие уточнять</p>
                         <hr
                             class="my-6 md:my-8 border-gray-200 dark:border-gray-800"
                         />

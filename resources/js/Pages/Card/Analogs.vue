@@ -28,6 +28,9 @@
                 <p class="font-normal text-md text-gray-500">
                     Бренд: {{ detail.fr_code }}
                 </p>
+                <p v-if="detail.ostc > 0" class="text-md font-normal text-green-400">Есть в наличии</p>
+
+                <p v-else class="text-md font-normal text-green-400">Нет в наличии</p>
             </div>
         </div>
     </div>
