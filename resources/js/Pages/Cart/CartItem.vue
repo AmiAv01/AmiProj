@@ -5,7 +5,7 @@
         >
             <div class="w-full md:max-w-[126px]">
                 <img
-                    src="public/build/no-photo--lg.png"
+                    src="/no-photo--lg.png"
                     alt="perfume bottle image"
                     class="mx-auto"
                 />
