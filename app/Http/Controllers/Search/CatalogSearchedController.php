@@ -23,10 +23,8 @@ class CatalogSearchedController extends BaseSearchController
     {
         Log::info($request);
         $search = $this->getSearchQuery($request);
-        $details = $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search));
-        Log::info($details);
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
-            'details' => $details,
+            'details' => $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search)),
             'title' => "Поиск по $search",
             'categories' => ['brands' => $this->firmService->getAll()],
             'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),

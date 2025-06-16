@@ -50,7 +50,7 @@ const props = defineProps({
 
 const checked = ref([]);
 let isShow = ref(false);
-const selectedDetails = ref(props.details());
+const selectedDetails = ref(props.details);
 
 const hideModal = (param) => isShow = param;
 
