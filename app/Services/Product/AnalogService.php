@@ -33,7 +33,7 @@ final class AnalogService
         usort($analogList, function ($firstEl, $secondEl) {
             $hasFirstStk = !empty($firstEl['ostc']);
             $hasSecondStk = !empty($secondEl['ostc']);
-            return ($hasFirstStk <=> $hasSecondStk);
+            return $hasSecondStk <=> $hasFirstStk;
         });
         return $analogList;
     }
