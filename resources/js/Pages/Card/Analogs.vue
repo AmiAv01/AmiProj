@@ -45,7 +45,7 @@ import { editDetailTitle } from "@/Services/TitleService";
 const props = defineProps({
     details: Array,
 })
-
+console.log(details);
 const editTitle = (res) => editDetailTitle(res)
 
 </script>
