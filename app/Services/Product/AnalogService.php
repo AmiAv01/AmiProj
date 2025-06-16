@@ -10,7 +10,15 @@ final class AnalogService
     public function getAnalogs(string $id): array
     {
         $detailsFromOems = Oems::ofCode($id)->get()->toArray();
-        $ids = array_reduce($detailsFromOems, function ($carry, $detail) use ($id) {
+        $ids = $this->getAnalogIds($detailsFromOems, $id);
+        $analogs = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->toArray();
+        return $this->sortAnalogs($analogs);
+    }
+
+    private function getAnalogIds(array $detailList, string $id): array
+    {
+        return array_reduce($detailList, function ($carry, $detail) use ($id) {
             if ($detail['dt_oem'] === $id) {
                 $carry[] = $detail['dt_invoice'];
             } elseif ($detail['dt_invoice'] === $id) {
@@ -18,8 +26,16 @@ final class AnalogService
             }
             return $carry;
         }, []);
-        return Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)
-            ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->toArray();
+    }
+
+    private function sortAnalogs(array $analogList): array
+    {
+        usort($analogList, function ($firstEl, $secondEl) {
+            $hasFirstStk = !empty($firstEl['ostc']);
+            $hasSecondStk = !empty($secondEl['ostc']);
+            return ($hasFirstStk <=> $hasSecondStk) ?: 0;
+        });
+        return $analogList;
     }
 
     public function getCargoFromAnalogs(array $details): array
