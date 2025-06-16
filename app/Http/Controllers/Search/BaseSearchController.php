@@ -8,9 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseSearchController extends Controller
 {
-    public function __construct(protected SearchService $searchService){}
+    public function __construct(protected SearchService $searchService) {}
 
-    protected function getSearchQuery(FormRequest $request):string{
+    protected function getSearchQuery(FormRequest $request): string
+    {
         return $request->validated('searchQ');
     }
 }
