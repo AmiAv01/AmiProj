@@ -5,7 +5,7 @@
     <layout :title="title">
         <div class="bg-white flex justify-around py-12 sm:py-12">
             <div>
-                <div class="mx-auto max-w-xl ">
+                <div class="ml-12 max-w-xl ">
                     <p class="text-5xl font-bold tracking-tight text-gray-900 mb-10">
                         {{ title }}
                     </p>

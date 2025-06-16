@@ -10,7 +10,7 @@
             />
             <div class="flex flex-col">
                 <h3
-                    class="font-manrope  font-semibold text-4xl leading-9 text-black mb-4"
+                    class="font-manrope  font-semibold text-3xl leading-9 text-black mb-4"
                 >
                     <a :href="`product/${detail.dt_invoice}`">
                         <span aria-hidden="true" />
@@ -18,10 +18,10 @@
                         {{ detail.dt_invoice }}
                     </a>
                 </h3>
-                <p class="font-normal text-2xl leading-8 text-gray-500">
+                <p class="font-normal text-xl leading-8 text-gray-500">
                     Cargo: {{ detail.dt_cargo }}
                 </p>
-                <p class="font-normal text-2xl leading-8 text-gray-500">
+                <p class="font-normal text-xl leading-8 text-gray-500">
                     Бренд: {{ detail.fr_code }}
                 </p>
             </div>
