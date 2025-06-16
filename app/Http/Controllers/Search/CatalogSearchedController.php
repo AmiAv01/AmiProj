@@ -10,6 +10,7 @@ use App\Services\FirmService;
 use App\Services\SearchService;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class CatalogSearchedController extends BaseSearchController
 {
@@ -20,6 +21,7 @@ class CatalogSearchedController extends BaseSearchController
 
     public function index(SearchCatalogFormRequest $request): Response
     {
+        Log::info($request);
         $search = $this->getSearchQuery($request);
         $details = $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search));
 
