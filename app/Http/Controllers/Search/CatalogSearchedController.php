@@ -24,7 +24,7 @@ class CatalogSearchedController extends BaseSearchController
         Log::info($request);
         $search = $this->getSearchQuery($request);
         $details = $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search));
-
+        Log::info($details);
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
             'details' => $details,
             'title' => "Поиск по $search",
