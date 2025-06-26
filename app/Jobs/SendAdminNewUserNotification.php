@@ -17,7 +17,7 @@ class SendAdminNewUserNotification implements ShouldQueue
 
     protected User $user;
     protected string $adminEmail;
-    public function __construct(User $user, string $adminEmail = 'amiavproject@gmail.com')
+    public function __construct(User $user, string $adminEmail = config('mail.notification_mail'))
     {
         $this->user = $user;
         $this->adminEmail = $adminEmail;
