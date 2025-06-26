@@ -25,7 +25,6 @@ class SendAdminNewUserNotification implements ShouldQueue
 
     public function handle(): void
     {
-        var_dump('email not');
         Mail::to($this->adminEmail)->send(new UserRegistered($this->user));
     }
 }
