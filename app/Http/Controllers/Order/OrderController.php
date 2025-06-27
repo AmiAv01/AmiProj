@@ -16,8 +16,7 @@ use Inertia\Response;
 
 class OrderController extends Controller
 {
-    public function __construct(protected OrderService $orderService, protected CartService $cartService)
-    {}
+    public function __construct(protected OrderService $orderService, protected CartService $cartService) {}
 
     public function index(): Response
     {
@@ -26,8 +25,9 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request): OrderResource
     {
-        $cart = $this->cartService->getOrCreateUserCart(auth()->id());
-        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый' ,auth()->id()), $cart);
+        $userId = auth()->id();
+        $cart = $this->cartService->getOrCreateUserCart($userId);
+        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый', $userId), $cart);
         return OrderResource::make($order);
     }
 
@@ -35,5 +35,4 @@ class OrderController extends Controller
     {
         return Inertia::render('Order/OrderCard', ['order' => $this->orderService->getById($id), 'details' => $this->orderService->getOrderItems($id)]);
     }
-
 }
