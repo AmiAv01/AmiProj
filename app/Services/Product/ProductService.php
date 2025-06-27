@@ -20,22 +20,28 @@ class ProductService
         return $this->compatiblePartsService->getCompatibleParts($detailType, $detailInvoice);
     }
 
-    public function getAnalogs(string $id):array
+    public function getAnalogs(string $id): array
     {
+        $analogs = $this->analogService->getAnalogs($id);
+        $analogsWithImages = array_map(function ($item) {
+            $item['imageUrl'] = $this->getImageUrl($item->dt_foto);
+            return $item;
+        }, $analogs);
         return $this->analogService->getAnalogs($id);
     }
 
-    public function getCargoFromAnalogs(array $details):array
+    public function getCargoFromAnalogs(array $details): array
     {
         return $this->analogService->getCargoFromAnalogs($details);
     }
 
-    public function getProductInfoFromOems(string $code): OemInfoDTO{
+    public function getProductInfoFromOems(string $code): OemInfoDTO
+    {
         return $this->oemService->getProductInfoFromOems($code);
     }
 
-    public function getImageUrl(?string $imageName = null):string {
+    public function getImageUrl(?string $imageName = null): string
+    {
         return $this->imageService->getImageUrl($imageName);
     }
-
 }
