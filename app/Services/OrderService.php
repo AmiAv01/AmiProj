@@ -31,7 +31,7 @@ final class OrderService
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
     {
-        if (!$cart->items()->exists()) {
+        if (!$cart->items) {
             throw new EmptyCartException();
         }
         $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);

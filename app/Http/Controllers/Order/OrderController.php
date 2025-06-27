@@ -26,6 +26,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request): OrderResource
     {
         $userId = auth()->id();
+        Log::info($userId);
         $cart = $this->cartService->getOrCreateUserCart($userId);
         $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый', $userId), $cart);
         return OrderResource::make($order);
