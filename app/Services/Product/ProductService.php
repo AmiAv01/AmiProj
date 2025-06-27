@@ -27,7 +27,7 @@ class ProductService
             $item['imageUrl'] = $this->getImageUrl($item->dt_foto);
             return $item;
         }, $analogs);
-        return $this->analogService->getAnalogs($id);
+        return $analogsWithImages;
     }
 
     public function getCargoFromAnalogs(array $details): array
