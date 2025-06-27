@@ -51,19 +51,19 @@ const props = defineProps({
     }
 })
 
-function makeOrder() {
-        axios.all([
-            axios.post("/order", { totalPrice: props.price })
-                .then((res) => {
-                    console.log(res);
-                    isShow.value = true;
-                }).catch((err) => console.log(err)),
-            axios.put('/clear')
-                .then((res) => {
-                    console.log(res);
-                    store.setDetails([]);
-                }).catch((err) => console.log(err))
-        ])}
+async function makeOrder() {
+    try {
+        const orderResponse = await axios.post("/order", { totalPrice: props.price });
+        console.log(orderResponse);
+        isShow.value = true;
+
+        const clearResponse = await axios.put('/clear');
+        console.log(clearResponse);
+        store.setDetails([]);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 function hideModal(param){
     isShow.value = param;
