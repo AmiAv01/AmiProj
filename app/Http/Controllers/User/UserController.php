@@ -16,7 +16,6 @@ class UserController extends Controller
     public function __construct(
         protected DetailService $detailService,
         protected NewsService $newsService,
-        protected CartService $cartService
     ) {}
 
     public function index(): Response
@@ -24,7 +23,6 @@ class UserController extends Controller
         return Inertia::render('User/Index', [
             'details' => $this->detailService->getAll(4),
             'posts' => $this->newsService->getAll(3),
-            'countOfCartItems' => $this->cartService->getCountOfCartItems(auth()->id()),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
         ]);
