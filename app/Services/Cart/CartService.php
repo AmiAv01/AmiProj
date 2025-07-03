@@ -23,9 +23,6 @@ final class CartService
 
     public function getCartItems(Cart $cart): array
     {
-        if (!$cart->exists) {
-            throw new CartNotFoundException($cart->user_id);
-        }
         try {
             return $cart->items()->with('detail')->get()
                 ->map(function ($item) {
@@ -35,6 +32,11 @@ final class CartService
             Log::error("Failed to get cart items for cart {$cart->id}", ['error' => $e]);
             throw new CartOperationException("Failed to get cart items: " . $e->getMessage());
         }
+    }
+
+    public function getCartQuantity(Cart $cart)
+    {
+        return $cart->items()->sum('quantity');
     }
 
     public function clearCart(Cart $cart): void
