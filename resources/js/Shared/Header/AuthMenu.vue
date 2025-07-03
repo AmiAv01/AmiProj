@@ -44,7 +44,7 @@
         </ul>
     </div>
     <menu-button
-        :attributes="px-4 py-2 text-sm mr-4"
+        :attributes="`px-4 py-2 text-sm mr-4`"
         :href="route('cart.index')"
     >
         <div class="flex items-center">

@@ -1,1 +1,0 @@
-import{k as o,s as t,j as r,o as a}from"./vendor-CaviVufk.js";import e from"./AdminLayout-BTxrapmI.js";import"./Navbar-D9MR_bcs.js";import"./app-BaYreMX_.js";import"./AdminBurgerMenu-DFKX_ofh.js";import"./AdminButton-ocqRa0Lz.js";import"./Sidebar-DWRKj75O.js";const d={__name:"Dashboard",setup(i){return o(()=>{t()}),(m,p)=>(a(),r(e))}};export{d as default};

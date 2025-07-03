@@ -11,7 +11,7 @@ export const useCartStore = defineStore('cart', {
     actions: {
         deleteDetailFromCart(id){
             axios
-                .delete(/cart/${id})
+                .delete('/cart/${id}')
                 .then((res) => {
                     this.cartData = res.data.items;
                     this.setCartCount(res.data.newCartCount);
@@ -20,7 +20,7 @@ export const useCartStore = defineStore('cart', {
         },
         changeDetailQuantity(id, quantity){
             axios
-                .put(/cart/${id}, { quantity })
+                .put('/cart/${id}', { quantity })
                 .then((res) => {
                     this.cartData = res.data.items;
                     this.setCartCount(res.data.newCartCount);
