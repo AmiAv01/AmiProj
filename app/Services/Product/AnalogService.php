@@ -12,7 +12,7 @@ final class AnalogService
         $detailsFromOems = Oems::ofCode($id)->get()->toArray();
         $ids = $this->getAnalogIds($detailsFromOems, $id);
         $analogs = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)
-            ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->unique()->toArray();
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->toArray();
         return $this->sortAnalogs($analogs);
     }
 
