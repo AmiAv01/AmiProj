@@ -12,7 +12,6 @@ use App\Services\Cart\CartService;
 use \Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -36,7 +35,6 @@ class CartController extends Controller
 
     public function update(CartFormUpdateRequest $request, string $id): JsonResponse
     {
-        Log::info($id);
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
         $this->cartItemService->updateItemQuantity($cart, new CartDTO($id, $request->validated('quantity'), '1'));
         return response()->json([
