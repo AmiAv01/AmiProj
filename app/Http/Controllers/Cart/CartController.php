@@ -34,7 +34,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function update(CartFormUpdateRequest $request, int $id): JsonResponse
+    public function update(CartFormUpdateRequest $request, string $id): JsonResponse
     {
         Log::info($id);
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
