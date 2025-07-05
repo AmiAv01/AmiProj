@@ -5,14 +5,7 @@
             :key="detail.dt_id"
             class="bg-white w-full p-4 flex border-b-2"
         >
-            <div class="mr-4">
-                <img
-                    src="/no-photo--lg.png"
-                    alt="#"
-                    class="w-10 h-10 object-cover object-center"
-                />
-            </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col mr-4">
                 <p class="font-manrope font-semibold text-lg text-black mb-2">
                     <a
                         :href="`../../catalog/product/${detail.dt_invoice}`"
