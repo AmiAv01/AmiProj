@@ -29,7 +29,7 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::group(['middleware' => 'removeHeader'], function(){
+Route::group(['middleware' => 'removeHeader'], function () {
     Route::get('/', [UserController::class, 'index'])->name('home');
 
     Route::get('/dashboard', function () {
@@ -89,9 +89,9 @@ Route::group(['middleware' => 'removeHeader'], function(){
 
         //users route
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
-        Route::put('users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/users',[AdminUserController::class, 'destroy'])->name('admin.users.delete');
+        Route::get('/users/{userId}', [AdminUserController::class, 'show'])->name('admin.users.show');
+        Route::put('users/{userId}', [AdminUserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{userId}', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
 
         //currency route
         Route::get('currency', [AdminCurrencyController::class, 'index'])->name('admin.currency.index');
@@ -100,7 +100,7 @@ Route::group(['middleware' => 'removeHeader'], function(){
         Route::put('/approve/{user}', [AdminApproveUserController::class, 'index'])->name('admin.approve.index');
     });
 
-    require __DIR__.'/auth.php';
+    require __DIR__ . '/auth.php';
 
     Route::middleware('auth')->group(function (): void {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -108,4 +108,3 @@ Route::group(['middleware' => 'removeHeader'], function(){
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });
-
