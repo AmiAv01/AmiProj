@@ -23,7 +23,7 @@
                         />
                     </svg>
                     <img
-                        src="/images/logo2.png"
+                        src="/logo2.png"
                         class="h-8"
                         alt="AmiAvto Logo"
                     />
