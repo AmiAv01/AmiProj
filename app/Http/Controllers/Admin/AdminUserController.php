@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserRequest;
 use App\Services\Cart\CartService;
@@ -32,7 +33,7 @@ class AdminUserController extends Controller
 
     public function update(int $userId, AdminUserRequest $request)
     {
-        return $this->userService->update($userId, $request->validated('formula'));
+        return $this->userService->update(new UserDTO($userId, $request->validated('formula')));
     }
 
     public function destroy(int $userId)

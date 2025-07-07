@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\UserDTO;
 use App\Http\Requests\NewsFormRequest;
 use App\Models\News;
 use App\Models\User;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 final class UserService
 {
-    public function getAll(int $perPage):LengthAwarePaginator
+    public function getAll(int $perPage): LengthAwarePaginator
     {
         return User::paginate($perPage);
     }
@@ -22,7 +23,8 @@ final class UserService
         return User::where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%")->paginate(12)->withQueryString();
     }
 
-    public function getById(int $id){
+    public function getById(int $id)
+    {
         return User::where('id', '=', $id)->select(['name', 'email', 'isAdmin', 'id'])->first();
     }
 
@@ -31,15 +33,16 @@ final class UserService
         return Crypt::decrypt(User::where('id', '=', $id)->pluck('formula')->first());
     }
 
-    public function destroy(int $id):bool
+    public function destroy(int $id): bool
     {
         $user = User::find($id);
         return $user->delete();
     }
 
-    public function approveUser(int $id):bool{
+    public function approveUser(int $id): bool
+    {
         $user = User::find($id);
-        if ($user){
+        if ($user) {
             $user->approved = 1;
             $user->save();
             return true;
@@ -47,8 +50,8 @@ final class UserService
         return false;
     }
 
-    public function update(int $userId, string $formula):bool
+    public function update(UserDTO $dto): bool
     {
-        return User::where('id', '=', $userId)->update(['formula' => Crypt::encrypt($formula)]);
+        return User::where('id', '=', $dto->userId)->update(['formula' => Crypt::encrypt($dto->formula)]);
     }
 }
