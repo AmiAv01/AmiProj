@@ -11,7 +11,7 @@
         <td class="px-4 py-3">{{ user.name }}</td>
         <td class="px-4 py-3">{{ user.email }}</td>
         <td class="px-4 py-3">
-            {{ user.isAdmin }}
+            {{ (user.isAdmin === 1) ? "Да" : "Нет" }}
         </td>
 
         <td class="px-4 py-3 flex items-center justify-end">
@@ -37,22 +37,9 @@
                 :id="`${user.id}`"
                 class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow "
             >
-                <ul
-                    class="py-1 text-sm text-gray-700 "
-                    :aria-labelledby="`${user.id}-button`"
-                >
-                    <li>
-                        <button
-                            @click="showModal(user.id)"
-                            class="flex w-full py-2 px-4 hover:bg-gray-100 "
-                        >
-                            Изменить
-                        </button>
-                    </li>
-                </ul>
                 <div class="py-1">
                     <button
-                        @click = "deleteUser(user.id)"
+                        @click="deleteUser(user.id)"
                         class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 "
                     >
                         Удалить
