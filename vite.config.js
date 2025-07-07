@@ -29,7 +29,7 @@ export default defineConfig({
     
     
   ].filter(Boolean),
-
+  manifest: true,
   build: {
     outDir: 'public/build',
     emptyOutDir: true,     
