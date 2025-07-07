@@ -20,13 +20,13 @@ class AdminUserController extends Controller
         return Inertia::render('Admin/User/UserList', ['users' => $this->userService->getAll(12)]);
     }
 
-    public function show(int $user): Response
+    public function show(int $userId): Response
     {
         return Inertia::render('Admin/User/UserCard', [
-            'user' => $this->userService->getById($user),
-            'cart' => $this->cartService->getCartItems($user),
-            'orders' => $this->orderService->getByUserId($user),
-            'formula' => $this->userService->getUserFormula($user)
+            'user' => $this->userService->getById($userId),
+            'cart' => $this->cartService->getCartItemsByUserId($userId),
+            'orders' => $this->orderService->getByUserId($userId),
+            'formula' => $this->userService->getUserFormula($userId)
         ]);
     }
 

@@ -34,6 +34,12 @@ final class CartService
         }
     }
 
+
+    public function getCartItemsByUserId(int $userId): array {
+        $cart = $this->getOrCreateUserCart($userId);
+        return $this->getCartItems($cart);
+    }
+
     public function getCartQuantity(Cart $cart)
     {
         return $cart->items()->sum('quantity');
