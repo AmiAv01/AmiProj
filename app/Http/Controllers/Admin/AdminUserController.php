@@ -30,13 +30,13 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function update(int $user, AdminUserRequest $request)
+    public function update(int $userId, AdminUserRequest $request)
     {
-        return $this->userService->update($user, $request->validated('formula'));
+        return $this->userService->update($userId, $request->validated('formula'));
     }
 
-    public function destroy(int $post)
+    public function destroy(int $userId)
     {
-        return $this->userService->destroy($post);
+        return $this->userService->destroy($userId);
     }
 }
