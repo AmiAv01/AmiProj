@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\OrderDTO;
+use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
 use App\Exceptions\InvalidOrderStatusException;
 use App\Exceptions\OrderNotFoundException;
@@ -36,10 +37,11 @@ final class OrderService
         }
         $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
         $this->createOrderItems($cart, $order);
+        event(new OrderCreated($this->getOrderWithRelations($order)));
         return $order;
     }
 
-    private function createOrderItems(Cart $cart, Order $order)
+    private function createOrderItems(Cart $cart, Order $order): void
     {
         $orderItems = $cart->items->map(function ($item) use ($order) {
             Log::info($item);
@@ -53,7 +55,16 @@ final class OrderService
             ];
         });
         Log::info($orderItems->toArray());
-        $order->items()->insert($orderItems->toArray());
+        $order->orderItems()->insert($orderItems->toArray());
+    }
+
+    private function getOrderWithRelations(int $orderId): Order
+    {
+        return Order::with([
+            'user',
+            'orderItems.detail'
+        ])->find($orderId);
+
     }
 
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
