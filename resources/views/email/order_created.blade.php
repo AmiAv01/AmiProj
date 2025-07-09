@@ -9,7 +9,7 @@
 <p>Email: {{ $user->email }}</p>
 <p>Детали заказа: </p>
 @foreach($orderItems as $item)
-    <p>{{$item->}}</p>
+    <p>{{$item->detail}}</p>
 @endforeach
 </body>
 </html>
