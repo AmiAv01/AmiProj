@@ -24,6 +24,7 @@ class NotifyAdminAboutNewOrder
     public function handle(OrderCreated $event): void
     {
         Log::info($event->order);
+        Log::info($event->order->orderItems);
         SendAdminNewUserNotification::dispatch($event->order);
     }
 }
