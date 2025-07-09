@@ -4,7 +4,7 @@
     <title>АМИ-АВТО Новый заказ</title>
 </head>
 <body>
-<h5>Клиент</h5>
+<h1>Клиент</h1>
 <p>Имя: {{ $order->user->name }}</p>
 <p>Email: {{ $order->user->email }}</p>
 <p>Детали заказа: </p>
