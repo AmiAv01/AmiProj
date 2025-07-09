@@ -37,7 +37,7 @@ final class OrderService
         }
         $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
         $this->createOrderItems($cart, $order);
-        event(new OrderCreated($this->getOrderWithRelations($order)));
+        event(new OrderCreated($this->getOrderWithRelations($order->id)));
         return $order;
     }
 
@@ -64,7 +64,6 @@ final class OrderService
             'user',
             'orderItems.detail'
         ])->find($orderId);
-
     }
 
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
