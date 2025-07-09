@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\OrderCreated;
+use App\Listeners\NotifyAdminAboutNewOrder;
 use App\Listeners\NotifyAdminAboutNewUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,8 +21,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
             NotifyAdminAboutNewUser::class,
-            OrderCreated::class,
+
         ],
+        OrderCreated::class => [
+            NotifyAdminAboutNewOrder::class
+        ]
     ];
 
     /**
