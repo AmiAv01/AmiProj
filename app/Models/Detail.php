@@ -12,6 +12,7 @@ class Detail extends Model
     use HasFactory;
 
     public $table = 'detail';
+    protected $primaryKey = 'dt_id';
     protected $fillable = [
         'dt_id',
         'dt_code',
@@ -40,7 +41,7 @@ class Detail extends Model
         'lt_dt_acode',
     ];
 
-    public function scopeInvoice(Builder $query,string $invoiceCode): void
+    public function scopeInvoice(Builder $query, string $invoiceCode): void
     {
         $query->where('dt_invoice', '=', $invoiceCode);
     }
