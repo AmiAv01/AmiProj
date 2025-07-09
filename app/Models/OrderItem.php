@@ -20,7 +20,7 @@ class OrderItem extends Model
 
     public function detail(): BelongsTo
     {
-        return $this->belongsTo(Detail::class);
+        return $this->belongsTo(Detail::class, 'dt_id');
     }
 
     public function order(): BelongsTo
