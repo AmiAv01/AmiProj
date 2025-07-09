@@ -5,11 +5,11 @@
 </head>
 <body>
 <h1>Клиент</h1>
-<p>Имя: {{ $user->name }}</p>
-<p>Email: {{ $user->email }}</p>
+<p>Имя: {{ $order->user->name }}</p>
+<p>Email: {{ $order->user->email }}</p>
 <p>Детали заказа: </p>
-@foreach($orderItems as $item)
-    <p>{{$item->detail}}</p>
+@foreach($order->orderItems as $item)
+    <p>{{$item->detail->dt_invoice}} {{ $item->quantity }} {{ $item->unit_price }}</p>
 @endforeach
 </body>
 </html>
