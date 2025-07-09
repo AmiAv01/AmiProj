@@ -11,6 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
 class OrderCreated extends Mailable
 {
@@ -20,6 +21,7 @@ class OrderCreated extends Mailable
     public function __construct(Order $order)
     {
         $this->order = $order;
+        Log::info($order);
     }
 
     /**
@@ -39,7 +41,7 @@ class OrderCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.user_registered',
+            view: 'email.order_created',
             with: [
                 'order' => $this->order,
             ],
