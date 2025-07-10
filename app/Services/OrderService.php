@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Jobs\SendAdminNewOrderNotification;
 
 final class OrderService
 {
@@ -37,7 +38,8 @@ final class OrderService
         }
         $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
         $this->createOrderItems($cart, $order);
-        event(new OrderCreated($this->getOrderWithRelations($order->id)));
+        SendAdminNewOrderNotification::dispatch($this->getOrderWithRelations($order->id));
+        //event(new OrderCreated());
         return $order;
     }
 

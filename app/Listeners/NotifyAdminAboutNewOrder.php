@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class NotifyAdminAboutNewOrder
 {
-    use InteractsWithQueue;
 
     /**
      * Create the event listener.
