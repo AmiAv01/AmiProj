@@ -60,7 +60,7 @@ async function makeOrder() {
         const clearResponse = await axios.put('/clear');
         console.log(clearResponse);
         store.setDetails([]);
-        store.setCartCount = 0;
+        store.setCartCount(0);
     } catch (err) {
         console.error(err);
     }

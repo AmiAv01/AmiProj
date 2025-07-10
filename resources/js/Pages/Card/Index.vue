@@ -96,6 +96,7 @@ import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
 import {ref} from "vue";
+import {useCartStore} from "@/Store/cartStore.js";
 
 const props = defineProps({
     sameDetails: {
@@ -121,6 +122,7 @@ const props = defineProps({
     }
 });
 
+const store = useCartStore();
 const isShow = ref(false);
 
 const addInCart = () =>  {
@@ -133,6 +135,7 @@ const addInCart = () =>  {
         .then((res) => {
             console.log(res);
             isShow.value = true;
+            store.incCartCount();
         })
         .catch((err) => console.log(err));
 }

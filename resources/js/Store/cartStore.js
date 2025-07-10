@@ -27,6 +27,9 @@ export const useCartStore = defineStore('cart', {
                 })
                 .catch((err) => console.log(err));
         },
+        incCartCount(){
+            ++this.cartCount;
+        },
         setDetails(items){
             this.cartData = items;
         },
