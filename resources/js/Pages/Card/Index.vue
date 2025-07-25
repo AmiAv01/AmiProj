@@ -8,20 +8,19 @@
     </push>
 
     <section class="py-6 bg-white md:py-10 antialiased">
-      <div class="w-full max-w-7xl px-6 mx-auto">
+      <div class="w-full max-w-8xl px-6 mx-auto">
         <div class="grid lg:grid-cols-3 gap-8">
           <!-- Основной блок с информацией о товаре -->
           <div class="lg:col-span-2 border rounded-lg p-6 bg-white shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              <div class="shrink-0 max-w-md mx-auto md:mx-0">
-                <img
-                  class="w-full max-h-64 object-contain"
-                  :src="imageUrl"
-                  alt="Product image"
-                />
-              </div>
-
               <div class="mt-4 sm:mt-6">
+                <div class="shrink-0 max-w-md mx-auto md:mx-0">
+                  <img
+                    class="w-full max-h-64 object-contain"
+                    :src="imageUrl"
+                    alt="Product image"
+                  />
+                </div>
                 <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
                   {{ editTitle(detail.dt_typec) }}
                   {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
