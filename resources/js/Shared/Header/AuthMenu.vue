@@ -1,24 +1,24 @@
 <template>
-    <button
-        type="button"
-        class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-        id="user-menu-button"
-        aria-expanded="false"
-        data-dropdown-toggle="user-dropdown"
-        data-dropdown-placement="bottom"
-    >
-        <span class="sr-only">Open user menu</span>
-        <i class="fa-solid fa-user text-white text-xl"></i>
-    </button>
+    <div>
+        <button
+                type="button"
+                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                id="user-menu-button"
+                aria-expanded="false"
+                data-dropdown-toggle="user-dropdown"
+                data-dropdown-placement="bottom"
+            >
+                <span class="sr-only">Open user menu</span>
+                <i class="fa-solid fa-user text-white text-xl"></i>
+        </button>
+        <p class="block text-sm text-gray-900 dark:text-white">{{ $page.props.auth.user.name }}</p>
+    </div>
+    
     <div
         class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
         id="user-dropdown"
     >
         <div class="px-4 py-3">
-                            <span
-                                class="block text-sm text-gray-900 dark:text-white"
-                            >{{ $page.props.auth.user.name }}</span
-                            >
             <span
                 class="block text-sm text-gray-500 truncate dark:text-gray-400"
             >{{ $page.props.auth.user.email }}</span
