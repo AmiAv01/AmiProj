@@ -1,1 +1,0 @@
-import{c as s}from"./app-DBeTAMBO.js";import o from"./NewsList-xeLyp8iO.js";import{j as a,o as e,w as r,g as p}from"./vendor-kJgWS3Bk.js";import"./NewsItem-BTAO3qGs.js";const i={__name:"News",props:{posts:{type:Array,default:[]}},setup(t){return(c,m)=>(e(),a(s,null,{default:r(()=>[p(o,{posts:t.posts},null,8,["posts"])]),_:1}))}};export{i as default};
