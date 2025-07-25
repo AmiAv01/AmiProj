@@ -25,7 +25,7 @@
               <!-- Блок с описанием (справа) -->
               <div class="w-full md:w-2/3 lg:w-3/4">
                 <h1 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                  Стартер {{ detail.dt_typec }} 
+                  {{ detail.dt_typec }} {{ detail.dt_invoice }}
                   <span class="block text-lg text-gray-600 mt-1">{{ detail.dt_comment }}</span>
                 </h1>
 
