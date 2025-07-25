@@ -22,7 +22,7 @@
                 </div>
                 <div
                     v-else
-                    class="flex w-[280px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                    class="flex w-[320px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <AuthMenu/>
                 </div>
