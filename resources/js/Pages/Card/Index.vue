@@ -48,15 +48,10 @@
                       <span class="text-gray-500">Наличие:</span> 
                       <span v-if="detail.ostc" class="text-green-500 ml-2">{{ detail.ostc }} шт.</span>
                       <span v-else class="text-red-500 ml-2">Нет в наличии</span>
-                    </p>
-                  </div>
-                  <div>
-                    <p class="text-2xl font-extrabold text-gray-900">
-                      {{ price !== '0' ? `${price} BYN` : 'цену уточнять' }}
+                      <span class="text-2xl font-extrabold text-gray-900">{{ price !== '0' ? `${price} BYN` : 'цену уточнять' }}</span>
                     </p>
                   </div>
                 </div>
-
                 <cart-button
                   v-if="detail.ostc && price !== '0'"
                   @click="addInCart"
