@@ -6,11 +6,8 @@
         <section class="py-8 bg-white md:py-16 antialiased">
             <div class="w-full px-4 2xl:px-0">
                 <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16">
-                    <!-- Левая колонка - изображение и основная информация -->
                     <div class="lg:col-span-2">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="shrink-0 max-w-md mx-auto">
-                                <img
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"> <div class="shrink-0 max-w-md mx-auto md:mx-0"> <img
                                     class="w-full max-h-64 object-contain"
                                     :src="imageUrl"
                                     alt="Product image"
@@ -71,20 +68,16 @@
 
                         <div
                             v-if="!!isHasDetails()"
-                            class="rounded-lg border-2 w-full mx-auto mt-8"
-                        >
+                            class="rounded-lg border-2 w-full mx-auto mt-8 lg:ml-0" >
                             <p class="text-2xl px-4 py-4 text-center border-b-2">
                                 <strong>Деталировка</strong>
                             </p>
-                            <div class="h-[400px] overflow-y-auto">
-                                <detail-list :details="sameDetails" />
+                            <div class="overflow-y-auto max-h-[400px]"> <detail-list :details="sameDetails" />
                             </div>
                         </div>
                     </div>
 
-                    <!-- Правая колонка - аналоги -->
-                    <div class="bg-white p-4 rounded-lg border">
-                        <p class="text-xl font-bold mb-4 text-center">Найденные аналоги</p>
+                    <div class="bg-white p-4 rounded-lg border self-start"> <p class="text-xl font-bold mb-4 text-center">Найденные аналоги</p>
                         <Analogs :details="analogs"/>
                     </div>
                 </div>
