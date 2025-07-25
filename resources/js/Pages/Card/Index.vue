@@ -8,67 +8,61 @@
                 <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16 ">
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
-                            class="w-full"
+                            class="w-full max-h-64 object-contain"
                             :src="imageUrl"
-                            alt=""
+                            alt="Product image"
                         />
                     </div>
-                    <div  class="mt-6 sm:mt-8 2xl:mt-0">
-                        <h1
-                            class="text-4xl font-semibold text-gray-900  "
-                        >
+                    <div class="mt-4 sm:mt-6 2xl:mt-2">
+                        <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900">
                             {{ editTitle(detail.dt_typec) }}
                             {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                             {{ isEmpty ? detail.dt_firm : '' }}
                         </h1>
-                        <p v-if="isEmpty" class="text-4xl font-semibold text-gray-900  mb-8">(CARGO # <span> {{Array.from(cargoIds).join()}} </span>)</p>
+                        <p v-if="isEmpty" class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                            (CARGO # <span>{{Array.from(cargoIds).join()}}</span>)
+                        </p>
                         <div v-if="!isEmpty">
-                            <p class="font-normal text-2xl leading-8 text-gray-500" >
+                            <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
                                 OEM: <strong>{{ detail.dt_oem }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-gray-500">
+                            <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
                                 CARGO: <strong>{{ detail.dt_cargo }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-gray-500" >
+                            <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
                                 Бренд: <strong>{{ detail.fr_code }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-blue-700" >
+                            <p class="font-normal text-base sm:text-lg leading-6 text-blue-700">
                                 <strong>{{ detail.dt_comment }}</strong>
                             </p>
-                            <p class="font-normal text-2xl leading-8 text-gray-500" >
-                                Наличие: <strong>{{detail.ostc  ? detail.ostc : 0}}</strong>
+                            <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                Наличие: <strong>{{detail.ostc ? detail.ostc : 0}}</strong>
                             </p>
 
-                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex" >
-                                <p
-                                    class="text-2xl font-extrabold text-gray-900 sm:text-3xl "
-                                >
+                            <div class="mt-3 sm:items-center sm:gap-3 sm:flex">
+                                <p class="text-xl font-extrabold text-gray-900 sm:text-2xl">
                                     {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
                                 </p>
                             </div>
 
-                            <div
-                                class="flex mt-6 gap-8 sm:items-center sm:flex sm:mt-8"
-                            >
+                            <div class="flex mt-4 gap-4 sm:items-center sm:flex sm:mt-6">
                                 <cart-button
                                     v-if="detail.ostc && price !== '0'"
                                     @click="addInCart"
                                     title=""
-                                    class="bg-green-700 hover:bg-green-500 text-lg text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800  font-medium rounded-lg px-5 py-2.5  flex items-center justify-center"
+                                    class="bg-green-700 hover:bg-green-500 text-sm sm:text-base text-white mt-2 sm:mt-0 font-medium rounded-lg px-4 py-2 flex items-center justify-center"
                                     role="button"
                                 >
                                 </cart-button>
-                                <p v-if="detail.ostc" class="text-2xl text-green-400">Есть в наличии</p>
-                                <p v-else class="text-2xl text-red-400">Нет в наличии</p>
+                                <p v-if="detail.ostc" class="text-lg text-green-400">Есть в наличии</p>
+                                <p v-else class="text-lg text-red-400">Нет в наличии</p>
                             </div>
                         </div>
                         <div v-else>
-                            <p class="text-2xl text-red-400">Нет в наличии</p>
+                            <p class="text-lg text-red-400">Нет в наличии</p>
                         </div>
 
-                        <hr
-                            class="my-6 md:my-8 border-gray-200 "
-                        />
+                        <hr class="my-4 md:my-6 border-gray-200"/>
                     </div>
                     <div
                         v-if="!!isHasDetails()"
@@ -85,7 +79,7 @@
             </div>
         </section>
         <section class="p-6">
-            <p class="text-center font-bold text-5xl mb-8">Похожие запчасти</p>
+            <p class="text-center font-bold text-5xl mb-8">Найденные аналоги</p>
             <Analogs :details="analogs"/>
         </section>
     </layout>

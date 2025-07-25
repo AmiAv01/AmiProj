@@ -1,35 +1,32 @@
 <template>
-    <div class="grid grid-cols sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-[80%] mx-auto">
-        <div
-            v-for="detail in details"
+    <div class="w-[80%] mx-auto">
+        <div class="grid grid-cols-3 bg-gray-100 p-3 font-semibold border-b">
+            <div class="text-left">Артикул</div>
+            <div class="text-left">Бренд</div>
+            <div class="text-left">Наличие</div>
+        </div>
+        
+        <div 
+            v-for="detail in details" 
             :key="detail.dt_id"
-            class="bg-white w-full p-4 flex border-b-2 flex-col items-center"
+            class="grid grid-cols-3 p-3 border-b hover:bg-gray-50"
         >
-            <div class="mr-4 mb-4">
-                <img
-                    :src="`${detail.imageUrl}`"
-                    alt="#"
-                    class="w-[250px] h-[250px] rounded-lg object-cover object-center "
-                />
+            <div class="flex items-center">
+                <a 
+                    :href="`../../catalog/product/${detail.dt_invoice}`"
+                    class="text-blue-600 hover:underline"
+                >
+                    {{ detail.dt_invoice }}
+                </a>
             </div>
-            <div class="flex flex-col ">
-                <p class="font-manrope font-semibold text-lg text-black mb-2">
-                    <a
-                        :href="`../../catalog/product/${detail.dt_invoice}`"
-                    >
-                        <span aria-hidden="true" />
-                        {{ editTitle(detail.dt_typec) }}
-                        {{ detail.dt_invoice }}
-                    </a>
-                </p>
-                <p class="font-normal text-md text-gray-500">
-                    Cargo: {{ detail.dt_cargo }}
-                </p>
-                <p class="font-normal text-md text-gray-500">
-                    Бренд: {{ detail.fr_code }}
-                </p>
-                <p v-if="detail.ostc" class="text-md font-normal text-green-400">Есть в наличии</p>
-                <p v-else class="text-md font-normal text-red-400">Нет в наличии</p>
+            
+            <div class="flex items-center">
+                {{ detail.fr_code }}
+            </div>
+            
+            <div class="flex items-center">
+                <span v-if="detail.ostc" class="text-green-500">Есть в наличии</span>
+                <span v-else class="text-red-500">Нет в наличии</span>
             </div>
         </div>
     </div>
