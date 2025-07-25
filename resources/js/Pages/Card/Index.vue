@@ -12,72 +12,58 @@
         <div class="grid lg:grid-cols-3 gap-8">
           <!-- Основной блок с информацией о товаре -->
           <div class="lg:col-span-2 border rounded-lg p-6 bg-white shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              <div class="shrink-0 max-w-md mx-auto md:mx-0">
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+              <!-- Блок с изображением (слева) -->
+              <div class="shrink-0 w-full md:w-1/3 lg:w-1/4">
                 <img
-                  class="w-full max-h-64 object-contain"
+                  class="w-full max-h-80 object-contain"
                   :src="imageUrl"
                   alt="Product image"
                 />
               </div>
 
-              <!-- Блок с описанием -->
-              <div class="mt-0"> <!-- Убрали margin-top для выравнивания по верху -->
-                <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
-                  {{ editTitle(detail.dt_typec) }}
-                  {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
-                  {{ isEmpty ? detail.dt_firm : '' }}
+              <!-- Блок с описанием (справа) -->
+              <div class="w-full md:w-2/3 lg:w-3/4">
+                <h1 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                  Стартер {{ detail.dt_typec }} 
+                  <span class="block text-lg text-gray-600 mt-1">{{ detail.dt_comment }}</span>
                 </h1>
 
-                <div class="mt-4 space-y-3">
-                  <p v-if="isEmpty" class="text-lg sm:text-xl font-semibold text-gray-900">
-                    (CARGO # <span>{{Array.from(cargoIds).join()}}</span>)
-                  </p>
-
-                  <div v-if="!isEmpty" class="space-y-3">
-                    <div class="flex flex-wrap gap-x-6 gap-y-2">
-                      <p class="font-normal text-sm sm:text-base text-gray-600 min-w-[120px]">
-                        <span class="text-gray-500">OEM:</span> <strong>{{ detail.dt_oem }}</strong>
-                      </p>
-                      <p class="font-normal text-sm sm:text-base text-gray-600 min-w-[120px]">
-                        <span class="text-gray-500">CARGO:</span> <strong>{{ detail.dt_cargo }}</strong>
-                      </p>
-                      <p class="font-normal text-sm sm:text-base text-gray-600 min-w-[120px]">
-                        <span class="text-gray-500">Бренд:</span> <strong>{{ detail.fr_code }}</strong>
-                      </p>
-                    </div>
-
-                    <p class="font-normal text-sm sm:text-base text-blue-700">
-                      <strong>{{ detail.dt_comment }}</strong>
-                    </p>
-
-                    <div class="flex items-baseline gap-4">
-                      <p class="font-normal text-sm sm:text-base text-gray-600">
-                        <span class="text-gray-500">Наличие:</span> 
-                        <strong>{{detail.ostc ? detail.ostc : 0}}</strong>
-                      </p>
-                      <p v-if="detail.ostc" class="text-base text-green-500">Есть</p>
-                      <p v-else class="text-base text-red-500">Нет</p>
-                    </div>
-
-                    <p class="text-2xl font-extrabold text-gray-900">
-                      {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
-                    </p>
-
-                    <cart-button
-                      v-if="detail.ostc && price !== '0'"
-                      @click="addInCart"
-                      title=""
-                      class="bg-green-600 hover:bg-green-500 text-sm text-white font-medium rounded-md px-5 py-2.5 inline-flex items-center"
-                      role="button"
-                    >
-                      Добавить в корзину
-                    </cart-button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <p class="text-gray-600"><span class="text-gray-500">OEM:</span> <strong>{{ detail.dt_oem }}</strong></p>
+                    <p class="text-gray-600"><span class="text-gray-500">CARGO:</span> <strong>{{ detail.dt_cargo }}</strong></p>
+                    <p class="text-gray-600"><span class="text-gray-500">Бренд:</span> <strong>{{ detail.fr_code }}</strong></p>
                   </div>
-                  <div v-else>
-                    <p class="text-base text-red-500">Нет в наличии</p>
+                  <div>
+                    <p class="text-gray-600"><span class="text-gray-500">Мощность:</span> <strong>1.7 kW</strong></p>
+                    <p class="text-gray-600"><span class="text-gray-500">Напряжение:</span> <strong>12V</strong></p>
+                    <p class="text-gray-600"><span class="text-gray-500">Размеры:</span> <strong>A: 76.0 B: 33.5 mm</strong></p>
                   </div>
                 </div>
+
+                <div class="flex items-center justify-between border-t pt-4">
+                  <div>
+                    <p class="text-gray-600">
+                      <span class="text-gray-500">Наличие:</span> 
+                      <span v-if="detail.ostc" class="text-green-500 ml-2">{{ detail.ostc }} шт.</span>
+                      <span v-else class="text-red-500 ml-2">Нет в наличии</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-2xl font-extrabold text-gray-900">
+                      {{ price !== '0' ? `${price} BYN` : 'цену уточнять' }}
+                    </p>
+                  </div>
+                </div>
+
+                <cart-button
+                  v-if="detail.ostc && price !== '0'"
+                  @click="addInCart"
+                  class="mt-4 bg-green-600 hover:bg-green-500 text-white font-medium rounded-md px-5 py-2.5 w-full sm:w-auto"
+                >
+                  Добавить в корзину
+                </cart-button>
               </div>
             </div>
 
