@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[80%] mx-auto">
+    <div>
         <div class="grid grid-cols-3 bg-gray-100 p-3 font-semibold border-b">
             <div class="text-left">Артикул</div>
             <div class="text-left">Бренд</div>
@@ -14,24 +14,24 @@
             <div class="flex items-center">
                 <a 
                     :href="`../../catalog/product/${detail.dt_invoice}`"
-                    class="text-blue-600 hover:underline"
+                    class="text-blue-600 hover:underline text-sm sm:text-base"
                 >
                     {{ detail.dt_invoice }}
                 </a>
             </div>
             
-            <div class="flex items-center">
+            <div class="flex items-center text-sm sm:text-base">
                 {{ detail.fr_code }}
             </div>
             
-            <div class="flex items-center">
+            <div class="flex items-center text-sm sm:text-base">
                 <span v-if="detail.ostc" class="text-green-500">Есть в наличии</span>
                 <span v-else class="text-red-500">Нет в наличии</span>
             </div>
         </div>
-    </div>
-    <div class="bg-white w-full p-4 flex text-3xl text-gray-400 items-center justify-center" v-if="details === undefined || !details.length">
-        <p>Запчастей не найдено</p>
+        <div class="bg-white w-full p-4 flex text-lg text-gray-400 items-center justify-center" v-if="details === undefined || !details.length">
+            <p>Запчастей не найдено</p>
+        </div>
     </div>
 </template>
 
