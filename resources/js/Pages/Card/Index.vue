@@ -54,8 +54,8 @@
                                             role="button"
                                         >
                                         </cart-button>
-                                        <p v-if="detail.ostc" class="text-lg text-green-400">Есть в наличии</p>
-                                        <p v-else class="text-lg text-red-400">Нет в наличии</p>
+                                        <p v-if="detail.ostc" class="text-lg text-green-400">Есть</p>
+                                        <p v-else class="text-lg text-red-400">Нет</p>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -66,15 +66,11 @@
                             </div>
                         </div>
 
-                        <div
+                        <DetailLayout
                             v-if="!!isHasDetails()"
-                            class="rounded-lg border-2 w-full mx-auto mt-8 lg:ml-0" >
-                            <p class="text-2xl px-4 py-4 text-center border-b-2">
-                                <strong>Деталировка</strong>
-                            </p>
-                            <div class="overflow-y-auto max-h-[400px]"> <detail-list :details="sameDetails" />
-                            </div>
-                        </div>
+                            :details="sameDetails"
+                            class="mt-8 lg:ml-0"
+                        />
                     </div>
 
                     <div class="bg-white p-4 rounded-lg border self-start"> <p class="text-xl font-bold mb-4 text-center">Найденные аналоги</p>
@@ -92,6 +88,7 @@ import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
 import {ref} from "vue";
 import {useCartStore} from "@/Store/cartStore.js";
+import DetailLayout from "./DetailLayout.vue";
 
 const props = defineProps({
     sameDetails: {
