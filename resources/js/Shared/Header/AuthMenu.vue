@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row">
+    <div class="flex flex-col">
         <button
                 type="button"
                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -11,7 +11,7 @@
                 <span class="sr-only">Open user menu</span>
                 <i class="fa-solid fa-user text-white text-xl"></i>
         </button>
-        <p class="block text-sm text-gray-900 dark:text-white">{{ $page.props.auth.user.name }}</p>
+        <p class="block text-sm text-white">{{ $page.props.auth.user.name }}</p>
     </div>
     
     <div
