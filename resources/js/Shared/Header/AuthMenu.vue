@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-row">
         <button
                 type="button"
                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
