@@ -3,77 +3,80 @@
         <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         </push>
-        <section class="py-8 bg-white md:py-16 antialiased">
-            <div class="w-full px-4 2xl:px-0">
-                <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16">
-                    <div class="lg:col-span-2">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"> <div class="shrink-0 max-w-md mx-auto md:mx-0"> <img
-                                    class="w-full max-h-64 object-contain"
+        <section class="py-4 bg-white md:py-8 antialiased">
+            <div class="w-full max-w-5xl px-4 mx-auto">
+                <div class="grid px-2 lg:grid-cols-3 gap-4">
+                    <div class="lg:col-span-2 border rounded-lg p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                            <div class="shrink-0 max-w-xs mx-auto md:mx-0">
+                                <img
+                                    class="w-full max-h-48 object-contain"
                                     :src="imageUrl"
                                     alt="Product image"
                                 />
                             </div>
-                            <div class="mt-4 sm:mt-6">
-                                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900">
+                            <div class="mt-2 sm:mt-4">
+                                <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
                                     {{ editTitle(detail.dt_typec) }}
                                     {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                                     {{ isEmpty ? detail.dt_firm : '' }}
                                 </h1>
-                                <p v-if="isEmpty" class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                                <p v-if="isEmpty" class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                                     (CARGO # <span>{{Array.from(cargoIds).join()}}</span>)
                                 </p>
-                                <div v-if="!isEmpty">
-                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                <div v-if="!isEmpty" class="space-y-1">
+                                    <p class="font-normal text-sm sm:text-base leading-5 text-gray-500">
                                         OEM: <strong>{{ detail.dt_oem }}</strong>
                                     </p>
-                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                    <p class="font-normal text-sm sm:text-base leading-5 text-gray-500">
                                         CARGO: <strong>{{ detail.dt_cargo }}</strong>
                                     </p>
-                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                    <p class="font-normal text-sm sm:text-base leading-5 text-gray-500">
                                         Бренд: <strong>{{ detail.fr_code }}</strong>
                                     </p>
-                                    <p class="font-normal text-base sm:text-lg leading-6 text-blue-700">
+                                    <p class="font-normal text-sm sm:text-base leading-5 text-blue-700">
                                         <strong>{{ detail.dt_comment }}</strong>
                                     </p>
-                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                    <p class="font-normal text-sm sm:text-base leading-5 text-gray-500">
                                         Наличие: <strong>{{detail.ostc ? detail.ostc : 0}}</strong>
                                     </p>
 
-                                    <div class="mt-3 sm:items-center sm:gap-3 sm:flex">
-                                        <p class="text-xl font-extrabold text-gray-900 sm:text-2xl">
+                                    <div class="mt-2 sm:items-center sm:gap-2 sm:flex">
+                                        <p class="text-lg font-extrabold text-gray-900 sm:text-xl">
                                             {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
                                         </p>
                                     </div>
 
-                                    <div class="flex mt-4 gap-4 sm:items-center sm:flex sm:mt-6">
+                                    <div class="flex mt-2 gap-2 sm:items-center sm:flex sm:mt-4">
                                         <cart-button
                                             v-if="detail.ostc && price !== '0'"
                                             @click="addInCart"
                                             title=""
-                                            class="bg-green-700 hover:bg-green-500 text-sm sm:text-base text-white mt-2 sm:mt-0 font-medium rounded-lg px-4 py-2 flex items-center justify-center"
+                                            class="bg-green-700 hover:bg-green-500 text-xs sm:text-sm text-white mt-1 sm:mt-0 font-medium rounded-lg px-3 py-1 flex items-center justify-center"
                                             role="button"
                                         >
                                         </cart-button>
-                                        <p v-if="detail.ostc" class="text-lg text-green-400">Есть</p>
-                                        <p v-else class="text-lg text-red-400">Нет</p>
+                                        <p v-if="detail.ostc" class="text-base text-green-400">Есть</p>
+                                        <p v-else class="text-base text-red-400">Нет</p>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p class="text-lg text-red-400">Нет в наличии</p>
+                                    <p class="text-base text-red-400">Нет в наличии</p>
                                 </div>
 
-                                <hr class="my-4 md:my-6 border-gray-200"/>
+                                <hr class="my-2 md:my-3 border-gray-200"/>
                             </div>
                         </div>
 
                         <DetailLayout
                             v-if="!!isHasDetails()"
                             :details="sameDetails"
-                            class="mt-8 lg:ml-0"
+                            class="mt-4 lg:ml-0"
                         />
                     </div>
 
-                    <div class="bg-white p-4 rounded-lg border self-start"> <p class="text-xl font-bold mb-4 text-center">Найденные аналоги</p>
+                    <div class="bg-white p-3 rounded-lg border self-start">
+                        <p class="text-lg font-bold mb-3 text-center">Найденные аналоги</p>
                         <Analogs :details="analogs"/>
                     </div>
                 </div>
