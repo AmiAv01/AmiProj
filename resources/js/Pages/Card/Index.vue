@@ -3,93 +3,89 @@
         <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         </push>
-        <section class="py-8 bg-white md:py-12 antialiased">
-            <div class="w-full px-4 2xl:px-0 max-w-7xl mx-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Левая часть - картинка и деталировка -->
+        <section class="py-8 bg-white md:py-16 antialiased">
+            <div class="w-full px-4 2xl:px-0">
+                <div class="2xl:grid px-4 lg:grid-cols-3 gap-8 2xl:gap-16">
+                    <!-- Левая колонка - изображение и основная информация -->
                     <div class="lg:col-span-2">
-                        <div class="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6 items-start">
-                            <!-- Картинка -->
-                            <div class="flex justify-center md:justify-end">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="shrink-0 max-w-md mx-auto">
                                 <img
-                                    class="w-[200px] h-[200px] object-contain"
+                                    class="w-full max-h-64 object-contain"
                                     :src="imageUrl"
                                     alt="Product image"
                                 />
                             </div>
-                            
-                            <!-- Описание -->
-                            <div>
-                                <h1 class="text-2xl font-semibold text-gray-900 mb-2">
+                            <div class="mt-4 sm:mt-6">
+                                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900">
                                     {{ editTitle(detail.dt_typec) }}
-                                </h1>
-                                <p class="text-lg text-gray-700 mb-1">
                                     {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
                                     {{ isEmpty ? detail.dt_firm : '' }}
+                                </h1>
+                                <p v-if="isEmpty" class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                                    (CARGO # <span>{{Array.from(cargoIds).join()}}</span>)
                                 </p>
-                                <p class="text-gray-500 mb-2">
-                                    <strong>{{ detail.dt_oem }}</strong>
-                                </p>
-                                <p class="text-gray-500 mb-2">
-                                    Бренд: <strong>{{ detail.fr_code }}</strong>
-                                </p>
-                                <p class="text-blue-700 mb-4">
-                                    <strong>{{ detail.dt_comment }}</strong>
-                                </p>
-                                
-                                <div class="mb-4">
-                                    <p class="text-2xl font-bold text-gray-900">
-                                        {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
+                                <div v-if="!isEmpty">
+                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                        OEM: <strong>{{ detail.dt_oem }}</strong>
                                     </p>
+                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                        CARGO: <strong>{{ detail.dt_cargo }}</strong>
+                                    </p>
+                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                        Бренд: <strong>{{ detail.fr_code }}</strong>
+                                    </p>
+                                    <p class="font-normal text-base sm:text-lg leading-6 text-blue-700">
+                                        <strong>{{ detail.dt_comment }}</strong>
+                                    </p>
+                                    <p class="font-normal text-base sm:text-lg leading-6 text-gray-500">
+                                        Наличие: <strong>{{detail.ostc ? detail.ostc : 0}}</strong>
+                                    </p>
+
+                                    <div class="mt-3 sm:items-center sm:gap-3 sm:flex">
+                                        <p class="text-xl font-extrabold text-gray-900 sm:text-2xl">
+                                            {{price !== '0' ? `${price} BYN` : 'цену уточнять'}}
+                                        </p>
+                                    </div>
+
+                                    <div class="flex mt-4 gap-4 sm:items-center sm:flex sm:mt-6">
+                                        <cart-button
+                                            v-if="detail.ostc && price !== '0'"
+                                            @click="addInCart"
+                                            title=""
+                                            class="bg-green-700 hover:bg-green-500 text-sm sm:text-base text-white mt-2 sm:mt-0 font-medium rounded-lg px-4 py-2 flex items-center justify-center"
+                                            role="button"
+                                        >
+                                        </cart-button>
+                                        <p v-if="detail.ostc" class="text-lg text-green-400">Есть в наличии</p>
+                                        <p v-else class="text-lg text-red-400">Нет в наличии</p>
+                                    </div>
                                 </div>
-                                
-                                <p v-if="detail.ostc" class="text-green-500">Есть в наличии</p>
-                                <p v-else class="text-red-500">Нет в наличии</p>
+                                <div v-else>
+                                    <p class="text-lg text-red-400">Нет в наличии</p>
+                                </div>
+
+                                <hr class="my-4 md:my-6 border-gray-200"/>
                             </div>
                         </div>
-                        
-                        <!-- Деталировка -->
-                        <div class="mt-8 border-t pt-6">
-                            <h3 class="text-xl font-semibold mb-4">Деталировка</h3>
-                            <div class="space-y-4">
-                                <div v-for="(item, index) in sameDetails" :key="index" class="border-b pb-3">
-                                    <p class="font-semibold">{{ item.dt_typec }}</p>
-                                    <p class="text-gray-600">Артикул: {{ item.dt_invoice }}</p>
-                                    <p class="text-gray-600">Бренд: {{ item.fr_code }}</p>
-                                </div>
+
+                        <div
+                            v-if="!!isHasDetails()"
+                            class="rounded-lg border-2 w-full mx-auto mt-8"
+                        >
+                            <p class="text-2xl px-4 py-4 text-center border-b-2">
+                                <strong>Деталировка</strong>
+                            </p>
+                            <div class="h-[400px] overflow-y-auto">
+                                <detail-list :details="sameDetails" />
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Правая часть - аналоги -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="text-xl font-semibold mb-4">Найденные аналоги</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Артикул</th>
-                                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Бренд</th>
-                                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Наличие</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr v-for="item in analogs" :key="item.dt_id" class="hover:bg-gray-50">
-                                        <td class="px-4 py-2 whitespace-nowrap text-sm text-blue-600">
-                                            <a :href="`../../catalog/product/${item.dt_invoice}`">{{ item.dt_invoice }}</a>
-                                        </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-600">{{ item.fr_code }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-sm">
-                                            <span v-if="item.ostc" class="text-green-500">Есть в наличии</span>
-                                            <span v-else class="text-red-500">Нет в наличии</span>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="!analogs.length">
-                                        <td colspan="3" class="px-4 py-4 text-center text-gray-400">Аналогов не найдено</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                    <!-- Правая колонка - аналоги -->
+                    <div class="bg-white p-4 rounded-lg border">
+                        <p class="text-xl font-bold mb-4 text-center">Найденные аналоги</p>
+                        <Analogs :details="analogs"/>
                     </div>
                 </div>
             </div>
