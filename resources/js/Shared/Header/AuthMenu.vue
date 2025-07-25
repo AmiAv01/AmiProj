@@ -53,7 +53,7 @@
                 <span class="sr-only">Open user menu</span>
                 <i class="fa-solid fa-user text-white text-xl"></i>
         </button>
-        <p class="block text-sm text-white">{{ $page.props.auth.user.name }}</p>
+        <p class="block text-sm text-white ml-2">{{ $page.props.auth.user.name }}</p>
     </div>
     
     <div
