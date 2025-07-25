@@ -25,24 +25,21 @@
               <!-- Блок с описанием (справа) -->
               <div class="w-full md:w-2/3 lg:w-3/4">
                 <h1 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                  {{ detail.dt_typec }} {{ detail.dt_invoice }}
-                  <span class="block text-lg text-gray-600 mt-1">{{ detail.dt_comment }}</span>
+                            {{ editTitle(detail.dt_typec) }}
+                            {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
+                            {{ isEmpty ? detail.dt_firm : '' }}
                 </h1>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <p v-if="isEmpty" class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                                    (CARGO # <span>{{Array.from(cargoIds).join()}}</span>)</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4" v-if="!isEmpty">
                   <div>
                     <p class="text-gray-600"><span class="text-gray-500">OEM:</span> <strong>{{ detail.dt_oem }}</strong></p>
                     <p class="text-gray-600"><span class="text-gray-500">CARGO:</span> <strong>{{ detail.dt_cargo }}</strong></p>
                     <p class="text-gray-600"><span class="text-gray-500">Бренд:</span> <strong>{{ detail.fr_code }}</strong></p>
-                  </div>
-                  <div>
-                    <p class="text-gray-600"><span class="text-gray-500">Мощность:</span> <strong>1.7 kW</strong></p>
-                    <p class="text-gray-600"><span class="text-gray-500">Напряжение:</span> <strong>12V</strong></p>
-                    <p class="text-gray-600"><span class="text-gray-500">Размеры:</span> <strong>A: 76.0 B: 33.5 mm</strong></p>
+                    <p class="text-gray-600"><span class="text-gray-500">Бренд:</span> <strong>{{ detail.dt_comment }}</strong></p>
                   </div>
                 </div>
-
-                <div class="flex items-center justify-between border-t pt-4">
+                <div class="flex items-center justify-between border-t pt-4" v-if="!isEmpty">
                   <div>
                     <p class="text-gray-600">
                       <span class="text-gray-500">Наличие:</span> 
