@@ -13,14 +13,16 @@
           <!-- Основной блок с информацией о товаре -->
           <div class="lg:col-span-2 border rounded-lg p-6 bg-white shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              <div class="mt-4 sm:mt-6">
-                <div class="shrink-0 max-w-md mx-auto md:mx-0">
-                  <img
-                    class="w-full max-h-64 object-contain"
-                    :src="imageUrl"
-                    alt="Product image"
-                  />
-                </div>
+              <div class="shrink-0 max-w-md mx-auto md:mx-0">
+                <img
+                  class="w-full max-h-64 object-contain"
+                  :src="imageUrl"
+                  alt="Product image"
+                />
+              </div>
+
+              <!-- Блок с описанием -->
+              <div class="mt-0"> <!-- Убрали margin-top для выравнивания по верху -->
                 <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">
                   {{ editTitle(detail.dt_typec) }}
                   {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
