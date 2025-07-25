@@ -1,6 +1,6 @@
 <template>
     <div class="rounded-lg border-2 w-full">
-        <p class="text-2xl px-4 py-4 text-center border-b-2">
+        <p class="text-lg font-bold px-4 py-4 text-center border-b-2">
             <strong>Деталировка</strong>
         </p>
         
