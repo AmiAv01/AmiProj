@@ -13,7 +13,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">  <!-- Увеличен padding -->
                         <a 
                             :href="`../../catalog/product/${detail.dt_invoice}`"
-                            class="text-blue-600 hover:underline text-base"  <!-- Увеличен размер текста -->
+                            class="text-blue-600 hover:underline text-base" 
                         >
                             {{ detail.dt_invoice }}
                         </a>
