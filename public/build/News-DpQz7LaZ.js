@@ -1,1 +1,0 @@
-import{c as s}from"./app-E8Qw1bKN.js";import o from"./NewsList-2pDW8S76.js";import{j as a,o as e,w as r,g as p}from"./vendor-NMc3eD5i.js";import"./NewsItem-B2PcXn69.js";const i={__name:"News",props:{posts:{type:Array,default:[]}},setup(t){return(c,m)=>(e(),a(s,null,{default:r(()=>[p(o,{posts:t.posts},null,8,["posts"])]),_:1}))}};export{i as default};
