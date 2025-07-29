@@ -66,7 +66,7 @@
           </div>
 
           <!-- Блок аналогов -->
-          <div class="bg-white min-w-[300px] p-6 rounded-lg border shadow-sm">
+          <div class="bg-white min-w-[500px] p-6 rounded-lg border shadow-sm">
             <h2 class="text-lg font-bold mb-5 text-center">Найденные аналоги</h2>
             <Analogs :details="analogs"/>
           </div>
