@@ -9,9 +9,9 @@
 
     <section class="py-6 bg-white md:py-10 antialiased">
       <div class="w-full max-w-8xl px-6 mx-auto">
-        <div class="grid lg:grid-cols-3 gap-8">
+        <div class="flex flex-col lg:flex-row gap-8">
           <!-- Основной блок с информацией о товаре -->
-          <div class="lg:col-span-2 border rounded-lg p-6 bg-white shadow-sm">
+          <div class="border rounded-lg p-6 bg-white shadow-sm">
             <div class="flex flex-col md:flex-row gap-8 items-start">
               <!-- Блок с изображением (слева) -->
               <div class="shrink-0 w-full md:w-1/3 lg:w-1/4">
@@ -66,7 +66,7 @@
           </div>
 
           <!-- Блок аналогов -->
-          <div class="bg-white p-6 rounded-lg border shadow-sm">
+          <div class="bg-white min-w-[300px] p-6 rounded-lg border shadow-sm">
             <h2 class="text-lg font-bold mb-5 text-center">Найденные аналоги</h2>
             <Analogs :details="analogs"/>
           </div>
