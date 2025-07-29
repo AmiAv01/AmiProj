@@ -6,9 +6,9 @@
         
         <div>
             <div class="grid grid-cols-3 gap-4 p-3 border-b hover:bg-gray-50 text-center">
-                <div class="text-left">Артикул</div>
-                <div class="text-left">Название</div>
-                <div class="text-left">Бренд</div>
+                <div class="flex items-center justify-center text-left">Артикул</div>
+                <div class="flex items-center justify-center text-left">Название</div>
+                <div class="flex items-center justify-center text-left">Бренд</div>
             </div>
             
             <div 
