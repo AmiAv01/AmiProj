@@ -22,8 +22,8 @@
                         {{ detail.fr_code }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span v-if="detail.ostc" class="text-green-500 text-base">В наличии</span>  <!-- Увеличен размер текста -->
-                        <span v-else class="text-red-500 text-base">Нет в наличии</span>  <!-- Увеличен размер текста -->
+                        <span v-if="detail.ostc" class="text-green-500 text-base">Есть</span>  <!-- Увеличен размер текста -->
+                        <span v-else class="text-red-500 text-base">Нет</span>  <!-- Увеличен размер текста -->
                     </td>
                 </tr>
                 <tr v-if="details === undefined || !details.length">
