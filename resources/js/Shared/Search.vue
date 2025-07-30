@@ -95,6 +95,7 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { editDetailTitle } from '@/Services/TitleService';
 import { otherParts } from '@/Store/index.js';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     link: {
