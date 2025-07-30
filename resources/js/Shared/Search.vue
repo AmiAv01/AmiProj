@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form @submit.prevent="handleSearch">
         <div class="flex flex-wrap justify-around">
             <div class="relative w-full md:w-[60%]">
                 <input
@@ -131,11 +131,12 @@ const getSearchingDetails = debounce(() => {
 
 const editTitle = (res) => editDetailTitle(res);
 
-async function handleSearch(){
+async function handleSearch(event){
+    event.preventDefault();
     if (!searchQuery.value.trim()) console.log(searchQuery.value);
     
     try {
-        await router.push(`/catalog/search?searchQ=${searchQuery}`);
+        await router.visit(`/catalog/search?searchQ=${encodeURIComponent(searchQuery.value)}`);
     } catch (error) {
         console.error('Navigation error:', error);
     }
