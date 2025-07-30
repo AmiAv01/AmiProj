@@ -135,7 +135,7 @@ async function handleSearch(){
     if (!searchQuery.value.trim()) console.log(searchQuery.value);
     
     try {
-        await router.push(`/catalog/product/${detail.dt_code}`);
+        await router.push(`/catalog/search?searchQ=${searchQuery}`);
     } catch (error) {
         console.error('Navigation error:', error);
     }
