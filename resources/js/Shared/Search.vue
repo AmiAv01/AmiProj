@@ -132,10 +132,10 @@ const getSearchingDetails = debounce(() => {
 const editTitle = (res) => editDetailTitle(res);
 
 async function handleSearch(){
-    if (!searchQuery.value.trim()) return;
+    if (!searchQuery.value.trim()) console.log(searchQuery.value);
     
     try {
-        await router.push(`/catalog/search?searchQ=${encodeURIComponent(searchQuery.value)}`);
+        await router.push(`/catalog/product/${detail.dt_code}`);
     } catch (error) {
         console.error('Navigation error:', error);
     }
