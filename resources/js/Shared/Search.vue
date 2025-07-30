@@ -131,9 +131,7 @@ const getSearchingDetails = debounce(() => {
 const editTitle = (res) => editDetailTitle(res);
 
 const handleSearch = () => {
-    if (searchQuery.value.trim()) {
-        router.get(`/catalog/search?searchQ=${searchQuery.value}`);
-    }
+    router.get(`/catalog/search?searchQ=${searchQuery.value}`);
 };
 </script>
 
