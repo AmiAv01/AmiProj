@@ -23,7 +23,6 @@ class ProductService
     public function getAnalogs(string $id): array
     {
         $analogs = $this->analogService->getAnalogs($id);
-        Log::info($analogs);
         $analogsWithImages = array_map(function ($item) {
             $item['imageUrl'] = $this->imageService->getImageUrl($item['dt_foto']);
             return $item;
