@@ -7,14 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use App\Services\FirmService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class BearingController extends Controller
 {
-    public function __construct(protected DetailService $detailService, protected FirmService $firmService)
-    {}
+    public function __construct(protected DetailService $detailService, protected FirmService $firmService) {}
 
     public function index(DetailsFilterRequest $request): Response
     {
@@ -24,7 +22,7 @@ class BearingController extends Controller
             'details' => $details,
             'title' => 'Подшипники',
             'categories' => ['brands' => $this->firmService->getAll()],
-            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter')))
+            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
         ]);
     }
 }

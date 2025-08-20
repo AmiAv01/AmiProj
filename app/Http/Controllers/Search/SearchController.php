@@ -12,6 +12,7 @@ class SearchController extends BaseSearchController
     {
         Log::info($request);
         $search = $this->getSearchQuery($request);
+
         return [
             'details' => $this->searchService->getBySearching(new SearchQueryDTO($search)),
             'search' => $search,

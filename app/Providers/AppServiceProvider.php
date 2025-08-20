@@ -21,7 +21,6 @@ use App\Services\Product\ProductViewService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -46,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CompatiblePartsService::class);
         $this->app->bind(OemService::class);
         $this->app->bind(ProductImageService::class);
-        $this->app->bind(SearchServiceFactoryInterface::class, AdminSearchServiceFactory::class,);
+        $this->app->bind(SearchServiceFactoryInterface::class, AdminSearchServiceFactory::class);
     }
 
     /**

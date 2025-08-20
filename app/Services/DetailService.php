@@ -3,15 +3,12 @@
 namespace App\Services;
 
 use App\DTO\FilterDTO;
-use App\Exceptions\DetailNotFoundException;
 use App\Exceptions\InvalidInvoiceException;
 use App\Models\Detail;
 use App\Models\Firm;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 final class DetailService
 {
@@ -23,6 +20,7 @@ final class DetailService
     public function getByFilters(array $categories, int $perPage): LengthAwarePaginator
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code', true, null))->get();
+
         return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
             ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage)->withQueryString();
     }
@@ -36,21 +34,21 @@ final class DetailService
             ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }
 
-    public function getByInvoice(string $invoice): Detail|null
+    public function getByInvoice(string $invoice): ?Detail
     {
         if (empty($invoice)) {
             throw new InvalidInvoiceException($invoice);
         }
         $detail = Detail::invoice($invoice)->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_code', 'dt_foto', 'dt_oem', 'dt_typec', 'dt_invoice', 'dt_cargo', 'fr_code', 'dt_comment', 'ostc'])->first();
+
         return $detail;
     }
 
-    public function getClientBrands(FilterDTO $dto): array | null
+    public function getClientBrands(FilterDTO $dto): ?array
     {
         return $dto->filter ?: null;
     }
-
 
     public function getBySearching(string $search, int $perPage): LengthAwarePaginator
     {

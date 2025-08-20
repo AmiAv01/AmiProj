@@ -16,7 +16,7 @@ test('new users can register without Auth', function (): void {
         'email' => 'test@example.com',
         'phoneNumber' => '1234567890',
         'password' => 'password',
-        'password_confirmation' => 'password'
+        'password_confirmation' => 'password',
     ]);
     $response->assertRedirect(RouteServiceProvider::HOME);
 });

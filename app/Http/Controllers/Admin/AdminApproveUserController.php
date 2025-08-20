@@ -7,10 +7,10 @@ use App\Services\UserService;
 
 class AdminApproveUserController extends Controller
 {
-    public function __construct(protected UserService $userService)
-    {}
+    public function __construct(protected UserService $userService) {}
 
-    public function index(int $id): bool{
+    public function index(int $id): bool
+    {
         return $this->userService->approveUser($id);
     }
 }

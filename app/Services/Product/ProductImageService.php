@@ -21,6 +21,7 @@ class ProductImageService
             return $this->getDefaultImageUrl();
         }
         $foundImage = $this->findExistingImage($imageName);
+
         return $foundImage ? $this->buildImageUrl($foundImage) : $this->getDefaultImageUrl();
     }
 
@@ -33,14 +34,16 @@ class ProductImageService
         foreach (explode(',', $imagePaths) as $imagePath) {
             $normalizedPath = $this->normalizeImagePath($imagePath);
             try {
-                if (Storage::disk('images')->exists($normalizedPath . '.jpg')) {
+                if (Storage::disk('images')->exists($normalizedPath.'.jpg')) {
                     Log::info("Found image: {$normalizedPath}.jpg");
+
                     return $normalizedPath;
                 }
             } catch (\Exception $e) {
-                throw new ImageStorageException("Failed to access image storage: " . $e->getMessage());
+                throw new ImageStorageException('Failed to access image storage: '.$e->getMessage());
             }
         }
+
         return null;
     }
 
@@ -50,6 +53,7 @@ class ProductImageService
             throw new InvalidImagePathException($path);
         }
         $path = strtolower($path);
+
         return stristr($path, ',', true) ?: $path;
     }
 
@@ -57,8 +61,8 @@ class ProductImageService
     {
         $defaultImage = '/no-photo--lg.png';
 
-        if (!file_exists(public_path($defaultImage))) {
-            throw new DefaultImageNotFoundException();
+        if (! file_exists(public_path($defaultImage))) {
+            throw new DefaultImageNotFoundException;
         }
 
         return url($defaultImage);
@@ -69,6 +73,7 @@ class ProductImageService
         if (empty($imagePath)) {
             throw new InvalidImagePathException($imagePath);
         }
-        return url('storage/images/' . $imagePath . '.jpg');
+
+        return url('storage/images/'.$imagePath.'.jpg');
     }
 }

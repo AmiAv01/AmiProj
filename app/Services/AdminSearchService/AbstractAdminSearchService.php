@@ -12,6 +12,6 @@ abstract class AbstractAdminSearchService implements AdminSearchInterface
     }
 
     abstract protected function searchWithQuery(string $query, int $perPage): LengthAwarePaginator;
-    abstract protected function getAllItems(int $perPage): LengthAwarePaginator;
 
+    abstract protected function getAllItems(int $perPage): LengthAwarePaginator;
 }

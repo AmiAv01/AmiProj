@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Exceptions\InvalidPriceTypeException;
 use App\Exceptions\PriceNotFoundException;
-use App\Enums\PriceType;
 use App\Models\Price;
 use Money\Money;
 
@@ -12,7 +11,7 @@ final class PriceService
 {
     public function __construct(protected UserService $userService, protected CurrencyService $currencyService) {}
 
-    public function getPrice(int $detailCode, int $userId): int | string | Money
+    public function getPrice(int $detailCode, int $userId): int|string|Money
     {
         $userFormula = $this->userService->getUserFormula($userId);
         $price = $this->getPriceByType(strtolower(substr($userFormula, 0, 1)), $detailCode);
@@ -20,7 +19,8 @@ final class PriceService
             throw new PriceNotFoundException($detailCode);
         }
         $sign = substr($userFormula, 1, 1);
-        return  $this->getSpecialPrice($this->parsePrice($price), $sign, $this->getPercent($userFormula));
+
+        return $this->getSpecialPrice($this->parsePrice($price), $sign, $this->getPercent($userFormula));
     }
 
     private function parsePrice(string $price): string
@@ -28,20 +28,18 @@ final class PriceService
         return str_replace(',', '.', $price);
     }
 
-    public function getPercent(string $formula): string | int
+    public function getPercent(string $formula): string|int
     {
-        return substr($formula, 2, strpos($formula, "%") - 2) ?: 0;
+        return substr($formula, 2, strpos($formula, '%') - 2) ?: 0;
     }
 
-    public function getPriceByType(string $priceTypeString, int $detailCode): string
+    public function getPriceByType(string $priceType, int $detailCode): string
     {
-        $priceType = PriceType::tryFrom($priceTypeString);
-
-        if (!$priceType) {
-            throw new InvalidPriceTypeException($priceTypeString);
+        if (! in_array($priceType, ['o', 'z'], true)) {
+            throw new InvalidPriceTypeException($priceType);
         }
 
-        return Price::where('code', '=', $detailCode)->value($priceType->getColumn());
+        return ($priceType === 'o') ? Price::where('code', '=', $detailCode)->value('opt') : Price::where('code', '=', $detailCode)->value('zakup');
     }
 
     private function getSpecialPrice(string $price, string $sign, string $percent): string
@@ -51,8 +49,9 @@ final class PriceService
             return bcmul($price, $this->parsePrice($currency));
         }
         $priceBeforePercent = bcmul($price, $currency);
-        $computedPercent =  ($sign === '+') ? bcadd(1, bcdiv($percent, 100, 2), 2) : bcsub(1, bcdiv($percent, 100, 2), 2);
+        $computedPercent = ($sign === '+') ? bcadd(1, bcdiv($percent, 100, 2), 2) : bcsub(1, bcdiv($percent, 100, 2), 2);
         $endPrice = bcmul($priceBeforePercent, $computedPercent, 2);
-        return  $endPrice;
+
+        return $endPrice;
     }
 }

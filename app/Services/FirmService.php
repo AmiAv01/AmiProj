@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class FirmService
 {
-    public function getAll(): Collection{
+    public function getAll(): Collection
+    {
         return Firm::all();
     }
 }

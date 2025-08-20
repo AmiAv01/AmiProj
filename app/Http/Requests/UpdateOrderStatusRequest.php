@@ -9,7 +9,7 @@ class UpdateOrderStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|string|max:10'
+            'status' => 'required|string|max:10',
         ];
     }
 

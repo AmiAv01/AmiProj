@@ -7,15 +7,15 @@ use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
 use App\Exceptions\InvalidOrderStatusException;
 use App\Exceptions\OrderNotFoundException;
+use App\Jobs\SendAdminNewOrderNotification;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Jobs\SendAdminNewOrderNotification;
 
 final class OrderService
 {
@@ -33,12 +33,14 @@ final class OrderService
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
     {
-        if (!$cart->items) {
-            throw new EmptyCartException();
+        if (! $cart->items) {
+            throw new EmptyCartException;
         }
         $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
         $this->createOrderItems($cart, $order);
         SendAdminNewOrderNotification::dispatch($this->getOrderWithRelations($order->id));
+
+        // event(new OrderCreated());
         return $order;
     }
 
@@ -46,13 +48,14 @@ final class OrderService
     {
         $orderItems = $cart->items->map(function ($item) use ($order) {
             Log::info($item);
+
             return [
                 'order_id' => $order->id,
                 'detail_id' => $item->detail['dt_id'],
                 'quantity' => $item->quantity,
                 'unit_price' => $item->price,
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ];
         });
         Log::info($orderItems->toArray());
@@ -63,17 +66,18 @@ final class OrderService
     {
         return Order::with([
             'user',
-            'orderItems.detail'
+            'orderItems.detail',
         ])->find($orderId);
     }
 
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
     {
         $order = Order::where('id', '=', $id)->first();
-        if (!in_array($dto->status, ['Новый', 'Принят', 'Выполнен'], true)) {
+        if (! in_array($dto->status, ['Новый', 'Принят', 'Выполнен'], true)) {
             throw new InvalidOrderStatusException($dto->status);
         }
         $order->update(['status' => $dto->status]);
+
         return $order;
     }
 
@@ -81,9 +85,10 @@ final class OrderService
     {
         $order = Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
-        if (!$order) {
+        if (! $order) {
             throw new OrderNotFoundException($id);
         }
+
         return $order;
     }
 

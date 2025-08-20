@@ -13,10 +13,15 @@ use Illuminate\Support\Facades\Mail;
 
 class SendAdminNewUserNotification implements ShouldQueue
 {
-    use Queueable, Dispatchable, InteractsWithQueue, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected User $user;
+
     protected string $adminEmail;
+
     public function __construct(User $user, ?string $adminEmail = null)
     {
         $this->user = $user;

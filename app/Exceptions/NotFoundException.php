@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class NotFoundException extends AppException
 {
     protected $code = 404;

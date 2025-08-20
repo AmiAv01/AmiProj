@@ -9,7 +9,7 @@ class AdminUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "formula"=>'required|string|max:10',
+            'formula' => 'required|string|max:10',
         ];
     }
 

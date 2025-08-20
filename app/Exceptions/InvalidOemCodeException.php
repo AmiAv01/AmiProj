@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class InvalidOemCodeException extends ValidationException
 {
     public function __construct()

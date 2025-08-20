@@ -16,10 +16,11 @@ class CompatiblePartsService
             default => [],
         };
     }
+
     private function getGeneratorCompatibleParts(string $detailInvoice): array
     {
         $ids = AltCz::where('hcparts', $detailInvoice)->orWhere('tmp', $detailInvoice)->get()
-            ->reject(fn($item) => str_starts_with($item->dt_code, '-') || empty($item->dt_code))
+            ->reject(fn ($item) => str_starts_with($item->dt_code, '-') || empty($item->dt_code))
             ->pluck('dt_code')->unique()->values()->toArray();
 
         return $this->getDetailsByCodes($ids);
@@ -28,8 +29,9 @@ class CompatiblePartsService
     private function getStarterCompatibleParts(string $detailInvoice): array
     {
         $ids = RozCz::where('hcparts', $detailInvoice)->orWhere('tmp', $detailInvoice)->get()
-            ->reject(fn($item) => str_starts_with($item->dt_code, '-') || empty($item->dt_code))
+            ->reject(fn ($item) => str_starts_with($item->dt_code, '-') || empty($item->dt_code))
             ->pluck('dt_code')->unique()->values()->toArray();
+
         return $this->getDetailsByCodes($ids);
     }
 

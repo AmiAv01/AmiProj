@@ -13,6 +13,7 @@ final class AnalogService
         $ids = $this->getAnalogIds($detailsFromOems, $id);
         $analogs = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)
             ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->toArray();
+
         return $this->sortAnalogs($analogs);
     }
 
@@ -24,6 +25,7 @@ final class AnalogService
             } elseif ($detail['dt_invoice'] === $id) {
                 $carry[] = $detail['dt_oem'];
             }
+
             return $carry;
         }, []);
     }
@@ -31,10 +33,12 @@ final class AnalogService
     private function sortAnalogs(array $analogList): array
     {
         usort($analogList, function ($firstEl, $secondEl) {
-            $hasFirstStk = !empty($firstEl['ostc']);
-            $hasSecondStk = !empty($secondEl['ostc']);
+            $hasFirstStk = ! empty($firstEl['ostc']);
+            $hasSecondStk = ! empty($secondEl['ostc']);
+
             return $hasSecondStk <=> $hasFirstStk;
         });
+
         return $analogList;
     }
 

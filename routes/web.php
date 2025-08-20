@@ -87,20 +87,20 @@ Route::group(['middleware' => 'removeHeader'], function () {
         Route::delete('/news/{postId}', [AdminNewsController::class, 'destroy'])->name('admin.news.delete');
         Route::get('/api/search', [AdminSearchController::class, 'index'])->name('admin.search.index');
 
-        //users route
+        // users route
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/{userId}', [AdminUserController::class, 'show'])->name('admin.users.show');
         Route::put('users/{userId}', [AdminUserController::class, 'update'])->name('admin.users.update');
         Route::delete('/users/{userId}', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
 
-        //currency route
+        // currency route
         Route::get('currency', [AdminCurrencyController::class, 'index'])->name('admin.currency.index');
         Route::post('currency', [AdminCurrencyController::class, 'update'])->name('admin.currency.update');
 
         Route::put('/approve/{user}', [AdminApproveUserController::class, 'index'])->name('admin.approve.index');
     });
 
-    require __DIR__ . '/auth.php';
+    require __DIR__.'/auth.php';
 
     Route::middleware('auth')->group(function (): void {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

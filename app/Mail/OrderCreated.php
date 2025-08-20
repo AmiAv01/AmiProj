@@ -2,22 +2,21 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Order;
 use Illuminate\Support\Facades\Log;
 
 class OrderCreated extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     protected Order $order;
+
     public function __construct(Order $order)
     {
         $this->order = $order;
@@ -30,8 +29,9 @@ class OrderCreated extends Mailable
     public function envelope(): Envelope
     {
         $currentDateTime = now()->translatedFormat('j F Y H:i');
+
         return new Envelope(
-            subject: "АМИ-АВТО Новый заказ от " . $currentDateTime,
+            subject: 'АМИ-АВТО Новый заказ от '.$currentDateTime,
         );
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\UserDTO;
@@ -27,7 +26,7 @@ class AdminUserController extends Controller
             'user' => $this->userService->getById($userId),
             'cart' => $this->cartService->getCartItemsByUserId($userId),
             'orders' => $this->orderService->getByUserId($userId),
-            'formula' => $this->userService->getUserFormula($userId)
+            'formula' => $this->userService->getUserFormula($userId),
         ]);
     }
 

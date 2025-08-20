@@ -1,6 +1,5 @@
 <?php
 
-
 test('test generators page', function () {
     $this->withoutExceptionHandling();
     $response = $this->get('/catalog/generators');
@@ -36,8 +35,3 @@ test('test other details page', function () {
     $response = $this->get('/catalog/other');
     $response->assertStatus(200);
 });
-
-
-
-
-

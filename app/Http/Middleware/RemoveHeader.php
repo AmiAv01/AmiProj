@@ -16,6 +16,7 @@ class RemoveHeader
     public function handle(Request $request, Closure $next): Response
     {
         header_remove('X-Powered-By');
+
         return $next($request);
     }
 }

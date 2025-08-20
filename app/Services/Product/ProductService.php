@@ -4,7 +4,6 @@ namespace App\Services\Product;
 
 use App\DTO\OemInfoDTO;
 use App\Services\OemService;
-use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
@@ -25,8 +24,10 @@ class ProductService
         $analogs = $this->analogService->getAnalogs($id);
         $analogsWithImages = array_map(function ($item) {
             $item['imageUrl'] = $this->imageService->getImageUrl($item['dt_foto']);
+
             return $item;
         }, $analogs);
+
         return $analogsWithImages;
     }
 

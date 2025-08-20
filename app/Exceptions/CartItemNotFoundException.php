@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class CartItemNotFoundException extends NotFoundException
 {
     public function __construct(int $cartId, int $productId)

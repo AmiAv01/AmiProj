@@ -7,16 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use App\Services\FirmService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class OtherDetailsController extends Controller
 {
-    public function __construct(protected DetailService $detailService, protected FirmService $firmService)
-    {
-
-    }
+    public function __construct(protected DetailService $detailService, protected FirmService $firmService) {}
 
     public function index(DetailsFilterRequest $request): Response
     {

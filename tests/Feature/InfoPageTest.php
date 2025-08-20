@@ -1,6 +1,5 @@
 <?php
 
-
 test('', function () {
     $this->withoutExceptionHandling();
     $response = $this->get('/info');

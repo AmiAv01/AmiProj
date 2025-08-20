@@ -14,9 +14,10 @@ class ClearCartController extends Controller
     {
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
         $this->cartService->clearCart($cart);
+
         return response()->json([
             'items' => [],
-            'newCartCount' => '0'
+            'newCartCount' => '0',
         ]);
     }
 }

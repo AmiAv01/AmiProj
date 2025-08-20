@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -12,9 +11,11 @@ use Illuminate\Queue\SerializesModels;
 
 class UserRegistered extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public User $user;
+
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -38,7 +39,7 @@ class UserRegistered extends Mailable
         return new Content(
             view: 'email.user_registered',
             with: [
-                'user' => $this->user
+                'user' => $this->user,
             ],
         );
     }

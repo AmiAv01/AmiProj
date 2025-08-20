@@ -4,8 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Services\DetailService;
-use App\Services\Cart\CartService;
-
 use App\Services\NewsService;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

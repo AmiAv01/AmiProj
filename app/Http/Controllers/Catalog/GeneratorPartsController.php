@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailsFilterRequest;
 use App\Services\DetailService;
 use App\Services\FirmService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,9 +23,7 @@ class GeneratorPartsController extends Controller
         'insulator' => 'Изоляторы', 'cover' => 'Крышки', 'regulator' => 'Регуляторы', 'rotor' => 'Роторы', 'terminal' => 'Терминалы',
         'gland' => 'Сальники', 'winding' => 'Статорные обмотки', 'pulley' => 'Шкивы', 'brush' => 'Щётки генератора', 'holder' => 'Щёточные узлы'];
 
-    public function __construct(protected DetailService $detailService, protected FirmService $firmService)
-    {
-    }
+    public function __construct(protected DetailService $detailService, protected FirmService $firmService) {}
 
     public function index(string $category, DetailsFilterRequest $request): Response
     {

@@ -8,9 +8,9 @@ use App\Http\Requests\SearchCatalogFormRequest;
 use App\Services\DetailService;
 use App\Services\FirmService;
 use App\Services\SearchService;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Log;
 
 class CatalogSearchedController extends BaseSearchController
 {
@@ -23,6 +23,7 @@ class CatalogSearchedController extends BaseSearchController
     {
         Log::info($request);
         $search = $this->getSearchQuery($request);
+
         return Inertia::render('SearchedCatalog/SearchedCatalog', [
             'details' => $this->searchService->getBySearchingWithPagination(new SearchQueryDTO($search)),
             'title' => "Поиск по $search",

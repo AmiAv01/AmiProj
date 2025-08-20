@@ -3,15 +3,9 @@
 namespace App\Services;
 
 use App\DTO\UserDTO;
-use App\Http\Requests\NewsFormRequest;
-use App\Jobs\SendAdminApproveUserNotification;
-use App\Jobs\SendAdminNewUserNotification;
-use App\Models\News;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 
 final class UserService
 {
@@ -38,6 +32,7 @@ final class UserService
     public function destroy(int $id): bool
     {
         $user = User::find($id);
+
         return $user->delete();
     }
 
@@ -47,7 +42,7 @@ final class UserService
         if ($user) {
             $user->approved = 1;
             $user->save();
-            SendAdminApproveUserNotification::dispatch($user);
+
             return true;
         }
 

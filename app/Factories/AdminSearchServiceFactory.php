@@ -15,8 +15,10 @@ use App\Services\UserService;
 
 final class AdminSearchServiceFactory implements SearchServiceFactoryInterface
 {
-    public function create(string $category): AdminSearchInterface {
+    public function create(string $category): AdminSearchInterface
+    {
         $categoryEnum = Category::tryFrom($category);
+
         return match ($categoryEnum) {
             Category::DETAILS => new AdminDetailsSearchService(app(DetailService::class)),
             Category::ORDERS => new AdminOrderSearchService(app(OrderService::class)),

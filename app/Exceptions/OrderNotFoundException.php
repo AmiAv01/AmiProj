@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class OrderNotFoundException extends NotFoundException
 {
     public function __construct(int $orderId)

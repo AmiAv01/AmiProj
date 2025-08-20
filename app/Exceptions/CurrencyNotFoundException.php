@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class CurrencyNotFoundException extends NotFoundException
 {
     public function __construct(string $currencyCode)

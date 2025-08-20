@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 class Cart extends Model
 {
     use HasFactory;
+
     public $table = 'cart';
 
     protected $fillable = ['user_id'];
@@ -20,8 +20,8 @@ class Cart extends Model
         return $this->hasMany(CartItem::class, 'cart_id', 'id');
     }
 
-    public function scopeUser(Builder $query, int $userId):void{
+    public function scopeUser(Builder $query, int $userId): void
+    {
         $query->where('user_id', '=', $userId);
     }
-
 }
