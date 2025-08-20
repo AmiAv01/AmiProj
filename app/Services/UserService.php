@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\DTO\UserDTO;
 use App\Http\Requests\NewsFormRequest;
+use App\Jobs\SendAdminApproveUserNotification;
+use App\Jobs\SendAdminNewUserNotification;
 use App\Models\News;
 use App\Models\User;
 use Carbon\Carbon;
@@ -47,6 +49,7 @@ final class UserService
             $user->save();
             return true;
         }
+        SendAdminApproveUserNotification::dispatch($user);
         return false;
     }
 
