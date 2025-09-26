@@ -47,9 +47,10 @@ final class UserService
         if ($user) {
             $user->approved = 1;
             $user->save();
+            SendAdminApproveUserNotification::dispatch($user);
             return true;
         }
-        SendAdminApproveUserNotification::dispatch($user);
+
         return false;
     }
 
