@@ -38,6 +38,17 @@ class CompatiblePartsService
         return Detail::whereIn('dt_cargo', $codes)
             ->orWhereIn('dt_invoice', $codes)
             ->orWhereIn('dt_oem', $codes)
-            ->select(['dt_invoice', 'dt_typec',  'dt_cargo', 'fr_code'])->get()->toArray();
+            ->select([
+                'detail.dt_id',
+                'detail.dt_invoice',
+                'detail.dt_typec',
+                'detail.dt_cargo',
+                'detail.fr_code',
+                'detail.dt_code',
+                'stk.ostc as stock_quantity',
+            ])
+            ->leftJoin('stk', 'stk.code', '=', 'detail.dt_code')
+            ->get()
+            ->toArray();
     }
 }

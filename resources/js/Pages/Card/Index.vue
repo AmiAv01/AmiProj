@@ -1,3 +1,4 @@
+    
 <template>
   <layout>
     <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
@@ -42,16 +43,17 @@
                 <div class="flex items-center justify-between border-t pt-4" v-if="!isEmpty">
                   <div>
                     <p class="text-gray-600">
-                      <span class="text-gray-500">Наличие:</span> 
+                      <span class="text-gray-500">Наличие:</span>
                       <span v-if="detail.ostc" class="text-green-500 ml-2">{{ detail.ostc }} шт.</span>
                       <span v-else class="text-red-500 ml-2">Нет в наличии</span>
                     </p>
                     <p class="text-2xl font-extrabold text-gray-900">{{ (price !== '0' && price !== undefined) ? `${price} BYN` : 'цену уточнять' }}</p>
                   </div>
                 </div>
+                <!-- Кнопка корзины остается как была, с передачей id и price -->
                 <cart-button
                   v-if="detail.ostc && price !== '0'"
-                  @click="addInCart"
+                  @addInCart="addInCart"
                   class="mt-4 bg-green-600 hover:bg-green-500 text-white font-medium rounded-md px-5 py-2.5 w-full sm:w-auto"
                 >
                   Добавить в корзину
@@ -83,28 +85,36 @@ import Analogs from "@/Pages/Card/Analogs.vue";
 import {ref} from "vue";
 import {useCartStore} from "@/Store/cartStore.js";
 import DetailLayout from "./DetailLayout.vue";
+import CartButton from '@/Components/CartButton.vue'; // Предполагается, что CartButton находится в @/Components
 
 const props = defineProps({
     sameDetails: {
         type: Array,
+        default: () => []
     },
     detail: {
         type: Object,
+        default: () => ({})
     },
     analogs: {
         type: Array,
+        default: () => []
     },
     cargoIds: {
         type: Array,
+        default: () => []
     },
     isEmpty:{
         type: Boolean,
+        default: false
     },
-    price: {
-        type: String
+    price: { // Цена для основной карточки
+        type: String,
+        default: '0'
     },
     imageUrl: {
-        type: String
+        type: String,
+        default: ''
     }
 });
 
@@ -139,3 +149,4 @@ function hideModal(param){
 }
 </script>
 
+  
