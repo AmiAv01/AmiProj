@@ -46,7 +46,7 @@
 
                 <div class="flex items-center justify-center">
                     <cart-button
-                        v-if="item.stock_quantity > 0"
+                        v-if="item.stock_quantity !== '0'"
                         @addInCart="addDetailItemToCart(item.dt_id)"
                         class="bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-md px-3 py-1.5 text-sm"
                     >
