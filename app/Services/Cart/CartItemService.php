@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Detail;
 use App\Services\PriceService;
+use App\Validation\PriceValidator;
 
 final class CartItemService
 {

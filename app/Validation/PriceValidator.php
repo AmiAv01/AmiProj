@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Cart;
+namespace App\Validation;
 
 use App\Exceptions\ZeroPriceException;
 
