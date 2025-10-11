@@ -22,8 +22,9 @@ final class CartItemService
             throw new CartItemAlreadyExistException($cartId, $dto->productId);
         }
         $detail = Detail::where('dt_id', $dto->productId)->select('dt_code')->first();
-
-        return CartItem::create(['cart_id' => $cartId, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $this->priceService->getPrice($detail->dt_code, auth()->id())]);
+        $price = $this->priceService->getPrice($detail->dt_code, auth()->id());
+        
+        return CartItem::create(['cart_id' => $cartId, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => ]);
     }
 
     public function updateItemQuantity(CartDTO $dto)
