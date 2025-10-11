@@ -10,8 +10,6 @@ class CartFormCreateRequest extends FormRequest
     {
         return [
             'id' => 'required|integer',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|string|min:1',
         ];
     }
 

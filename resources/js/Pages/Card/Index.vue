@@ -125,8 +125,6 @@ const addInCart = () =>  {
     axios
         .post("/cart", {
             id: props.detail.dt_id,
-            quantity: 1,
-            price: props.price
         })
         .then((res) => {
             console.log(res);

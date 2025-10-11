@@ -26,7 +26,7 @@ class CartController extends Controller
     public function store(CartFormCreateRequest $request): JsonResponse
     {
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
-        $this->cartItemService->addItemToCart($cart->id, new CartDTO($request->validated('id'), $request->validated('quantity'), $request->validated('price')));
+        $this->cartItemService->addItemToCart(new CartDTO($request->validated('id'), config('cart.cart_item_quantity'), $cart));
         return response()->json([
             'items' => $this->cartService->getCartItems($cart),
             'newCartCount' => $this->cartService->getCartQuantity($cart)
@@ -36,7 +36,7 @@ class CartController extends Controller
     public function update(CartFormUpdateRequest $request, string $id): JsonResponse
     {
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
-        $this->cartItemService->updateItemQuantity($cart, new CartDTO($id, $request->validated('quantity'), '1'));
+        $this->cartItemService->updateItemQuantity(new CartDTO($id, $request->validated('quantity'), $cart));
         return response()->json([
             'items' => $this->cartService->getCartItems($cart),
             'newCartCount' => $this->cartService->getCartQuantity($cart)
