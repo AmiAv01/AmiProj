@@ -13,7 +13,7 @@ use App\Services\PriceService;
 final class CartItemService
 {
 
-    public function __construct(protected PriceService $priceService) {}
+    public function __construct(protected PriceService $priceService, protected PriceValidator $priceValidator) {}
 
     public function addItemToCart(CartDTO $dto): ?CartItem
     {
@@ -23,8 +23,9 @@ final class CartItemService
         }
         $detail = Detail::where('dt_id', $dto->productId)->select('dt_code')->first();
         $price = $this->priceService->getPrice($detail->dt_code, auth()->id());
-        
-        return CartItem::create(['cart_id' => $cartId, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => ]);
+        $this->priceValidator->validate($price, $dto->productId);
+
+        return CartItem::create(['cart_id' => $cartId, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $price]);
     }
 
     public function updateItemQuantity(CartDTO $dto)
