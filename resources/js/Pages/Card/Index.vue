@@ -50,7 +50,6 @@
                     <p class="text-2xl font-extrabold text-gray-900">{{ (price !== '0' && price !== undefined) ? `${price} BYN` : 'цену уточнять' }}</p>
                   </div>
                 </div>
-                <!-- Кнопка корзины остается как была, с передачей id и price -->
                 <cart-button
                   v-if="detail.ostc && price !== '0'"
                   @addInCart="addInCart"
