@@ -6,6 +6,7 @@ use App\DTO\OemInfoDTO;
 use App\Exceptions\InvalidOemCodeException;
 use App\Exceptions\OemNotFoundException;
 use App\Models\Oems;
+use Illuminate\Database\Eloquent\Builder;
 
 final class OemService
 {
@@ -36,8 +37,17 @@ final class OemService
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\App\Models\Oems[]
      */
-    public function findDetailsByQuery(string $searchQuery)
+    public function findDetailsByQuery(string $searchQuery): \Illuminate\Database\Eloquent\Collection|array
     {
-        return Oems::where('dt_invoice', 'like', "$searchQuery%")->orWhere('dt_oem', 'like', "$searchQuery%")->get();
+        return $this->buildDetailsQuery($searchQuery)->get();
+    }
+
+    public function buildDetailsQuery(string $searchQuery): Builder
+    {
+        return Oems::query()
+            ->where(function (Builder $query) use ($searchQuery): void {
+                $query->where('dt_invoice', 'like', "$searchQuery%")
+                    ->orWhere('dt_oem', 'like', "$searchQuery%");
+            });
     }
 }

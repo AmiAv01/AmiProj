@@ -1,0 +1,66 @@
+﻿C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:7:case NEW = 'Новый';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:8:case ACCEPTED = 'Принят';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:9:case DONE = 'Выполнен';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Admin\AdminAuthController.php:27:return redirect()->route('admin.login')->with('error', 'Неверные данные');
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\BearingController.php:17:['ПОДШИПНИК', 'ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\BearingController.php:18:'Подшипники',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorController.php:17:['ГЕНЕРАТОР'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorController.php:18:'Генераторы',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:15:private array $categories = ['sleeve' => ['ВТУЛКА ГЕНЕРАТОРА', 'ВТУЛКА ПОДШИПНИКА'], 'pump' => ['ВАКУУМНЫЙ НАСОС ГЕНЕРАТОРА', 'ЛОПАСТИ ВАКУУМНОГО НАСОСА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:16:'rectifier' => ['ВЫПРЯМИТЕЛЬ ГЕНЕРАТОРА', 'ВЫПРЯМИТЕЛЬ + КРЫШКА ГЕНЕРАТОРА', 'ВЫПРЯМИТЕЛЬ + РЕГУЛЯТОР ГЕНЕРАТОРА'], 'diode' => ['ДИОД', 'ТРИОД ГЕНЕРАТОРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:17:'insulator' => 'ИЗОЛЯТОР ГЕНЕРАТОРА', 'cover' => ['КРЫШКА ГЕНЕРАТОРА', 'КРЫШКА ГЕНЕРАТОРА ЗАДНЯЯ', 'КРЫШКА ГЕНЕРАТОРА ПЕРЕДНЯЯ', 'КРЫШКА ГЕНЕРАТОРА ЗАЩИТНАЯ'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:18:'regulator' => 'РЕГУЛЯТОР НАПРЯЖЕНИЯ ГЕНЕРАТОРА', 'rotor' => ['РОТОР ГЕНЕРАТОРА', 'КОЛЛЕКТОР РОТОРА ГЕНЕРАТОРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:19:'terminal' => 'ТЕРМИНАЛ', 'gland' => 'САЛЬНИК ГЕНЕРАТОРА', 'winding' => 'СТАТОРНАЯ ОБМОТКА ГЕНЕРАТОРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:20:'pulley' => ['ШКИВ ГЕНЕРАТОРА', 'ШКИВ ГЕНЕРАТОРА ОБГОННЫЙ', 'КРЫШКА ШКИВА', 'ПРИВОДНОЙ РЕМЕНЬ ШКИВА'], 'brush' => 'ЩЁТКИ ГЕНЕРАТОРА', 'holder' => 'ЩЁТОЧНЫЙ УЗЕЛ ГЕНЕРАТОРА'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:22:private array $titles = ['sleeve' => 'Втулки генератора', 'pump' => 'Вакуумные насосы', 'rectifier' => 'Выпрямители', 'diode' => 'Диоды и триоды',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:23:'insulator' => 'Изоляторы', 'cover' => 'Крышки', 'regulator' => 'Регуляторы', 'rotor' => 'Роторы', 'terminal' => 'Терминалы',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:24:'gland' => 'Сальники', 'winding' => 'Статорные обмотки', 'pulley' => 'Шкивы', 'brush' => 'Щётки генератора', 'holder' => 'Щёточные узлы'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:18:'АВТОХИМИЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:19:'ВИНТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:20:'ВЕНТИЛЯТОР САЛОНА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:21:'ВТУЛКА СФЕРИЧЕСКАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:22:'ИЗОЛЯТОР',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:23:'ИНСТРУМЕНТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:24:'КРЫШКА ПОДШИПНИКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:25:'МУФТА РЕЗИНОВАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:26:'ОБОРУДОВАНИЕ И ОСНАСТКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:27:'ПРИПОЙ ДЛЯ КОНТАКТНОЙ СВАРКИ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:28:'РЕМКОМПЛЕКТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:29:'СМАЗКА ДЛЯ БЕНДИКСОВ MOLYKOTE 33',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:30:'СТОПОР',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:31:'СТОПОРНАЯ ПЛАСТИНА ПОДШИПНИКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:32:'СТОПОРНОЕ КОЛЬЦО',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:33:'СТОПОРНОЕ КОЛЬЦО КОМПЛЕКТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:34:'ШАЙБА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:35:'ШАЙБА ДИСТАНЦИОННАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:36:'ШПОНКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:38:'Прочие запчасти',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterController.php:17:['СТАРТЕР'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterController.php:18:'Стартеры',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:15:private array $categories = ['fork' => 'ВИЛКА СТАРТЕРА', 'sleeve' => ['ВТУЛКА СТАРТЕРА', 'ВТУЛКА СТАРТЕРА КОМПЛЕКТ', 'НАБОР ВТУЛОК СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:16:'relay' => 'ВТЯГИВАЮЩЕЕ РЕЛЕ СТАРТЕРА', 'relay_parts' => 'СЕРДЕЧНИК', 'unit_parts' => 'ШЕСТЕРНЯ ПРИВОДА СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:17:'cover' => 'КРЫШКА СТАРТЕРА', 'unit' => ['ПРИВОД СТАРТЕРА', 'РОЛИК ПРИВОДА СТАРТЕРА', 'ШТОК ПРИВОДА СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:18:'other' => ['ДЕРЖАТЕЛЬ ВИЛКИ', 'РЕДУКТОР+ПРИВОД', 'КОНТАКТ(ШИНА) СТАРТЕРА', 'ЗАЩИТНЫЙ КОЛПАЧЁК СТАРТЕРА', 'ВИНТ СТАРТЕРА', 'ПРОВОД СТАРТЕРА', 'МУФТА СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:19:'reducer' => ['ВАЛ РЕДУКТОРА СТАРТЕРА', 'ПЛАНЕТАРНЫЙ РЕДУКТОР', 'РЕДУКТОР СТАРТЕРА', 'КРЫШКА РЕДУКТОРА', 'КОРПУС РЕДУКТОРА'], 'repair' => 'РЕМКОМПЛЕКТ СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:20:'glands' => 'САЛЬНИК СТАРТЕРА', 'stator' => ['СТАТОР', 'КОРПУС СТАТОРА', 'СТАТОР В СБОРЕ С КРЫШКОЙ', 'СТАТОРНАЯ ОБМОТКА СТАРТЕРА'], 'brush' => 'ЩЁТКИ СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:21:'holder' => 'ЩЁТОЧНЫЙ УЗЕЛ СТАРТЕРА', 'anchor' => ['ЯКОРЬ СТАРТЕРА', 'КРЫШКА ЯКОРЯ']];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:23:private array $names = ['fork' => 'Вилки стартера', 'sleeve' => 'Втулки стартера', 'relay' => 'Втягивающие реле', 'relay_parts' => 'Детали втягивающего реле',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:24:'unit_parts' => 'Детали привода стартера', 'cover' => 'Крышки и головы', 'unit' => 'Приводы', 'other' => 'Прочее для стартера', 'reducer' => 'Редукторы и компоненты',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:25:'repair' => 'Ремкомплекты', 'glands' => 'Сальники стартера', 'stator' => 'Статоры', 'brush' => 'Щётки стартера', 'holder' => 'Щёткодержатели стартера',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:26:'anchor' => 'Якори стартера'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Search\CatalogSearchedController.php:27:'title' => "Поиск по $search",
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Mail\OrderCreated.php:34:subject: 'АМИ-АВТО Новый заказ от '.$currentDateTime,
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Mail\UserRegistered.php:30:subject: 'Регистрация нового пользователя',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Services\Product\CompatiblePartsService.php:14:'ГЕНЕРАТОР' => $this->getGeneratorCompatibleParts($detailInvoice),
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Services\Product\CompatiblePartsService.php:15:'СТАРТЕР' => $this->getStarterCompatibleParts($detailInvoice),
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:10:<p>Детали заказа: </p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:4:<title>АМИ-АВТО Новый заказ</title>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:7:<h1>Клиент</h1>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:8:<p>Имя: {{ $order->user->name }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:10:<p>Дата регистрации: {{ $user->created_at->format('d.m.Y H:i') }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:4:<title>Регистрация нового пользователя</title>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:7:<h1>Новый пользователь</h1>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:8:<p>Имя: {{ $user->name }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:10:'Принят',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:11:'Выполнен',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:9:'Новый',

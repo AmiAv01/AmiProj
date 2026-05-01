@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\SearchQueryDTO;
 use App\Exceptions\NoResultsFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 final class SearchService
@@ -24,9 +25,19 @@ final class SearchService
 
     public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
-        $details = $this->getBySearching($dto);
+        $page = Paginator::resolveCurrentPage();
+        $perPage = 10;
+        $paginator = $this->oemService->buildDetailsQuery($dto->searchQuery)->paginate($perPage, ['*'], 'page', $page);
+        if ($paginator->isEmpty()) {
+            throw new NoResultsFoundException($dto->searchQuery);
+        }
+        $processedDetails = $this->processDetails(collect($paginator->items()), $dto->searchQuery);
+        $details = array_values($this->formatResults($processedDetails));
 
-        return new LengthAwarePaginator($details, count($details), 10);
+        return new LengthAwarePaginator($details, $paginator->total(), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => 'page',
+        ]);
     }
 
     private function processDetails(Collection $details, string $searchQuery): array

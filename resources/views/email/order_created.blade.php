@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>АМИ-АВТО Новый заказ</title>
+    <title>{{ __('ami_auto_new_order') }}</title>
 </head>
 <body>
-<h1>Клиент</h1>
-<p>Имя: {{ $order->user->name }}</p>
-<p>Email: {{ $order->user->email }}</p>
-<p>Детали заказа: </p>
+<h1>{{ __('client') }}</h1>
+<p>{{ __('name') }}: {{ $order->user->name }}</p>
+<p>{{ __('email') }}: {{ $order->user->email }}</p>
+<p>{{ __('order_details') }}</p>
 @foreach($order->orderItems as $item)
     <p>{{$item->detail->dt_invoice}} {{ $item->quantity }} * {{ $item->unit_price }}</p>
 @endforeach

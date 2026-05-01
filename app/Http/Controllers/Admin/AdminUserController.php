@@ -8,6 +8,7 @@ use App\Http\Requests\AdminUserRequest;
 use App\Services\Cart\CartService;
 use App\Services\OrderService;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,13 +31,13 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function update(int $userId, AdminUserRequest $request)
+    public function update(int $userId, AdminUserRequest $request): JsonResponse
     {
-        return $this->userService->update(new UserDTO($userId, $request->validated('formula')));
+        return response()->json(['success' => $this->userService->update(new UserDTO($userId, $request->validated('formula')))]);
     }
 
-    public function destroy(int $userId)
+    public function destroy(int $userId): JsonResponse
     {
-        return $this->userService->destroy($userId);
+        return response()->json(['success' => $this->userService->destroy($userId)]);
     }
 }

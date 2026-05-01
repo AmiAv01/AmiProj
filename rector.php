@@ -14,8 +14,6 @@ return RectorConfig::configure()
         __DIR__.'/resources',
         __DIR__.'/routes',
         __DIR__.'/tests',
-        __DIR__.'/vendor/spatie',
-        __DIR__.'/vendor/tightenco/ziggy/src',
     ])
     // uncomment to reach your current PHP version
     // ->withPhpSets()

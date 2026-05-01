@@ -9,7 +9,8 @@ class CartFormCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer',
+            'id' => 'required|integer|exists:detail,dt_id',
+            'quantity' => 'required|integer|min:1',
         ];
     }
 

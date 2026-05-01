@@ -52,8 +52,12 @@ final class DetailService
 
     public function getBySearching(string $search, int $perPage): LengthAwarePaginator
     {
-        return Detail::where('dt_invoice', 'like', "%$search%")->orWhere('dt_oem', 'like', "%$search%")
-            ->orWhere('dt_cargo', 'like', "%$search%")->orWhere('dt_typec', '=', "$search")
+        return Detail::where(function ($query) use ($search): void {
+            $query->where('dt_invoice', 'like', "%$search%")
+                ->orWhere('dt_oem', 'like', "%$search%")
+                ->orWhere('dt_cargo', 'like', "%$search%")
+                ->orWhere('dt_typec', '=', "$search");
+        })
             ->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
     }

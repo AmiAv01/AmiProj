@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\Catalog;
 
-use App\DTO\FilterDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailsFilterRequest;
-use App\Services\DetailService;
-use App\Services\FirmService;
-use Inertia\Inertia;
+use App\Services\CatalogPageService;
 use Inertia\Response;
 
 class GeneratorController extends Controller
 {
-    public function __construct(protected DetailService $detailService, protected FirmService $firmService) {}
+    public function __construct(private readonly CatalogPageService $catalogPageService) {}
 
     public function index(DetailsFilterRequest $request): Response
     {
-        return Inertia::render('Catalog/Index', [
-            'details' => $this->detailService->getByFilters(['ГЕНЕРАТОР'], 12),
-            'title' => 'Генераторы',
-            'categories' => ['brands' => $this->firmService->getAll()],
-            'clientBrands' => $this->detailService->getClientBrands(new FilterDTO($request->validated('filter'))),
-        ]);
-
+        return $this->catalogPageService->render(
+            config('parts.filters.generator'),
+            __('title.generator'),
+            $this->catalogPageService->getClientBrands($request->validated('filter'))
+        );
     }
 }

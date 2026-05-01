@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Catalog\BearingController;
+use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\Catalog\GeneratorController;
 use App\Http\Controllers\Catalog\GeneratorPartsController;
 use App\Http\Controllers\Catalog\OtherDetailsController;
@@ -29,7 +30,7 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::group(['middleware' => 'removeHeader'], function () {
+Route::group(['middleware' => 'removeHeader'], function (): void {
     Route::get('/', [UserController::class, 'index'])->name('home');
 
     Route::get('/dashboard', function () {
@@ -42,19 +43,24 @@ Route::group(['middleware' => 'removeHeader'], function () {
 
     Route::get('/api/search', [SearchController::class, 'index']);
 
-    Route::group(['prefix' => 'catalog'], (function (): void {
+    Route::group(['prefix' => 'catalog'], function (): void {
         Route::get('/search', [CatalogSearchedController::class, 'index'])->name('catalog-searched.index');
-        Route::get('/api/search', [SearchController::class, 'index'])->name('catalog-searched.index');
-        Route::get('/generators', [GeneratorController::class, 'index'])->name('generator.index');
-        Route::get('/starters', [StarterController::class, 'index'])->name('starter.index');
-        Route::get('/bearings', [BearingController::class, 'index'])->name('bearing.index');
-        Route::get('/starter_parts/{category?}', [StarterPartsController::class, 'index'])->name('starter-parts.index');
-        Route::get('/generator_parts/{category}', [GeneratorPartsController::class, 'index'])->name('generator-parts.index');
-        Route::get('/other', [OtherDetailsController::class, 'index'])->name('other.index');
+        Route::get('/api/search', [SearchController::class, 'index'])->name('catalog-api.search');
+
+        $catalogAction = [CatalogController::class, 'index'];
+
+        Route::get('/generators', $catalogAction)->defaults('type', 'generator')->name('generator.index');
+        Route::get('/starters', $catalogAction)->defaults('type', 'starter')->name('starter.index');
+        Route::get('/bearings', $catalogAction)->defaults('type', 'bearing')->name('bearing.index');
+        Route::get('/other', $catalogAction)->defaults('type', 'other_details')->name('other.index');
+
+        Route::get('/starter_parts/{category?}', $catalogAction)->defaults('type', 'starter_parts')->name('starter-parts.index');
+        Route::get('/generator_parts/{category}', $catalogAction)->defaults('type', 'generator_parts')->name('generator-parts.index');
+
         Route::get('/product/{id}', [ProductController::class, 'index'])->name('product.info');
-        Route::get('/starter_parts/product/{id}', [ProductController::class, 'index'])->name('product.info');
-        Route::get('/generator_parts/product/{id}', [ProductController::class, 'index'])->name('product.info');
-    }));
+        Route::get('/starter_parts/product/{id}', [ProductController::class, 'index'])->name('product.info.starter');
+        Route::get('/generator_parts/product/{id}', [ProductController::class, 'index'])->name('product.info.generator');
+    });
 
     Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::middleware('auth')->put('/clear', ClearCartController::class)->name('cart.clear');
@@ -63,7 +69,7 @@ Route::group(['middleware' => 'removeHeader'], function () {
     Route::group(['prefix' => 'admin/resource', 'middleware' => 'RedirectIfAdmin'], function (): void {
         Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
         Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-        Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     });
 
     Route::middleware(['auth', 'admin'])->prefix('admin/resource')->group(function (): void {

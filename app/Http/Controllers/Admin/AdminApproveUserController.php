@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 
 class AdminApproveUserController extends Controller
 {
     public function __construct(protected UserService $userService) {}
 
-    public function index(int $id): bool
+    public function index(int $id): JsonResponse
     {
-        return $this->userService->approveUser($id);
+        return response()->json(['success' => $this->userService->approveUser($id)]);
     }
 }

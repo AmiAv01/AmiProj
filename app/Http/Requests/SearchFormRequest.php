@@ -9,7 +9,7 @@ class SearchFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'searchQ' => 'string|nullable|max:255',
+            'searchQ' => 'required|string|min:1|max:255',
         ];
     }
 

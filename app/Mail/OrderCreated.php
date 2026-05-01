@@ -23,21 +23,15 @@ class OrderCreated extends Mailable
         Log::info($order);
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         $currentDateTime = now()->translatedFormat('j F Y H:i');
 
         return new Envelope(
-            subject: 'АМИ-АВТО Новый заказ от '.$currentDateTime,
+            subject: __('ami_auto_new_order_from_date', ['date' => $currentDateTime]),
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -48,11 +42,6 @@ class OrderCreated extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];

@@ -7,12 +7,13 @@ use App\Exceptions\InvalidCategoryException;
 use App\Factories\SearchServiceFactoryInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminSearchRequest;
+use Illuminate\Http\JsonResponse;
 
 class AdminSearchController extends Controller
 {
     public function __construct(private readonly SearchServiceFactoryInterface $searchFactory) {}
 
-    public function index(AdminSearchRequest $request)
+    public function index(AdminSearchRequest $request): JsonResponse
     {
         $category = $request->validated('category');
         if (! Category::isValid($category)) {
@@ -21,6 +22,6 @@ class AdminSearchController extends Controller
         $searchService = $this->searchFactory->create($category);
         $results = $searchService->search($request->validated('searchQ'), 1000, 12);
 
-        return ["$category" => $results];
+        return response()->json([$category => $results]);
     }
 }

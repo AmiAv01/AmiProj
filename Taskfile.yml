@@ -1,0 +1,122 @@
+version: '3'
+
+vars:
+    PHP: '{{if not .LOCALLY}}docker compose exec -it php{{end}}'
+
+env:
+    APP_ENV: dev
+
+dotenv:
+    - '.env.{{.APP_ENV}}.local'
+    - '.env.{{.APP_ENV}}'
+    - '.env.local'
+    - '.env'
+
+tasks:
+    up:
+        cmds:
+            - 'docker compose up --detach --remove-orphans {{.CLI_ARGS}}'
+            #- task: install
+
+    down:
+        cmds:
+            - 'docker compose down --remove-orphans {{.CLI_ARGS}}'
+
+    start:
+        cmds:
+            - 'docker compose start {{.CLI_ARGS}}'
+            - task: install
+
+    stop:
+        cmds:
+            - 'docker compose stop {{.CLI_ARGS}}'
+
+    php: '{{.PHP}} sh'
+
+    install:
+        cmd: '{{.PHP}} composer install {{.CLI_ARGS}}'
+        sources:
+            - composer.json
+            - composer.lock
+        generates:
+            - vendor/autoload.php
+
+    var:
+        cmd: mkdir -p var
+        status:
+            - test -d var
+        silent: true
+        internal: true
+
+    test:
+        deps: [var, install]
+        cmd: '{{.PHP}} vendor/bin/phpunit {{.CLI_ARGS}}'
+
+    pint:
+        deps: [ var, install ]
+        cmd: '{{.PHP}} vendor/bin/pint {{.CLI_ARGS}}'
+
+    lint:
+        cmds:
+            - task: fixcs
+        vars:
+            CLI_ARGS: "--dry-run {{.CLI_ARGS}}"
+
+    rector-fix:
+        deps: [ var, install ]
+        cmd: '{{.PHP}} vendor/bin/rector process {{.CLI_ARGS}}'
+
+    rector:
+        deps: [ var, install ]
+        cmds:
+            -   task: rector-fix
+                vars:
+                    CLI_ARGS: "--dry-run {{.CLI_ARGS}}"
+
+    psalm:
+        deps: [var, install]
+        cmd: '{{.PHP}} ./vendor/bin/psalm --no-diff {{.CLI_ARGS}}'
+
+    deptrac-directories:
+        deps: [var, install]
+        cmd: '{{.PHP}} vendor/bin/deptrac analyze --config-file=deptrac.directories.yaml --cache-file=var/.deptrac.directories.cache {{.CLI_ARGS}}'
+
+    composer-check-require:
+        deps: [install]
+        cmd: '{{.PHP}} vendor/bin/composer-require-checker check {{.CLI_ARGS}}'
+
+    composer-check-unused:
+        deps: [install]
+        cmd: '{{.PHP}} vendor/bin/composer-unused {{.CLI_ARGS}}'
+
+    composer-normalize-fix:
+        deps: [install]
+        cmds:
+            - '{{.PHP}} composer bump {{.CLI_ARGS}}'
+            - '{{.PHP}} composer normalize --diff }{{.CLI_ARGS}'
+
+    composer-normalize:
+        cmds:
+            - task: composer-normalize-fix
+              vars:
+                  CLI_ARGS: '--dry-run {{.CLI_ARGS}}'
+
+    composer-audit: '{{.PHP}} composer audit {{.CLI_ARGS}}'
+
+    composer-validate: '{{.PHP}} composer validate --strict --no-check-publish {{.CLI_ARGS}}'
+
+    check:
+        cmds:
+            -   task: lint
+            -   task: psalm
+            -   task: rector
+            -   task: deptrac-directories
+            -   task: test-unit
+            -   task: composer-validate
+            -   task: composer-audit
+            -   task: composer-normalize
+            -   task: composer-check-require
+            -   task: composer-check-unused
+            -   task: di-lint
+            -   task: test-integration
+            -   task: doctrine-check

@@ -10,7 +10,7 @@ class SearchCatalogFormRequest extends FormRequest
     {
         return [
             'filter' => 'array',
-            'searchQ' => 'string|nullable|max:255',
+            'searchQ' => 'required|string|min:1|max:255',
         ];
     }
 

@@ -3,17 +3,18 @@
 namespace App\Services;
 
 use App\DTO\OrderDTO;
+use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
 use App\Exceptions\InvalidOrderStatusException;
 use App\Exceptions\OrderNotFoundException;
-use App\Jobs\SendAdminNewOrderNotification;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -33,32 +34,38 @@ final class OrderService
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
     {
-        if (! $cart->items) {
+        $cart->loadMissing('items');
+        if ($cart->items->isEmpty()) {
             throw new EmptyCartException;
         }
-        $order = Order::create(['total_price' => $dto->totalPrice, 'status' => $dto->status, 'created_by' => $dto->userId, 'updated_by' => $dto->userId]);
-        $this->createOrderItems($cart, $order);
-        SendAdminNewOrderNotification::dispatch($this->getOrderWithRelations($order->id));
 
-        // event(new OrderCreated());
-        return $order;
+        return DB::transaction(function () use ($dto, $cart): Order {
+            $orderTotal = $cart->items->sum(fn (CartItem $item): int => (int) $item->price * $item->quantity);
+            $order = Order::create([
+                'total_price' => $orderTotal,
+                'status' => $dto->status,
+                'created_by' => $dto->userId,
+                'updated_by' => $dto->userId,
+            ]);
+            $this->createOrderItems($cart, $order);
+            event(new OrderCreated($this->getOrderWithRelations($order->id)));
+
+            return $order;
+        });
     }
 
     private function createOrderItems(Cart $cart, Order $order): void
     {
-        $orderItems = $cart->items->map(function ($item) use ($order) {
-            Log::info($item);
-
+        $orderItems = $cart->items->map(function (CartItem $item) use ($order) {
             return [
                 'order_id' => $order->id,
-                'detail_id' => $item->detail['dt_id'],
+                'detail_id' => $item->dt_id,
                 'quantity' => $item->quantity,
                 'unit_price' => $item->price,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
         });
-        Log::info($orderItems->toArray());
         $order->orderItems()->insert($orderItems->toArray());
     }
 
@@ -67,13 +74,13 @@ final class OrderService
         return Order::with([
             'user',
             'orderItems.detail',
-        ])->find($orderId);
+        ])->findOrFail($orderId);
     }
 
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
     {
-        $order = Order::where('id', '=', $id)->first();
-        if (! in_array($dto->status, ['Новый', 'Принят', 'Выполнен'], true)) {
+        $order = Order::query()->findOrFail($id);
+        if (! in_array($dto->status, OrderStatus::values(), true)) {
             throw new InvalidOrderStatusException($dto->status);
         }
         $order->update(['status' => $dto->status]);
@@ -85,6 +92,20 @@ final class OrderService
     {
         $order = Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
+        if (! $order) {
+            throw new OrderNotFoundException($id);
+        }
+
+        return $order;
+    }
+
+    public function getByIdForUser(int $id, int $userId): Order
+    {
+        $order = Order::where('order.id', '=', $id)
+            ->where('order.created_by', '=', $userId)
+            ->join('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+            ->first();
         if (! $order) {
             throw new OrderNotFoundException($id);
         }
@@ -104,9 +125,15 @@ final class OrderService
             ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])->paginate(12)->withQueryString();
     }
 
-    public function getBySearching(string $search): LengthAwarePaginator
+    public function getBySearching(string $search, int $perPage = 12): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')->where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%")
-            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')->paginate(12)->withQueryString();
+        return Order::join('user', 'order.created_by', '=', 'user.id')
+            ->where(function ($query) use ($search): void {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            })
+            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')
+            ->paginate($perPage)
+            ->withQueryString();
     }
 }

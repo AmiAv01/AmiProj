@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Order;
 
 use App\DTO\OrderDTO;
+use App\Enums\OrderStatus;
+use App\Exceptions\CartOperationException;
+use App\Exceptions\EmptyCartException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
@@ -20,17 +23,26 @@ class OrderController extends Controller
         return Inertia::render('Order/OrderList', ['orders' => $this->orderService->getByUserId(auth()->id())]);
     }
 
+    /**
+     * @throws CartOperationException
+     * @throws EmptyCartException
+     */
     public function store(OrderRequest $request): OrderResource
     {
         $userId = auth()->id();
         $cart = $this->cartService->getOrCreateUserCart($userId);
-        $order = $this->orderService->createOrder(new OrderDTO($request->validated('totalPrice'), 'Новый', $userId), $cart);
+        $order = $this->orderService->createOrder(new OrderDTO(0, OrderStatus::NEW->value, $userId), $cart);
 
         return OrderResource::make($order);
     }
 
     public function show(int $id): Response
     {
-        return Inertia::render('Order/OrderCard', ['order' => $this->orderService->getById($id), 'details' => $this->orderService->getOrderItems($id)]);
+        $userId = auth()->id();
+
+        return Inertia::render('Order/OrderCard', [
+            'order' => $this->orderService->getByIdForUser($id, $userId),
+            'details' => $this->orderService->getOrderItems($id),
+        ]);
     }
 }

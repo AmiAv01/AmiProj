@@ -8,13 +8,18 @@ use App\Http\Requests\CartFormCreateRequest;
 use App\Http\Requests\CartFormUpdateRequest;
 use App\Services\Cart\CartItemService;
 use App\Services\Cart\CartService;
+use App\Services\PriceService;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CartController extends Controller
 {
-    public function __construct(protected CartService $cartService, protected CartItemService $cartItemService) {}
+    public function __construct(
+        protected CartService $cartService,
+        protected CartItemService $cartItemService,
+        protected PriceService $priceService
+    ) {}
 
     public function index(): Response
     {
@@ -25,8 +30,11 @@ class CartController extends Controller
 
     public function store(CartFormCreateRequest $request): JsonResponse
     {
+        $userId = auth()->id();
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
-        $this->cartItemService->addItemToCart($cart->id, new CartDTO($request->validated('id'), $request->validated('quantity'), $request->validated('price')));
+        $productId = (int) $request->validated('id');
+        $price = (string) $this->priceService->getPrice($productId, $userId);
+        $this->cartItemService->addItemToCart($cart->id, new CartDTO($productId, (int) $request->validated('quantity'), $price));
 
         return response()->json([
             'items' => $this->cartService->getCartItems($cart),

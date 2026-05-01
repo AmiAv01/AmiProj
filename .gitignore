@@ -1,3 +1,4 @@
+/.task/
 /.phpunit.cache
 /node_modules
 /public/hot
@@ -21,3 +22,11 @@ yarn-error.log
 .phpunit*
 /tests/Browser
 storage/debugbar
+
+# Generated API docs may contain real cookies/payloads.
+/public/docs/*.html
+/public/docs/*.json
+/public/docs/*.yaml
+/.scribe/endpoints/*.yaml
+/.scribe/endpoints.cache/*.yaml
+/.scribe/.filehashes

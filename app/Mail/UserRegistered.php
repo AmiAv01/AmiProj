@@ -27,7 +27,7 @@ class UserRegistered extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Регистрация нового пользователя',
+            subject: __('new_user_registration'),
         );
     }
 

@@ -16,7 +16,10 @@ final class UserService
 
     public function getBySearching(string $search)
     {
-        return User::where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%")->paginate(12)->withQueryString();
+        return User::where(function ($query) use ($search): void {
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+        })->paginate(12)->withQueryString();
     }
 
     public function getById(int $id)
@@ -32,6 +35,9 @@ final class UserService
     public function destroy(int $id): bool
     {
         $user = User::find($id);
+        if (! $user) {
+            return false;
+        }
 
         return $user->delete();
     }

@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $user = User::where('email', $request->email)->first();
-        if (! $user->approved) {
+        if (! $user || ! $user->approved) {
             $this->destroy($request);
 
             return redirect('/');

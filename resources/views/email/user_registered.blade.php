@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Регистрация нового пользователя</title>
+    <title>{{ __('new_user_registration') }}</title>
 </head>
 <body>
-    <h1>Новый пользователь</h1>
-    <p>Имя: {{ $user->name }}</p>
-    <p>Email: {{ $user->email }}</p>
-    <p>Дата регистрации: {{ $user->created_at->format('d.m.Y H:i') }}</p>
+<h1>{{ __('new_user') }}</h1>
+<p>{{ __('name') }}: {{ $user->name }}</p>
+<p>{{ __('email') }}: {{ $user->email }}</p>
+<p>{{ __('registration_date') }}: {{ $user->created_at->format('d.m.Y H:i') }}</p>
 </body>
 </html>

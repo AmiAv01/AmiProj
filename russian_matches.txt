@@ -1,0 +1,339 @@
+﻿C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:7:case NEW = 'Новый';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:8:case ACCEPTED = 'Принят';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Enums\OrderStatus.php:9:case DONE = 'Выполнен';
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Admin\AdminAuthController.php:27:return redirect()->route('admin.login')->with('error', 'Неверные данные');
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\BearingController.php:17:['ПОДШИПНИК', 'ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\BearingController.php:18:'Подшипники',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorController.php:17:['ГЕНЕРАТОР'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorController.php:18:'Генераторы',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:15:private array $categories = ['sleeve' => ['ВТУЛКА ГЕНЕРАТОРА', 'ВТУЛКА ПОДШИПНИКА'], 'pump' => ['ВАКУУМНЫЙ НАСОС ГЕНЕРАТОРА', 'ЛОПАСТИ ВАКУУМНОГО НАСОСА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:16:'rectifier' => ['ВЫПРЯМИТЕЛЬ ГЕНЕРАТОРА', 'ВЫПРЯМИТЕЛЬ + КРЫШКА ГЕНЕРАТОРА', 'ВЫПРЯМИТЕЛЬ + РЕГУЛЯТОР ГЕНЕРАТОРА'], 'diode' => ['ДИОД', 'ТРИОД ГЕНЕРАТОРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:17:'insulator' => 'ИЗОЛЯТОР ГЕНЕРАТОРА', 'cover' => ['КРЫШКА ГЕНЕРАТОРА', 'КРЫШКА ГЕНЕРАТОРА ЗАДНЯЯ', 'КРЫШКА ГЕНЕРАТОРА ПЕРЕДНЯЯ', 'КРЫШКА ГЕНЕРАТОРА ЗАЩИТНАЯ'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:18:'regulator' => 'РЕГУЛЯТОР НАПРЯЖЕНИЯ ГЕНЕРАТОРА', 'rotor' => ['РОТОР ГЕНЕРАТОРА', 'КОЛЛЕКТОР РОТОРА ГЕНЕРАТОРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:19:'terminal' => 'ТЕРМИНАЛ', 'gland' => 'САЛЬНИК ГЕНЕРАТОРА', 'winding' => 'СТАТОРНАЯ ОБМОТКА ГЕНЕРАТОРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:20:'pulley' => ['ШКИВ ГЕНЕРАТОРА', 'ШКИВ ГЕНЕРАТОРА ОБГОННЫЙ', 'КРЫШКА ШКИВА', 'ПРИВОДНОЙ РЕМЕНЬ ШКИВА'], 'brush' => 'ЩЁТКИ ГЕНЕРАТОРА', 'holder' => 'ЩЁТОЧНЫЙ УЗЕЛ ГЕНЕРАТОРА'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:22:private array $titles = ['sleeve' => 'Втулки генератора', 'pump' => 'Вакуумные насосы', 'rectifier' => 'Выпрямители', 'diode' => 'Диоды и триоды',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:23:'insulator' => 'Изоляторы', 'cover' => 'Крышки', 'regulator' => 'Регуляторы', 'rotor' => 'Роторы', 'terminal' => 'Терминалы',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\GeneratorPartsController.php:24:'gland' => 'Сальники', 'winding' => 'Статорные обмотки', 'pulley' => 'Шкивы', 'brush' => 'Щётки генератора', 'holder' => 'Щёточные узлы'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:18:'АВТОХИМИЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:19:'ВИНТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:20:'ВЕНТИЛЯТОР САЛОНА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:21:'ВТУЛКА СФЕРИЧЕСКАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:22:'ИЗОЛЯТОР',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:23:'ИНСТРУМЕНТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:24:'КРЫШКА ПОДШИПНИКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:25:'МУФТА РЕЗИНОВАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:26:'ОБОРУДОВАНИЕ И ОСНАСТКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:27:'ПРИПОЙ ДЛЯ КОНТАКТНОЙ СВАРКИ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:28:'РЕМКОМПЛЕКТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:29:'СМАЗКА ДЛЯ БЕНДИКСОВ MOLYKOTE 33',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:30:'СТОПОР',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:31:'СТОПОРНАЯ ПЛАСТИНА ПОДШИПНИКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:32:'СТОПОРНОЕ КОЛЬЦО',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:33:'СТОПОРНОЕ КОЛЬЦО КОМПЛЕКТ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:34:'ШАЙБА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:35:'ШАЙБА ДИСТАНЦИОННАЯ',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:36:'ШПОНКА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\OtherDetailsController.php:38:'Прочие запчасти',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterController.php:17:['СТАРТЕР'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterController.php:18:'Стартеры',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:15:private array $categories = ['fork' => 'ВИЛКА СТАРТЕРА', 'sleeve' => ['ВТУЛКА СТАРТЕРА', 'ВТУЛКА СТАРТЕРА КОМПЛЕКТ', 'НАБОР ВТУЛОК СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:16:'relay' => 'ВТЯГИВАЮЩЕЕ РЕЛЕ СТАРТЕРА', 'relay_parts' => 'СЕРДЕЧНИК', 'unit_parts' => 'ШЕСТЕРНЯ ПРИВОДА СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:17:'cover' => 'КРЫШКА СТАРТЕРА', 'unit' => ['ПРИВОД СТАРТЕРА', 'РОЛИК ПРИВОДА СТАРТЕРА', 'ШТОК ПРИВОДА СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:18:'other' => ['ДЕРЖАТЕЛЬ ВИЛКИ', 'РЕДУКТОР+ПРИВОД', 'КОНТАКТ(ШИНА) СТАРТЕРА', 'ЗАЩИТНЫЙ КОЛПАЧЁК СТАРТЕРА', 'ВИНТ СТАРТЕРА', 'ПРОВОД СТАРТЕРА', 'МУФТА СТАРТЕРА'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:19:'reducer' => ['ВАЛ РЕДУКТОРА СТАРТЕРА', 'ПЛАНЕТАРНЫЙ РЕДУКТОР', 'РЕДУКТОР СТАРТЕРА', 'КРЫШКА РЕДУКТОРА', 'КОРПУС РЕДУКТОРА'], 'repair' => 'РЕМКОМПЛЕКТ СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:20:'glands' => 'САЛЬНИК СТАРТЕРА', 'stator' => ['СТАТОР', 'КОРПУС СТАТОРА', 'СТАТОР В СБОРЕ С КРЫШКОЙ', 'СТАТОРНАЯ ОБМОТКА СТАРТЕРА'], 'brush' => 'ЩЁТКИ СТАРТЕРА',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:21:'holder' => 'ЩЁТОЧНЫЙ УЗЕЛ СТАРТЕРА', 'anchor' => ['ЯКОРЬ СТАРТЕРА', 'КРЫШКА ЯКОРЯ']];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:23:private array $names = ['fork' => 'Вилки стартера', 'sleeve' => 'Втулки стартера', 'relay' => 'Втягивающие реле', 'relay_parts' => 'Детали втягивающего реле',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:24:'unit_parts' => 'Детали привода стартера', 'cover' => 'Крышки и головы', 'unit' => 'Приводы', 'other' => 'Прочее для стартера', 'reducer' => 'Редукторы и компоненты',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:25:'repair' => 'Ремкомплекты', 'glands' => 'Сальники стартера', 'stator' => 'Статоры', 'brush' => 'Щётки стартера', 'holder' => 'Щёткодержатели стартера',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Catalog\StarterPartsController.php:26:'anchor' => 'Якори стартера'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Http\Controllers\Search\CatalogSearchedController.php:27:'title' => "Поиск по $search",
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Mail\OrderCreated.php:34:subject: 'АМИ-АВТО Новый заказ от '.$currentDateTime,
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Mail\UserRegistered.php:30:subject: 'Регистрация нового пользователя',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Services\Product\CompatiblePartsService.php:14:'ГЕНЕРАТОР' => $this->getGeneratorCompatibleParts($detailInvoice),
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\app\Services\Product\CompatiblePartsService.php:15:'СТАРТЕР' => $this->getStarterCompatibleParts($detailInvoice),
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\lang\ru.json:2:"ПОДШИПНИК": "ПОДШИПНИК",
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\lang\ru.json:3:"ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА": "ПОДШИПНИК КОМПРЕССОРА КОНДИЦИОНЕРА"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Components\CartButton.vue:25:<span class="pl-4">Добавить в корзину</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Components\SelectOrderStatusForm.vue:22:default: 'Новый'
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Components\SelectOrderStatusForm.vue:4:<option value="Новый">Новый</option>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Components\SelectOrderStatusForm.vue:5:<option value="Принят">Принят</option>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Components\SelectOrderStatusForm.vue:6:<option value="Завершён">Завершён</option>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Auth\Login.vue:60:<InputLabel for="password" value="Пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Auth\Login.vue:77:<span class="ms-2 text-sm text-gray-600">Запомнить меня</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Auth\Login.vue:87:Забыли пароль?
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Auth\Login.vue:95:Войти
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Components\Navbar.vue:66:>Настройки</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Components\Navbar.vue:74:>Выход</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Currency\Index.vue:13:placeholder="Ввести курс валют"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Currency\Index.vue:19:Изменить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Currency\Index.vue:4:Курс валют
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Detail\DetailList.vue:12::placeholder="`Найти запчасть`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Detail\DetailList.vue:61:let columnNames = ['#', 'Фирма', 'Тип', 'Invoice', 'Cargo', 'Ost'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsItem.vue:48:Изменить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsItem.vue:57:Удалить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsItem.vue:69::actionTitle="`Изменить`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsList.vue:12::placeholder="`Найти новость`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsList.vue:20:Добавить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsList.vue:49::actionTitle="`Добавить`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\News\NewsList.vue:74:let columnNames = ['#', 'Заголовок', 'Дата', 'Описание', 'Автор'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:11:<p class="text-gray-700 text-2xl mr-4">Статус заказа:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:15:<p class="text-gray-700 text-2xl mr-4">Имя:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:23:<p class="text-gray text-2xl mr-4">Дата:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:27:<p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:33:Приобретённые детали
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderCard.vue:8:Заказ № {{ order.id }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderList.vue:12::placeholder="`Найти заказ`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\Orders\OrderList.vue:59:let columnNames = ['#', 'Стоимость', 'Статус', 'Имя', 'Email', 'Дата'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:15:<p class="ext-gray-700 text-2xl mr-4">Формула</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:27:Изменить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:33:<p class="text-gray-700 text-2xl mr-4">Админ:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:34:<p class="text-2xl">{{ (user.isAdmin === 1) ? "Да" : "Нет" }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:39:Заказы
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCard.vue:45:Корзина
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserCartItems.vue:40:let columnNames = ['#', 'Стоимость', 'Статус', 'Имя', 'Email', 'Дата'];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserItem.vue:14:{{ (user.isAdmin === 1) ? "Да" : "Нет" }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserItem.vue:45:Удалить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserItem.vue:49:<button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center p-2 ml-2`">Подтвердить</button>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserList.vue:12::placeholder="`Найти пользователя`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserList.vue:26:<th scope="col" class="px-4 py-3">Имя</th>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserList.vue:29:Админ
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserOrderItems.vue:17:<th scope="col" class="px-4 py-3">Стоимость</th>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserOrderItems.vue:19:Статус
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserOrderItems.vue:22:Имя
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Admin\User\UserOrderItems.vue:25:<th scope="col" class="px-4 py-3">Дата</th>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Login.vue:57:<InputLabel for="password" value="Пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Login.vue:74:<span class="ms-2 text-sm text-gray-600">Запомнить</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Login.vue:84:Забыли пароль?
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Login.vue:92:Войти
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:116:Уже зарегистрированы?
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:124:Регистрация
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:30:<InputLabel for="name" value="Имя" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:61:<InputLabel for="phoneNumber" value="Номер телефона" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:76:<InputLabel for="password" value="Пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\Register.vue:93:value="Подтвердите пароль"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\ResetPassword.vue:56:<InputLabel for="password" value="Новый пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\ResetPassword.vue:73:value="Подтвердите пароль"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\ResetPassword.vue:96:Сбросить пароль
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Auth\VerifyEmail.vue:56:>Выйти</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:13:<td class="px-6 py-4 whitespace-nowrap">  <!-- Увеличен padding -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:2:<div class="overflow-x-auto w-full">  <!-- Добавлен w-full -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:21:<td class="px-6 py-4 whitespace-nowrap text-base">  <!-- Увеличен padding и размер текста -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:25:<span v-if="detail.ostc" class="text-green-500 text-base">Есть</span>  <!-- Увеличен размер текста -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:26:<span v-else class="text-red-500 text-base">Нет</span>  <!-- Увеличен размер текста -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:3:<table class="min-w-full divide-y divide-gray-200 w-full">  <!-- Добавлен w-full -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:30:<td colspan="3" class="px-6 py-4 text-center text-gray-400 text-base">  <!-- Увеличен padding и размер текста -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:31:Запчастей не найдено
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:6:<th class="px-6 py-3 text-left text-sm font-medium text-gray-700 min-w-[200px]">Артикул</th>  <!-- Увеличен min-width -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:7:<th class="px-6 py-3 text-left text-sm font-medium text-gray-700 min-w-[150px]">Бренд</th>    <!-- Увеличен min-width -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Analogs.vue:8:<th class="px-6 py-3 text-left text-sm font-medium text-gray-700 min-w-[120px]">Наличие</th>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\DetailLayout.vue:10:<div class="flex items-center justify-center text-left">Название</div>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\DetailLayout.vue:11:<div class="flex items-center justify-center text-left">Бренд</div>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\DetailLayout.vue:38:<p>Детализация отсутствует</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\DetailLayout.vue:4:<strong>Деталировка</strong>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\DetailLayout.vue:9:<div class="flex items-center justify-center text-left">Артикул</div>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\GuestCard.vue:27:Бренд: <strong>{{ detail.fr_code }}</strong>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\GuestCard.vue:30:<p class="text-3xl mt-6 text-green-400">Наличие уточнять</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:13:<!-- Основной блок с информацией о товаре -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:132:props.detail.dt_typec === "ГЕНЕРАТОР" ||
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:133:props.detail.dt_typec === "СТАРТЕР"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:16:<!-- Блок с изображением (слева) -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:25:<!-- Блок с описанием (справа) -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:3:<push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:38:<p class="text-gray-600"><span class="text-gray-500">Бренд:</span> <strong>{{ detail.fr_code }}</strong></p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:39:<p class="text-gray-600"><span class="text-gray-500">Бренд:</span> <strong>{{ detail.dt_comment }}</strong></p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:45:<span class="text-gray-500">Наличие:</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:46:<span v-if="detail.ostc" class="text-green-500 ml-2">{{ detail.ostc }} шт.</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:47:<span v-else class="text-red-500 ml-2">Нет в наличии</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:49:<p class="text-2xl font-extrabold text-gray-900">{{ (price !== '0' && price !== undefined) ? `${price} BYN` : 'цену уточнять' }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:57:Добавить в корзину
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:62:<!-- Блок деталировки -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:68:<!-- Блок аналогов -->
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Card\Index.vue:70:<h2 class="text-lg font-bold mb-5 text-center">Найденные аналоги</h2>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\Cart.vue:19:Корзина
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\Cart.vue:24:Товары, {{ count }} шт.
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartItem.vue:20:Артикул: {{ item.dt_cargo }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartItem.vue:25:Бренд:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartOrder.vue:11:Ваш заказ
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartOrder.vue:19:Товары, {{ count }} шт.
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartOrder.vue:2:<push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Заказ успешно оформлен`">
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Cart\CartOrder.vue:29:Оформить заказ
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Catalog\CatalogItem.vue:25:Бренд: {{ detail.fr_code }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Catalog\CatalogItem.vue:55:Войти
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Catalog\Index.vue:19:<button @click="toggleMobile" v-show="showFilterButton" class=" align-self-start z-30 sm:top-0 rounded-xl bg-green-600 hover:bg-green-700  text-white border-2 border-gray-300 w-[200px] h-[50px] ">Фильтр</button>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Catalog\Index.vue:2:<push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Успешно добавлено в корзину`">
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Catalog\Index.vue:33:<p class="text-center mt-12 text-5xl text-gray-500">По данному запросу запчастей не найдено</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:14:<p class="text-4xl font-bold text-center p-6">Скачать для Windows</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:15:<a :class="`flex items-center justify-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600 px-16 py-6 mr-3 mt-2 sm:mt-0 text-xl font-medium`" :href="`/plist.exe`" download>Скачать</a>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:26:['pdf-версия', '/instruction.pdf'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:27:['doc-версия', '/instruction.doc']])
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:3:<p class="text-5xl font-bold text-center p-6">Сервисная программа</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Desktop\Index.vue:6:<p class="text-4xl font-bold text-center p-6">Инструкция по установке</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:20:Склад : Минская область , Минский район ,
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:21:а/г. Ждановичи , ул. Мира 12
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:30:Контактная информация
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:35:Телефон:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:56:Время работы (прием заявок) :
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:58:понедельник-пятница - с 9:00 до
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:62:суббота, воскресенье - выходной
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:68:УНП:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:7:О нас
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:74:Юридический адрес :
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:76:>г.Минск , ул.Пономаренко, д.35А
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:77:, пом. 208</span
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:81:Р/С:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:83:>BY46TECN30125404500100000000 в
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:84:РКЦ ОАО "Технобанк" г.Минск ,
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:85:Долгиновский тракт 188 ;</span
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Info\Index.vue:89:Код банка:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\News\NewsList.vue:6:Новости
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderCard.vue:11:<p class="text-gray-700 text-2xl mr-4">Статус заказа:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderCard.vue:15:<p class="text-gray text-2xl mr-4">Дата:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderCard.vue:19:<p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderCard.vue:25:Приобретённые детали
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderCard.vue:8:Заказ № {{ order.id }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderItem.vue:20:Артикул: {{ item.cargo }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderItem.vue:23:Бренд:
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderItem.vue:32:{{ item.quantity }} шт.
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderList.vue:4:Заказы
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Order\OrderList.vue:50:const columnNames = ['№ заказа', 'Дата', 'Сумма', 'Статус']
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:44:<h2 class="text-lg font-medium text-gray-900">Удаление аккаунта</h2>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:46:После удаления вашей учетной записи все её данные будут удалены без возможности восстановления.
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:50:<DangerButton @click="confirmUserDeletion">Удалить</DangerButton>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:55:Вы уверены, что хотите удалить свой аккаунт?
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:59:После удаления вашей учетной записи все её данные будут удалены без возможности восстановления.
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:71:placeholder="Введите пароль"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:79:<SecondaryButton @click="closeModal"> Отменить </SecondaryButton>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\DeleteUserForm.vue:87:Удалить
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:101:<p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Сохранено.</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:40:<h2 class="text-lg font-medium text-gray-900">Изменение пароля</h2>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:43:Убедитесь, что вы используете длинный пароль для сохранности данных
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:49:<InputLabel for="current_password" value="Текущий пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:64:<InputLabel for="password" value="Новый пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:79:<InputLabel for="password_confirmation" value="Подтвердите пароль" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdatePasswordForm.vue:93:<PrimaryButton :disabled="form.processing">Сохранить</PrimaryButton>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdateProfileInformationForm.vue:29:<h2 class="text-lg font-medium text-gray-900">Данные профиля</h2>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdateProfileInformationForm.vue:32:Измените данные профиля
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdateProfileInformationForm.vue:38:<InputLabel for="name" value="Имя" />
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdateProfileInformationForm.vue:90:<PrimaryButton :disabled="form.processing">Сохранить</PrimaryButton>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\Profile\Partials\UpdateProfileInformationForm.vue:98:<p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Сохранено.</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\SearchedCatalog\SearchedCatalog.vue:2:<push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Успешно добавлено в корзину`">
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\SearchedCatalog\SearchedCatalog.vue:26:<p class="text-center mt-12 text-5xl text-gray-500">По данному запросу запчастей не найдено</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\SearchedCatalog\SearchedCatalogItem.vue:23:Бренд: {{ detail.dt_firm }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\HeroSection.vue:11:Большой выбор стартеров, генераторов и других автозапчастей
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\HeroSection.vue:16:Узнайте больше о наших запчастях
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\HeroSection.vue:26:Стартеры
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\HeroSection.vue:44:Генераторы
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\LogoClouds.vue:7:Мы являемся импортерами в РБ запчастей следующих брэндов
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\ProductItem.vue:27:Артикул: {{ detail.dt_cargo }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\ProductItem.vue:30:Бренд: {{ detail.fr_code }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Pages\User\ProductList.vue:5:Наши запчасти
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\BurgerMenu\BurgerMenu.vue:35:<span>Каталог</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\BurgerMenu\BurgerMenu.vue:45:<span>Запчасти стартера</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\BurgerMenu\BurgerMenu.vue:56:<span>Запчасти генератора</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\DetailList.vue:19:Артикул: {{ detail.dt_cargo }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\DetailList.vue:22:Бренд: {{ detail.fr_code }}
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\DetailList.vue:28:<p>Запчастей не найдено</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\BrandFilter.vue:21:placeholder="Введите название"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\BrandFilter.vue:44:Подобрать
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\BrandFilter.vue:47:Сбросить фильтр
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\BrandFilter.vue:7:Бренды
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\OrderStatusFilter.vue:28:Подобрать
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\OrderStatusFilter.vue:31:Сбросить фильтр
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\OrderStatusFilter.vue:42:const statuses = ["Новый", "Принят", "Выполнен"];
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Filters\OrderStatusFilter.vue:6:Выбрать статус
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:24:<p class="text-2xl text-white mb-2">О компании</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:28:>Новости</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:33:>О нас</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:36:>Контакты</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:40:<p class="text-white text-2xl mb-2">Категории</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:42:>Генераторы</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:45:>Стартеры</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:48:>Остальные запчасти</Link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:5:<p class="text-white text-2xl mb-2">Ами-Авто</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:53:<i class="fa-regular fa-copyright"></i> Ами-Авто 2024-...
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Footer.vue:8:>Минская область , Минский район , а/г. Ждановичи , ул. Мира
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsAddForm.vue:16:Название
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsAddForm.vue:23:placeholder="Ввести название"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsAddForm.vue:31:Описание
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsAddForm.vue:35:placeholder="Ввести описание"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsAddForm.vue:4::title="`Добавление новости`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsEditForm.vue:16:Название
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsEditForm.vue:22:placeholder="Ввести название"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsEditForm.vue:30:Описание
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsEditForm.vue:34:placeholder="Ввести описание"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Forms\NewsEditForm.vue:4::title="`Редактирование новости`"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\AuthMenu.vue:16:Корзина
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\AuthMenu.vue:42:Заказы
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\AuthMenu.vue:74:>Настройки</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\AuthMenu.vue:82:>Выход</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\Contacts.vue:5:>Контакты<svg
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\GuestMenu.vue:21:Вход
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Header\GuestMenu.vue:43:Регистрация
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:106:>Прочие запчасти</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:22:Генераторы
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:32:Стартеры
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:38:<p class="text-white">Запчасти стартера</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:66:<p class="text-white">Запчасти генератора</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Nav\NavMenu.vue:97:>Подшипники</inertia-link
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:17:<p class="font-bold text-xl px-4">Категории</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:36:<p class="font-bold text-lg px-4">Код</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:37:<p class="font-bold text-lg ">Бренд</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:38:<p class="font-bold text-lg px-4">Наименование</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:68:<span class="pl-2 text-md">Найти</span>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:86:<p class="text-white">Мы работаем: пн-пт - 9:00-18:00</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Shared\Search.vue:9:placeholder="Поиск по артикулу + деталировка"
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:1:export let starterParts = new Map([["Вилки стартера", "/catalog/generator_parts/rectifier"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:11:export let generatorParts = new Map([["Втулки генератора", "/catalog/generator_parts/sleeve"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:12:["Вакуумные насосы", "/catalog/generator_parts/pump"], ["Выпрямители", "/catalog/generator_parts/rectifier"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:13:["Диоды и триоды", "/catalog/generator_parts/diode"], ["Изоляторы", "/catalog/generator_parts/insulator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:14:["Крышки", "/catalog/generator_parts/cover"], ["Регуляторы", "/catalog/generator_parts/regulator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:15:["Роторы", "/catalog/generator_parts/rotor"], ["Терминалы", "/catalog/generator_parts/terminal"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:16:["Сальники", "/catalog/generator_parts/gland"], ["Статорные обмотки", "/catalog/generator_parts/winding"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:17:["Шкивы", "/catalog/generator_parts/pulley"], ["Щётки генератора", "/catalog/generator_parts/brush"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:18:["Щёточные узлы", "/catalog/generator_parts/holder"]]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:2:["Втулки стартера", "/catalog/starter_parts/sleeve"], ["Втягивающие реле", "/catalog/starter_parts/relay"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:20:export let otherParts = new Map([["Стартеры", "/catalog/starters"], ["Генераторы", '/catalog/generators'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:21:["Подшипники", '/catalog/bearings'], ["Прочие запчасти", "/catalog/other"], ["Вилки стартера", "/catalog/generator_parts/rectifier"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:22:["Втулки стартера", "/catalog/starter_parts/sleeve"], ["Втягивающие реле", "/catalog/starter_parts/relay"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:23:["Детали втягивающего реле", "/catalog/starter_parts/relay_parts"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:24:["Детали привода стартера", "/catalog/starter_parts/unit_parts"], ["Крышки и головы", "/catalog/starter_parts/cover"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:25:["Приводы", "/catalog/starter_parts/unit"], ["Прочее для стартера", "/catalog/starter_parts/other"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:26:["Редукторы и компоненты", "/catalog/starter_parts/reducer"], ["Ремкомплекты", "/catalog/starter_parts/repair"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:27:["Сальники стартера", "/catalog/starter_parts/glands"], ["Статоры", "/catalog/starter_parts/stator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:28:["Щётки стартера", "/catalog/starter_parts/brush"], ["Щёткодержатели стартера", "/catalog/starter_parts/holder"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:29:["Якоря", "/catalog/starter_parts/anchor"], ["Втулки генератора", "/catalog/generator_parts/sleeve"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:3:["Детали втягивающего реле", "/catalog/starter_parts/relay_parts"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:30:["Вакуумные насосы", "/catalog/generator_parts/pump"], ["Выпрямители", "/catalog/generator_parts/rectifier"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:31:["Диоды и триоды", "/catalog/generator_parts/diode"], ["Изоляторы", "/catalog/generator_parts/insulator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:32:["Крышки", "/catalog/generator_parts/cover"], ["Регуляторы", "/catalog/generator_parts/regulator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:33:["Роторы", "/catalog/generator_parts/rotor"], ["Терминалы", "/catalog/generator_parts/terminal"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:34:["Сальники", "/catalog/generator_parts/gland"], ["Статорные обмотки", "/catalog/generator_parts/winding"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:35:["Шкивы", "/catalog/generator_parts/pulley"], ["Щётки генератора", "/catalog/generator_parts/brush"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:36:["Щёточные узлы", "/catalog/generator_parts/holder"]]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:38:export const menuItems = new Map([['Новости', '/news'], ['О нас', '/info'], ['Скачать', '/desktop']]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:39:export const subCategories = new Map([['Генераторы', '/catalog/generators'], ['Стартеры', '/catalog/starters'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:4:["Детали привода стартера", "/catalog/starter_parts/unit_parts"], ["Крышки и головы", "/catalog/starter_parts/cover"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:40:['Подшипники', '/catalog/bearings'], ['Прочее', '/catalog/other']]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:43:['Запчасти', '/admin/resource/details'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:44:['Заказы', '/admin/resource/orders'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:45:['Новости', '/admin/resource/news'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:46:['Пользователи', '/admin/resource/users'],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:47:['Курс валют', '/admin/resource/currency']]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:5:["Приводы", "/catalog/starter_parts/unit"], ["Прочее для стартера", "/catalog/starter_parts/other"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:6:["Редукторы и компоненты", "/catalog/starter_parts/reducer"], ["Ремкомплекты", "/catalog/starter_parts/repair"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:7:["Сальники стартера", "/catalog/starter_parts/glands"], ["Статоры", "/catalog/starter_parts/stator"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:8:["Щётки стартера", "/catalog/starter_parts/brush"], ["Щёткодержатели стартера", "/catalog/starter_parts/holder"],
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\js\Store\index.js:9:["Якоря", "/catalog/starter_parts/anchor"]]);
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:10:<p>Детали заказа: </p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:4:<title>АМИ-АВТО Новый заказ</title>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:7:<h1>Клиент</h1>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\order_created.blade.php:8:<p>Имя: {{ $order->user->name }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:10:<p>Дата регистрации: {{ $user->created_at->format('d.m.Y H:i') }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:4:<title>Регистрация нового пользователя</title>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:7:<h1>Новый пользователь</h1>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\resources\views\email\user_registered.blade.php:8:<p>Имя: {{ $user->name }}</p>
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:10:'Принят',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:11:'Выполнен',
+C:\Users\Asus\Desktop\MyProjects\NewAmiProj\AmiProj\tests\Unit\OrderStatusTest.php:9:'Новый',

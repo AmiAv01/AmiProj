@@ -48,7 +48,7 @@ class Detail extends Model
         $query->where('dt_invoice', '=', $invoiceCode);
     }
 
-    public function orderItem(): hasMany
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
