@@ -10,7 +10,7 @@ class CartFormCreateRequest extends FormRequest
     {
         return [
             'id' => 'required|integer|exists:detail,dt_id',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'integer|min:1',
         ];
     }
 

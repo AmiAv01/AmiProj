@@ -22,7 +22,7 @@ class AdminDetailController extends Controller
 
     public function delete(int $id)
     {
-        Detail::where('dt_id', $id)->delete();
+        $this->detailService->deleteById($id);
 
         return redirect()->route('admin.details.index')->with('success', 'Product deleted successfully');
     }

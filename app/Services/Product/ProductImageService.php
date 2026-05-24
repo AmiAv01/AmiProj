@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductImageService
 {
+    const string DEFAULT_IMAGE_URL = '/no-photo--lg.png';
     /**
      * @throws InvalidImagePathException
      * @throws ImageStorageException
@@ -59,13 +60,11 @@ class ProductImageService
 
     private function getDefaultImageUrl(): string
     {
-        $defaultImage = '/no-photo--lg.png';
-
-        if (! file_exists(public_path($defaultImage))) {
+        if (! file_exists(public_path(self::DEFAULT_IMAGE_URL))) {
             throw new DefaultImageNotFoundException;
         }
 
-        return url($defaultImage);
+        return url(self::DEFAULT_IMAGE_URL);
     }
 
     private function buildImageUrl(string $imagePath): string

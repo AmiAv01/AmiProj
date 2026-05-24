@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class CartDTO
+readonly class CartDTO
 {
-    public function __construct(public readonly int $productId, public readonly int $quantity, public readonly string $productPrice) {}
+    public function __construct(public int $productId, public int $quantity, public string $productPrice) {}
 }

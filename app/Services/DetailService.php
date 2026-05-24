@@ -12,6 +12,11 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class DetailService
 {
+
+    public function getById(int $id): Detail
+    {
+        return Detail::query()->findOrFail($id);
+    }
     public function getAll(int $perPage): LengthAwarePaginator
     {
         return Detail::select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage);
@@ -60,5 +65,10 @@ final class DetailService
         })
             ->join('stk', 'stk.code', '=', 'detail.dt_code')
             ->select(['dt_id', 'dt_invoice', 'dt_type', 'dt_cargo', 'fr_code', 'ostc'])->paginate($perPage)->withQueryString();
+    }
+
+    public function deleteById(int $id): bool
+    {
+        return Detail::where('dt_id', $id)->delete();
     }
 }

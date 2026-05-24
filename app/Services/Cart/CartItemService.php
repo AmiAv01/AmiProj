@@ -10,7 +10,7 @@ use App\Models\CartItem;
 
 final class CartItemService
 {
-    public function addItemToCart(int $cartId, CartDTO $dto): ?CartItem
+    public function addItemToCart(int $cartId, CartDTO $dto): CartItem
     {
         if ($this->itemExists($cartId, $dto->productId)) {
             throw new CartItemAlreadyExistException($cartId, $dto->productId);

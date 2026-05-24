@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\InvalidPriceTypeException;
 use App\Exceptions\PriceNotFoundException;
 use App\Models\Price;
+use Illuminate\Support\Facades\Log;
 use Money\Money;
 
 final class PriceService
@@ -49,6 +50,7 @@ final class PriceService
             return bcmul($price, $this->parsePrice($currency));
         }
         $priceBeforePercent = bcmul($price, $currency);
+        Log::info($priceBeforePercent);
         $computedPercent = ($sign === '+') ? bcadd(1, bcdiv($percent, 100, 2), 2) : bcsub(1, bcdiv($percent, 100, 2), 2);
         $endPrice = bcmul($priceBeforePercent, $computedPercent, 2);
 
