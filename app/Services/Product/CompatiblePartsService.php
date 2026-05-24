@@ -37,9 +37,9 @@ class CompatiblePartsService
 
     private function getDetailsByCodes(array $codes): array
     {
-        return Detail::whereIn('dt_cargo', $codes)
-            ->orWhereIn('dt_invoice', $codes)
-            ->orWhereIn('dt_oem', $codes)
+        $details = Detail::whereIn('detail.dt_cargo', $codes)
+            ->orWhereIn('detail.dt_invoice', $codes)
+            ->orWhereIn('detail.dt_oem', $codes)
             ->select([
                 'detail.dt_id',
                 'detail.dt_invoice',
@@ -47,10 +47,27 @@ class CompatiblePartsService
                 'detail.dt_cargo',
                 'detail.fr_code',
                 'detail.dt_code',
+                'detail.dt_foto',
                 'stk.ostc as stock_quantity',
             ])
             ->leftJoin('stk', 'stk.code', '=', 'detail.dt_code')
             ->get()
             ->toArray();
+
+        usort($details, function ($a, $b) {
+            $qtyA = trim($a['stock_quantity'] ?? '');
+            $qtyB = trim($b['stock_quantity'] ?? '');
+
+            $hasStockA = ($qtyA !== '' && $qtyA !== '0' && mb_strtolower($qtyA) !== 'нет' && mb_strtolower($qtyA) !== 'нет в наличии');
+            $hasStockB = ($qtyB !== '' && $qtyB !== '0' && mb_strtolower($qtyB) !== 'нет' && mb_strtolower($qtyB) !== 'нет в наличии');
+
+            if ($hasStockA === $hasStockB) {
+                return 0;
+            }
+
+            return $hasStockA ? -1 : 1;
+        });
+
+        return $details;
     }
 }

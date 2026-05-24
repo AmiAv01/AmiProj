@@ -16,7 +16,12 @@ class ProductService
 
     public function getSameDetails(string $detailType, string $detailInvoice): array
     {
-        return $this->compatiblePartsService->getCompatibleParts($detailType, $detailInvoice);
+        $details = $this->compatiblePartsService->getCompatibleParts($detailType, $detailInvoice);
+
+        return array_map(function ($item) {
+            $item['imageUrl'] = $this->imageService->getImageUrl($item['dt_foto'] ?? null);
+            return $item;
+        }, $details);
     }
 
     public function getAnalogs(string $id): array
