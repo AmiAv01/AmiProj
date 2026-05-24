@@ -9,7 +9,7 @@ class DetailsFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filter' => 'array'
+            'filter' => 'array',
         ];
     }
 

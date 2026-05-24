@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Factories\AdminSearchServiceFactory;
 use App\Factories\SearchServiceFactoryInterface;
 use App\Services\Cart\CartItemService;
-use app\Services\Cart\CartService;
+use App\Services\Cart\CartService;
 use App\Services\CurrencyService;
 use App\Services\DetailService;
 use App\Services\Interface\ProductViewServiceInterface;
@@ -20,7 +20,6 @@ use App\Services\Product\ProductService;
 use App\Services\Product\ProductViewService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,12 +45,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CompatiblePartsService::class);
         $this->app->bind(OemService::class);
         $this->app->bind(ProductImageService::class);
-        $this->app->bind(SearchServiceFactoryInterface::class, AdminSearchServiceFactory::class, );
+        $this->app->bind(SearchServiceFactoryInterface::class, AdminSearchServiceFactory::class);
     }
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {}
+    public function boot(): void {}
 }

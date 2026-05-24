@@ -8,12 +8,10 @@ use Inertia\Inertia;
 
 class NewsController extends Controller
 {
-    public function __construct(protected NewsService $newsService)
-    {}
+    public function __construct(protected NewsService $newsService) {}
 
     public function index()
     {
         return Inertia::render('News/News', ['posts' => $this->newsService->getAll(12)]);
     }
-
 }

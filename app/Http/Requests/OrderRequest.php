@@ -8,9 +8,7 @@ class OrderRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
-            'totalPrice' => 'required|numeric|min:0',
-        ];
+        return [];
     }
 
     public function authorize(): bool

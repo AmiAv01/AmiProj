@@ -13,7 +13,7 @@ test('login screen can be rendered', function (): void {
 test('users can authenticate using the login screen', function (): void {
     $this->withoutExceptionHandling();
     $user = User::factory()->create([
-        'approved' => true
+        'approved' => true,
     ]);
     dump($user->toArray());
     $response = $this->post('/login', [
@@ -28,7 +28,7 @@ test('users can authenticate using the login screen', function (): void {
 test('users can`t authenticate using the login screen when approved field is false', function (): void {
     $this->withoutExceptionHandling();
     $user = User::factory()->create([
-        'approved' => false
+        'approved' => false,
     ]);
     dump($user->toArray());
     $response = $this->post('/login', [

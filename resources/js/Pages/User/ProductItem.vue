@@ -7,7 +7,7 @@
             class=" w-[80%] rounded-md bg-gray-200 group-hover:opacity-75"
         >
             <img
-                src="/public/no-photo--lg.png"
+                src="/no-photo--lg.png"
                 alt="#"
                 class=" object-cover object-center"
             />
@@ -15,7 +15,7 @@
         <div class="mt-4 flex justify-between">
             <div>
                 <h3 class="text-lg text-gray-700 font-bold">
-                    <a :href="detail">
+                    <a :href="`catalog/product/${detail.dt_invoice}`">
                                     <span
                                         aria-hidden="true"
                                         class="absolute inset-0"

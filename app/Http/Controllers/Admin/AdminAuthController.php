@@ -19,10 +19,12 @@ class AdminAuthController extends Controller
     public function login(LoginRequest $request)
     {
         if (Auth::attempt(['email' => $request->validated('email'), 'password' => $request->validated('password'), 'isAdmin' => true])) {
+            $request->session()->regenerate();
+
             return redirect()->route('admin.details.index');
         }
 
-        return redirect()->route('admin.login')->with('error', 'Неверные данные');
+        return redirect()->route('admin.login')->with('error', __('Invalid credentials'));
     }
 
     public function logout(Request $request)

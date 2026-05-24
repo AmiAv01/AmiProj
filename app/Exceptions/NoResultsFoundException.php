@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class NoResultsFoundException extends NotFoundException
 {
     public function __construct(string $query)

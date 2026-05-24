@@ -5,11 +5,11 @@
                 class="flex flex-wrap items-center justify-around mx-auto my-0 p-6"
             >
                 <a
-                    href="http://localhost:8000"
+                    href="/"
                     class="flex items-center space-x-3 rtl:space-x-reverse"
                 >
                     <img
-                        src="../../../../public/logo2.png"
+                        src="/logo2.png"
                         class="h-8"
                         alt="AmiAvto Logo"
                     />
@@ -22,7 +22,7 @@
                 </div>
                 <div
                     v-else
-                    class="flex w-[260px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                    class="flex w-[320px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
                 >
                     <AuthMenu/>
                 </div>

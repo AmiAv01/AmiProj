@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class NewsNotFoundException extends NotFoundException
 {
     public function __construct(string $code)

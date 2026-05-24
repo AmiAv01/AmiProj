@@ -6,7 +6,7 @@
                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                         <img
                             class="w-full"
-                            src="public/build/no-photo--lg.png"
+                            src="/no-photo--lg.png"
                             alt="#"
                         />
                     </div>
@@ -26,8 +26,8 @@
                             <p class="font-normal text-2xl leading-8 text-gray-500" >
                                 Бренд: <strong>{{ detail.fr_code }}</strong>
                             </p>
-                            <p class="text-3xl mt-6 text-green-400">Наличие уточнять</p>
                         </div>
+                        <p class="text-3xl mt-6 text-green-400">Наличие уточнять</p>
                         <hr
                             class="my-6 md:my-8 border-gray-200 dark:border-gray-800"
                         />

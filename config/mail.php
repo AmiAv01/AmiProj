@@ -32,7 +32,7 @@ return [
     |            "postmark", "log", "array", "failover"
     |
     */
-
+    'notification_mail' => env('MAIL_NOTIFICATION'),
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',

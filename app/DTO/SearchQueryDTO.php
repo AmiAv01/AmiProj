@@ -4,6 +4,5 @@ namespace App\DTO;
 
 final class SearchQueryDTO
 {
-    public function __construct(public readonly string $searchQuery)
-    {}
+    public function __construct(public readonly string $searchQuery) {}
 }

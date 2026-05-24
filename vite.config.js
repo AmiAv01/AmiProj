@@ -1,32 +1,56 @@
-
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
-  server:
-  {
-      host: '0.0.0.0',
-      hmr:{
-	    host:'localhost'
+  plugins: [
+    laravel({
+      input: 'resources/js/app.js',
+      buildDirectory: 'build',
+      refresh: [
+        'resources/views/**/*.blade.php',
+        'public/images/**/*'
+      ],
+    }),
+    vue({
+      template: {
+        transformAssetUrls: {
+          includeAbsolute: false,
+        },
       },
-      watch: {
-          usePolling: true,
-          interval: 1000,
+    }),
+
+    process.env.NODE_ENV === 'production' && viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 10240
+    }),
+
+
+  ].filter(Boolean),
+  build: {
+    outDir: 'public/build',
+    emptyOutDir: true,
+    manifest: 'manifest.json',
+    sourcemap: false,
+
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name]-[hash][extname]',
+        chunkFileNames: '[name]-[hash].js',
+        entryFileNames: '[name]-[hash].js',
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
       }
- },
- plugins: [
-        laravel({
-            input: 'resources/js/app.js',
-            refresh: true,
-        }),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
-        }),
-    ],
+    }
+  },
+
+
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'axios']
+  }
 });

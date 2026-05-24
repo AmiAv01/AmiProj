@@ -7,9 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 final class AdminDetailsSearchService extends AbstractAdminSearchService
 {
-
-    public function __construct(protected DetailService $detailService)
-    {}
+    public function __construct(protected DetailService $detailService) {}
 
     protected function searchWithQuery(string $query, int $perPage): LengthAwarePaginator
     {

@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form @submit.prevent="handleSearch">
         <div class="flex flex-wrap justify-around">
             <div class="relative w-full md:w-[60%]">
                 <input
@@ -8,6 +8,7 @@
                     class="block px-2.5 py-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
                     placeholder="Поиск по артикулу + деталировка"
                     v-model="searchQuery"
+                    @keyup.enter="handleSearch"
                     @input="getSearchingDetails"
                 />
                 <div v-if="categoryList.length !== 0"  class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto">
@@ -46,6 +47,7 @@
                 </div>
                 <inertia-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
+                    @click.prevent="handleSearch"
                     class="absolute flex items-center top-0 end-0 p-2.5 h-full font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
                 >
                     <svg
@@ -93,6 +95,7 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { editDetailTitle } from '@/Services/TitleService';
 import { otherParts } from '@/Store/index.js';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     link: {
@@ -127,6 +130,17 @@ const getSearchingDetails = debounce(() => {
 }, 1000);
 
 const editTitle = (res) => editDetailTitle(res);
+
+async function handleSearch(event){
+    event.preventDefault();
+    if (!searchQuery.value.trim()) console.log(searchQuery.value);
+
+    try {
+        await router.visit(`/catalog/search?searchQ=${encodeURIComponent(searchQuery.value)}`);
+    } catch (error) {
+        console.error('Navigation error:', error);
+    }
+};
 </script>
 
 

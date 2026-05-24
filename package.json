@@ -1,6 +1,7 @@
 {
     "private": true,
     "type": "module",
+    "version": "1.2.3",
     "scripts": {
         "dev": "vite",
         "build": "vite build"
@@ -24,6 +25,7 @@
         "flowbite": "^2.5.2",
         "lodash.debounce": "^4.0.8",
         "pinia": "^2.3.0",
+        "vite-plugin-compression": "^0.5.1",
         "vuex": "^4.1.0"
     }
 }

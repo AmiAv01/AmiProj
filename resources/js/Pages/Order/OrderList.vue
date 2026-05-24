@@ -1,56 +1,56 @@
 <template>
     <layout>
-        <p class="text-5xl font-bold tracking-tight text-gray-900 ml-10 py-24">
-            Заказы
-        </p>
-        <div class="relative overflow-x-auto w-[80%] mx-auto pb-10 rounded-lg">
-            <table
-                class="w-full text-lg text-left rtl:text-right text-gray-500"
-            >
-                <thead
-                    class="text-xl text-white uppercase bg-green-700 rounded-lg"
-                >
-                    <tr class="rounded-[15px]">
-                        <th v-for="name of columnNames" scope="col" class="px-8 py-6">{{name}}</th>
+        <div class="max-w-7xl mx-auto py-12 px-4">
+            <h1 class="text-4xl font-bold text-gray-900 mb-8">Мои заказы</h1>
+
+            <!-- Если заказы есть -->
+            <div v-if="orders.length > 0" class="bg-white shadow rounded-lg overflow-hidden">
+                <table class="w-full text-left text-gray-600">
+                    <thead class="bg-gray-50 uppercase text-sm">
+                    <tr>
+                        <th class="px-6 py-4">№ заказа</th>
+                        <th class="px-6 py-4">Дата</th>
+                        <th class="px-6 py-4">Сумма</th>
+                        <th class="px-6 py-4">Статус</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="(order, index) in orders"
-                        :key="index"
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                    <tr v-for="order in orders" :key="order.id"
                         @click="setLink(order.id)"
-                        class="bg-white w-full border-b text-lg  cursor-pointer "
-                    >
-                        <th
-                            scope="row"
-                            class="px-8 py-6 font-medium text-gray-900 whitespace-nowrap "
-                        >
-                            {{ order.id }}
-                        </th>
-                        <td class="px-8 py-6">
-                            {{ new Date(order.created_at).toLocaleDateString() }}
+                        class="hover:bg-gray-50 cursor-pointer transition">
+                        <td class="px-6 py-4 font-semibold text-gray-900">{{ order.id }}</td>
+                        <td class="px-6 py-4">{{ new Date(order.created_at).toLocaleDateString() }}</td>
+                        <td class="px-6 py-4">{{ order.total_price }} BYN</td>
+                        <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-sm"
+                                      :class="order.status === 'Завершён' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'">
+                                    {{ order.status }}
+                                </span>
                         </td>
-                        <td class="px-8 py-6">
-                            {{ order.total_price }}
-                        </td>
-                        <td class="px-8 py-6">{{ order.status }}</td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Если заказов нет, используем наш новый компонент -->
+            <EmptyState
+                v-else
+                title="У вас пока нет заказов"
+                description="Вы еще не совершили ни одной покупки. Оформите первый заказ в нашем каталоге!"
+                buttonText="На главную"
+                link="/"
+            />
         </div>
     </layout>
 </template>
 
 <script setup>
+import Layout from "@/Shared/UserLayout.vue";
+import EmptyState from "@/Components/EmptyState.vue"; // Импортируем компонент
 
-const props = defineProps({
-    orders: Array,
-});
+const props = defineProps({ orders: Array });
 
-const columnNames = ['№ заказа', 'Дата', 'Сумма', 'Статус']
 const setLink = (id) => {
-    console.log(id);
-    window.location = `order/${id}`;
+    window.location = `/order/${id}`;
 }
 </script>
-

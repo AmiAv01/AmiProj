@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class ValidationException extends AppException
 {
     protected $code = 400;

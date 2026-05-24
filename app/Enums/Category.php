@@ -2,7 +2,6 @@
 
 namespace App\Enums;
 
-
 enum Category: string
 {
     case DETAILS = 'detail';
@@ -12,6 +11,6 @@ enum Category: string
 
     public static function isValid(string $value): bool
     {
-        return !is_null(self::tryFrom($value));
+        return ! is_null(self::tryFrom($value));
     }
 }

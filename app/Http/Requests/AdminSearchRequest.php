@@ -9,8 +9,8 @@ class AdminSearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'searchQ' => 'string|nullable|max:255',
-            'category' => 'string|nullable|max:20',
+            'searchQ' => 'required|string|min:1|max:255',
+            'category' => 'required|string|max:20',
         ];
     }
 

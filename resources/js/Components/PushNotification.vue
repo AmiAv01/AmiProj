@@ -23,8 +23,10 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['hide']);
+
 setTimeout(() => {
-    this.$emit('hide', false);
+    emit('hide', false);
 }, 1500);
 </script>
 

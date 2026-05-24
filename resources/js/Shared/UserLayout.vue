@@ -1,9 +1,11 @@
 <template class="w-full">
-    <Header> </Header>
-    <main class="w-full">
-        <slot />
-    </main>
-    <Footer></Footer>
+    <div class="flex flex-col min-h-screen bg-white">
+        <Header />
+        <main class="flex-grow w-full">
+            <slot />
+        </main>
+        <Footer />
+    </div>
 </template>
 
 <script setup>

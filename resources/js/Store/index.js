@@ -1,4 +1,4 @@
-export let starterParts = new Map([["Вилки стартера", "/catalog/generator_parts/rectifier"],
+export let starterParts = new Map([["Вилки стартера", "/catalog/starter_parts/fork"],
     ["Втулки стартера", "/catalog/starter_parts/sleeve"], ["Втягивающие реле", "/catalog/starter_parts/relay"],
     ["Детали втягивающего реле", "/catalog/starter_parts/relay_parts"],
     ["Детали привода стартера", "/catalog/starter_parts/unit_parts"], ["Крышки и головы", "/catalog/starter_parts/cover"],

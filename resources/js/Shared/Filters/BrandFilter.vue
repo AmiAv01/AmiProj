@@ -1,5 +1,5 @@
 <template>
-    <div v-show="isShow" :class="isMobile ? 'absolute top-[380px] left-[30px] z-10' : 'block '" class="rounded-[15px] h-[450px] rounded-bl-[15px] rounded-br-[15px]">
+    <div v-show="isShow" :class="isMobile ? 'absolute top-[380px] left-[30px] z-10' : 'block '" class="rounded-[15px] bg-green-300 shadow-md">
         <div :class="`flex justify-between items-center w-full ${bgHeaderColor} rounded-tr-[15px] rounded-tl-[15px]`">
             <p
                 :class="`text-3xl text-white ${bgHeaderColor} rounded-tr-[15px] rounded-tl-[15px] font-bold p-4`"
@@ -15,14 +15,14 @@
             </p>
         </div>
 
-        <form :class="`h-[350px] flex flex-col rounded-bl-[15px] rounded-br-[15px]  rounded-tr-0 rounded-tl-0 ${bgBodyColor}`">
+        <form :class="`flex flex-col p-4 pb-6 rounded-bl-[15px] rounded-br-[15px] bg-gray-50/50`">
             <input
-                class="rounded-[15px] m-4 h-[40px]"
+                class="rounded-[15px] mb-4 h-[40px] px-3"
                 placeholder="Введите название"
                 v-model="searchQuery"
                 @input="searchCategory"
             />
-            <ul :class="`h-[300px] ${bgBodyColor} overflow-y-auto p-6`">
+            <ul :class="`max-h-[180px] overflow-y-auto mb-4 p-2`">
                 <li
                     v-for="category in searchedCategories"
                     :key="category.fr_code"
@@ -39,11 +39,11 @@
             </ul>
             <menu-button
                 :href="`${currentUrl}?filter[id]=${checked.join()}`"
-                :attributes="`px-5 py-2.5 mx-auto text-lg mt-4`"
+                :attributes="`px-5 py-2 mx-auto text-lg mb-2`"
             >
                 Подобрать
             </menu-button>
-            <button class="text-lg mx-auto" @click="resetChecked">
+            <button class="text-sm text-gray-700 underline mx-auto hover:text-red-500" @click.prevent="resetChecked">
                 Сбросить фильтр
             </button>
         </form>
@@ -64,11 +64,11 @@ const props = defineProps({
     },
     bgHeaderColor: {
         type: String,
-        default: "bg-green-700",
+        default: "bg-green-900",
     },
     bgBodyColor: {
         type: String,
-        default: "bg-green-300",
+        default: "bg-green-100",
     },
     isShow: {
         type: Boolean,

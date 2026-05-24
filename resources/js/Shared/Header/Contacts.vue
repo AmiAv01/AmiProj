@@ -24,8 +24,8 @@
             class="flex justify-between mb-4 py-2 border-b-2"
         >
             <img
-                src="../../../../public/A1.jpg"
-                alt=""
+                src="/A1.jpg"
+                alt="#"
                 class="w-[24px] h-[24px]"
             />
             <span class="font-semibold"
@@ -36,23 +36,12 @@
             class="flex justify-between mb-4 py-2 border-b-2"
         >
             <img
-                src="../../../../public/gmail.png"
+                src="/gmail.png"
                 class="w-[24px] h-[24px]"
                 alt=""
             />
             <span class="font-semibold">
-                amiauto.minsk@gmail.com</span
-            >
-        </div>
-        <div
-            class="flex justify-between py-2 border-b-2"
-        >
-            <img
-                src="../../../../public/skype.png"
-                class="w-[24px] h-[24px]"
-                alt=""
-            />
-            <span class="font-semibold">ami.auto</span>
+                amiauto.minsk@gmail.com</span>
         </div>
     </div>
 </template>

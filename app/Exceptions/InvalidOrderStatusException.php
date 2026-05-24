@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class InvalidOrderStatusException extends ValidationException
 {
     public function __construct(string $status)
