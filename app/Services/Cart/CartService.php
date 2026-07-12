@@ -4,6 +4,7 @@ namespace App\Services\Cart;
 
 use App\Exceptions\CartOperationException;
 use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Log;
 
 final class CartService
@@ -23,7 +24,13 @@ final class CartService
         try {
             return $cart->items()->with('detail')->get()
                 ->map(function ($item) {
-                    return array_merge($item->toArray(), $item->detail->toArray());
+                    if (! $item instanceof CartItem) {
+                        return [];
+                    }
+
+                    $detail = $item->detail()->first();
+
+                    return array_merge($item->toArray(), $detail ? $detail->toArray() : []);
                 })->toArray();
         } catch (\Exception $e) {
             Log::error("Failed to get cart items for cart {$cart->id}", ['error' => $e]);

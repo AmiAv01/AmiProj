@@ -29,7 +29,7 @@ final class NewsService
     {
         $news = News::find($id);
         if (! $news) {
-            throw new NewsNotFoundException($id);
+            throw new NewsNotFoundException((string) $id);
         }
 
         return $news->update(['title' => $dto->title, 'description' => $dto->description]);

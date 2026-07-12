@@ -43,9 +43,10 @@ class CartController extends Controller
         $userId = auth()->id();
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
         $productId = (int) $request->validated('id');
+        $quantity = (int) $request->validated('quantity', 1);
         $detail = $this->detailService->getById($productId);
         $price = (string) $this->priceService->getPrice($detail->dt_code, $userId);
-        $this->cartItemService->addItemToCart($cart->id, new CartDTO($productId, (int) $request->validated('quantity', 1), $price));
+        $this->cartItemService->addItemToCart($cart->id, new CartDTO($productId, $quantity, $price));
 
         return response()->json([
             'items' => $this->cartService->getCartItems($cart),
@@ -56,7 +57,7 @@ class CartController extends Controller
     public function update(CartFormUpdateRequest $request, string $id): JsonResponse
     {
         $cart = $this->cartService->getOrCreateUserCart(auth()->id());
-        $this->cartItemService->updateItemQuantity($cart, new CartDTO($id, $request->validated('quantity'), '1'));
+        $this->cartItemService->updateItemQuantity($cart, new CartDTO((int) $id, (int) $request->validated('quantity'), '1'));
 
         return response()->json([
             'items' => $this->cartService->getCartItems($cart),

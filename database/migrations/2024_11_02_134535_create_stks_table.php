@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('stk', function (Blueprint $table) {
             $table->id('code');
-            $table->text('ostc', 10);
-            $table->text('ost', 10);
+            $table->string('ostc', 10);
+            $table->string('ost', 10);
             $table->timestamps();
         });
     }

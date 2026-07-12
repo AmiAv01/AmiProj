@@ -40,7 +40,9 @@ final class OrderService
         }
 
         return DB::transaction(function () use ($dto, $cart): Order {
-            $orderTotal = $cart->items->sum(fn (CartItem $item): int => (int) $item->price * $item->quantity);
+            /** @var Collection<int, CartItem> $items */
+            $items = $cart->items;
+            $orderTotal = $items->sum(fn (CartItem $item): int => (int) $item->price * $item->quantity);
             $order = Order::create([
                 'total_price' => $orderTotal,
                 'status' => $dto->status,
@@ -56,7 +58,9 @@ final class OrderService
 
     private function createOrderItems(Cart $cart, Order $order): void
     {
-        $orderItems = $cart->items->map(function (CartItem $item) use ($order) {
+        /** @var Collection<int, CartItem> $items */
+        $items = $cart->items;
+        $orderItems = $items->map(function (CartItem $item) use ($order) {
             return [
                 'order_id' => $order->id,
                 'detail_id' => $item->dt_id,

@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Jobs\SendAdminNewUserNotification;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 
 class NotifyAdminAboutNewUser
@@ -20,6 +21,10 @@ class NotifyAdminAboutNewUser
      */
     public function handle(Registered $event): void
     {
+        if (! $event->user instanceof User) {
+            return;
+        }
+
         SendAdminNewUserNotification::dispatch($event->user);
     }
 }

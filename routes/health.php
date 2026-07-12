@@ -34,9 +34,9 @@ Route::group(['middleware' => 'api'], function () {
      */
     Route::get('/health/ready', function () {
         $checks = [
-            'database' => $this->checkDatabase(),
-            'cache' => $this->checkCache(),
-            'queue' => $this->checkQueue(),
+            'database' => checkDatabase(),
+            'cache' => checkCache(),
+            'queue' => checkQueue(),
         ];
 
         $ready = collect($checks)->every(fn ($check) => $check === true);
