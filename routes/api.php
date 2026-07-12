@@ -35,7 +35,7 @@ Route::get('/health/ready', function () {
         'queue' => checkQueue(),
     ];
 
-    $ready = collect($checks)->every(fn ($check) => $check === true);
+    $ready = collect($checks)->every(fn($check) => $check === true);
 
     return response()->json([
         'status' => $ready ? 'ready' : 'not_ready',
@@ -43,46 +43,3 @@ Route::get('/health/ready', function () {
         'checks' => $checks,
     ], $ready ? 200 : 503);
 })->withoutMiddleware(['api']);
-
-function checkDatabase(): bool
-{
-    try {
-        DB::connection()->getPdo();
-
-        return true;
-    } catch (Exception $e) {
-        return false;
-    }
-}
-
-function checkCache(): bool
-{
-    try {
-        Cache::put('health_check', true, 1);
-
-        return Cache::get('health_check') === true;
-    } catch (Exception $e) {
-        return false;
-    }
-}
-
-function checkQueue(): bool
-{
-    try {
-        if (config('queue.default') === 'database') {
-            DB::table('jobs')->count();
-
-            return true;
-        }
-
-        if (config('queue.default') === 'redis') {
-            Cache::store('redis')->put('queue_health', true, 1);
-
-            return true;
-        }
-
-        return true;
-    } catch (Exception $e) {
-        return false;
-    }
-}
