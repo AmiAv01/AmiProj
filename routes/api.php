@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +33,7 @@ Route::get('/health/ready', function () {
         'queue' => checkQueue(),
     ];
 
-    $ready = collect($checks)->every(fn($check) => $check === true);
+    $ready = collect($checks)->every(fn ($check) => $check === true);
 
     return response()->json([
         'status' => $ready ? 'ready' : 'not_ready',
