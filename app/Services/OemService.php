@@ -16,8 +16,9 @@ final class OemService
         if (empty($code)) {
             throw new InvalidOemCodeException;
         }
-        $detailFromOems = Oems::ofCode($code)->firstOrFail();
-        if (empty($detailFromOems)) {
+
+        $detailFromOems = Oems::ofCode($code)->first();
+        if (! $detailFromOems) {
             throw new OemNotFoundException($code);
         }
 
@@ -35,10 +36,7 @@ final class OemService
         );
     }
 
-    /**
-     * @return Collection|Oems[]
-     */
-    public function findDetailsByQuery(string $searchQuery): Collection|array
+    public function findDetailsByQuery(string $searchQuery): Collection
     {
         return $this->buildDetailsQuery($searchQuery)->get();
     }

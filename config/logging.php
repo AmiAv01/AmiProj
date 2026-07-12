@@ -4,8 +4,6 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\Hub;
 
 return [
 
@@ -56,7 +54,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'glitchtip'],
+            'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
 
@@ -129,14 +127,6 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'glitchtip' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => SentryHandler::class,
-            'handler_with' => [
-                'hub' => app(Hub::class),
-            ],
-        ],
     ],
 
 ];

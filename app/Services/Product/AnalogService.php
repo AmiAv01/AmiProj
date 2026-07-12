@@ -50,8 +50,14 @@ final class AnalogService
             array_column($details, 'dt_invoice')
         ));
 
-        return Oems::whereIn('dt_invoice', $codeIds)
-            ->orWhereIn('dt_oem', $codeIds)->where('fr_code', '=', 'CARGO')
-            ->where('dt_parent', '=', 'CARGO')->get()->pluck('dt_invoice')->unique()->values()->toArray();
+        return Oems::query()
+            ->whereIn('dt_invoice', $codeIds)
+            ->orWhereIn('dt_oem', $codeIds)
+            ->where('fr_code', '=', 'CARGO')
+            ->where('dt_parent', '=', 'CARGO')
+            ->pluck('dt_invoice')
+            ->unique()
+            ->values()
+            ->all();
     }
 }

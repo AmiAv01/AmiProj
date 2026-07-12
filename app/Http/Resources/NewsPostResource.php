@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,11 +15,14 @@ class NewsPostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var News $resource */
+        $resource = $this->resource;
+
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'date' => $this->date,
+            'id' => $resource->id,
+            'title' => $resource->title,
+            'description' => $resource->description,
+            'date' => $resource->date,
         ];
     }
 }

@@ -6,13 +6,12 @@ use App\Exceptions\InvalidPriceTypeException;
 use App\Exceptions\PriceNotFoundException;
 use App\Models\Price;
 use Illuminate\Support\Facades\Log;
-use Money\Money;
 
 final class PriceService
 {
     public function __construct(protected UserService $userService, protected CurrencyService $currencyService) {}
 
-    public function getPrice(int $detailCode, int $userId): int|string|Money
+    public function getPrice(int $detailCode, int $userId): string
     {
         $userFormula = $this->userService->getUserFormula($userId);
         $price = $this->getPriceByType(strtolower(substr($userFormula, 0, 1)), $detailCode);
@@ -29,9 +28,9 @@ final class PriceService
         return str_replace(',', '.', $price);
     }
 
-    public function getPercent(string $formula): string|int
+    public function getPercent(string $formula): string
     {
-        return substr($formula, 2, strpos($formula, '%') - 2) ?: 0;
+        return substr($formula, 2, strpos($formula, '%') - 2) ?: '0';
     }
 
     public function getPriceByType(string $priceType, int $detailCode): string
@@ -47,11 +46,11 @@ final class PriceService
     {
         $currency = $this->currencyService->getCurrency();
         if ($sign === '') {
-            return bcmul($price, $this->parsePrice($currency));
+            return bcmul($price, $this->parsePrice((string) $currency));
         }
-        $priceBeforePercent = bcmul($price, $currency);
+        $priceBeforePercent = bcmul($price, $this->parsePrice((string) $currency));
         Log::info($priceBeforePercent);
-        $computedPercent = ($sign === '+') ? bcadd(1, bcdiv($percent, 100, 2), 2) : bcsub(1, bcdiv($percent, 100, 2), 2);
+        $computedPercent = ($sign === '+') ? bcadd('1', bcdiv((string) $percent, '100', 2), 2) : bcsub('1', bcdiv((string) $percent, '100', 2), 2);
         $endPrice = bcmul($priceBeforePercent, $computedPercent, 2);
 
         return $endPrice;

@@ -27,9 +27,9 @@ final class UserService
         return User::where('id', '=', $id)->select(['name', 'email', 'isAdmin', 'id'])->first();
     }
 
-    public function getUserFormula(int $id)
+    public function getUserFormula(int $id): string
     {
-        return Crypt::decrypt(User::where('id', '=', $id)->pluck('formula')->first());
+        return Crypt::decrypt((string) User::where('id', '=', $id)->value('formula'));
     }
 
     public function destroy(int $id): bool
@@ -57,6 +57,6 @@ final class UserService
 
     public function update(UserDTO $dto): bool
     {
-        return User::where('id', '=', $dto->userId)->update(['formula' => Crypt::encrypt($dto->formula)]);
+        return (bool) User::where('id', '=', $dto->userId)->update(['formula' => Crypt::encrypt($dto->formula)]);
     }
 }
