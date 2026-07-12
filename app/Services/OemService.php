@@ -7,6 +7,7 @@ use App\Exceptions\InvalidOemCodeException;
 use App\Exceptions\OemNotFoundException;
 use App\Models\Oems;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 final class OemService
 {
@@ -35,9 +36,9 @@ final class OemService
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\App\Models\Oems[]
+     * @return Collection|Oems[]
      */
-    public function findDetailsByQuery(string $searchQuery): \Illuminate\Database\Eloquent\Collection|array
+    public function findDetailsByQuery(string $searchQuery): Collection|array
     {
         return $this->buildDetailsQuery($searchQuery)->get();
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DTO\CatalogMetadataDto;
-use Illuminate\Support\Facades\Log;
 
 class CatalogMetadataService
 {

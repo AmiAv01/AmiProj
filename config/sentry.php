@@ -1,5 +1,7 @@
 <?php
 
+use Sentry\Laravel\Integration\ExceptionContextIntegration;
+
 return [
     'dsn' => env('SENTRY_LARAVEL_DSN'),
     'environment' => env('SENTRY_ENVIRONMENT', env('APP_ENV', 'production')),
@@ -20,6 +22,6 @@ return [
     'send_default_pii' => env('SENTRY_SEND_DEFAULT_PII', false),
 
     'integrations' => [
-        \Sentry\Laravel\Integration\ExceptionContextIntegration::class,
+        ExceptionContextIntegration::class,
     ],
 ];

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class ProductImageService
 {
     const string DEFAULT_IMAGE_URL = '/no-photo--lg.png';
+
     /**
      * @throws InvalidImagePathException
      * @throws ImageStorageException

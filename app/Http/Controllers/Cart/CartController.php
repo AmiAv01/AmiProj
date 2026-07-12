@@ -9,7 +9,6 @@ use App\Exceptions\PriceNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartFormCreateRequest;
 use App\Http\Requests\CartFormUpdateRequest;
-use App\Models\Detail;
 use App\Services\Cart\CartItemService;
 use App\Services\Cart\CartService;
 use App\Services\DetailService;

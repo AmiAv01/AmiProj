@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'cart_item_quantity' => 1
+    'cart_item_quantity' => 1,
 ];

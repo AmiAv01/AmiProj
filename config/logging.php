@@ -5,6 +5,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Sentry\Monolog\Handler as SentryHandler;
+use Sentry\State\Hub;
 
 return [
 
@@ -133,7 +134,7 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => SentryHandler::class,
             'handler_with' => [
-                'hub' => app(\Sentry\State\Hub::class),
+                'hub' => app(Hub::class),
             ],
         ],
     ],
