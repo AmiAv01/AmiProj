@@ -6,7 +6,6 @@ use App\Exceptions\ZeroPriceException;
 
 final class PriceValidator
 {
-
     public function validate(float|int $price, int $productId): void
     {
         if ($price <= 0) {

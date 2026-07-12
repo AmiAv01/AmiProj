@@ -1,6 +1,7 @@
 <?php
 
 use Knuckles\Scribe\Extracting\Strategies;
+use Knuckles\Scribe\Matching\RouteMatcher;
 
 return [
     // The HTML <title> for the generated documentation. If this is empty, Scribe will infer it from config('app.name').
@@ -266,5 +267,5 @@ INTRO
         'serializer' => null,
     ],
 
-    'routeMatcher' => \Knuckles\Scribe\Matching\RouteMatcher::class,
+    'routeMatcher' => RouteMatcher::class,
 ];

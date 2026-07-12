@@ -10,6 +10,6 @@ enum CurrencyCode: string
 
     public function label(): string
     {
-        return __("currency." . strtolower($this->value));
+        return __('currency.'.strtolower($this->value));
     }
 }

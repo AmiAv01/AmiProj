@@ -34,6 +34,7 @@ class ProductViewService implements ProductViewServiceInterface
             $sameDetails = array_map(function ($item) {
                 $item['dt_invoice'] = $this->maskString($item['dt_invoice']);
                 $item['dt_cargo'] = $this->maskString($item['dt_cargo']);
+
                 return $item;
             }, $sameDetails);
         }
@@ -65,6 +66,7 @@ class ProductViewService implements ProductViewServiceInterface
             $sameDetails = array_map(function ($item) {
                 $item['dt_invoice'] = $this->maskString($item['dt_invoice']);
                 $item['dt_cargo'] = $this->maskString($item['dt_cargo']);
+
                 return $item;
             }, $sameDetails);
         }
@@ -86,7 +88,6 @@ class ProductViewService implements ProductViewServiceInterface
         return $data;
     }
 
-
     private function maskString(?string $value): string
     {
         if (empty($value)) {
@@ -102,7 +103,7 @@ class ProductViewService implements ProductViewServiceInterface
         $last = mb_substr($value, -1);
         $stars = str_repeat('*', $length - 2);
 
-        return $first . $stars . $last;
+        return $first.$stars.$last;
     }
 
     public function resolveViewName(): string

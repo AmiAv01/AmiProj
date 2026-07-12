@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Detail;
 use App\Models\Firm;
 use App\Services\DetailService;
 use Illuminate\Http\RedirectResponse;

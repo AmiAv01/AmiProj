@@ -23,12 +23,13 @@ class CatalogController extends Controller
     public function index(DetailsFilterRequest $request, string $type, ?string $category = null): Response
     {
         $metadata = $this->metadataService->getMetadata($type, $category);
-        Log::info('arr' , ['arr' => $metadata->filters]);
+        Log::info('arr', ['arr' => $metadata->filters]);
         $filterDto = new FilterDTO($request->validated('filter'));
+
         return Inertia::render('Catalog/Index', [
-            'details'      => $this->detailService->getByFilters($metadata->filters, 12),
-            'title'        => $metadata->title,
-            'categories'   => ['brands' => $this->firmService->getAll()],
+            'details' => $this->detailService->getByFilters($metadata->filters, 12),
+            'title' => $metadata->title,
+            'categories' => ['brands' => $this->firmService->getAll()],
             'clientBrands' => $this->detailService->getClientBrands($filterDto),
         ]);
     }

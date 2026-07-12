@@ -20,6 +20,7 @@ class ProductService
 
         return array_map(function ($item) {
             $item['imageUrl'] = $this->imageService->getImageUrl($item['dt_foto'] ?? null);
+
             return $item;
         }, $details);
     }
