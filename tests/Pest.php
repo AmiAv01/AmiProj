@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 /*
@@ -14,7 +13,7 @@ use Tests\TestCase;
 |
 */
 
-uses(TestCase::class, DatabaseTransactions::class)->in('Feature');
+uses(TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +28,7 @@ uses(TestCase::class, DatabaseTransactions::class)->in('Feature');
 
 pest()->extend()
     ->in('Feature')
-    ->beforeEach(fn () => $this->withoutVite());
+    ->beforeEach(fn() => $this->withoutVite());
 
 /*
 |--------------------------------------------------------------------------
