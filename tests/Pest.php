@@ -28,7 +28,7 @@ uses(TestCase::class)->in('Feature');
 
 pest()->extend()
     ->in('Feature')
-    ->beforeEach(fn () => $this->withoutVite());
+    ->beforeEach(fn() => $this->withoutVite());
 
 /*
 |--------------------------------------------------------------------------
