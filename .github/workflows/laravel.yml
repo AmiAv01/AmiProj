@@ -160,6 +160,20 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
+      - name: Verify Secret Key
+        run: |
+          # Выводим первые 20 символов секрета (не весь ключ, чтобы не светить его в логах!)
+          SECRET_VAL="${{ secrets.SSH_PRIVATE_KEY }}"
+          echo "Key length: ${#SECRET_VAL}"
+          echo "Starts with: ${SECRET_VAL:0:20}"
+          
+          # Проверяем, есть ли там заголовки
+          if [[ "$SECRET_VAL" == *"-----BEGIN"* ]]; then
+            echo "SUCCESS: Key contains BEGIN header."
+          else
+            echo "ERROR: Key does NOT contain BEGIN header. Format is wrong!"
+          fi
+          
       - name: Configure SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
