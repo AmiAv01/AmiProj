@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\DTO\OrderDTO;
-use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
-use App\Exceptions\InvalidOrderStatusException;
 use App\Exceptions\OrderNotFoundException;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -20,15 +18,17 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class OrderService
 {
+    private const int DEFAULT_PER_PAGE = 12;
+
     public function getAll(int $perPage): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')
+        return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
     }
 
     public function getByUserId(int $userId): Collection
     {
-        return Order::where('created_by', '=', $userId)->join('user', 'order.created_by', '=', 'user.id')
+        return Order::where('created_by', '=', $userId)->leftJoin('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.created_at', 'order.status', 'order.total_price', 'user.name', 'user.email'])->get();
     }
 
@@ -48,7 +48,7 @@ final class OrderService
             );
             $order = Order::create([
                 'total_price' => $this->minorUnitsToPrice($orderTotalInMinorUnits),
-                'status' => $dto->status,
+                'status' => $dto->status->value,
                 'comment' => $dto->comment,
                 'created_by' => $dto->userId,
                 'updated_by' => $dto->userId,
@@ -107,17 +107,17 @@ final class OrderService
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
     {
         $order = Order::query()->findOrFail($id);
-        if (! in_array($dto->status, OrderStatus::values(), true)) {
-            throw new InvalidOrderStatusException($dto->status);
-        }
-        $order->update(['status' => $dto->status]);
+        $order->update([
+            'status' => $dto->status->value,
+            'updated_by' => $dto->userId,
+        ]);
 
         return $order;
     }
 
     public function getById(int $id): Order
     {
-        $order = Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
+        $order = Order::where('order.id', '=', $id)->leftJoin('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
         if (! $order) {
             throw new OrderNotFoundException($id);
@@ -130,7 +130,7 @@ final class OrderService
     {
         $order = Order::where('order.id', '=', $id)
             ->where('order.created_by', '=', $userId)
-            ->join('user', 'order.created_by', '=', 'user.id')
+            ->leftJoin('user', 'order.created_by', '=', 'user.id')
             ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
             ->first();
         if (! $order) {
@@ -148,13 +148,16 @@ final class OrderService
 
     public function getByStatus(): LengthAwarePaginator
     {
-        return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])->paginate(12)->withQueryString();
+        return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])
+            ->latest('order.created_at')
+            ->paginate(self::DEFAULT_PER_PAGE)
+            ->withQueryString();
     }
 
-    public function getBySearching(string $search, int $perPage = 12): LengthAwarePaginator
+    public function getBySearching(string $search, int $perPage = self::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')
+        return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
             ->where(function ($query) use ($search): void {
                 $query->where('name', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%");

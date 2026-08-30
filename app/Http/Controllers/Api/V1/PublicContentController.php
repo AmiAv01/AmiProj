@@ -18,6 +18,12 @@ use Illuminate\Http\JsonResponse;
 
 class PublicContentController extends Controller
 {
+    private const int DEFAULT_PER_PAGE = 12;
+
+    private const int HOME_DETAIL_COUNT = 4;
+
+    private const int HOME_NEWS_COUNT = 3;
+
     public function __construct(
         private readonly DetailService $details,
         private readonly NewsService $news,
@@ -31,21 +37,21 @@ class PublicContentController extends Controller
     {
         return response()->json([
             'data' => [
-                'details' => $this->details->getAll(4),
-                'posts' => $this->news->getAll(3),
+                'details' => $this->details->getAll(self::HOME_DETAIL_COUNT),
+                'posts' => $this->news->getAll(self::HOME_NEWS_COUNT),
             ],
         ]);
     }
 
     public function news(): JsonResponse
     {
-        return response()->json(['data' => ['posts' => $this->news->getAll(12)]]);
+        return response()->json(['data' => ['posts' => $this->news->getAll(self::DEFAULT_PER_PAGE)]]);
     }
 
     public function catalog(DetailsFilterRequest $request, string $type, ?string $category = null): JsonResponse
     {
         $metadata = $this->metadata->getMetadata($type, $category);
-        $details = $this->details->getByFilters($metadata->filters, 12);
+        $details = $this->details->getByFilters($metadata->filters, self::DEFAULT_PER_PAGE);
         $details->withPath($this->catalogBrowserPath($type, $category));
 
         return response()->json([

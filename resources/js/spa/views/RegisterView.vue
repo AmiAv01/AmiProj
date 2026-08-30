@@ -20,6 +20,7 @@ async function register() { if (await form.submit(() => auth.register(form.value
       <template v-for="messages in form.errors.value" :key="messages[0]">
         <p v-for="message in messages" :key="message" class="text-sm text-red-700">{{ message }}</p>
       </template>
+      <p v-if="form.error.value" class="text-sm text-red-700" role="alert">{{ form.error.value }}</p>
       <button class="rounded bg-blue-700 px-4 py-2 text-white" :disabled="form.processing.value">Register</button>
     </form>
   </main>

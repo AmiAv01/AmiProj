@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\News;
+use App\Models\Order;
 use App\Models\User;
 
 test('profile page is displayed', function (): void {
@@ -59,6 +61,30 @@ test('user can delete their account', function (): void {
 
     $this->assertGuest();
     $this->assertNull($user->fresh());
+});
+
+test('deleting an account preserves historical orders and news', function (): void {
+    $user = User::factory()->create();
+    $order = Order::create([
+        'total_price' => '25.00',
+        'status' => 'Новый',
+        'created_by' => $user->id,
+        'updated_by' => $user->id,
+    ]);
+    $news = News::create([
+        'title' => 'Historical post',
+        'description' => 'Historical description',
+        'date' => now(),
+        'author' => $user->id,
+    ]);
+
+    $this->actingAs($user)->delete('/api/v1/profile', [
+        'password' => 'password',
+    ])->assertNoContent();
+
+    $this->assertDatabaseMissing('user', ['id' => $user->id]);
+    $this->assertDatabaseHas('order', ['id' => $order->id, 'created_by' => null, 'updated_by' => null]);
+    $this->assertDatabaseHas('news', ['id' => $news->id, 'author' => null]);
 });
 
 test('correct password must be provided to delete account', function (): void {

@@ -12,9 +12,13 @@ export interface AuthUser {
   id: number;
   name: string;
   email: string;
+  email_verified_at: string | null;
   approved: boolean;
   isAdmin: boolean;
 }
+
+export const ORDER_STATUSES = ['Новый', 'Принят', 'Выполнен'] as const;
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export interface Paginated<T> {
   data: T[];

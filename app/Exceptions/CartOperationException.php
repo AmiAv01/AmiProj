@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class CartOperationException extends Exception
+class CartOperationException extends AppException
 {
-    public function __construct(string $message, int $code = 400)
+    public function __construct(?\Throwable $previous = null)
     {
-        parent::__construct("Cart operation failed: {$message}", $code);
+        parent::__construct('Unable to complete the cart operation.', $previous);
     }
 }

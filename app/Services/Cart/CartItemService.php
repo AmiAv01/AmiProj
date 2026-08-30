@@ -12,16 +12,21 @@ final class CartItemService
 {
     public function addItemToCart(int $cartId, CartDTO $dto): CartItem
     {
-        if ($this->itemExists($cartId, $dto->productId)) {
+        $item = CartItem::query()->firstOrCreate(
+            ['cart_id' => $cartId, 'dt_id' => $dto->productId],
+            ['quantity' => $dto->quantity, 'price' => $dto->productPrice],
+        );
+
+        if (! $item->wasRecentlyCreated) {
             throw new CartItemAlreadyExistException($cartId, $dto->productId);
         }
 
-        return CartItem::create(['cart_id' => $cartId, 'dt_id' => $dto->productId, 'quantity' => $dto->quantity, 'price' => $dto->productPrice]);
+        return $item;
     }
 
-    public function updateItemQuantity(Cart $cart, CartDTO $dto)
+    public function updateItemQuantity(Cart $cart, CartDTO $dto): bool
     {
-        $cartProduct = $cart->items->where('dt_id', '=', $dto->productId)->first();
+        $cartProduct = $cart->items()->where('dt_id', $dto->productId)->first();
         if (! $cartProduct) {
             throw new CartItemNotFoundException($cart->id, $dto->productId);
         }
@@ -29,18 +34,13 @@ final class CartItemService
         return $cartProduct->update(['quantity' => $dto->quantity]);
     }
 
-    public function deleteItemFromCart(Cart $cart, int $productId)
+    public function deleteItemFromCart(Cart $cart, int $productId): bool
     {
-        $cartProduct = $cart->items->where('dt_id', '=', $productId)->first();
+        $cartProduct = $cart->items()->where('dt_id', $productId)->first();
         if (! $cartProduct) {
             throw new CartItemNotFoundException($cart->id, $productId);
         }
 
         return $cartProduct->delete();
-    }
-
-    public function itemExists(int $cartId, int $productId): bool
-    {
-        return CartItem::where('cart_id', $cartId)->where('dt_id', $productId)->exists();
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class OemNotFoundException extends Exception
+class OemNotFoundException extends NotFoundException
 {
     public function __construct(string $code)
     {

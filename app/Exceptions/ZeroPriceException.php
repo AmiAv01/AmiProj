@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class ZeroPriceException extends Exception
+class ZeroPriceException extends ValidationException
 {
-    public function __construct(string $message = 'Product price must be greater than zero.', int $code = 500)
+    public function __construct(string $message = 'Product price must be greater than zero.')
     {
-        parent::__construct($message, $code);
+        parent::__construct($message);
     }
 }

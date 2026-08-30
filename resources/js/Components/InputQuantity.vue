@@ -41,6 +41,7 @@
                 type="number"
                 v-model.number="count"
                 min="1"
+                max="999"
                 @input="changeQuantity"
                 @change="enforceMinimum"
                 class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[73px] min-w-[60px] placeholder:text-gray-900 py-[9px] text-center bg-transparent"

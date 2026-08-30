@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 
 final class SearchService
 {
+    private const int RESULTS_PER_PAGE = 10;
+
     public function __construct(private OemService $oemService) {}
 
     public function getBySearching(SearchQueryDTO $dto): array
@@ -26,7 +28,7 @@ final class SearchService
     public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
         $page = Paginator::resolveCurrentPage();
-        $perPage = 10;
+        $perPage = self::RESULTS_PER_PAGE;
         $paginator = $this->oemService->buildDetailsQuery($dto->searchQuery)->paginate($perPage, ['*'], 'page', $page);
         if ($paginator->isEmpty()) {
             throw new NoResultsFoundException($dto->searchQuery);

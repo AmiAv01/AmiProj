@@ -5,46 +5,38 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\RegisteredUserRequest;
+use App\Http\Resources\AuthUserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function user(Request $request): JsonResponse
     {
-        return response()->json(['data' => $request->user()]);
+        return AuthUserResource::make($request->user())->response();
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = User::where('email', $request->validated('email'))->first();
-        if (! $user || ! $user->approved || ! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages(['email' => [__('auth.failed')]]);
-        }
-
+        $request->authenticate(['approved' => true]);
         $request->session()->regenerate();
 
-        return response()->json(['data' => $request->user()]);
+        return AuthUserResource::make($request->user())->response();
     }
 
     public function adminLogin(LoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt([
-            'email' => $request->validated('email'),
-            'password' => $request->validated('password'),
+        $request->authenticate([
             'isAdmin' => true,
             'approved' => true,
-        ], $request->boolean('remember'))) {
-            throw ValidationException::withMessages(['email' => [__('auth.failed')]]);
-        }
+        ]);
         $request->session()->regenerate();
 
-        return response()->json(['data' => $request->user()]);
+        return AuthUserResource::make($request->user())->response();
     }
 
     public function register(RegisteredUserRequest $request): JsonResponse
@@ -57,10 +49,10 @@ class AuthController extends Controller
         ]);
         event(new Registered($user));
 
-        return response()->json([
-            'data' => $user,
-            'message' => __('Registration submitted for approval.'),
-        ], 201);
+        return AuthUserResource::make($user)
+            ->additional(['message' => __('Registration submitted for approval.')])
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function logout(Request $request): JsonResponse

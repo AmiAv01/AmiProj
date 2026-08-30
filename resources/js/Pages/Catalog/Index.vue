@@ -73,7 +73,7 @@
 
 <script setup>
 import CatalogItem from "@/Pages/Catalog/CatalogItem.vue";
-import {onMounted, ref} from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import BrandFilter from "@/Shared/Filters/BrandFilter.vue";
 
 const props = defineProps({
@@ -83,17 +83,17 @@ const props = defineProps({
     clientBrands: Object,
 });
 
-const checked = ref([]);
-let showBrandSelector = ref(false);
-let showFilterButton = ref(false);
+const showBrandSelector = ref(false);
+const showFilterButton = ref(false);
 const isShow = ref(false);
 const showMobileFilter = ref(false);
-const selectedDetails = ref(props.details);
 
 onMounted(() => {
     window.addEventListener('resize', handleWindowResize);
     handleWindowResize();
 });
+
+onUnmounted(() => window.removeEventListener('resize', handleWindowResize));
 
 const handleWindowResize = () => {
     showBrandSelector.value = (window.innerWidth >= 1124);
@@ -109,7 +109,6 @@ const toggleMobile = () => {
 }
 
 const closeBrandFilter = () => {
-    console.log(isShow.value);
     showBrandSelector.value = false;
 }
 </script>

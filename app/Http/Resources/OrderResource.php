@@ -17,7 +17,11 @@ class OrderResource extends JsonResource
             'id' => $resource->id,
             'total_price' => $resource->total_price,
             'status' => $resource->status,
+            'comment' => $resource->comment,
             'created_by' => $resource->created_by,
+            'updated_by' => $resource->updated_by,
+            'created_at' => $resource->created_at?->toIso8601String(),
+            'updated_at' => $resource->updated_at?->toIso8601String(),
         ];
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class InvalidImagePathException extends Exception
+class InvalidImagePathException extends ValidationException
 {
     public function __construct(string $path)
     {

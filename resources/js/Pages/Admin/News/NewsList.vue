@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти новость`"
-                            :link="`/api/v1/admin/search?category=news&searchQ`"
+                            category="news"
                             @setData="searchData"
                         />
                         <button

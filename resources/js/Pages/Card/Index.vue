@@ -75,6 +75,7 @@
                                                 @input="changeQuantity"
                                                 @change="enforceMinimum"
                                                 min="1"
+                                                max="999"
                                                 class="w-16 text-center border-none py-2 focus:outline-none font-semibold text-lg bg-transparent"
                                             />
                                             <button

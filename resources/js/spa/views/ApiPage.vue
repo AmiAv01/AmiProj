@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios';
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { api } from '@/api/client';
@@ -27,23 +28,34 @@ function endpoint(): string {
   return value.replace(/\/$/, '');
 }
 
-async function load(): Promise<void> {
+let requestSequence = 0;
+
+async function load(signal: AbortSignal): Promise<void> {
+  const requestId = ++requestSequence;
   loading.value = true;
   error.value = null;
   try {
-    const response = await api.get<ApiEnvelope<PageData>>(endpoint(), { params: route.query });
+    const response = await api.get<ApiEnvelope<PageData>>(endpoint(), { params: route.query, signal });
+    if (requestId !== requestSequence) return;
     props.value = response.data.data;
     componentName.value = typeof props.value._component === 'string' ? props.value._component : String(route.meta.page);
     delete props.value._component;
     setPageProps(props.value);
   } catch (reason) {
-    error.value = reason instanceof Error ? reason.message : 'Unable to load this page.';
+    if (axios.isCancel(reason) || requestId !== requestSequence) return;
+    error.value = axios.isAxiosError<{ message?: string }>(reason)
+      ? reason.response?.data.message ?? 'Unable to load this page.'
+      : reason instanceof Error ? reason.message : 'Unable to load this page.';
   } finally {
-    loading.value = false;
+    if (requestId === requestSequence) loading.value = false;
   }
 }
 
-watch(() => route.fullPath, load, { immediate: true });
+watch(() => route.fullPath, (_path, _previousPath, onCleanup) => {
+  const controller = new AbortController();
+  onCleanup(() => controller.abort());
+  void load(controller.signal);
+}, { immediate: true });
 </script>
 
 <template>

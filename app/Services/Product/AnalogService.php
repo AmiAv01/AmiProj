@@ -51,8 +51,10 @@ final class AnalogService
         ));
 
         return Oems::query()
-            ->whereIn('dt_invoice', $codeIds)
-            ->orWhereIn('dt_oem', $codeIds)
+            ->where(function ($query) use ($codeIds): void {
+                $query->whereIn('dt_invoice', $codeIds)
+                    ->orWhereIn('dt_oem', $codeIds);
+            })
             ->where('fr_code', '=', 'CARGO')
             ->where('dt_parent', '=', 'CARGO')
             ->pluck('dt_invoice')

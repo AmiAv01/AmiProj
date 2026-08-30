@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class DefaultImageNotFoundException extends Exception
+class DefaultImageNotFoundException extends AppException
 {
     public function __construct()
     {

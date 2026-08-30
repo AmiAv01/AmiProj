@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         $userId = auth()->id();
         $order = $this->orders->createOrder(
-            new OrderDTO(OrderStatus::NEW->value, $userId, $request->validated('comment')),
+            new OrderDTO(OrderStatus::NEW, $userId, $request->validated('comment')),
             $this->carts->getOrCreateUserCart($userId),
         );
 

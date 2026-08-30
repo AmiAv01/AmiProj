@@ -6,6 +6,6 @@ class NewsNotFoundException extends NotFoundException
 {
     public function __construct(string $code)
     {
-        parent::__construct("OEM detail not found for code: {$code}");
+        parent::__construct("News post not found with ID: {$code}");
     }
 }

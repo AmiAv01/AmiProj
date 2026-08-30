@@ -11,7 +11,7 @@ final class AdminUserSearchService extends AbstractAdminSearchService
 
     protected function searchWithQuery(string $query, int $perPage): LengthAwarePaginator
     {
-        return $this->userService->getBySearching($query);
+        return $this->userService->getBySearching($query, $perPage);
     }
 
     protected function getAllItems(int $perPage): LengthAwarePaginator

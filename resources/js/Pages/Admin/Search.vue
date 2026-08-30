@@ -26,6 +26,7 @@
                     @input="getSearchingDetails"
                     v-model="searchQuery"
                 />
+                <p v-if="error" class="mt-2 text-sm text-red-700" role="alert">{{ error }}</p>
             </div>
         </form>
     </div>
@@ -34,31 +35,46 @@
 <script setup>
 import axios from "axios";
 import debounce from "lodash.debounce";
-import {ref} from "vue";
+import { onUnmounted, ref } from "vue";
+import { api } from '@/api/client';
 
 const props = defineProps({
     placeholder: {
         type: String,
         default: "Search",
     },
-    link: {
+    category: {
         type: String,
-        default: "#",
+        required: true,
     },
 })
 
 const emit = defineEmits(['setData']);
 
-let searchQuery = ref("");
+const searchQuery = ref("");
+const error = ref(null);
+let requestController = null;
 
-const getSearchingDetails = debounce(() => {
-    axios
-        .get(`${props.link}=${searchQuery.value}`)
-        .then((res) => {
-            console.log(res.data);
-            emit("setData", res.data);
-        })
-        .catch((err) => console.log(err));
+const getSearchingDetails = debounce(async () => {
+    requestController?.abort();
+    requestController = new AbortController();
+    error.value = null;
+    try {
+        const response = await api.get('/admin/search', {
+            params: { category: props.category, searchQ: searchQuery.value.trim() || null },
+            signal: requestController.signal,
+        });
+        emit('setData', response.data);
+    } catch (reason) {
+        if (! axios.isCancel(reason)) {
+            error.value = 'Не удалось выполнить поиск.';
+        }
+    }
 }, 1500);
+
+onUnmounted(() => {
+    getSearchingDetails.cancel();
+    requestController?.abort();
+});
 
 </script>
