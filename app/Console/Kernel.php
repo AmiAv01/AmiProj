@@ -12,7 +12,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $event = $schedule->command('dbf:sync')
+            ->everyFifteenMinutes()
+            ->withoutOverlapping(30);
+
+        if (config('dbf.cluster_scheduler')) {
+            $event->onOneServer();
+        }
     }
 
     /**

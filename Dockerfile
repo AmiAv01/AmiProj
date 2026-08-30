@@ -16,6 +16,7 @@ RUN apk add --no-cache \
         intl \
         pcntl \
         pdo_mysql \
+        zip \
     && apk del .build-deps
 
 
