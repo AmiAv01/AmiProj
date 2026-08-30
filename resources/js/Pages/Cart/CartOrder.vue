@@ -19,7 +19,7 @@
                         Товары, {{ count }} шт.
                     </p>
                     <p class="font-semibold text-xl leading-8 text-green-500">
-                        {{ parseFloat(price).toFixed(2) }} BYN
+                        {{ formatMoney(price) }}
                     </p>
                 </div>
 
@@ -57,6 +57,7 @@
 import axios from "axios";
 import {ref} from "vue";
 import {useCartStore} from "@/Store/cartStore";
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const store = useCartStore();
 const isShow = ref(false);

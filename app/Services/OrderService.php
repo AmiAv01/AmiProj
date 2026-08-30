@@ -100,7 +100,7 @@ final class OrderService
     {
         return Order::with([
             'user',
-            'orderItems.detail',
+            'orderItems.detail.stock',
         ])->findOrFail($orderId);
     }
 
@@ -118,7 +118,7 @@ final class OrderService
     public function getById(int $id): Order
     {
         $order = Order::where('order.id', '=', $id)->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
+            ->select(['order.id', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
         if (! $order) {
             throw new OrderNotFoundException($id);
         }
@@ -131,7 +131,7 @@ final class OrderService
         $order = Order::where('order.id', '=', $id)
             ->where('order.created_by', '=', $userId)
             ->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+            ->select(['order.id', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
             ->first();
         if (! $order) {
             throw new OrderNotFoundException($id);

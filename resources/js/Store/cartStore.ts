@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import axios from "axios";
+import { CART_QUANTITY_MAX, CART_QUANTITY_MIN } from "@/Config/AppConfig";
 
 
 const CART_COUNT_STORAGE_KEY = 'cart_item_count';
@@ -19,36 +20,27 @@ export const useCartStore = defineStore('cart', {
         cartCount: parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10),
     }),
     actions: {
-        deleteDetailFromCart(id: number, showConfirmation = true){
-            const performDelete = () => {
-                axios
-                    .delete<CartPayload>(`/api/v1/cart/${id}`)
-                    .then((res) => {
-                        this.cartData = res.data.data.items;
-                        this.setCartCount(res.data.data.cartCount);
-                    })
-                    .catch((err) => console.log(err));
-            };
-
-            if (showConfirmation) {
-                if (confirm('Вы желаете удалить этот товар из корзины? ДА/НЕТ')) {
-                    performDelete();
-                }
-            } else {
-                performDelete();
-            }
+        deleteDetailFromCart(id: number){
+            axios
+                .delete<CartPayload>(`/api/v1/cart/${id}`)
+                .then((res) => {
+                    this.cartData = res.data.data.items;
+                    this.setCartCount(res.data.data.cartCount);
+                })
+                .catch((err) => console.log(err));
         },
         async changeDetailQuantity(id: number, quantity: number){
-            // If quantity is 0 or less, show confirmation before deleting
-            if (quantity <= 0) {
-                if (confirm('Вы желаете удалить этот товар из корзины? ДА/НЕТ')) {
-                    this.deleteDetailFromCart(id, false);
-                }
+            if (!Number.isFinite(quantity)) {
                 return;
             }
 
+            const normalizedQuantity = Math.min(
+                CART_QUANTITY_MAX,
+                Math.max(CART_QUANTITY_MIN, Math.trunc(quantity)),
+            );
+
             try {
-                const res = await axios.put<CartPayload>(`/api/v1/cart/${id}`, { quantity });
+                const res = await axios.put<CartPayload>(`/api/v1/cart/${id}`, { quantity: normalizedQuantity });
                 this.cartData = res.data.data.items;
                 this.setCartCount(res.data.data.cartCount);
             } catch (err) {

@@ -6,12 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CartFormUpdateRequest extends FormRequest
 {
-    private const int MAX_QUANTITY = 999;
-
     public function rules(): array
     {
         return [
-            'quantity' => ['required', 'integer', 'min:1', 'max:'.self::MAX_QUANTITY],
+            'quantity' => [
+                'required',
+                'integer',
+                'min:'.config('cart.quantity.min'),
+                'max:'.config('cart.quantity.max'),
+            ],
         ];
     }
 

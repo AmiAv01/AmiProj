@@ -1,5 +1,9 @@
 <?php
 
 return [
-    'cart_item_quantity' => 1,
+    'quantity' => [
+        'default' => 1,
+        'min' => 1,
+        'max' => 999,
+    ],
 ];

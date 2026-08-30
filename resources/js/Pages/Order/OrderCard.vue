@@ -17,7 +17,11 @@
                 </div>
                 <div class="flex flex-col mt-4 sm:flex-row sm:mt-0">
                     <p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
-                    <p class="text-2xl">{{ order.total_price }} BYN</p>
+                    <p class="text-2xl">{{ formatMoney(order.total_price) }}</p>
+                </div>
+                <div v-if="order.comment" class="flex flex-col mt-4">
+                    <p class="text-gray text-2xl mr-4">Комментарий:</p>
+                    <p class="text-xl whitespace-pre-line">{{ order.comment }}</p>
                 </div>
             </div>
             <div class="border-2 rounded-lg mt-16 sm:mt-0">
@@ -38,6 +42,7 @@
 
 <script setup>
 import OrderItem from "./OrderItem.vue";
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({
     order: Object,
@@ -45,5 +50,3 @@ const props = defineProps({
 });
 
 </script>
-
-

@@ -63,7 +63,9 @@
                         <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
                             <button
                                 @click="decDetailCount(item.dt_id)"
-                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors"
+                                :disabled="getCartItem(item.dt_id).quantity <= CART_QUANTITY_MIN"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                                :title="minimumQuantityTitle"
                             >
                                 -
                             </button>
@@ -71,15 +73,30 @@
                                 type="number"
                                 :value="getCartItem(item.dt_id).quantity"
                                 @input="changeDetailQty(item.dt_id, $event.target.value)"
+                                @change="enforceDetailQty(item.dt_id, $event.target.value)"
+                                :min="CART_QUANTITY_MIN"
+                                :max="CART_QUANTITY_MAX"
                                 class="w-12 text-center border-none py-0.5 focus:outline-none font-semibold bg-transparent"
                             />
                             <button
                                 @click="incDetailCount(item.dt_id)"
-                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors"
+                                :disabled="getCartItem(item.dt_id).quantity >= CART_QUANTITY_MAX"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 +
                             </button>
                         </div>
+                        <button
+                            @click="confirmDetailDelete(item.dt_id)"
+                            class="inline-flex h-8 w-8 items-center justify-center rounded border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                            title="Удалить товар из корзины"
+                            aria-label="Удалить товар из корзины"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                        </button>
                         <spa-link
                             href="/cart"
                             class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-2 py-1 rounded transition-colors"
@@ -150,6 +167,7 @@
 import { ref, computed } from 'vue';
 import axios from "axios";
 import { useCartStore } from "@/Store/cartStore";
+import { CART_QUANTITY_MAX, CART_QUANTITY_MIN } from "@/Config/AppConfig";
 
 const props = defineProps({
     details: {
@@ -164,6 +182,7 @@ const store = useCartStore();
 const showDetails = ref(false);
 const showDeleteModal = ref(false);
 const activeProductIdToDelete = ref(null);
+const minimumQuantityTitle = `Минимальное количество — ${CART_QUANTITY_MIN}`;
 
 const toggleDetails = () => {
     showDetails.value = !showDetails.value;
@@ -194,24 +213,27 @@ const incDetailCount = (productId) => {
 const decDetailCount = (productId) => {
     const cartItem = getCartItem(productId);
     if (cartItem) {
-        if (cartItem.quantity > 1) {
+        if (cartItem.quantity > CART_QUANTITY_MIN) {
             store.changeDetailQuantity(productId, cartItem.quantity - 1);
-        } else {
-            confirmDetailDelete(productId);
         }
     }
 };
 
 const changeDetailQty = (productId, val) => {
     const parsed = parseInt(val);
-    if (isNaN(parsed) || parsed === null) {
+    if (isNaN(parsed)) {
         return;
     }
-    if (parsed < 1) {
-        confirmDetailDelete(productId);
+    if (parsed < CART_QUANTITY_MIN) {
+        store.changeDetailQuantity(productId, CART_QUANTITY_MIN);
         return;
     }
     store.changeDetailQuantity(productId, parsed);
+};
+
+const enforceDetailQty = (productId, val) => {
+    const parsed = parseInt(val);
+    store.changeDetailQuantity(productId, isNaN(parsed) ? CART_QUANTITY_MIN : parsed);
 };
 
 const confirmDetailDelete = (productId) => {
@@ -229,7 +251,7 @@ const proceedDelete = () => {
 
 const cancelDelete = () => {
     if (activeProductIdToDelete.value) {
-        store.changeDetailQuantity(activeProductIdToDelete.value, 1);
+        store.changeDetailQuantity(activeProductIdToDelete.value, CART_QUANTITY_MIN);
     }
     showDeleteModal.value = false;
     activeProductIdToDelete.value = null;
@@ -239,7 +261,7 @@ const addDetailItemToCart = (productId) => {
     axios
         .post("/api/v1/cart", {
             id: productId,
-            quantity: 1,
+            quantity: CART_QUANTITY_MIN,
         })
         .then((res) => {
             if (res.data?.data?.cartCount !== undefined) {

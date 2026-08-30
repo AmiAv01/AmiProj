@@ -28,7 +28,7 @@
                         <p
                             class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 "
                         >
-                            {{ item.price }}
+                            {{ formatMoney(item.price) }}
                         </p>
                     </div>
                 </div>
@@ -42,9 +42,9 @@
                     <p
                         class="font-bold text-lg mr-2 md:mr-0 md:mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
-                        {{ (parseFloat(item.price) * item.quantity).toFixed(2) }} BYN
+                        {{ formatMoney(parseFloat(item.price) * item.quantity) }}
                     </p>
-                    <button @click="store.deleteDetailFromCart(item.dt_id)" class="cursor-pointer hover:text-red-600 transition-colors" title="Удалить товар из корзины">
+                    <button @click="showDeleteModal = true" class="cursor-pointer hover:text-red-600 transition-colors" title="Удалить товар из корзины">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -67,6 +67,37 @@
                 </div>
             </div>
         </div>
+
+        <teleport to="body">
+            <div
+                v-if="showDeleteModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="delete-cart-item-title"
+                @click.self="showDeleteModal = false"
+            >
+                <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+                    <h3 id="delete-cart-item-title" class="text-lg font-semibold text-gray-900 mb-4 text-center">
+                        Вы желаете удалить этот товар из корзины?
+                    </h3>
+                    <div class="flex justify-center gap-4">
+                        <button
+                            @click="deleteItem"
+                            class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Да
+                        </button>
+                        <button
+                            @click="showDeleteModal = false"
+                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </teleport>
     </div>
 </template>
 
@@ -74,9 +105,12 @@
 import { editDetailTitle } from "@/Services/TitleService";
 import { useCartStore} from "@/Store/cartStore";
 import InputQuantity from "@/Components/InputQuantity.vue";
+import { formatMoney } from "@/Services/PriceFormatter";
+import { ref } from "vue";
 
 const store = useCartStore();
-defineProps({
+const showDeleteModal = ref(false);
+const props = defineProps({
     item: {
         type: Object,
         required: true,
@@ -85,6 +119,11 @@ defineProps({
 
 function editTitle(res) {
     return editDetailTitle(res);
+}
+
+function deleteItem() {
+    showDeleteModal.value = false;
+    store.deleteDetailFromCart(props.item.dt_id);
 }
 
 </script>

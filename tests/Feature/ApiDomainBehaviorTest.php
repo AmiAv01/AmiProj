@@ -87,6 +87,15 @@ it('rejects abusive cart quantities before executing cart logic', function (): v
         ->assertJsonValidationErrors('quantity');
 });
 
+it('rejects cart quantities below one instead of deleting the item', function (): void {
+    $user = User::factory()->create(['approved' => true]);
+
+    $this->actingAs($user)
+        ->putJson('/api/v1/cart/1', ['quantity' => 0])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('quantity');
+});
+
 it('applies cargo ownership filters to both sides of the analog lookup', function (): void {
     $now = now();
     DB::table('oems')->insert([

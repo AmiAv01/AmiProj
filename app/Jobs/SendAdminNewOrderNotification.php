@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Mail\OrderCreated;
 use App\Models\Order;
+use App\Services\CurrencyService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -36,7 +37,7 @@ class SendAdminNewOrderNotification implements ShouldQueue
         $this->adminEmail = $adminEmail ?? config('mail.notification_mail');
     }
 
-    public function handle(): void
+    public function handle(CurrencyService $currencies): void
     {
         $emails = $this->adminEmail;
 
@@ -50,7 +51,22 @@ class SendAdminNewOrderNotification implements ShouldQueue
             return;
         }
 
-        Mail::to($emails)->send(new OrderCreated($this->order));
+        $this->order->loadMissing([
+            'user',
+            'orderItems.detail.stock',
+        ]);
+
+        $currencyRate = null;
+        try {
+            $currencyRate = $currencies->getCurrency();
+        } catch (Throwable $exception) {
+            Log::warning('New order email will be sent without the currency rate.', [
+                'order_id' => $this->order->getKey(),
+                'exception' => $exception::class,
+            ]);
+        }
+
+        Mail::to($emails)->send(new OrderCreated($this->order, $currencyRate));
     }
 
     public function failed(Throwable $exception): void

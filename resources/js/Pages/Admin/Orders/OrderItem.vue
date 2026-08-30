@@ -9,7 +9,7 @@
             </a>
         </th>
         <td class="px-4 py-3">
-            {{ order.total_price }}
+            {{ formatMoney(order.total_price) }}
         </td>
         <td class="px-4 py-3">
             {{ order.status }}
@@ -29,6 +29,7 @@
 <script setup>
 
 import {ref} from "vue";
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({
     order: {

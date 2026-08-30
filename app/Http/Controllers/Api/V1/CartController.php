@@ -32,7 +32,11 @@ class CartController extends Controller
         $productId = (int) $request->validated('id');
         $detail = $this->details->getById($productId);
         $price = (string) $this->prices->getPrice($detail->dt_code, auth()->id());
-        $this->items->addItemToCart($cart->id, new CartDTO($productId, (int) $request->validated('quantity', 1), $price));
+        $this->items->addItemToCart($cart->id, new CartDTO(
+            $productId,
+            (int) $request->validated('quantity', config('cart.quantity.default')),
+            $price,
+        ));
 
         return $this->response();
     }

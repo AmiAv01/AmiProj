@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="display-currency-code" content="{{ config('currency.display_code') }}">
+    <meta name="cart-quantity-min" content="{{ config('cart.quantity.min') }}">
+    <meta name="cart-quantity-max" content="{{ config('cart.quantity.max') }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     @routes
     @vite('resources/js/spa.ts')

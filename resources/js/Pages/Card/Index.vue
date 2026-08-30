@@ -53,7 +53,7 @@
                                             <span v-else class="text-red-500 ml-2">Нет в наличии</span>
                                         </p>
                                         <p class="text-2xl font-extrabold text-gray-900 mt-1">
-                                            {{ (price !== '0' && price !== undefined && !isNaN(parseFloat(price))) ? `${parseFloat(price).toFixed(2)} BYN` : 'цену уточнять' }}
+                                            {{ (price !== '0' && price !== undefined && !isNaN(parseFloat(price))) ? formatMoney(price) : 'цену уточнять' }}
                                         </p>
                                     </div>
                                 </div>
@@ -65,7 +65,9 @@
                                         <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
                                             <button
                                                 @click="decCount"
-                                                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-bold text-lg rounded-l-lg transition-colors"
+                                                :disabled="currentQty <= CART_QUANTITY_MIN"
+                                                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-bold text-lg rounded-l-lg transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                                                :title="minimumQuantityTitle"
                                             >
                                                 -
                                             </button>
@@ -74,17 +76,30 @@
                                                 v-model.number="currentQty"
                                                 @input="changeQuantity"
                                                 @change="enforceMinimum"
-                                                min="1"
-                                                max="999"
+                                                :min="CART_QUANTITY_MIN"
+                                                :max="CART_QUANTITY_MAX"
                                                 class="w-16 text-center border-none py-2 focus:outline-none font-semibold text-lg bg-transparent"
                                             />
                                             <button
                                                 @click="incCount"
-                                                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-bold text-lg rounded-r-lg transition-colors"
+                                                :disabled="currentQty >= CART_QUANTITY_MAX"
+                                                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-bold text-lg rounded-r-lg transition-colors disabled:cursor-not-allowed disabled:opacity-40"
                                             >
                                                 +
                                             </button>
                                         </div>
+
+                                        <button
+                                            @click="confirmDelete"
+                                            class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                                            title="Удалить товар из корзины"
+                                            aria-label="Удалить товар из корзины"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                            </svg>
+                                        </button>
 
                                         <spa-link
                                             href="/cart"
@@ -161,6 +176,8 @@ import { useCartStore } from "@/Store/cartStore";
 import DetailLayout from "./DetailLayout.vue";
 import CartButton from '@/Components/CartButton.vue';
 import Layout from "@/Shared/UserLayout.vue";
+import { formatMoney } from "@/Services/PriceFormatter";
+import { CART_QUANTITY_MAX, CART_QUANTITY_MIN } from "@/Config/AppConfig";
 
 const props = defineProps({
     sameDetails: {
@@ -195,8 +212,9 @@ const props = defineProps({
 
 const store = useCartStore();
 const isShow = ref(false);
-const currentQty = ref(1);
+const currentQty = ref(CART_QUANTITY_MIN);
 const showDeleteModal = ref(false);
+const minimumQuantityTitle = `Минимальное количество — ${CART_QUANTITY_MIN}`;
 
 // Вычисляем, добавлен ли этот товар в корзину
 const cartItem = computed(() => {
@@ -216,7 +234,7 @@ const addInCart = () => {
     axios
         .post("/api/v1/cart", {
             id: props.detail.dt_id,
-            quantity: 1,
+            quantity: CART_QUANTITY_MIN,
         })
         .then((res) => {
             isShow.value = true;
@@ -238,11 +256,9 @@ const incCount = () => {
 };
 
 const decCount = () => {
-    if (currentQty.value > 1) {
+    if (currentQty.value > CART_QUANTITY_MIN) {
         currentQty.value--;
         store.changeDetailQuantity(props.detail.dt_id, currentQty.value);
-    } else {
-        confirmDelete();
     }
 };
 
@@ -250,17 +266,17 @@ const changeQuantity = () => {
     if (currentQty.value === '' || currentQty.value === null || currentQty.value === undefined) {
         return;
     }
-    if (currentQty.value < 1) {
-        confirmDelete();
+    if (currentQty.value < CART_QUANTITY_MIN) {
+        currentQty.value = CART_QUANTITY_MIN;
         return;
     }
     store.changeDetailQuantity(props.detail.dt_id, currentQty.value);
 };
 
 const enforceMinimum = () => {
-    if (currentQty.value === '' || currentQty.value === null || currentQty.value === undefined || currentQty.value < 1) {
-        currentQty.value = 1;
-        store.changeDetailQuantity(props.detail.dt_id, 1);
+    if (currentQty.value === '' || currentQty.value === null || currentQty.value === undefined || currentQty.value < CART_QUANTITY_MIN) {
+        currentQty.value = CART_QUANTITY_MIN;
+        store.changeDetailQuantity(props.detail.dt_id, CART_QUANTITY_MIN);
     }
 };
 
@@ -275,8 +291,8 @@ const proceedDelete = () => {
 
 const cancelDelete = () => {
     showDeleteModal.value = false;
-    currentQty.value = 1;
-    store.changeDetailQuantity(props.detail.dt_id, 1);
+    currentQty.value = CART_QUANTITY_MIN;
+    store.changeDetailQuantity(props.detail.dt_id, CART_QUANTITY_MIN);
 };
 
 const editTitle = (res) => editDetailTitle(res);

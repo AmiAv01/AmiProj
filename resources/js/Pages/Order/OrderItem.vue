@@ -26,7 +26,7 @@
                         <p
                             class="font-medium text-xl leading-7 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
                         >
-                            {{ item.unit_price }} BYN
+                            {{ formatMoney(item.unit_price) }}
                         </p>
                         <p class=" text-2xl text-gray-600">
                             {{ item.quantity }} шт.
@@ -40,7 +40,7 @@
                     <p
                         class="font-bold text-2xl mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
                     >
-                        {{ item.unit_price * item.quantity }} BYN
+                        {{ formatMoney(item.unit_price * item.quantity) }}
                     </p>
                 </div>
             </div>
@@ -49,6 +49,7 @@
 </template>
 
 <script setup>
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({
     item: {},
