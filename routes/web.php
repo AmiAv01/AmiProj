@@ -56,6 +56,7 @@ Route::group(['middleware' => 'removeHeader'], function (): void {
         Route::get('/generator_parts/product/{id}', [ProductController::class, 'index'])->name('product.info.generator');
     });
 
+    Route::middleware('auth')->get('/cart-data', [CartController::class, 'data'])->name('cart.data');
     Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::middleware('auth')->put('/clear', ClearCartController::class)->name('cart.clear');
     Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
@@ -100,7 +101,7 @@ Route::group(['middleware' => 'removeHeader'], function (): void {
         Route::put('/approve/{user}', [AdminApproveUserController::class, 'index'])->name('admin.approve.index');
     });
 
-    require __DIR__.'/auth.php';
+    require __DIR__ . '/auth.php';
 
     Route::middleware('auth')->group(function (): void {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

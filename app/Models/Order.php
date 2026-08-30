@@ -16,6 +16,7 @@ class Order extends Model
     protected $fillable = [
         'total_price',
         'status',
+        'comment',
         'session_id',
         'created_by',
         'updated_by',

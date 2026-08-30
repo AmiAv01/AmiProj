@@ -64,9 +64,9 @@ const count = computed(() => {
 });
 
 const price = computed(() => {
-    return Object.values(store.cartData).reduce((sum, obj) => {
+    return parseFloat(Object.values(store.cartData).reduce((sum, obj) => {
         const p = parseFloat(obj.price) || 0;
         return sum + (p * obj.quantity);
-    }, 0).toFixed(2);
+    }, 0).toFixed(2));
 });
 </script>

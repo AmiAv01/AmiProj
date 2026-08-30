@@ -34,32 +34,39 @@ final class OrderService
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
     {
-        $cart->loadMissing('items');
-        if ($cart->items->isEmpty()) {
-            throw new EmptyCartException;
-        }
+        $order = DB::transaction(function () use ($dto, $cart): Order {
+            $lockedCart = Cart::query()->whereKey($cart->id)->lockForUpdate()->firstOrFail();
 
-        return DB::transaction(function () use ($dto, $cart): Order {
             /** @var Collection<int, CartItem> $items */
-            $items = $cart->items;
-            $orderTotal = $items->sum(fn (CartItem $item): int => (int) $item->price * $item->quantity);
+            $items = $lockedCart->items()->lockForUpdate()->get();
+            if ($items->isEmpty()) {
+                throw new EmptyCartException;
+            }
+
+            $orderTotalInMinorUnits = $items->sum(
+                fn (CartItem $item): int => $this->priceToMinorUnits((string) $item->price) * $item->quantity
+            );
             $order = Order::create([
-                'total_price' => $orderTotal,
+                'total_price' => $this->minorUnitsToPrice($orderTotalInMinorUnits),
                 'status' => $dto->status,
+                'comment' => $dto->comment,
                 'created_by' => $dto->userId,
                 'updated_by' => $dto->userId,
             ]);
-            $this->createOrderItems($cart, $order);
-            event(new OrderCreated($this->getOrderWithRelations($order->id)));
+            $this->createOrderItems($items, $order);
+            $lockedCart->items()->delete();
 
             return $order;
-        });
+        }, 3);
+
+        event(new OrderCreated($this->getOrderWithRelations($order->id)));
+
+        return $order;
     }
 
-    private function createOrderItems(Cart $cart, Order $order): void
+    /** @param Collection<int, CartItem> $items */
+    private function createOrderItems(Collection $items, Order $order): void
     {
-        /** @var Collection<int, CartItem> $items */
-        $items = $cart->items;
         $orderItems = $items->map(function (CartItem $item) use ($order) {
             return [
                 'order_id' => $order->id,
@@ -71,6 +78,22 @@ final class OrderService
             ];
         });
         $order->orderItems()->insert($orderItems->toArray());
+    }
+
+    private function priceToMinorUnits(string $price): int
+    {
+        if (! preg_match('/^\d+(?:\.\d{1,2})?$/', $price)) {
+            throw new \UnexpectedValueException("Invalid cart price: {$price}");
+        }
+
+        [$whole, $fraction] = array_pad(explode('.', $price, 2), 2, '');
+
+        return ((int) $whole * 100) + (int) str_pad($fraction, 2, '0');
+    }
+
+    private function minorUnitsToPrice(int $minorUnits): string
+    {
+        return sprintf('%d.%02d', intdiv($minorUnits, 100), $minorUnits % 100);
     }
 
     private function getOrderWithRelations(int $orderId): Order

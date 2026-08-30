@@ -9,9 +9,8 @@
         </p>
 
         <div v-if="showDetails">
-            <!-- Изменено на grid-cols-6 -->
             <div class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center font-bold">
-                <div class="flex items-center justify-center text-left">Фото</div> <!-- Новая колонка -->
+                <div class="flex items-center justify-center text-left">Фото</div>
                 <div class="flex items-center justify-center text-left">Артикул</div>
                 <div class="flex items-center justify-center text-left">Название</div>
                 <div class="flex items-center justify-center text-left">Бренд</div>
@@ -19,13 +18,11 @@
                 <div class="flex items-center justify-center text-left"></div>
             </div>
 
-            <!-- Изменено на grid-cols-6 -->
             <div
                 v-for="(item, index) in details"
                 :key="index"
                 class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center"
             >
-                <!-- Отображение миниатюры -->
                 <div class="flex items-center justify-center">
                     <img
                         :src="item.imageUrl"
@@ -35,7 +32,6 @@
                 </div>
 
                 <div class="flex items-center justify-center">
-                    <!-- Если пользователь не авторизован, убираем ссылку на карточку товара, так как артикул скрыт звездками -->
                     <a
                         v-if="$page.props.auth.user"
                         :href="`../../catalog/product/${item.dt_invoice}`"
@@ -62,13 +58,44 @@
                 </div>
 
                 <div class="flex items-center justify-center">
+                    <!-- Если товар уже в корзине -->
+                    <div v-if="getCartItem(item.dt_id)" class="flex items-center gap-2">
+                        <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
+                            <button
+                                @click="decDetailCount(item.dt_id)"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors"
+                            >
+                                -
+                            </button>
+                            <input
+                                type="number"
+                                :value="getCartItem(item.dt_id).quantity"
+                                @input="changeDetailQty(item.dt_id, $event.target.value)"
+                                class="w-12 text-center border-none py-0.5 focus:outline-none font-semibold bg-transparent"
+                            />
+                            <button
+                                @click="incDetailCount(item.dt_id)"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <inertia-link
+                            href="/cart"
+                            class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-2 py-1 rounded transition-colors"
+                            title="Перейти в корзину"
+                        >
+                            В корзине
+                        </inertia-link>
+                    </div>
+
+                    <!-- Если товара нет в корзине -->
                     <button
-                        v-if="item.stock_quantity && $page.props.auth.user"
+                        v-else-if="item.stock_quantity && $page.props.auth.user"
                         @click="addDetailItemToCart(item.dt_id)"
                         class="bg-green-700 hover:bg-green-600 text-white p-2.5 rounded-lg transition-colors flex items-center justify-center shadow-sm"
                         title="Добавить в корзину"
                     >
-                        <!-- Чистая SVG иконка тележки без лишнего текста -->
                         <svg
                             class="w-5 h-5"
                             fill="none"
@@ -91,14 +118,38 @@
                 <p>Деталировка отсутствует</p>
             </div>
         </div>
+
+        <!-- Кастомное модальное окно подтверждения удаления -->
+        <teleport to="body">
+            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">
+                        Вы действительно хотите удалить этот товар из корзины?
+                    </h3>
+                    <div class="flex justify-center gap-4">
+                        <button
+                            @click="proceedDelete"
+                            class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Да
+                        </button>
+                        <button
+                            @click="cancelDelete"
+                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </teleport>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from "axios";
 import { useCartStore } from "@/Store/cartStore.js";
-import CartButton from '@/Components/CartButton.vue';
 
 const props = defineProps({
     details: {
@@ -111,19 +162,94 @@ const emit = defineEmits(['itemAddedToCart']);
 
 const store = useCartStore();
 const showDetails = ref(false);
+const showDeleteModal = ref(false);
+const activeProductIdToDelete = ref(null);
 
 const toggleDetails = () => {
     showDetails.value = !showDetails.value;
+};
+
+// Вычисляемая ассоциативная карта товаров для надежной реактивности
+const cartMap = computed(() => {
+    const map = {};
+    if (store.cartData) {
+        Object.values(store.cartData).forEach(item => {
+            map[item.dt_id] = item;
+        });
+    }
+    return map;
+});
+
+const getCartItem = (productId) => {
+    return cartMap.value[productId] || null;
+};
+
+const incDetailCount = (productId) => {
+    const cartItem = getCartItem(productId);
+    if (cartItem) {
+        store.changeDetailQuantity(productId, cartItem.quantity + 1);
+    }
+};
+
+const decDetailCount = (productId) => {
+    const cartItem = getCartItem(productId);
+    if (cartItem) {
+        if (cartItem.quantity > 1) {
+            store.changeDetailQuantity(productId, cartItem.quantity - 1);
+        } else {
+            confirmDetailDelete(productId);
+        }
+    }
+};
+
+const changeDetailQty = (productId, val) => {
+    const parsed = parseInt(val);
+    if (isNaN(parsed) || parsed === null) {
+        return;
+    }
+    if (parsed < 1) {
+        confirmDetailDelete(productId);
+        return;
+    }
+    store.changeDetailQuantity(productId, parsed);
+};
+
+const confirmDetailDelete = (productId) => {
+    activeProductIdToDelete.value = productId;
+    showDeleteModal.value = true;
+};
+
+const proceedDelete = () => {
+    if (activeProductIdToDelete.value) {
+        store.deleteDetailFromCart(activeProductIdToDelete.value);
+    }
+    showDeleteModal.value = false;
+    activeProductIdToDelete.value = null;
+};
+
+const cancelDelete = () => {
+    if (activeProductIdToDelete.value) {
+        store.changeDetailQuantity(activeProductIdToDelete.value, 1);
+    }
+    showDeleteModal.value = false;
+    activeProductIdToDelete.value = null;
 };
 
 const addDetailItemToCart = (productId) => {
     axios
         .post("/cart", {
             id: productId,
+            quantity: 1,
         })
         .then((res) => {
-            console.log(res);
-            store.incCartCount();
+            if (res.data && res.data.newCartCount !== undefined) {
+                store.setCartCount(res.data.newCartCount);
+            } else {
+                store.incCartCount();
+            }
+            if (res.data && res.data.items) {
+                store.setDetails(res.data.items);
+            }
             emit('itemAddedToCart');
         })
         .catch((err) => console.log(err));

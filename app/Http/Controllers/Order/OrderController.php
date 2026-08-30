@@ -31,7 +31,10 @@ class OrderController extends Controller
     {
         $userId = auth()->id();
         $cart = $this->cartService->getOrCreateUserCart($userId);
-        $order = $this->orderService->createOrder(new OrderDTO(0, OrderStatus::NEW->value, $userId), $cart);
+        $order = $this->orderService->createOrder(
+            new OrderDTO(OrderStatus::NEW->value, $userId, $request->validated('comment')),
+            $cart
+        );
 
         return OrderResource::make($order);
     }

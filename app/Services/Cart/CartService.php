@@ -28,7 +28,7 @@ final class CartService
                         return [];
                     }
 
-                    $detail = $item->detail()->first();
+                    $detail = $item->detail;
 
                     return array_merge($item->toArray(), $detail ? $detail->toArray() : []);
                 })->toArray();
@@ -45,9 +45,9 @@ final class CartService
         return $this->getCartItems($cart);
     }
 
-    public function getCartQuantity(Cart $cart)
+    public function getCartQuantity(Cart $cart): int
     {
-        return $cart->items()->sum('quantity');
+        return (int) $cart->items()->sum('quantity');
     }
 
     public function clearCart(Cart $cart): void

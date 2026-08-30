@@ -26,7 +26,10 @@ class AdminOrderController extends Controller
 
     public function update(int $id, UpdateOrderStatusRequest $request): Order
     {
-        return $this->orderService->updateOrderStatus($id, new OrderDTO(0, $request->validated('status'), auth()->user()->id));
+        return $this->orderService->updateOrderStatus(
+            $id,
+            new OrderDTO($request->validated('status'), auth()->user()->id)
+        );
 
     }
 }

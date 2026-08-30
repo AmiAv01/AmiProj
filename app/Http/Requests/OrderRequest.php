@@ -8,7 +8,9 @@ class OrderRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [];
+        return [
+            'comment' => 'nullable|string|max:1000',
+        ];
     }
 
     public function authorize(): bool

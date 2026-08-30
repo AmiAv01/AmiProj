@@ -75,4 +75,14 @@ class CartController extends Controller
             'newCartCount' => $this->cartService->getCartQuantity($cart),
         ]);
     }
+
+    public function data(): JsonResponse
+    {
+        $cart = $this->cartService->getOrCreateUserCart(auth()->id());
+
+        return response()->json([
+            'items' => $this->cartService->getCartItems($cart),
+            'cartCount' => $this->cartService->getCartQuantity($cart),
+        ]);
+    }
 }

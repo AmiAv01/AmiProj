@@ -33,8 +33,8 @@
                     </div>
                 </div>
                 <InputQuantity
-                    :quantity="`${item.quantity}`"
-                    :detailId="`${item.dt_id}`"
+                    :quantity="Number(item.quantity)"
+                    :detailId="Number(item.dt_id)"
                 />
                 <div
                     class="flex md:flex-col mt-6 md:mt-0 flex-row justify-center ml-[50px] items-center"
@@ -42,16 +42,16 @@
                     <p
                         class="font-bold text-lg mr-2 md:mr-0 md:mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
                     >
-                        {{ parseFloat(item.price) * item.quantity }} BYN
+                        {{ (parseFloat(item.price) * item.quantity).toFixed(2) }} BYN
                     </p>
-                    <button @click="store.deleteDetailFromCart(item.dt_id)" class="cursor-pointer">
+                    <button @click="store.deleteDetailFromCart(item.dt_id)" class="cursor-pointer hover:text-red-600 transition-colors" title="Удалить товар из корзины">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
                             height="24"
                             viewBox="0 0 24 24"
                             fill="none"
-                            stroke="#000000"
+                            stroke="currentColor"
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -76,11 +76,12 @@ import { useCartStore} from "@/Store/cartStore.js";
 import InputQuantity from "@/Components/InputQuantity.vue";
 
 const store = useCartStore();
-const props = defineProps({
-        item: {},
-    });
-
-console.log(props.item);
+defineProps({
+    item: {
+        type: Object,
+        required: true,
+    },
+});
 
 function editTitle(res) {
     return editDetailTitle(res);
