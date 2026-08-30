@@ -19,6 +19,10 @@ class AdminMiddleware
             return $next($request);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Access denied. You are not an admin.'], 403);
+        }
+
         return redirect()->route('home')->with('error', 'Access denied. You are not an admin.');
     }
 }

@@ -34,10 +34,10 @@
                         class="lg:flex flex-col font-medium p-4 md:p-0   border border-gray-100 rounded-lg bg-slate-900 md:space-x-10 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 hidden dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
                     >
                         <li class="pr-6" v-for="[key, value] of menuItems">
-                            <inertia-link
+                            <spa-link
                                 :href="`${value}`"
                                 class="block py-2 px-3 md:p-0 text-white rounded text-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                            >{{key}}</inertia-link
+                            >{{key}}</spa-link
                             >
                         </li>
                         <li class="pr-6 group/main group inline-block relative">
@@ -48,7 +48,7 @@
             </div>
         </nav>
         <div class="max-w-screen-xl mx-auto px-6 py-5">
-            <Search :link="`../api/search?searchQ`" />
+            <Search :link="`/api/v1/catalog/autocomplete?searchQ`" />
         </div>
         <NavMenu />
     </header>
@@ -62,7 +62,7 @@ import { initFlowbite } from "flowbite";
 import Contacts from "@/Shared/Header/Contacts.vue";
 import GuestMenu from "@/Shared/Header/GuestMenu.vue";
 import AuthMenu from "@/Shared/Header/AuthMenu.vue";
-import {menuItems} from "@/Store/index.js";
+import {menuItems} from "@/Store/index";
 
 onMounted(() => {
     initFlowbite();

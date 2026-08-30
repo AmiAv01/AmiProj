@@ -1,5 +1,5 @@
 <script setup>
-import {adminMenuItems} from "@/Store/index.js";
+import {adminMenuItems} from "@/Store/index";
 import AdminButton from "@/Components/AdminButton.vue";
 
 const props = defineProps({

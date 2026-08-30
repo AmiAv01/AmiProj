@@ -1,9 +1,9 @@
 <template>
-    <inertia-link
+    <spa-link
         :href="`${href}`"
         class="flex items-center p-6 pl-11 w-full text-lg font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100"
         ><slot
-    /></inertia-link>
+    /></spa-link>
 </template>
 
 <script>

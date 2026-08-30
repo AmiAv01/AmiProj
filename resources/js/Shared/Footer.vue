@@ -32,19 +32,19 @@
                     class="text-white mb-2 hover:text-green-700"
                     >О нас</Link
                 >
-                <Link class="text-white mb-2 hover:text-green-700"
+                <Link href="#" class="text-white mb-2 hover:text-green-700"
                     >Контакты</Link
                 >
             </div>
             <div class="flex flex-col">
                 <p class="text-white text-2xl mb-2">Категории</p>
-                <Link class="text-white mb-2 hover:text-green-700"
+                <Link href="/catalog/generators" class="text-white mb-2 hover:text-green-700"
                     >Генераторы</Link
                 >
-                <Link class="text-white mb-2 hover:text-green-700"
+                <Link href="/catalog/starters" class="text-white mb-2 hover:text-green-700"
                     >Стартеры</Link
                 >
-                <Link class="text-white hover:text-green-700"
+                <Link href="/catalog/other" class="text-white hover:text-green-700"
                     >Остальные запчасти</Link
                 >
             </div>
@@ -56,5 +56,5 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from '@/spa/bridge';
 </script>

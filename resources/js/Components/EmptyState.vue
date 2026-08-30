@@ -10,13 +10,13 @@
         </div>
         <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ title }}</h2>
         <p class="text-gray-500 mb-8 max-w-sm">{{ description }}</p>
-        <inertia-link
+        <spa-link
             v-if="link"
             :href="link"
             class="bg-green-700 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-800 transition"
         >
             {{ buttonText }}
-        </inertia-link>
+        </spa-link>
     </div>
 </template>
 

@@ -1,7 +1,5 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
-
 test('registration screen can be rendered', function (): void {
     $this->withoutExceptionHandling();
     $response = $this->get('/register');
@@ -10,13 +8,13 @@ test('registration screen can be rendered', function (): void {
 });
 
 test('new users can register without Auth', function (): void {
-    $this->withoutExceptionHandling();
-    $response = $this->post('/register', [
+    $response = $this->postJson('/api/v1/auth/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'phoneNumber' => '1234567890',
         'password' => 'password',
         'password_confirmation' => 'password',
     ]);
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertCreated()->assertJsonPath('data.email', 'test@example.com');
+    $this->assertGuest();
 });

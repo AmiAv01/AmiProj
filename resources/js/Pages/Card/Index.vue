@@ -85,13 +85,13 @@
                                             </button>
                                         </div>
 
-                                        <inertia-link
+                                        <spa-link
                                             href="/cart"
                                             class="inline-flex items-center justify-center bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg px-6 py-2.5 transition-colors gap-2"
                                         >
                                             <span>В корзине</span>
                                             <span class="text-sm font-normal opacity-90">(Перейти)</span>
-                                        </inertia-link>
+                                        </spa-link>
                                     </div>
 
                                     <!-- Вариант 2: Товара еще нет в корзине (кнопка добавления) -->
@@ -156,7 +156,7 @@ import axios from "axios";
 import { editDetailTitle } from "@/Services/TitleService";
 import Analogs from "@/Pages/Card/Analogs.vue";
 import { ref, computed, watch } from "vue";
-import { useCartStore } from "@/Store/cartStore.js";
+import { useCartStore } from "@/Store/cartStore";
 import DetailLayout from "./DetailLayout.vue";
 import CartButton from '@/Components/CartButton.vue';
 import Layout from "@/Shared/UserLayout.vue";
@@ -213,19 +213,19 @@ watch(() => cartItem.value?.quantity, (newQty) => {
 
 const addInCart = () => {
     axios
-        .post("/cart", {
+        .post("/api/v1/cart", {
             id: props.detail.dt_id,
             quantity: 1,
         })
         .then((res) => {
             isShow.value = true;
-            if (res.data && res.data.newCartCount !== undefined) {
-                store.setCartCount(res.data.newCartCount);
+            if (res.data?.data?.cartCount !== undefined) {
+                store.setCartCount(res.data.data.cartCount);
             } else {
                 store.incCartCount();
             }
-            if (res.data && res.data.items) {
-                store.setDetails(res.data.items);
+            if (res.data?.data?.items) {
+                store.setDetails(res.data.data.items);
             }
         })
         .catch((err) => console.log(err));

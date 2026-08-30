@@ -56,7 +56,7 @@
 <script setup>
 import axios from "axios";
 import {ref} from "vue";
-import {useCartStore} from "@/Store/cartStore.js";
+import {useCartStore} from "@/Store/cartStore";
 
 const store = useCartStore();
 const isShow = ref(false);
@@ -84,7 +84,7 @@ async function makeOrder() {
     submitError.value = '';
 
     try {
-        await axios.post("/order", {
+        await axios.post("/api/v1/orders", {
             comment: comment.value || null
         });
         isShow.value = true;

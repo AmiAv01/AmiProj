@@ -1,111 +1,51 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminApproveUserController;
-use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AdminCurrencyController;
-use App\Http\Controllers\Admin\AdminDetailController;
-use App\Http\Controllers\Admin\AdminNewsController;
-use App\Http\Controllers\Admin\AdminOrderController;
-use App\Http\Controllers\Admin\AdminSearchController;
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\Cart\ClearCartController;
-use App\Http\Controllers\Catalog\CatalogController;
-use App\Http\Controllers\Desktop\DesktopController;
-use App\Http\Controllers\Info\InfoController;
-use App\Http\Controllers\News\NewsController;
-use App\Http\Controllers\Order\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Search\CatalogSearchedController;
-use App\Http\Controllers\Search\SearchController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::group(['middleware' => 'removeHeader'], function (): void {
-    Route::get('/', [UserController::class, 'index'])->name('home');
+$spa = fn () => view('spa');
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified', ''])->name('dashboard');
+Route::get('/', $spa)->name('home');
+Route::get('/dashboard', $spa)->name('dashboard');
+Route::get('/news', $spa)->name('news.index');
+Route::get('/info', $spa)->name('info.index');
+Route::get('/desktop', $spa)->name('desktop.index');
+Route::get('/catalog/search', $spa)->name('catalog-searched.index');
+Route::get('/catalog/generators', $spa)->name('generator.index');
+Route::get('/catalog/starters', $spa)->name('starter.index');
+Route::get('/catalog/bearings', $spa)->name('bearing.index');
+Route::get('/catalog/other', $spa)->name('other.index');
+Route::get('/catalog/starter_parts/{category?}', $spa)->name('starter-parts.index');
+Route::get('/catalog/generator_parts/{category}', $spa)->name('generator-parts.index');
+Route::get('/catalog/product/{id}', $spa)->name('product.info');
+Route::get('/catalog/starter_parts/product/{id}', $spa)->name('product.info.starter');
+Route::get('/catalog/generator_parts/product/{id}', $spa)->name('product.info.generator');
 
-    Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-    Route::get('/info', [InfoController::class, 'index'])->name('info.index');
-    Route::get('/desktop', [DesktopController::class, 'index'])->name('desktop.index');
+Route::get('/login', $spa)->name('login');
+Route::get('/register', $spa)->name('register');
+Route::get('/forgot-password', $spa)->name('password.request');
+Route::get('/reset-password/{token}', $spa)->name('password.reset');
+Route::get('/confirm-password', $spa)->name('password.confirm');
+Route::get('/verify-email', $spa)->name('verification.notice');
+Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['auth', 'signed', 'throttle:6,1'])
+    ->name('verification.verify');
+Route::get('/email/verification-notification', $spa)->name('verification.send');
+Route::get('/logout', $spa)->name('logout');
+Route::get('/password', $spa)->name('password.update');
+Route::get('/profile', $spa)->name('profile.edit');
+Route::get('/cart', $spa)->name('cart.index');
+Route::get('/order', $spa)->name('order.index');
+Route::get('/order/{id}', $spa)->name('order.show');
 
-    Route::get('/api/search', [SearchController::class, 'index']);
+Route::get('/admin/resource/login', $spa)->name('admin.login');
+Route::get('/admin/resource/dashboard', $spa)->name('admin.dashboard');
+Route::get('/admin/resource/details', $spa)->name('admin.details.index');
+Route::get('/admin/resource/orders', $spa)->name('admin.orders.index');
+Route::get('/admin/resource/orders/{id}', $spa)->name('admin.orders.show');
+Route::get('/admin/resource/news', $spa)->name('admin.news.index');
+Route::get('/admin/resource/users', $spa)->name('admin.users.index');
+Route::get('/admin/resource/users/{id}', $spa)->name('admin.users.show');
+Route::get('/admin/resource/currency', $spa)->name('admin.currency.index');
 
-    Route::group(['prefix' => 'catalog'], function (): void {
-        Route::get('/search', [CatalogSearchedController::class, 'index'])->name('catalog-searched.index');
-        Route::get('/api/search', [SearchController::class, 'index'])->name('catalog-api.search');
-
-        $catalogAction = [CatalogController::class, 'index'];
-
-        Route::get('/generators', $catalogAction)->defaults('type', 'generator')->name('generator.index');
-        Route::get('/starters', $catalogAction)->defaults('type', 'starter')->name('starter.index');
-        Route::get('/bearings', $catalogAction)->defaults('type', 'bearing')->name('bearing.index');
-        Route::get('/other', $catalogAction)->defaults('type', 'other_details')->name('other.index');
-
-        Route::get('/starter_parts/{category?}', $catalogAction)->defaults('type', 'starter_parts')->name('starter-parts.index');
-        Route::get('/generator_parts/{category}', $catalogAction)->defaults('type', 'generator_parts')->name('generator-parts.index');
-
-        Route::get('/product/{id}', [ProductController::class, 'index'])->name('product.info');
-        Route::get('/starter_parts/product/{id}', [ProductController::class, 'index'])->name('product.info.starter');
-        Route::get('/generator_parts/product/{id}', [ProductController::class, 'index'])->name('product.info.generator');
-    });
-
-    Route::middleware('auth')->get('/cart-data', [CartController::class, 'data'])->name('cart.data');
-    Route::middleware('auth')->resource('/cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::middleware('auth')->put('/clear', ClearCartController::class)->name('cart.clear');
-    Route::middleware('auth')->resource('/order', OrderController::class)->only(['index', 'store', 'update', 'show']);
-
-    Route::group(['prefix' => 'admin/resource', 'middleware' => 'RedirectIfAdmin'], function (): void {
-        Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-        Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-        Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-    });
-
-    Route::middleware(['auth', 'admin'])->prefix('admin/resource')->group(function (): void {
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-
-        // details route
-        Route::get('/details', [AdminDetailController::class, 'index'])->name('admin.details.index');
-        Route::post('/details/store', [AdminDetailController::class, 'store'])->name('admin.details.store');
-        Route::put('/details/update/{id}', [AdminDetailController::class, 'update'])->name('admin.details.update');
-        Route::delete('/details/delete/{dt_id}', [AdminDetailController::class, 'delete'])->name('admin.details.delete');
-
-        // orders route
-        Route::get('/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
-        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
-        Route::put('/orders/{order}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
-
-        // news route
-        Route::get('/news', [AdminNewsController::class, 'index'])->name('admin.news.index');
-        Route::post('/news/store', [AdminNewsController::class, 'store'])->name('admin.news.store');
-        Route::patch('/news/{postId}', [AdminNewsController::class, 'update'])->name('admin.news.update');
-        Route::delete('/news/{postId}', [AdminNewsController::class, 'destroy'])->name('admin.news.delete');
-        Route::get('/api/search', [AdminSearchController::class, 'index'])->name('admin.search.index');
-
-        // users route
-        Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-        Route::get('/users/{userId}', [AdminUserController::class, 'show'])->name('admin.users.show');
-        Route::put('users/{userId}', [AdminUserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/users/{userId}', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
-
-        // currency route
-        Route::get('currency', [AdminCurrencyController::class, 'index'])->name('admin.currency.index');
-        Route::post('currency', [AdminCurrencyController::class, 'update'])->name('admin.currency.update');
-
-        Route::put('/approve/{user}', [AdminApproveUserController::class, 'index'])->name('admin.approve.index');
-    });
-
-    require __DIR__ . '/auth.php';
-
-    Route::middleware('auth')->group(function (): void {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
-});
+Route::fallback($spa);

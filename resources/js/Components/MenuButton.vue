@@ -1,10 +1,10 @@
 <template>
-    <inertia-link
+    <spa-link
         :href="`${href}`"
         :class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center dark:bg-green-600  ${attributes}`"
     >
         <slot />
-    </inertia-link>
+    </spa-link>
 </template>
 
 <script>

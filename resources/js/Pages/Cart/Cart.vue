@@ -44,7 +44,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { useCartStore } from "@/Store/cartStore.js";
+import { useCartStore } from "@/Store/cartStore";
 import CartItem from "./CartItem.vue";
 import CartOrder from "./CartOrder.vue";
 import Layout from "@/Shared/UserLayout.vue";

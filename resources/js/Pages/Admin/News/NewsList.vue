@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти новость`"
-                            :link="`/admin/resource/api/search?category=news&searchQ`"
+                            :link="`/api/v1/admin/search?category=news&searchQ`"
                             @setData="searchData"
                         />
                         <button
@@ -59,7 +59,7 @@ import Search from "@/Pages/Admin/Search.vue";
 import NewsItem from "@/Pages/Admin/News/NewsItem.vue";
 import NewsAddForm from "@/Shared/Forms/NewsAddForm.vue";
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const props = defineProps({
     news: {

@@ -25,7 +25,7 @@ class SendAdminNewUserNotification implements ShouldQueue
     public function __construct(User $user, ?string $adminEmail = null)
     {
         $this->user = $user;
-        $this->adminEmail = $adminEmail ?? config('mail.notification_mail');
+        $this->adminEmail = $adminEmail ?? config('mail.notification_mail') ?? config('mail.from.address', 'hello@example.com');
     }
 
     public function handle(): void

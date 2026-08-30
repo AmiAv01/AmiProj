@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 
 test('login screen can be rendered', function (): void {
     $this->withoutExceptionHandling();
@@ -11,40 +10,35 @@ test('login screen can be rendered', function (): void {
 });
 
 test('users can authenticate using the login screen', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => true,
     ]);
-    dump($user->toArray());
-    $response = $this->post('/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertOk()->assertJsonPath('data.id', $user->id);
 });
 
 test('users can`t authenticate using the login screen when approved field is false', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => false,
     ]);
-    dump($user->toArray());
-    $response = $this->post('/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
     $this->assertGuest();
-
+    $response->assertUnprocessable();
 });
 
 test('users can not authenticate with invalid password', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
-    $this->post('/login', [
+    $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);
@@ -53,11 +47,10 @@ test('users can not authenticate with invalid password', function (): void {
 });
 
 test('users can logout', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/logout');
+    $response = $this->actingAs($user)->postJson('/api/v1/auth/logout');
 
     $this->assertGuest();
-    $response->assertRedirect('/');
+    $response->assertOk();
 });

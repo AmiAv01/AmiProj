@@ -50,7 +50,7 @@
 
 <script setup>
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const props = defineProps({
     isShow: {

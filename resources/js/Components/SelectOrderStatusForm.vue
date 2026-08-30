@@ -29,7 +29,7 @@ import {onMounted, ref} from "vue";
         if (!selectedValue){
             return ''
         }
-        axios.put(`/admin/resource/orders/${props.orderId}`, {status: selectedValue.value})
+        axios.put(`/api/v1/admin/orders/${props.orderId}`, {status: selectedValue.value})
             .then(res => console.log(res.data))
             .catch(err => console.error(err))
     }

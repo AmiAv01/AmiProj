@@ -68,13 +68,13 @@ function showModal() {
 }
 
 function deleteUser(id){
-    axios.delete(`/admin/resource/users/${id}`)
+    axios.delete(`/api/v1/admin/users/${id}`)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
 }
 
 function approveUser(id){
-    axios.put(`/admin/resource/approve/${id}`)
+    axios.put(`/api/v1/admin/users/${id}/approve`)
         .then(res => {
             console.log(res.data);
             window.location.reload();

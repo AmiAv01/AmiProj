@@ -80,13 +80,13 @@
                                 +
                             </button>
                         </div>
-                        <inertia-link
+                        <spa-link
                             href="/cart"
                             class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-2 py-1 rounded transition-colors"
                             title="Перейти в корзину"
                         >
                             В корзине
-                        </inertia-link>
+                        </spa-link>
                     </div>
 
                     <!-- Если товара нет в корзине -->
@@ -149,7 +149,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import axios from "axios";
-import { useCartStore } from "@/Store/cartStore.js";
+import { useCartStore } from "@/Store/cartStore";
 
 const props = defineProps({
     details: {
@@ -237,18 +237,18 @@ const cancelDelete = () => {
 
 const addDetailItemToCart = (productId) => {
     axios
-        .post("/cart", {
+        .post("/api/v1/cart", {
             id: productId,
             quantity: 1,
         })
         .then((res) => {
-            if (res.data && res.data.newCartCount !== undefined) {
-                store.setCartCount(res.data.newCartCount);
+            if (res.data?.data?.cartCount !== undefined) {
+                store.setCartCount(res.data.data.cartCount);
             } else {
                 store.incCartCount();
             }
-            if (res.data && res.data.items) {
-                store.setDetails(res.data.items);
+            if (res.data?.data?.items) {
+                store.setDetails(res.data.data.items);
             }
             emit('itemAddedToCart');
         })

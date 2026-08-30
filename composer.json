@@ -9,7 +9,6 @@
         "ext-bcmath": "*",
         "ext-intl": "*",
         "guzzlehttp/guzzle": "^7.9.2",
-        "inertiajs/inertia-laravel": "^v2.0.0",
         "laravel/framework": "^11.38.0",
         "laravel/sanctum": "^v4.0.7",
         "laravel/tinker": "^v2.10.0",

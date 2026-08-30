@@ -17,12 +17,12 @@
                             <p class="font-bold text-xl px-4">Категории</p>
                         </div>
                         <div v-for="category in categoryList" class="overflow-hidden border-t-2 p-4 border-gray-300">
-                            <inertia-link
+                            <spa-link
                                 :href="`${otherParts.get(`${category}`)}`"
                                 class=" text-2xl p-8 border-b-gray-300"
                             >
                                 {{ category }}
-                            </inertia-link>
+                            </spa-link>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     </div>
 
                 </div>
-                <inertia-link
+                <spa-link
                     :href="`/catalog/search?searchQ=${searchQuery}`"
                     @click.prevent="handleSearch"
                     class="absolute flex items-center top-0 end-0 p-2.5 h-full font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
@@ -66,7 +66,7 @@
                         />
                     </svg>
                     <span class="pl-2 text-md">Найти</span>
-                </inertia-link>
+                </spa-link>
             </div>
             <div class="flex space-x-2 mt-2">
                 <svg
@@ -94,8 +94,8 @@ import { ref, computed } from 'vue';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { editDetailTitle } from '@/Services/TitleService';
-import { otherParts } from '@/Store/index.js';
-import { router } from '@inertiajs/vue3';
+import { otherParts } from '@/Store/index';
+import { router } from '@/spa/bridge';
 
 const props = defineProps({
     link: {
@@ -121,9 +121,8 @@ const getSearchingDetails = debounce(() => {
         axios
             .get(`${props.link}=${searchQuery.value}`)
             .then((res) => {
-                console.log(res.data.details);
-                details.value = res.data.details;
-                search.value = res.data.search;
+                details.value = res.data.data.details;
+                search.value = res.data.data.search;
             })
             .catch((err) => console.log(err));
     }
@@ -142,7 +141,6 @@ async function handleSearch(event){
     }
 };
 </script>
-
 
 
 

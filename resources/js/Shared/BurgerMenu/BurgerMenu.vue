@@ -1,7 +1,7 @@
 <script setup>
     import {ref} from "vue";
-    import {generatorParts, starterParts} from "@/Store/index.js";
-    import {subCategories, menuItems} from "@/Store/index.js";
+    import {generatorParts, starterParts} from "@/Store/index";
+    import {subCategories, menuItems} from "@/Store/index";
     import BurgerMenuItem from "@/Shared/BurgerMenu/BurgerMenuItem.vue";
 
     const props = defineProps({

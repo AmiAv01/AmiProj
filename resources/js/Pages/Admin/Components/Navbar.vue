@@ -60,18 +60,18 @@
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
-                            <inertia-link
+                            <spa-link
                                 :href="`${routes.get('profile.edit')}`"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >Настройки</inertia-link
+                            >Настройки</spa-link
                             >
                         </li>
                         <li>
-                            <inertia-link
+                            <spa-link
                                 :href="`${routes.get('logout')}`"
                                 method="post"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >Выход</inertia-link
+                            >Выход</spa-link
                             >
                         </li>
                     </ul>
@@ -93,10 +93,10 @@
 </template>
 
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link} from '@/spa/bridge';
 import {initFlowbite} from "flowbite";
 import {onMounted, ref} from "vue";
-import {routes} from "@/Store/routes.js";
+import {routes} from "@/Store/routes";
 import AdminBurgerMenu from "@/Pages/Admin/Components/AdminBurgerMenu.vue";
 
 const isMenuOpen = ref(true);

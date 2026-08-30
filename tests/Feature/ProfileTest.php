@@ -3,30 +3,26 @@
 use App\Models\User;
 
 test('profile page is displayed', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->get('/profile');
+        ->getJson('/api/v1/profile');
 
     $response->assertOk();
 });
 
 test('profile information can be updated', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->patchJson('/api/v1/profile', [
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
     $user->refresh();
 
@@ -36,36 +32,30 @@ test('profile information can be updated', function (): void {
 });
 
 test('email verification status is unchanged when the email address is unchanged', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->patchJson('/api/v1/profile', [
             'name' => 'Test User',
             'email' => $user->email,
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
     $this->assertNotNull($user->refresh()->email_verified_at);
 });
 
 test('user can delete their account', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->delete('/profile', [
+        ->deleteJson('/api/v1/profile', [
             'password' => 'password',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/');
+    $response->assertNoContent();
 
     $this->assertGuest();
     $this->assertNull($user->fresh());
@@ -76,14 +66,11 @@ test('correct password must be provided to delete account', function (): void {
 
     $response = $this
         ->actingAs($user)
-        ->from('/profile')
-        ->delete('/profile', [
+        ->deleteJson('/api/v1/profile', [
             'password' => 'wrong-password',
         ]);
 
-    $response
-        ->assertSessionHasErrors('password')
-        ->assertRedirect('/profile');
+    $response->assertUnprocessable()->assertJsonValidationErrors('password');
 
     $this->assertNotNull($user->fresh());
 });

@@ -73,7 +73,7 @@
 <script setup>
 import NewsEditForm from "@/Shared/Forms/NewsEditForm.vue";
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const isShow = ref(false);
 const store = useNewsStore();

@@ -68,18 +68,18 @@
         </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
             <li>
-                <inertia-link
+                <spa-link
                     :href="`${routes.get('profile.edit')}`"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >Настройки</inertia-link
+                >Настройки</spa-link
                 >
             </li>
             <li>
-                <inertia-link
+                <spa-link
                     :href="`${routes.get('logout')}`"
                     method="post"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >Выход</inertia-link
+                >Выход</spa-link
                 >
             </li>
         </ul>
@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-    import {routes} from "@/Store/routes.js";
+    import {routes} from "@/Store/routes";
     import { useCartStore } from "@/Store/cartStore";
 
     const cartStore = useCartStore();

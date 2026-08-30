@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { useCartStore} from "@/Store/cartStore.js";
+import { useCartStore} from "@/Store/cartStore";
 import { onUnmounted, ref, watch } from "vue";
 import debounce from "lodash.debounce";
 

@@ -4,7 +4,10 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm } from '@/spa/bridge';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
     email: {
@@ -25,7 +28,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("password.store"), {
+    form.post('/reset-password', {
+        onSuccess: () => router.push('/login'),
         onFinish: () => form.reset("password", "password_confirmation"),
     });
 };

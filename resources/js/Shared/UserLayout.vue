@@ -10,8 +10,8 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-import { useCartStore } from "@/Store/cartStore.js";
+import { usePage } from '@/spa/bridge';
+import { useCartStore } from "@/Store/cartStore";
 import axios from 'axios';
 import Header from "./Header/Header.vue";
 import Footer from "./Footer.vue";
@@ -28,11 +28,11 @@ const store = useCartStore();
 
 const fetchCartData = () => {
     if (page.props.auth.user) {
-        axios.get('/cart-data')
+        axios.get('/api/v1/cart')
             .then(res => {
                 if (res.data) {
-                    store.setDetails(res.data.items || []);
-                    store.setCartCount(res.data.cartCount || 0);
+                    store.setDetails(res.data.data.items || []);
+                    store.setCartCount(res.data.data.cartCount || 0);
                 }
             })
             .catch(err => {

@@ -3,13 +3,13 @@
         class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100"
     >
         <div>
-            <inertia-link href="/">
+            <spa-link href="/">
                 <img
                     src="/logo2.png"
                     class="h-8"
                     alt="AmiAvto Logo"
                 />
-            </inertia-link>
+            </spa-link>
         </div>
 
         <div

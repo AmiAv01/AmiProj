@@ -6,7 +6,7 @@ import viteCompression from 'vite-plugin-compression';
 export default defineConfig({
   plugins: [
     laravel({
-      input: 'resources/js/app.js',
+      input: 'resources/js/spa.ts',
       buildDirectory: 'build',
       refresh: [
         'resources/views/**/*.blade.php',

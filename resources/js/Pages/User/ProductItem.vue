@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-    import {editDetailTitle} from "@/Services/TitleService.js";
+    import {editDetailTitle} from "@/Services/TitleService";
 
     const props = defineProps({
         detail: Object,

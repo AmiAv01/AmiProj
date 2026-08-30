@@ -72,7 +72,7 @@
 
 <script setup>
 import { editDetailTitle } from "@/Services/TitleService";
-import { useCartStore} from "@/Store/cartStore.js";
+import { useCartStore} from "@/Store/cartStore";
 import InputQuantity from "@/Components/InputQuantity.vue";
 
 const store = useCartStore();
