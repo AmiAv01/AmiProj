@@ -1,20 +1,21 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\PublicContentController;
-use App\Http\Controllers\Api\V1\AccountController;
-use App\Http\Controllers\Api\V1\AdminController as ApiAdminController;
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\CartController as ApiCartController;
-use App\Http\Controllers\Api\V1\OrderController as ApiOrderController;
-use App\Http\Controllers\Api\V1\RecoveryController;
 use App\Http\Controllers\Admin\AdminApproveUserController;
 use App\Http\Controllers\Admin\AdminCurrencyController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminSearchController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Api\V1\AccountController;
+use App\Http\Controllers\Api\V1\AdminController as ApiAdminController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CartController as ApiCartController;
+use App\Http\Controllers\Api\V1\OrderController as ApiOrderController;
+use App\Http\Controllers\Api\V1\PublicContentController;
+use App\Http\Controllers\Api\V1\RecoveryController;
+use App\Http\Controllers\HealthController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,26 +93,5 @@ Route::prefix('v1')->group(function (): void {
     });
 });
 
-// Health check endpoints - no authentication required
-Route::get('/health/live', function () {
-    return response()->json([
-        'status' => 'ok',
-        'timestamp' => now()->toIso8601String(),
-    ]);
-})->withoutMiddleware(['api']);
-
-Route::get('/health/ready', function () {
-    $checks = [
-        'database' => checkDatabase(),
-        'cache' => checkCache(),
-        'queue' => checkQueue(),
-    ];
-
-    $ready = collect($checks)->every(fn ($check) => $check === true);
-
-    return response()->json([
-        'status' => $ready ? 'ready' : 'not_ready',
-        'timestamp' => now()->toIso8601String(),
-        'checks' => $checks,
-    ], $ready ? 200 : 503);
-})->withoutMiddleware(['api']);
+Route::get('/health/live', [HealthController::class, 'live'])->withoutMiddleware(['api']);
+Route::get('/health/ready', [HealthController::class, 'ready'])->withoutMiddleware(['api']);

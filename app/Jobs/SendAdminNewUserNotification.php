@@ -9,7 +9,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class SendAdminNewUserNotification implements ShouldQueue
 {
@@ -17,6 +19,15 @@ class SendAdminNewUserNotification implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
+    public int $tries = 3;
+
+    public int $timeout = 45;
+
+    public bool $failOnTimeout = true;
+
+    /** @var array<int, int> */
+    public array $backoff = [10, 30, 60];
 
     protected User $user;
 
@@ -31,5 +42,13 @@ class SendAdminNewUserNotification implements ShouldQueue
     public function handle(): void
     {
         Mail::to($this->adminEmail)->send(new UserRegistered($this->user));
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        Log::error('New user notification job failed.', [
+            'user_id' => $this->user->getKey(),
+            'exception' => $exception::class,
+        ]);
     }
 }

@@ -8,5 +8,3 @@ parameters:
         - database
         - routes
     level: 5
-    excludePaths:
-        - %currentWorkingDirectory%/config/sentry.php

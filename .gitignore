@@ -19,6 +19,8 @@ yarn-error.log
 /.idea
 /.vscode
 /build
+/backups/
+/app.zip
 .DS_Store
 .phpunit*
 /tests/Browser

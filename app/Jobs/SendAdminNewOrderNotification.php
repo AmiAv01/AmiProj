@@ -8,10 +8,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class SendAdminNewOrderNotification implements ShouldQueue
 {
     use Queueable;
+
+    public int $tries = 3;
+
+    public int $timeout = 45;
+
+    public bool $failOnTimeout = true;
+
+    /** @var array<int, int> */
+    public array $backoff = [10, 30, 60];
 
     protected Order $order;
 
@@ -41,5 +51,13 @@ class SendAdminNewOrderNotification implements ShouldQueue
         }
 
         Mail::to($emails)->send(new OrderCreated($this->order));
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        Log::error('New order notification job failed.', [
+            'order_id' => $this->order->getKey(),
+            'exception' => $exception::class,
+        ]);
     }
 }
