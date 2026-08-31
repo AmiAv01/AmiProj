@@ -90,3 +90,29 @@ test('users can logout', function (): void {
     $this->assertGuest();
     $response->assertOk();
 });
+
+test('a revoked approval blocks an existing authenticated session', function (): void {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $user->forceFill(['approved' => false])->save();
+
+    $this->getJson('/api/v1/auth/user')
+        ->assertForbidden()
+        ->assertJsonPath('message', 'Ваша учётная запись не одобрена.');
+
+    $this->assertGuest();
+});
+
+test('login without a trusted SPA origin fails cleanly', function (): void {
+    $user = User::factory()->create();
+
+    $this->withHeader('Origin', '')
+        ->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ])
+        ->assertStatus(419);
+
+    $this->assertGuest();
+});

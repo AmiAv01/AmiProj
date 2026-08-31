@@ -55,6 +55,17 @@ it('returns missing admin users as 404 instead of decrypting an empty formula', 
         ->assertNotFound();
 });
 
+it('does not let an administrator delete itself through the administration API', function (): void {
+    $admin = User::factory()->create(['isAdmin' => true]);
+
+    $this->actingAs($admin)
+        ->deleteJson("/api/v1/admin/users/{$admin->id}")
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('user');
+
+    $this->assertNotNull($admin->fresh());
+});
+
 it('records the admin who changes an order to every supported status', function (): void {
     $customer = User::factory()->create(['approved' => true]);
     $admin = User::factory()->create(['approved' => true, 'isAdmin' => true]);

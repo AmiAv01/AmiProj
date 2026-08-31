@@ -100,3 +100,14 @@ test('correct password must be provided to delete account', function (): void {
 
     $this->assertNotNull($user->fresh());
 });
+
+test('the last administrator cannot delete their own account', function (): void {
+    $admin = User::factory()->create(['isAdmin' => true]);
+
+    $this->actingAs($admin)
+        ->deleteJson('/api/v1/profile', ['password' => 'password'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('user');
+
+    $this->assertNotNull($admin->fresh());
+});

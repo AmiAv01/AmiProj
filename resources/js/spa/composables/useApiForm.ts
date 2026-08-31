@@ -17,9 +17,9 @@ export function useApiForm<T extends Record<string, unknown>>(initial: T) {
       if (axios.isAxiosError<ValidationErrorEnvelope>(reason) && reason.response?.status === 422) {
         errors.value = reason.response.data.errors;
       } else if (axios.isAxiosError<{ message?: string }>(reason)) {
-        error.value = reason.response?.data.message ?? 'The request could not be completed.';
+        error.value = reason.response?.data.message ?? 'Не удалось выполнить запрос.';
       } else {
-        error.value = reason instanceof Error ? reason.message : 'The request could not be completed.';
+        error.value = reason instanceof Error ? reason.message : 'Не удалось выполнить запрос.';
       }
       return false;
     } finally { processing.value = false; }

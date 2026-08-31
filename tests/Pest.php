@@ -30,7 +30,10 @@ uses(RefreshDatabase::class)->in('Feature');
 
 pest()->extend()
     ->in('Feature')
-    ->beforeEach(fn () => $this->withoutVite());
+    ->beforeEach(function (): void {
+        $this->withoutVite();
+        $this->withHeader('Origin', config('app.url'));
+    });
 
 /*
 |--------------------------------------------------------------------------

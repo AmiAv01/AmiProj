@@ -21,6 +21,17 @@ test('reset password link can be requested', function (): void {
     Notification::assertSentTo($user, ResetPassword::class);
 });
 
+test('password reset request does not reveal whether an email exists', function (): void {
+    $user = User::factory()->create();
+
+    $existing = $this->postJson('/api/v1/auth/forgot-password', ['email' => $user->email]);
+    $missing = $this->postJson('/api/v1/auth/forgot-password', ['email' => 'missing@example.com']);
+
+    $existing->assertOk();
+    $missing->assertOk();
+    expect($missing->json('message'))->toBe($existing->json('message'));
+});
+
 test('reset password screen can be rendered', function (): void {
     Notification::fake();
 

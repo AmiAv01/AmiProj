@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 final class UserService
 {
@@ -54,6 +55,19 @@ final class UserService
     {
         return DB::transaction(function () use ($id): bool {
             $user = User::query()->lockForUpdate()->find($id) ?? throw new UserNotFoundException($id);
+
+            if ($user->isAdministrator()) {
+                $administratorIds = User::query()
+                    ->where('isAdmin', true)
+                    ->lockForUpdate()
+                    ->pluck('id');
+
+                if ($administratorIds->count() <= 1) {
+                    throw ValidationException::withMessages([
+                        'user' => [__('The last administrator account cannot be deleted.')],
+                    ]);
+                }
+            }
 
             $cart = Cart::query()->where('user_id', $id)->lockForUpdate()->first();
             if ($cart) {

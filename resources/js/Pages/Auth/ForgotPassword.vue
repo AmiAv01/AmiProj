@@ -25,20 +25,19 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
+        <Head title="Восстановление пароля" />
 
         <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
+            Забыли пароль? Укажите адрес электронной почты, и мы отправим ссылку для создания нового пароля.
         </div>
 
         <div v-if="status || sent" class="mb-4 font-medium text-sm text-green-600">
-            {{ status || 'Password reset link sent.' }}
+            {{ status || 'Ссылка для восстановления пароля отправлена.' }}
         </div>
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Электронная почта" />
 
                 <TextInput
                     id="email"
@@ -55,7 +54,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
+                    Отправить ссылку
                 </PrimaryButton>
             </div>
         </form>

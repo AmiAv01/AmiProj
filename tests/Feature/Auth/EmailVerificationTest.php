@@ -50,3 +50,13 @@ test('email is not verified with invalid hash', function (): void {
 
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
+
+test('unverified users can manage verification but cannot use protected business APIs', function (): void {
+    $user = User::factory()->unverified()->create();
+
+    $this->actingAs($user)
+        ->getJson('/api/v1/profile')
+        ->assertOk();
+
+    $this->getJson('/api/v1/cart')->assertForbidden();
+});

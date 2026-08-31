@@ -28,7 +28,7 @@ Route::get('/reset-password/{token}', $spa)->name('password.reset');
 Route::get('/confirm-password', $spa)->name('password.confirm');
 Route::get('/verify-email', $spa)->name('verification.notice');
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['auth', 'signed', 'throttle:6,1'])
+    ->middleware(['auth', 'approved', 'signed', 'throttle:6,1'])
     ->name('verification.verify');
 Route::get('/email/verification-notification', $spa)->name('verification.send');
 Route::get('/logout', $spa)->name('logout');

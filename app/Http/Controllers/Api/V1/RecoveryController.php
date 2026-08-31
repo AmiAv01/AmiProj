@@ -18,12 +18,10 @@ class RecoveryController extends Controller
     public function forgotPassword(Request $request): JsonResponse
     {
         $request->validate(['email' => ['required', 'email']]);
-        $status = Password::sendResetLink($request->only('email'));
-        if ($status !== Password::RESET_LINK_SENT) {
-            throw ValidationException::withMessages(['email' => [trans($status)]]);
-        }
+        Password::sendResetLink($request->only('email'));
 
-        return response()->json(['message' => trans($status)]);
+        // Do not reveal whether the supplied email address has an account.
+        return response()->json(['message' => trans(Password::RESET_LINK_SENT)]);
     }
 
     public function resetPassword(Request $request): JsonResponse

@@ -25,11 +25,11 @@ const routes: RouteRecordRaw[] = [
   { path: '/verify-email', component: () => import('@/Pages/Auth/VerifyEmail.vue'), meta: { auth: true } },
   { path: '/confirm-password', component: () => import('@/Pages/Auth/ConfirmPassword.vue'), meta: { auth: true } },
   { path: '/profile', component: ApiPage, meta: { endpoint: '/profile', page: 'Profile/Edit', auth: true } },
-  { path: '/dashboard', component: () => import('@/Pages/Dashboard.vue'), meta: { auth: true } },
+  { path: '/dashboard', component: () => import('@/Pages/Dashboard.vue'), meta: { auth: true, verified: true } },
   { path: '/admin/resource/login', component: () => import('./views/LoginView.vue'), props: { admin: true }, meta: { guest: true } },
-  { path: '/cart', component: ApiPage, meta: { endpoint: '/cart', page: 'Cart/Cart', auth: true } },
-  { path: '/order', component: ApiPage, meta: { endpoint: '/orders', page: 'Order/OrderList', auth: true } },
-  { path: '/order/:id', component: ApiPage, meta: { endpoint: '/orders/:id', page: 'Order/OrderCard', auth: true } },
+  { path: '/cart', component: ApiPage, meta: { endpoint: '/cart', page: 'Cart/Cart', auth: true, verified: true } },
+  { path: '/order', component: ApiPage, meta: { endpoint: '/orders', page: 'Order/OrderList', auth: true, verified: true } },
+  { path: '/order/:id', component: ApiPage, meta: { endpoint: '/orders/:id', page: 'Order/OrderCard', auth: true, verified: true } },
   { path: '/admin/resource/dashboard', component: ApiPage, meta: { endpoint: '/admin/dashboard', page: 'Admin/Dashboard', auth: true, admin: true } },
   { path: '/admin/resource/details', component: ApiPage, meta: { endpoint: '/admin/details', page: 'Admin/Detail/DetailList', auth: true, admin: true } },
   { path: '/admin/resource/news', component: ApiPage, meta: { endpoint: '/admin/news', page: 'Admin/News/NewsList', auth: true, admin: true } },
@@ -51,6 +51,7 @@ router.beforeEach(async to => {
   await auth.load();
   setPageProps({ auth: { user: auth.user } });
   if (to.meta.auth && !auth.authenticated) return { path: '/login', query: { redirect: to.fullPath } };
+  if ((to.meta.verified || to.meta.admin) && auth.user?.email_verified_at === null) return '/verify-email';
   if (to.meta.admin && !auth.admin) return '/';
   if (to.meta.guest && auth.authenticated) return '/';
 });

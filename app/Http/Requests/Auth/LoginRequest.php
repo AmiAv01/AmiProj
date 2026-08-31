@@ -43,6 +43,8 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(array $additionalCredentials = []): void
     {
+        abort_unless($this->hasSession(), 419, __('CSRF token mismatch.'));
+
         $this->ensureIsNotRateLimited();
 
         $credentials = array_merge($this->only('email', 'password'), $additionalCredentials);
