@@ -6,7 +6,7 @@
 </head>
 <body style="margin:0;padding:24px;background:#f5f7fa;color:#262626;font-family:Arial,Helvetica,sans-serif;">
 <div style="max-width:760px;margin:0 auto;background:#ffffff;padding:32px;border-radius:8px;">
-    <p style="margin:0 0 8px;color:#666666;font-size:14px;">Новый заказ №{{ $order->id }}</p>
+    <p style="margin:0 0 8px;color:#666666;font-size:14px;">Новый заказ №{{ $order->order_number }}</p>
     <h1 style="margin:0 0 20px;font-size:24px;line-height:1.3;">{{ $order->user->name }}</h1>
 
     <p style="margin:0 0 6px;"><strong>Email:</strong> {{ $order->user->email }}</p>

@@ -7,7 +7,7 @@ The legacy DBF import is integrated into Laravel and runs every 15 minutes.
 Set these values in the runtime environment:
 
 ```dotenv
-DBF_HOST_PATH=./storage/app/dbf
+DBF_HOST_PATH=./DbfParsers/amiproject
 DBF_SOURCE_PATH=/data/dbf
 DBF_ARCHIVE_PATH=
 DBF_ENCRYPTION_KEY=replace-with-the-legacy-key

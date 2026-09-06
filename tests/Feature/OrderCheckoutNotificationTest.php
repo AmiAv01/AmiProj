@@ -69,10 +69,8 @@ it('sends a detailed order email to the configured notification recipients', fun
         'created_at' => now(),
         'updated_at' => now(),
     ]);
-    DB::table('currency')->insert([
-        'code' => 'EUR',
+    DB::table('currency')->where('code', 'EUR')->update([
         'value' => Crypt::encrypt('3.50'),
-        'created_at' => now(),
         'updated_at' => now(),
     ]);
     $order = Order::create([

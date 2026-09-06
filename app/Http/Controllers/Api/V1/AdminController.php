@@ -58,11 +58,13 @@ class AdminController extends Controller
         return response()->json(['data' => ['orders' => $orders]]);
     }
 
-    public function order(int $id): JsonResponse
+    public function order(string $id): JsonResponse
     {
+        $order = $this->orders->getByIdentifier($id);
+
         return response()->json(['data' => [
-            'order' => $this->orders->getById($id),
-            'details' => $this->orders->getOrderItems($id),
+            'order' => $order,
+            'details' => $this->orders->getOrderItems($order->id),
         ]]);
     }
 

@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $event = $schedule->command('dbf:sync')
             ->everyFifteenMinutes()
-            ->withoutOverlapping(30);
+            ->withoutOverlapping(180);
 
         if (config('dbf.cluster_scheduler')) {
             $event->onOneServer();
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

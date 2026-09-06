@@ -12,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -47,7 +49,14 @@ class AuthController extends Controller
             'phone_number' => $request->validated('phoneNumber'),
             'password' => Hash::make($request->validated('password')),
         ]);
-        event(new Registered($user));
+        try {
+            event(new Registered($user));
+        } catch (Throwable $exception) {
+            Log::error('Registration notifications could not be queued.', [
+                'user_id' => $user->getKey(),
+                'exception' => $exception::class,
+            ]);
+        }
 
         return AuthUserResource::make($user)
             ->additional(['message' => __('Registration submitted for approval.')])

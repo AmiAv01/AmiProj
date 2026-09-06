@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\OrderStatus;
+use App\Models\News;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\CatalogMetadataService;
@@ -64,6 +65,28 @@ it('does not let an administrator delete itself through the administration API',
         ->assertJsonValidationErrors('user');
 
     $this->assertNotNull($admin->fresh());
+});
+
+it('returns the newly created news item on the first admin page', function (): void {
+    $admin = User::factory()->create(['approved' => true, 'isAdmin' => true]);
+
+    foreach (range(1, 12) as $index) {
+        News::create([
+            'title' => "Existing news {$index}",
+            'description' => "Existing description {$index}",
+            'date' => now()->subDay(),
+            'author' => $admin->id,
+        ]);
+    }
+
+    $this->actingAs($admin)
+        ->postJson('/api/v1/admin/news', [
+            'title' => 'Newly created news',
+            'description' => 'Newly created description',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.items.data.0.title', 'Newly created news')
+        ->assertJsonCount(12, 'data.items.data');
 });
 
 it('records the admin who changes an order to every supported status', function (): void {

@@ -1,7 +1,4 @@
 <template>
-    <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Заказ успешно оформлен`">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-    </push>
     <div
         class="bg-gray-50 w-full rounded-2xl py-12 px-6 sm:px-8 shadow-sm border border-gray-100"
     >
@@ -60,10 +57,10 @@ import {useCartStore} from "@/Store/cartStore";
 import { formatMoney } from "@/Services/PriceFormatter";
 
 const store = useCartStore();
-const isShow = ref(false);
 const comment = ref('');
 const submitting = ref(false);
 const submitError = ref('');
+const emit = defineEmits(['order-notification']);
 
 const props = defineProps({
     count: {
@@ -88,19 +85,16 @@ async function makeOrder() {
         await axios.post("/api/v1/orders", {
             comment: comment.value || null
         });
-        isShow.value = true;
+        emit('order-notification', { type: 'success', message: 'Заказ успешно оформлен' });
         comment.value = '';
         store.setDetails([]);
         store.setCartCount(0);
     } catch (err) {
         submitError.value = err.response?.data?.message || 'Не удалось оформить заказ. Попробуйте ещё раз.';
+        emit('order-notification', { type: 'error', message: submitError.value });
     } finally {
         submitting.value = false;
     }
-}
-
-function hideModal(param){
-    isShow.value = param;
 }
 
 </script>

@@ -46,7 +46,7 @@ class SendAdminNewOrderNotification implements ShouldQueue
         }
 
         if (empty($emails)) {
-            Log::warning('SendAdminNewOrderNotification: no admin recipients configured for new order '.$this->order->id);
+            Log::warning('SendAdminNewOrderNotification: no admin recipients configured for new order '.$this->order->order_number);
 
             return;
         }

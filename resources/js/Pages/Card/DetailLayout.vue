@@ -176,7 +176,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['itemAddedToCart']);
+const emit = defineEmits(['cart-notification']);
 
 const store = useCartStore();
 const showDetails = ref(false);
@@ -272,8 +272,13 @@ const addDetailItemToCart = (productId) => {
             if (res.data?.data?.items) {
                 store.setDetails(res.data.data.items);
             }
-            emit('itemAddedToCart');
+            emit('cart-notification', { type: 'success', message: 'Добавлено в корзину' });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            emit('cart-notification', {
+                type: 'error',
+                message: err.response?.data?.message || 'Не удалось добавить товар в корзину.',
+            });
+        });
 };
 </script>

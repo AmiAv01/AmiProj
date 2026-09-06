@@ -77,7 +77,8 @@ test('users can not authenticate with invalid password', function (): void {
     $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'wrong-password',
-    ]);
+    ])->assertUnprocessable()
+        ->assertJsonPath('errors.email.0', 'Неверный адрес электронной почты или пароль.');
 
     $this->assertGuest();
 });

@@ -8,26 +8,29 @@ export interface NewsPost {
     [key: string]: unknown;
 }
 
-interface NewsPayload { data: { items: NewsPost[] } }
+interface NewsPage {
+    data: NewsPost[];
+    links: unknown[];
+    [key: string]: unknown;
+}
+
+interface NewsPayload { data: { items: NewsPage } }
 
 export const useNewsStore = defineStore('news', {
-    state: () => ({ newsData: [] as NewsPost[] }),
+    state: () => ({ newsData: { data: [], links: [] } as NewsPage }),
     actions: {
-        setNews(items: NewsPost[]){
+        setNews(items: NewsPage){
             this.newsData = items;
 
         },
-        addPost(title: string, description: string){
-            axios
+        async addPost(title: string, description: string){
+            const res = await axios
                 .post<NewsPayload>(`/api/v1/admin/news`, {
                     title,
                     description,
-                })
-                .then((res) => {
-                    console.log(res.data)
-                    this.setNews(res.data.data.items)
-                })
-                .catch((err) => console.log(err));
+                });
+
+            this.setNews(res.data.data.items);
         },
         deletePost(id: number){
             axios.delete<NewsPayload>(`/api/v1/admin/news/${id}`)

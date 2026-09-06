@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\NewsPostDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsFormRequest;
-use App\Http\Resources\NewsPostResource;
 use App\Services\NewsService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -18,20 +17,20 @@ class AdminNewsController extends Controller
     {
         $this->newsService->store(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), auth()->id());
 
-        return response()->json(['data' => ['items' => NewsPostResource::collection($this->newsService->getAll(12))]]);
+        return response()->json(['data' => ['items' => $this->newsService->getAll(12)]]);
     }
 
     public function update(NewsFormRequest $request, int $postId): JsonResponse
     {
         $this->newsService->update(new NewsPostDTO($request->validated('title'), $request->validated('description'), Carbon::now()), $postId);
 
-        return response()->json(['data' => ['items' => NewsPostResource::collection($this->newsService->getAll(12))]]);
+        return response()->json(['data' => ['items' => $this->newsService->getAll(12)]]);
     }
 
     public function destroy(int $postId): JsonResponse
     {
         $this->newsService->destroy($postId);
 
-        return response()->json(['data' => ['items' => NewsPostResource::collection($this->newsService->getAll(12))]]);
+        return response()->json(['data' => ['items' => $this->newsService->getAll(12)]]);
     }
 }

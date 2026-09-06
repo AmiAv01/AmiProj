@@ -23,13 +23,13 @@ final class OrderService
     public function getAll(int $perPage): LengthAwarePaginator
     {
         return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
     }
 
     public function getByUserId(int $userId): Collection
     {
         return Order::where('created_by', '=', $userId)->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.created_at', 'order.status', 'order.total_price', 'user.name', 'user.email'])->get();
+            ->select(['order.id', 'order.order_number', 'order.created_at', 'order.status', 'order.total_price', 'user.name', 'user.email'])->get();
     }
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
@@ -115,26 +115,40 @@ final class OrderService
         return $order;
     }
 
-    public function getById(int $id): Order
+    public function getByIdentifier(string $identifier): Order
     {
-        $order = Order::where('order.id', '=', $id)->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
+        $order = Order::query()
+            ->where(function ($query) use ($identifier): void {
+                $query->where('order.order_number', strtoupper($identifier));
+                if (ctype_digit($identifier)) {
+                    $query->orWhere('order.id', (int) $identifier);
+                }
+            })
+            ->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+            ->first();
         if (! $order) {
-            throw new OrderNotFoundException($id);
+            throw new OrderNotFoundException($identifier);
         }
 
         return $order;
     }
 
-    public function getByIdForUser(int $id, int $userId): Order
+    public function getByIdentifierForUser(string $identifier, int $userId): Order
     {
-        $order = Order::where('order.id', '=', $id)
+        $order = Order::query()
+            ->where(function ($query) use ($identifier): void {
+                $query->where('order.order_number', strtoupper($identifier));
+                if (ctype_digit($identifier)) {
+                    $query->orWhere('order.id', (int) $identifier);
+                }
+            })
             ->where('order.created_by', '=', $userId)
             ->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
             ->first();
         if (! $order) {
-            throw new OrderNotFoundException($id);
+            throw new OrderNotFoundException($identifier);
         }
 
         return $order;
@@ -149,7 +163,7 @@ final class OrderService
     public function getByStatus(): LengthAwarePaginator
     {
         return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->leftJoin('user', 'order.created_by', '=', 'user.id')
-            ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])
+            ->select(['user.email', 'user.name', 'order.id', 'order.order_number', 'order.total_price', 'order.status', 'order.created_at'])
             ->latest('order.created_at')
             ->paginate(self::DEFAULT_PER_PAGE)
             ->withQueryString();
@@ -160,9 +174,10 @@ final class OrderService
         return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
             ->where(function ($query) use ($search): void {
                 $query->where('name', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%");
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('order.order_number', 'like', '%'.strtoupper($search).'%');
             })
-            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')
+            ->select('user.email', 'user.name', 'order.id', 'order.order_number', 'order.total_price', 'order.status', 'order.created_at')
             ->paginate($perPage)
             ->withQueryString();
     }

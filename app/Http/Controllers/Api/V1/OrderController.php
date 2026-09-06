@@ -34,11 +34,13 @@ class OrderController extends Controller
         return OrderResource::make($order);
     }
 
-    public function show(int $id): JsonResponse
+    public function show(string $id): JsonResponse
     {
+        $order = $this->orders->getByIdentifierForUser($id, auth()->id());
+
         return response()->json(['data' => [
-            'order' => $this->orders->getByIdForUser($id, auth()->id()),
-            'details' => $this->orders->getOrderItems($id),
+            'order' => $order,
+            'details' => $this->orders->getOrderItems($order->id),
         ]]);
     }
 }

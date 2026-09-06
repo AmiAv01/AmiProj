@@ -3,6 +3,7 @@
 namespace App\Services\DbfImport;
 
 use DateTimeInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use org\majkel\dbase\Table;
 use RuntimeException;
@@ -103,7 +104,7 @@ final class DbfImporter
             if ($runId !== null) {
                 DB::table('dbf_import_runs')->where('id', $runId)->update([
                     'status' => 'failed',
-                    'error' => mb_substr($exception->getMessage(), 0, 65000),
+                    'error' => $this->errorMessage($exception),
                     'finished_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -259,6 +260,9 @@ final class DbfImporter
         };
         $update = array_values(array_diff(array_keys($rows[0]), [...$uniqueBy, 'created_at']));
         DB::table($table)->upsert($rows, $uniqueBy, $update);
+        if ($table === 'firm') {
+            Cache::forget('firms.all');
+        }
 
         return count($rows);
     }
@@ -295,13 +299,25 @@ final class DbfImporter
     private function text(mixed $record, string $field, bool $convert = false): string
     {
         $value = trim($this->raw($record, $field));
-        if (! $convert || $value === '') {
+        if ($value === '') {
+            return $value;
+        }
+
+        if (! $convert && mb_check_encoding($value, 'UTF-8')) {
             return $value;
         }
 
         $converted = iconv('CP866', 'UTF-8//IGNORE', $value);
 
         return $converted === false ? $value : trim($converted);
+    }
+
+    private function errorMessage(Throwable $exception): string
+    {
+        $message = iconv('UTF-8', 'UTF-8//IGNORE', $exception->getMessage());
+        $message = $message === false ? 'DBF import failed with an unreadable error message.' : $message;
+
+        return mb_strcut($message, 0, 60000, 'UTF-8');
     }
 
     private function integer(mixed $record, string $field): int

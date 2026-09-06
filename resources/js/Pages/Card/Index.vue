@@ -1,12 +1,7 @@
 <template>
     <layout>
         <!-- Всплывающее уведомление при добавлении в корзину -->
-        <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Добавлено в корзину`">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-        </push>
+        <push v-if="notification.show" :isShow="notification.show" :type="notification.type" :title="notification.message" @hide="hideNotification" />
 
         <section class="py-6 bg-white md:py-10 antialiased">
             <div class="w-full max-w-8xl px-6 mx-auto">
@@ -124,7 +119,7 @@
 
                         <!-- Блок деталировки (для всех пользователей) -->
                         <div class="mt-8 border-t pt-6" v-if="sameDetails && sameDetails.length">
-                            <DetailLayout :details="sameDetails" @itemAddedToCart="isShow = true" />
+                            <DetailLayout :details="sameDetails" @cart-notification="showCartNotification" />
                         </div>
                     </div>
 
@@ -211,7 +206,7 @@ const props = defineProps({
 });
 
 const store = useCartStore();
-const isShow = ref(false);
+const notification = ref({ show: false, type: 'success', message: '' });
 const currentQty = ref(CART_QUANTITY_MIN);
 const showDeleteModal = ref(false);
 const minimumQuantityTitle = `Минимальное количество — ${CART_QUANTITY_MIN}`;
@@ -237,7 +232,7 @@ const addInCart = () => {
             quantity: CART_QUANTITY_MIN,
         })
         .then((res) => {
-            isShow.value = true;
+            showCartNotification({ type: 'success', message: 'Добавлено в корзину' });
             if (res.data?.data?.cartCount !== undefined) {
                 store.setCartCount(res.data.data.cartCount);
             } else {
@@ -247,7 +242,12 @@ const addInCart = () => {
                 store.setDetails(res.data.data.items);
             }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            showCartNotification({
+                type: 'error',
+                message: err.response?.data?.message || 'Не удалось добавить товар в корзину.',
+            });
+        });
 };
 
 const incCount = () => {
@@ -297,7 +297,15 @@ const cancelDelete = () => {
 
 const editTitle = (res) => editDetailTitle(res);
 
-function hideModal(param) {
-    isShow.value = param;
+function showCartNotification(payload) {
+    notification.value = {
+        show: true,
+        type: payload?.type === 'error' ? 'error' : 'success',
+        message: payload?.message || 'Добавлено в корзину',
+    };
+}
+
+function hideNotification(show) {
+    notification.value.show = show;
 }
 </script>

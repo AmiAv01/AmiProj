@@ -25,7 +25,7 @@ function createFirmDbf(string $path, string $name): void
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
-function createCompactAltDbf(string $path): void
+function createCompactAltDbf(string $path, string $tmp = 'TMP-1'): void
 {
     $fields = [['TMP', 'C', 20, 0], ['HCPARTS', 'C', 20, 0], ['BRAND', 'C', 20, 0], ['AWIR', 'C', 20, 0]];
     $headerLength = 32 + (32 * count($fields)) + 1;
@@ -36,7 +36,7 @@ function createCompactAltDbf(string $path): void
         $header .= str_pad($fieldName, 11, "\0").$type.str_repeat("\0", 4).chr($length).chr($decimals).str_repeat("\0", 14);
     }
 
-    $record = ' '.str_pad('TMP-1', 20).str_pad('HC-1', 20).str_pad('BOSCH', 20).str_pad('12345', 20);
+    $record = ' '.str_pad($tmp, 20).str_pad('HC-1', 20).str_pad('BOSCH', 20).str_pad('12345', 20);
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
@@ -105,6 +105,24 @@ it('parses compact compatibility DBFs by column name instead of position', funct
             'tmp' => 'TMP-1', 'hcparts' => 'HC-1', 'brand' => 'BOSCH',
             'typec' => 'Якорь', 'dt_brand' => 'CARGO', 'dt_code' => '12345',
         ]);
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('converts non UTF-8 values in compatibility code columns', function (): void {
+    $directory = sys_get_temp_dir().'/ami_alt_encoding_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ALT_CZ.DBF';
+
+    try {
+        $cp866 = iconv('UTF-8', 'CP866', 'МУФТА');
+        expect($cp866)->not->toBeFalse();
+        createCompactAltDbf($path, $cp866);
+
+        $this->artisan('dbf:sync', ['--file' => ['ALT_CZ.DBF'], '--source' => $directory])->assertSuccessful();
+        $this->assertDatabaseHas('alt_cz', ['tmp' => 'МУФТА', 'dt_code' => '12345']);
     } finally {
         @unlink($path);
         @rmdir($directory);
