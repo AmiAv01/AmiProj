@@ -40,6 +40,14 @@ Configure these environment secrets:
 
 Generate `SSH_KNOWN_HOSTS` from a trusted administrator machine and verify its fingerprint against the hosting provider console before saving it. Do not generate trust dynamically inside CI.
 
+The entry must use the same hostname and port as `SSH_HOST` and `SSH_PORT`. For a non-default port, generate it in the `[hostname]:port` form with:
+
+```bash
+ssh-keyscan -p PORT -t ed25519 HOST
+```
+
+Before copying that output into the secret, verify its fingerprint through the hosting provider console or another trusted channel. Store the complete `known_hosts` line, not only the fingerprint.
+
 Give the deployment key write access only to `DEPLOY_PATH` and permission to run the explicitly required service reload/restart commands. Do not deploy as `root`.
 
 ## 2. Server packages
