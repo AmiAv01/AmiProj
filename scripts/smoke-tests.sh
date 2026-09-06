@@ -1,12 +1,12 @@
 #!/bin/bash
 # Smoke tests for deployment verification
 
-set -e
+set -euo pipefail
 
 echo "🧪 Running Smoke Tests"
 echo ""
 
-BASE_URL=${BASE_URL:-http://localhost}
+: "${BASE_URL:?BASE_URL must be set, for example https://example.com}"
 
 # Test counter
 PASSED=0
@@ -21,15 +21,15 @@ test_endpoint() {
     
     echo -n "Testing $name... "
     
-    RESPONSE=$(curl -s -w "%{http_code}" -X $method "$BASE_URL$endpoint")
+    RESPONSE=$(curl -sS -w "%{http_code}" -X "$method" "$BASE_URL$endpoint")
     STATUS_CODE=${RESPONSE: -3}
     
     if [ "$STATUS_CODE" = "$expected_status" ]; then
         echo "✓ ($STATUS_CODE)"
-        ((PASSED++))
+        PASSED=$((PASSED + 1))
     else
         echo "✗ (got $STATUS_CODE, expected $expected_status)"
-        ((FAILED++))
+        FAILED=$((FAILED + 1))
     fi
 }
 

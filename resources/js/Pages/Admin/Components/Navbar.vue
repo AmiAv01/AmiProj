@@ -32,22 +32,26 @@
             <div
                 class="flex w-[260px] justify-between items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
             >
-                <button
-                    type="button"
-                    class="flex text-sm bg-gray-800 rounded-full"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    data-dropdown-toggle="user-dropdown"
-                    data-dropdown-placement="bottom"
-                >
-                    <span class="sr-only">Open user menu</span>
-                    <i class="fa-solid fa-user text-white text-xl"></i>
-                </button>
-                <!-- Dropdown menu -->
-                <div
-                    class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow"
-                    id="user-dropdown"
-                >
+                <div ref="menuContainer" class="relative">
+                    <button
+                        type="button"
+                        class="flex max-w-48 items-center rounded-lg px-2 py-2 text-sm text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        :aria-expanded="isUserMenuOpen"
+                        aria-controls="admin-user-dropdown"
+                        @click="toggleUserMenu"
+                    >
+                        <span class="sr-only">Открыть меню пользователя</span>
+                        <i class="fa-solid fa-user text-white text-xl"></i>
+                        <span class="ml-2 truncate">{{ $page.props.auth.user.name }}</span>
+                        <svg class="ml-2 h-4 w-4 shrink-0 transition-transform" :class="{ 'rotate-180': isUserMenuOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div
+                        v-show="isUserMenuOpen"
+                        class="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg bg-white text-base shadow-xl ring-1 ring-black/5"
+                        id="admin-user-dropdown"
+                    >
                     <div class="px-4 py-3">
                             <span
                                 class="block text-sm text-gray-900"
@@ -60,21 +64,25 @@
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
-                            <inertia-link
+                            <spa-link
                                 :href="`${routes.get('profile.edit')}`"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >Настройки</inertia-link
+                                @click="closeUserMenu"
+                            >Редактировать профиль</spa-link
                             >
                         </li>
                         <li>
-                            <inertia-link
+                            <spa-link
                                 :href="`${routes.get('logout')}`"
                                 method="post"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >Выход</inertia-link
+                                as="button"
+                                class="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50"
+                                @click="closeUserMenu"
+                            >Выход</spa-link
                             >
                         </li>
                     </ul>
+                    </div>
                 </div>
                 <div v-if="!isMenuOpen" class="w-full flex justify-end relative">
                     <button @click="toggleBurgerMenu" value="hamburger" class="group relative h-[30px] w-[30px] rounded mr-4 hover:bg-gray-400 ">
@@ -93,21 +101,49 @@
 </template>
 
 <script setup>
-import {Link} from "@inertiajs/vue3";
-import {initFlowbite} from "flowbite";
-import {onMounted, ref} from "vue";
-import {routes} from "@/Store/routes.js";
+import {Link} from '@/spa/bridge';
+import {onBeforeUnmount, onMounted, ref} from "vue";
+import {routes} from "@/Store/routes";
 import AdminBurgerMenu from "@/Pages/Admin/Components/AdminBurgerMenu.vue";
 
 const isMenuOpen = ref(true);
 const isBurgerMenuOpen = ref(false);
+const isUserMenuOpen = ref(false);
+const menuContainer = ref(null);
 const innerWidth = ref(window.innerWidth);
 
 onMounted(() => {
-    initFlowbite();
     window.addEventListener('resize', handleWindowResize);
+    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
     handleWindowResize();
 });
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleWindowResize);
+    document.removeEventListener('click', handleOutsideClick);
+    document.removeEventListener('keydown', handleEscape);
+});
+
+const toggleUserMenu = () => {
+    isUserMenuOpen.value = !isUserMenuOpen.value;
+};
+
+const closeUserMenu = () => {
+    isUserMenuOpen.value = false;
+};
+
+const handleOutsideClick = (event) => {
+    if (!menuContainer.value?.contains(event.target)) {
+        closeUserMenu();
+    }
+};
+
+const handleEscape = (event) => {
+    if (event.key === 'Escape') {
+        closeUserMenu();
+    }
+};
 
 const handleWindowResize = () => {
     innerWidth.value = window.innerWidth;

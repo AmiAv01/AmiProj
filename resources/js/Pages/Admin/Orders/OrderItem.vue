@@ -4,12 +4,12 @@
             scope="row"
             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
-            <a :href="`/admin/resource/orders/${order.id}`">
-                {{ order.id }}
+            <a :href="`/admin/resource/orders/${order.order_number}`">
+                {{ order.order_number }}
             </a>
         </th>
         <td class="px-4 py-3">
-            {{ order.total_price }}
+            {{ formatMoney(order.total_price) }}
         </td>
         <td class="px-4 py-3">
             {{ order.status }}
@@ -29,6 +29,7 @@
 <script setup>
 
 import {ref} from "vue";
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({
     order: {

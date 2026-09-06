@@ -1,5 +1,12 @@
 <template>
     <layout>
+        <push
+            v-if="notification.show"
+            :isShow="notification.show"
+            :type="notification.type"
+            :title="notification.message"
+            @hide="hideNotification"
+        />
         <section class="relative z-10 py-12 lg:py-24">
             <div class="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
 
@@ -19,7 +26,11 @@
                         </div>
                     </div>
                     <div class="col-span-12 xl:col-span-4 w-full max-xl:max-w-3xl max-xl:mx-auto">
-                        <CartOrder :count="count" :price="price" />
+                        <CartOrder
+                            :count="count"
+                            :price="price"
+                            @order-notification="showOrderNotification"
+                        />
                     </div>
                 </div>
 
@@ -43,14 +54,15 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useCartStore } from "@/Store/cartStore.js";
+import { computed, ref } from "vue";
+import { useCartStore } from "@/Store/cartStore";
 import CartItem from "./CartItem.vue";
 import CartOrder from "./CartOrder.vue";
 import Layout from "@/Shared/UserLayout.vue";
 import EmptyState from "@/Components/EmptyState.vue"; // Убедитесь, что путь верный
 
 const store = useCartStore();
+const notification = ref({ show: false, type: 'success', message: '' });
 const props = defineProps({
     items: Array,
 });
@@ -64,9 +76,21 @@ const count = computed(() => {
 });
 
 const price = computed(() => {
-    return Object.values(store.cartData).reduce((sum, obj) => {
+    return parseFloat(Object.values(store.cartData).reduce((sum, obj) => {
         const p = parseFloat(obj.price) || 0;
         return sum + (p * obj.quantity);
-    }, 0).toFixed(2);
+    }, 0).toFixed(2));
 });
+
+function showOrderNotification(payload) {
+    notification.value = {
+        show: true,
+        type: payload?.type === 'error' ? 'error' : 'success',
+        message: payload?.message || 'Заказ успешно оформлен',
+    };
+}
+
+function hideNotification(show) {
+    notification.value.show = show;
+}
 </script>

@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class InvalidInvoiceException extends Exception
+class InvalidInvoiceException extends ValidationException
 {
     public function __construct(string $invoice)
     {
-        parent::__construct("Invalid invoice format: {$invoice}", 400);
+        parent::__construct("Invalid invoice format: {$invoice}");
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class PriceNotFoundException extends Exception
+class PriceNotFoundException extends NotFoundException
 {
     public function __construct(int $detailCode)
     {

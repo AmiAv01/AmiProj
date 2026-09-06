@@ -1,5 +1,11 @@
 <template>
     <AdminLayout>
+        <push
+            v-if="notification.show"
+            :isShow="notification.show"
+            title="Новость успешно добавлена"
+            @hide="hideNotification"
+        />
         <section class="p-3 sm:p-5">
             <div class="mx-auto  px-4 lg:px-12">
                 <div
@@ -10,7 +16,7 @@
                     >
                         <Search
                             :placeholder="`Найти новость`"
-                            :link="`/admin/resource/api/search?category=news&searchQ`"
+                            category="news"
                             @setData="searchData"
                         />
                         <button
@@ -45,7 +51,8 @@
             </div>
             <NewsAddForm
                 @closeModal="isShow = false"
-                :show="isShow"
+                @created="showNotification"
+                :isShow="isShow"
                 :actionTitle="`Добавить`"
             />
         </section>
@@ -59,26 +66,31 @@ import Search from "@/Pages/Admin/Search.vue";
 import NewsItem from "@/Pages/Admin/News/NewsItem.vue";
 import NewsAddForm from "@/Shared/Forms/NewsAddForm.vue";
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const props = defineProps({
     news: {
-        type: Array,
-        default: [],
+        type: Object,
+        default: () => ({ data: [], links: [] }),
     }
 })
 
 const store = useNewsStore();
-//let searchNews = ref(props.news);
 const isShow = ref(false);
+const notification = ref({ show: false });
 let columnNames = ['#', 'Заголовок', 'Дата', 'Описание', 'Автор'];
 
 store.newsData = props.news;
-console.log(store.newsData)
 function searchData(data) {
     store.newsData = data.news;
 }
 function showModal() {
     isShow.value = true;
+}
+function showNotification() {
+    notification.value.show = true;
+}
+function hideNotification(show) {
+    notification.value.show = show;
 }
 </script>

@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\DTO\OrderDTO;
-use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
-use App\Exceptions\InvalidOrderStatusException;
 use App\Exceptions\OrderNotFoundException;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -20,46 +18,55 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class OrderService
 {
+    private const int DEFAULT_PER_PAGE = 12;
+
     public function getAll(int $perPage): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
+        return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->paginate($perPage);
     }
 
     public function getByUserId(int $userId): Collection
     {
-        return Order::where('created_by', '=', $userId)->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.created_at', 'order.status', 'order.total_price', 'user.name', 'user.email'])->get();
+        return Order::where('created_by', '=', $userId)->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.order_number', 'order.created_at', 'order.status', 'order.total_price', 'user.name', 'user.email'])->get();
     }
 
     public function createOrder(OrderDTO $dto, Cart $cart): Order
     {
-        $cart->loadMissing('items');
-        if ($cart->items->isEmpty()) {
-            throw new EmptyCartException;
-        }
+        $order = DB::transaction(function () use ($dto, $cart): Order {
+            $lockedCart = Cart::query()->whereKey($cart->id)->lockForUpdate()->firstOrFail();
 
-        return DB::transaction(function () use ($dto, $cart): Order {
             /** @var Collection<int, CartItem> $items */
-            $items = $cart->items;
-            $orderTotal = $items->sum(fn (CartItem $item): int => (int) $item->price * $item->quantity);
+            $items = $lockedCart->items()->lockForUpdate()->get();
+            if ($items->isEmpty()) {
+                throw new EmptyCartException;
+            }
+
+            $orderTotalInMinorUnits = $items->sum(
+                fn (CartItem $item): int => $this->priceToMinorUnits((string) $item->price) * $item->quantity
+            );
             $order = Order::create([
-                'total_price' => $orderTotal,
-                'status' => $dto->status,
+                'total_price' => $this->minorUnitsToPrice($orderTotalInMinorUnits),
+                'status' => $dto->status->value,
+                'comment' => $dto->comment,
                 'created_by' => $dto->userId,
                 'updated_by' => $dto->userId,
             ]);
-            $this->createOrderItems($cart, $order);
-            event(new OrderCreated($this->getOrderWithRelations($order->id)));
+            $this->createOrderItems($items, $order);
+            $lockedCart->items()->delete();
 
             return $order;
-        });
+        }, 3);
+
+        event(new OrderCreated($this->getOrderWithRelations($order->id)));
+
+        return $order;
     }
 
-    private function createOrderItems(Cart $cart, Order $order): void
+    /** @param Collection<int, CartItem> $items */
+    private function createOrderItems(Collection $items, Order $order): void
     {
-        /** @var Collection<int, CartItem> $items */
-        $items = $cart->items;
         $orderItems = $items->map(function (CartItem $item) use ($order) {
             return [
                 'order_id' => $order->id,
@@ -73,45 +80,75 @@ final class OrderService
         $order->orderItems()->insert($orderItems->toArray());
     }
 
+    private function priceToMinorUnits(string $price): int
+    {
+        if (! preg_match('/^\d+(?:\.\d{1,2})?$/', $price)) {
+            throw new \UnexpectedValueException("Invalid cart price: {$price}");
+        }
+
+        [$whole, $fraction] = array_pad(explode('.', $price, 2), 2, '');
+
+        return ((int) $whole * 100) + (int) str_pad($fraction, 2, '0');
+    }
+
+    private function minorUnitsToPrice(int $minorUnits): string
+    {
+        return sprintf('%d.%02d', intdiv($minorUnits, 100), $minorUnits % 100);
+    }
+
     private function getOrderWithRelations(int $orderId): Order
     {
         return Order::with([
             'user',
-            'orderItems.detail',
+            'orderItems.detail.stock',
         ])->findOrFail($orderId);
     }
 
     public function updateOrderStatus(int $id, OrderDTO $dto): Order
     {
         $order = Order::query()->findOrFail($id);
-        if (! in_array($dto->status, OrderStatus::values(), true)) {
-            throw new InvalidOrderStatusException($dto->status);
-        }
-        $order->update(['status' => $dto->status]);
+        $order->update([
+            'status' => $dto->status->value,
+            'updated_by' => $dto->userId,
+        ]);
 
         return $order;
     }
 
-    public function getById(int $id): Order
+    public function getByIdentifier(string $identifier): Order
     {
-        $order = Order::where('order.id', '=', $id)->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])->first();
-        if (! $order) {
-            throw new OrderNotFoundException($id);
-        }
-
-        return $order;
-    }
-
-    public function getByIdForUser(int $id, int $userId): Order
-    {
-        $order = Order::where('order.id', '=', $id)
-            ->where('order.created_by', '=', $userId)
-            ->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['order.id', 'order.status', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+        $order = Order::query()
+            ->where(function ($query) use ($identifier): void {
+                $query->where('order.order_number', strtoupper($identifier));
+                if (ctype_digit($identifier)) {
+                    $query->orWhere('order.id', (int) $identifier);
+                }
+            })
+            ->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
             ->first();
         if (! $order) {
-            throw new OrderNotFoundException($id);
+            throw new OrderNotFoundException($identifier);
+        }
+
+        return $order;
+    }
+
+    public function getByIdentifierForUser(string $identifier, int $userId): Order
+    {
+        $order = Order::query()
+            ->where(function ($query) use ($identifier): void {
+                $query->where('order.order_number', strtoupper($identifier));
+                if (ctype_digit($identifier)) {
+                    $query->orWhere('order.id', (int) $identifier);
+                }
+            })
+            ->where('order.created_by', '=', $userId)
+            ->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['order.id', 'order.order_number', 'order.status', 'order.comment', 'order.created_at', 'order.total_price', 'user.name', 'user.email'])
+            ->first();
+        if (! $order) {
+            throw new OrderNotFoundException($identifier);
         }
 
         return $order;
@@ -125,18 +162,22 @@ final class OrderService
 
     public function getByStatus(): LengthAwarePaginator
     {
-        return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->join('user', 'order.created_by', '=', 'user.id')
-            ->select(['user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at'])->paginate(12)->withQueryString();
+        return QueryBuilder::for(Order::class)->allowedFilters(AllowedFilter::exact('id', 'status'))->leftJoin('user', 'order.created_by', '=', 'user.id')
+            ->select(['user.email', 'user.name', 'order.id', 'order.order_number', 'order.total_price', 'order.status', 'order.created_at'])
+            ->latest('order.created_at')
+            ->paginate(self::DEFAULT_PER_PAGE)
+            ->withQueryString();
     }
 
-    public function getBySearching(string $search, int $perPage = 12): LengthAwarePaginator
+    public function getBySearching(string $search, int $perPage = self::DEFAULT_PER_PAGE): LengthAwarePaginator
     {
-        return Order::join('user', 'order.created_by', '=', 'user.id')
+        return Order::leftJoin('user', 'order.created_by', '=', 'user.id')
             ->where(function ($query) use ($search): void {
                 $query->where('name', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%");
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('order.order_number', 'like', '%'.strtoupper($search).'%');
             })
-            ->select('user.email', 'user.name', 'order.id', 'order.total_price', 'order.status', 'order.created_at')
+            ->select('user.email', 'user.name', 'order.id', 'order.order_number', 'order.total_price', 'order.status', 'order.created_at')
             ->paginate($perPage)
             ->withQueryString();
     }

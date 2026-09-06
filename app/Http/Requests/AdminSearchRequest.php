@@ -2,15 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AdminSearchRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'searchQ' => 'required|string|min:1|max:255',
-            'category' => 'required|string|max:20',
+            'searchQ' => ['nullable', 'string', 'max:255'],
+            'category' => ['required', Rule::enum(Category::class)],
         ];
     }
 

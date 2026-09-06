@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 final class PriceService
 {
+    private const int MONEY_SCALE = 2;
+
     public function __construct(protected UserService $userService, protected CurrencyService $currencyService) {}
 
     public function getPrice(int $detailCode, int $userId): string
@@ -46,12 +48,12 @@ final class PriceService
     {
         $currency = $this->currencyService->getCurrency();
         if ($sign === '') {
-            return bcmul($price, $this->parsePrice((string) $currency));
+            return bcmul($price, $this->parsePrice((string) $currency), self::MONEY_SCALE);
         }
-        $priceBeforePercent = bcmul($price, $this->parsePrice((string) $currency));
+        $priceBeforePercent = bcmul($price, $this->parsePrice((string) $currency), self::MONEY_SCALE);
         Log::info($priceBeforePercent);
         $computedPercent = ($sign === '+') ? bcadd('1', bcdiv((string) $percent, '100', 2), 2) : bcsub('1', bcdiv((string) $percent, '100', 2), 2);
-        $endPrice = bcmul($priceBeforePercent, $computedPercent, 2);
+        $endPrice = bcmul($priceBeforePercent, $computedPercent, self::MONEY_SCALE);
 
         return $endPrice;
     }

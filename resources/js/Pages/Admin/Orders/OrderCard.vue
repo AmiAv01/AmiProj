@@ -1,11 +1,11 @@
 <template>
     <admin-layout>
-        <div class="flex flex-col p-10 sm:w-[60%] sm:mx-auto justify-around">
+        <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4 sm:p-10">
             <div
-                class="flex rounded-[15px] pb-10 w-[500px] max-h-[300px] flex-col"
+                class="flex w-full min-w-0 flex-col rounded-[15px] pb-2 sm:pb-10"
             >
-                <h3 class="text-7xl py-10 font-bold text-gray-900">
-                    Заказ № {{ order.id }}
+                <h3 class="py-6 text-3xl font-bold text-gray-900 [overflow-wrap:anywhere] sm:py-10 sm:text-5xl">
+                    Заказ № {{ order.order_number }}
                 </h3>
                 <div class="flex flex-col">
                     <p class="text-gray-700 text-2xl mr-4">Статус заказа:</p>
@@ -25,14 +25,18 @@
                 </div>
                 <div class="flex">
                     <p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
-                    <p class="text-2xl">{{ order.total_price }} BYN</p>
+                    <p class="text-2xl">{{ formatMoney(order.total_price) }}</p>
+                </div>
+                <div v-if="order.comment" class="flex flex-col mt-4">
+                    <p class="text-gray text-2xl mr-4">Комментарий:</p>
+                    <p class="text-xl whitespace-pre-line">{{ order.comment }}</p>
                 </div>
             </div>
-            <div class="border-2 mt-[100px] rounded-lg">
+            <div class="min-w-0 rounded-lg border-2">
                 <p class="text-center py-4 text-xl border-b-2 sm:text-4xl mb-6 font-bold">
                     Приобретённые детали
                 </p>
-                <div class="px-12 h-[500px] overflow-y-auto">
+                <div class="h-[500px] overflow-y-auto px-4 sm:px-12">
                     <order-item
                         v-for="(detail, index) in details"
                         :item="detail"
@@ -61,6 +65,7 @@ export default {
 
 <script setup>
 import AdminLayout from "@/Pages/Admin/Components/AdminLayout.vue";
+import { formatMoney } from "@/Services/PriceFormatter";
 
 defineProps({
     order: Object,

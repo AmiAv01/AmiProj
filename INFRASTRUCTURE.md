@@ -1,338 +1,88 @@
-# Infrastructure & Development Guide
+# Infrastructure guide
 
-## Quick Start
+## Runtime model
 
-### Prerequisites
-- Docker & Docker Compose installed
-- PHP 8.4+ for local development (optional, can use Docker)
-- `git` and `task` (optional, for Task runner)
+The development stack intentionally contains only four services:
 
-### Start Development Environment
+- `nginx`: the only public HTTP entry point;
+- `app`: PHP-FPM;
+- `mysql`: application database, exposed only on `127.0.0.1` for local tools;
+- `queue-worker`: database-backed Laravel worker using the same application image.
+
+Redis and a scheduler are not started because the application currently uses neither. Add Redis only when measured load or cross-instance cache/session requirements justify it. Add a scheduler only when `php artisan schedule:list` contains a real task.
+
+An optional `frontend` service in the `tools` profile supplies Node 22 for builds, type checking, audits, and the Vite development server. It is one-off by default and is not part of the long-running stack.
+
+## First start
 
 ```bash
-# 1. Clone repository
-git clone <repo_url>
-cd AmiProj
-
-# 2. Copy environment file
 cp .env.example .env
-
-# 3. Generate app key
-docker-compose run --rm app php artisan key:generate
-
-# 4. Start services
-docker-compose up -d
-
-# 5. Run migrations
-docker-compose exec app php artisan migrate
-
-# 6. Access application
-# Web: http://localhost
-# API: http://localhost/api/health/live
+./scripts/setup.sh
 ```
 
-## Development
+The setup script builds the development image, waits for MySQL through Compose health checks, creates an application key only when one is missing, applies migrations, and creates the public storage link.
 
-### Structure
-
-```
-.
-├── app/                      # Application code
-├── config/                   # Configuration files
-├── database/                 # Migrations & seeders
-├── docker/                   # Docker configuration
-│   ├── nginx/              # Nginx config
-│   ├── mysql/              # MySQL init scripts
-│   ├── entrypoint.sh       # App initialization
-│   └── Dockerfile          # Application image
-├── docker-compose.yml        # Development stack
-├── routes/                   # API & web routes
-├── tests/                    # Test suite
-├── docs/                     # Documentation
-│   ├── CI_PIPELINE.md      # CI/CD pipeline
-│   ├── DOCKER_RUNTIME.md   # Docker guide
-│   ├── DEPLOYMENT.md       # Deployment procedures
-│   ├── SECURITY.md         # Security checklist
-│   ├── RUNBOOKS.md         # Operational procedures
-│   └── GLITCHTIP.md        # Error tracking
-├── Dockerfile               # Production image
-└── .github/
-    └── workflows/
-        └── laravel.yml      # CI pipeline
-```
-
-### Common Commands
+To reset only containers while preserving data:
 
 ```bash
-# View logs
-docker-compose logs -f app
-
-# Run artisan commands
-docker-compose exec app php artisan tinker
-docker-compose exec app php artisan migrate
-docker-compose exec app php artisan db:seed
-
-# Run tests
-docker-compose exec app php artisan test
-
-# Code quality
-docker-compose exec app php vendor/bin/pint --test
-docker-compose exec app php vendor/bin/phpstan
-
-# Composer
-docker-compose exec app composer require <package>
-
-# Database access
-docker-compose exec mysql mysql -u root -ppassword ami_project
-docker-compose exec redis redis-cli
+docker compose down
+docker compose up -d
 ```
 
-### Database
+To deliberately remove the development database and dependency volumes:
 
 ```bash
-# Fresh migration
-docker-compose exec app php artisan migrate:fresh
-
-# Rollback migration
-docker-compose exec app php artisan migrate:rollback
-
-# Create migration
-docker-compose exec app php artisan make:migration create_table_name
+docker compose down --volumes
 ```
 
-### Queue & Scheduler
+The latter command destroys local data and should not be used on a production host.
+
+## Queue
+
+The worker runs with:
+
+```text
+queue:work database --sleep=3 --tries=3 --backoff=10 --timeout=60 --max-time=3600 --memory=256
+```
+
+`retry_after` is 90 seconds, safely above the worker timeout. Workers recycle hourly to pick up code and release accumulated memory. Deployments must run `php artisan queue:restart` after the new code and migrations are ready.
+
+Operational commands:
 
 ```bash
-# Process single job
-docker-compose exec app php artisan queue:work --once
-
-# Check queue status
-docker-compose exec app php artisan queue:status
-
-# List scheduled tasks
-docker-compose exec app php artisan schedule:list
-
-# Run scheduler (testing)
-docker-compose exec app php artisan schedule:work
+docker compose exec app php artisan queue:failed
+docker compose exec app php artisan queue:retry all
+docker compose exec app php artisan queue:flush
+docker compose exec app php artisan queue:restart
 ```
 
-## CI/CD Pipeline
+Do not use `queue:flush` without first reviewing failed jobs.
 
-### Stages
+## Images
 
-1. **Validate** - `composer validate --strict`
-2. **Secret Scan** - Detect exposed secrets (Gitleaks)
-3. **Quality** - Pint, PHPStan, Composer audit
-4. **Tests** - Pest/PHPUnit suite
+The production server cannot run Docker. The production target described below is therefore used only by CI as a reproducible build check; deployment uploads the backend, `vendor/`, and compiled `public/build/` to a conventional nginx/PHP-FPM host.
 
-See [CI_PIPELINE.md](docs/CI_PIPELINE.md) for details.
+The Dockerfile has two final targets:
 
-### Running Locally
+- `development`: includes Composer and development dependencies and is used by Compose;
+- `production`: contains optimized PHP dependencies, compiled frontend assets, OPcache configuration, and no Composer/Node toolchain.
+
+Build the production target with:
 
 ```bash
-# Full CI pipeline
-task test
-task lint
-task phpstan
-
-# Individual checks
-vendor/bin/pint --test      # Code formatting
-vendor/bin/phpstan          # Static analysis
-php artisan test            # Run tests
-composer audit              # Security audit
+docker build --target production -t ami:local .
 ```
 
-## Docker Deployment
+Secrets are not accepted as Docker build arguments and `.env` is excluded from the build context. Runtime secrets must be injected by the deployment platform.
 
-### Development
+## Logs and debugging
 
-```bash
-# Start all services
-docker-compose up -d
+Development uses the configured Laravel log channel and Laravel Debugbar. The production image defaults to `LOG_CHANNEL=stderr`; collect stdout/stderr with the host or container platform. `APP_DEBUG` must always be `false` in production.
 
-# Stop
-docker-compose down
+Centralized error tracking is not installed. If GlitchTip or Sentry is adopted, install and test the official Laravel SDK, set a release identifier from the commit SHA, start with low tracing sample rates, and verify a test exception before relying on alerts.
 
-# View status
-docker-compose ps
-docker-compose logs -f
-```
+## Backups
 
-### Production
+`scripts/backup.sh production` creates a private gzip-compressed logical dump and retains the latest 30 local copies. A local copy is not a disaster-recovery strategy: production must additionally upload encrypted backups to another host/account and periodically restore one into a disposable database.
 
-```bash
-# Build image
-docker build -t ami:v1.0.0 .
-
-# Push to registry
-docker tag ami:v1.0.0 registry.example.com/ami:v1.0.0
-docker push registry.example.com/ami:v1.0.0
-
-# Deploy
-docker pull registry.example.com/ami:v1.0.0
-docker-compose -f docker-compose.prod.yml up -d
-
-# Run migrations
-docker-compose exec app php artisan migrate --force
-```
-
-See [DOCKER_RUNTIME.md](docs/DOCKER_RUNTIME.md) for full Docker guide.
-
-## Deployment
-
-### Safe Deployment
-
-```bash
-# 1. Tag release
-git tag -a v1.2.0 -m "Release v1.2.0"
-git push origin v1.2.0
-
-# 2. GitHub Actions builds and tests automatically
-# 3. Manual deployment to production
-./scripts/deploy.sh v1.2.0 production
-
-# 4. Health checks run automatically
-# 5. Rollback available if issues detected
-```
-
-See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for safe deployment procedures.
-
-### Rollback
-
-```bash
-# If deployment fails
-./scripts/rollback.sh backups/db_20250501_140000.sql production
-
-# Automatic health checks verify
-curl http://api.example.com/api/health/ready
-```
-
-See [RUNBOOKS.md](docs/RUNBOOKS.md) for operational procedures.
-
-## Security
-
-### Environment Variables
-
-**Never commit secrets!**
-
-```bash
-# ✅ Correct
-echo "DB_PASSWORD=secret" >> .env
-echo ".env" >> .gitignore
-
-# ❌ Wrong
-git add .env
-git commit -m "Add secrets"
-```
-
-### Use GitHub Secrets for CI/CD
-
-```yaml
-env:
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-```
-
-See [SECURITY.md](docs/SECURITY.md) for full security checklist.
-
-## Monitoring & Health Checks
-
-### Health Endpoints
-
-```bash
-# Liveness - is process alive?
-curl http://localhost/api/health/live
-
-# Readiness - can handle requests?
-curl http://localhost/api/health/ready
-```
-
-### Error Tracking (Optional)
-
-To enable GlitchTip integration:
-
-```env
-SENTRY_LARAVEL_DSN=https://<key>@glitchtip.example.com/projects/<id>/
-SENTRY_ENVIRONMENT=production
-```
-
-See [GLITCHTIP.md](docs/GLITCHTIP.md) for setup.
-
-## Troubleshooting
-
-### Services Won't Start
-
-```bash
-# Check logs
-docker-compose logs app mysql redis
-
-# Rebuild images
-docker-compose build --no-cache
-
-# Force restart
-docker-compose restart
-```
-
-### Database Connection Issues
-
-```bash
-# Verify MySQL is running
-docker-compose logs mysql | grep "ready"
-
-# Test connection
-docker-compose exec app php artisan tinker
->>> DB::connection()->getPdo()
-```
-
-### High CPU/Memory
-
-```bash
-# Check resource usage
-docker stats
-
-# Check PHP processes
-docker-compose exec app ps aux
-
-# Increase limits in docker-compose.yml
-```
-
-See [RUNBOOKS.md](docs/RUNBOOKS.md) for detailed troubleshooting.
-
-## Documentation
-
-- [CI Pipeline](docs/CI_PIPELINE.md) - GitHub Actions & local testing
-- [Docker & Runtime](docs/DOCKER_RUNTIME.md) - Container setup & services
-- [Deployment](docs/DEPLOYMENT.md) - Safe release procedures
-- [Security](docs/SECURITY.md) - Secrets, CORS, rate limiting
-- [Runbooks](docs/RUNBOOKS.md) - Operational procedures
-- [GlitchTip](docs/GLITCHTIP.md) - Error tracking setup
-
-## Team
-
-- **Dev Lead**: Setup CI/CD and infrastructure
-- **DevOps**: Docker, deployment, monitoring
-- **Backend**: Services, migrations, API logic
-- **QA**: Testing, smoke tests, incidents
-
-## Contributing
-
-1. Create feature branch from `main`
-2. Make changes
-3. Push to GitHub (CI runs automatically)
-4. Create Pull Request
-5. All CI checks must pass
-6. Code review + approval
-7. Merge to main
-8. Tag release: `git tag -a v1.2.0`
-9. Deploy (manual approval)
-
-## License
-
-See [LICENSE](LICENSE) file.
-
-## Support
-
-- **Errors/Alerts**: Check [RUNBOOKS.md](docs/RUNBOOKS.md)
-- **Questions**: See documentation in `docs/` folder
-- **Infrastructure**: Contact DevOps team
-- **Issues**: Create GitHub issue with details
+See [the production checklist](docs/PRODUCTION_CHECKLIST.md) before enabling deployment.

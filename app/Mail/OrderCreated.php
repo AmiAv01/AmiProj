@@ -8,20 +8,16 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class OrderCreated extends Mailable
 {
     use Queueable;
     use SerializesModels;
 
-    protected Order $order;
-
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-        Log::info($order);
-    }
+    public function __construct(
+        public Order $order,
+        public ?string $currencyRate = null,
+    ) {}
 
     public function envelope(): Envelope
     {
@@ -38,6 +34,8 @@ class OrderCreated extends Mailable
             view: 'email.order_created',
             with: [
                 'order' => $this->order,
+                'currencyRate' => $this->currencyRate,
+                'currencyCode' => config('currency.display_code'),
             ],
         );
     }

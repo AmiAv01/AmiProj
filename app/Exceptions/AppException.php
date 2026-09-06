@@ -2,9 +2,14 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-abstract class AppException extends Exception
+abstract class AppException extends HttpException
 {
-    protected $code = 500;
+    protected const int STATUS_CODE = 500;
+
+    public function __construct(string $message = 'Application error', ?\Throwable $previous = null)
+    {
+        parent::__construct(static::STATUS_CODE, $message, $previous);
+    }
 }

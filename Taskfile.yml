@@ -1,122 +1,102 @@
 version: '3'
 
 vars:
-    PHP: '{{if not .LOCALLY}}docker compose exec -it php{{end}}'
-
-env:
-    APP_ENV: dev
-
-dotenv:
-    - '.env.{{.APP_ENV}}.local'
-    - '.env.{{.APP_ENV}}'
-    - '.env.local'
-    - '.env'
+  PHP: '{{if .LOCALLY}}php{{else}}docker compose exec -T app php{{end}}'
+  COMPOSER: '{{if .LOCALLY}}composer{{else}}docker compose exec -T app composer{{end}}'
+  NPM: '{{if .LOCALLY}}npm{{else}}docker compose run --rm frontend npm{{end}}'
 
 tasks:
-    up:
-        cmds:
-            - 'docker compose up --detach --remove-orphans {{.CLI_ARGS}}'
-            #- task: install
+  up:
+    desc: Build and start the development stack
+    cmds:
+      - docker compose up --detach --build --remove-orphans {{.CLI_ARGS}}
 
-    down:
-        cmds:
-            - 'docker compose down --remove-orphans {{.CLI_ARGS}}'
+  down:
+    desc: Stop the development stack
+    cmds:
+      - docker compose down --remove-orphans {{.CLI_ARGS}}
 
-    start:
-        cmds:
-            - 'docker compose start {{.CLI_ARGS}}'
-            - task: install
+  shell:
+    desc: Open a shell in the PHP container
+    cmds:
+      - docker compose exec app sh
 
-    stop:
-        cmds:
-            - 'docker compose stop {{.CLI_ARGS}}'
+  logs:
+    desc: Follow application, web server, and worker logs
+    cmds:
+      - docker compose logs --follow app nginx queue-worker
 
-    php: '{{.PHP}} sh'
+  install:
+    desc: Install PHP dependencies
+    cmds:
+      - '{{.COMPOSER}} install {{.CLI_ARGS}}'
 
-    install:
-        cmd: '{{.PHP}} composer install {{.CLI_ARGS}}'
-        sources:
-            - composer.json
-            - composer.lock
-        generates:
-            - vendor/autoload.php
+  key:
+    desc: Generate the application key
+    cmds:
+      - '{{.PHP}} artisan key:generate {{.CLI_ARGS}}'
 
-    var:
-        cmd: mkdir -p var
-        status:
-            - test -d var
-        silent: true
-        internal: true
+  migrate:
+    desc: Apply database migrations
+    cmds:
+      - '{{.PHP}} artisan migrate {{.CLI_ARGS}}'
 
-    test:
-        deps: [var, install]
-        cmd: '{{.PHP}} vendor/bin/phpunit {{.CLI_ARGS}}'
+  test:
+    desc: Run the test suite
+    cmds:
+      - '{{.PHP}} artisan test {{.CLI_ARGS}}'
 
-    pint:
-        deps: [ var, install ]
-        cmd: '{{.PHP}} vendor/bin/pint {{.CLI_ARGS}}'
+  format:
+    desc: Format PHP code with Pint
+    cmds:
+      - '{{.PHP}} vendor/bin/pint {{.CLI_ARGS}}'
 
-    lint:
-        cmds:
-            - task: fixcs
-        vars:
-            CLI_ARGS: "--dry-run {{.CLI_ARGS}}"
+  pint:
+    desc: Check PHP formatting
+    cmds:
+      - '{{.PHP}} vendor/bin/pint --test {{.CLI_ARGS}}'
 
-    rector-fix:
-        deps: [ var, install ]
-        cmd: '{{.PHP}} vendor/bin/rector process {{.CLI_ARGS}}'
+  phpstan:
+    desc: Run PHPStan/Larastan
+    cmds:
+      - '{{.PHP}} vendor/bin/phpstan --memory-limit=512M {{.CLI_ARGS}}'
 
-    rector:
-        deps: [ var, install ]
-        cmds:
-            -   task: rector-fix
-                vars:
-                    CLI_ARGS: "--dry-run {{.CLI_ARGS}}"
+  typecheck:
+    desc: Type-check the Vue application
+    cmds:
+      - '{{.NPM}} run typecheck -- {{.CLI_ARGS}}'
 
-    psalm:
-        deps: [var, install]
-        cmd: '{{.PHP}} ./vendor/bin/psalm --no-diff {{.CLI_ARGS}}'
+  frontend-build:
+    desc: Build production frontend assets
+    cmds:
+      - '{{.NPM}} run build -- {{.CLI_ARGS}}'
 
-    deptrac-directories:
-        deps: [var, install]
-        cmd: '{{.PHP}} vendor/bin/deptrac analyze --config-file=deptrac.directories.yaml --cache-file=var/.deptrac.directories.cache {{.CLI_ARGS}}'
+  vite:
+    desc: Start the Vite development server
+    cmds:
+      - docker compose run --rm --service-ports frontend npm run dev -- --host 0.0.0.0 {{.CLI_ARGS}}
 
-    composer-check-require:
-        deps: [install]
-        cmd: '{{.PHP}} vendor/bin/composer-require-checker check {{.CLI_ARGS}}'
+  composer-audit:
+    desc: Check PHP dependencies for security advisories
+    cmds:
+      - '{{.COMPOSER}} audit --locked {{.CLI_ARGS}}'
 
-    composer-check-unused:
-        deps: [install]
-        cmd: '{{.PHP}} vendor/bin/composer-unused {{.CLI_ARGS}}'
+  npm-audit:
+    desc: Check JavaScript dependencies for high-severity advisories
+    cmds:
+      - '{{.NPM}} audit --audit-level=high {{.CLI_ARGS}}'
 
-    composer-normalize-fix:
-        deps: [install]
-        cmds:
-            - '{{.PHP}} composer bump {{.CLI_ARGS}}'
-            - '{{.PHP}} composer normalize --diff }{{.CLI_ARGS}'
+  queue-restart:
+    desc: Gracefully restart queue workers
+    cmds:
+      - '{{.PHP}} artisan queue:restart'
 
-    composer-normalize:
-        cmds:
-            - task: composer-normalize-fix
-              vars:
-                  CLI_ARGS: '--dry-run {{.CLI_ARGS}}'
-
-    composer-audit: '{{.PHP}} composer audit {{.CLI_ARGS}}'
-
-    composer-validate: '{{.PHP}} composer validate --strict --no-check-publish {{.CLI_ARGS}}'
-
-    check:
-        cmds:
-            -   task: lint
-            -   task: psalm
-            -   task: rector
-            -   task: deptrac-directories
-            -   task: test-unit
-            -   task: composer-validate
-            -   task: composer-audit
-            -   task: composer-normalize
-            -   task: composer-check-require
-            -   task: composer-check-unused
-            -   task: di-lint
-            -   task: test-integration
-            -   task: doctrine-check
+  check:
+    desc: Run the same core checks as CI
+    cmds:
+      - task: pint
+      - task: phpstan
+      - task: test
+      - task: typecheck
+      - task: composer-audit
+      - task: npm-audit

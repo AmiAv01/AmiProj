@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 class ValidationException extends AppException
 {
-    protected $code = 400;
+    protected const int STATUS_CODE = 422;
 
     public function __construct(string $message = 'Validation error')
     {

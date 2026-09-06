@@ -12,6 +12,6 @@ class AdminApproveUserController extends Controller
 
     public function index(int $id): JsonResponse
     {
-        return response()->json(['success' => $this->userService->approveUser($id)]);
+        return response()->json(['data' => ['success' => $this->userService->approveUser($id)]]);
     }
 }

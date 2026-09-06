@@ -1,32 +1,30 @@
 <?php
 
+use App\Models\News;
+use App\Models\Order;
 use App\Models\User;
 
 test('profile page is displayed', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->get('/profile');
+        ->getJson('/api/v1/profile');
 
     $response->assertOk();
 });
 
 test('profile information can be updated', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->patchJson('/api/v1/profile', [
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
     $user->refresh();
 
@@ -36,39 +34,57 @@ test('profile information can be updated', function (): void {
 });
 
 test('email verification status is unchanged when the email address is unchanged', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
+        ->patchJson('/api/v1/profile', [
             'name' => 'Test User',
             'email' => $user->email,
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
     $this->assertNotNull($user->refresh()->email_verified_at);
 });
 
 test('user can delete their account', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->delete('/profile', [
+        ->deleteJson('/api/v1/profile', [
             'password' => 'password',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/');
+    $response->assertNoContent();
 
     $this->assertGuest();
     $this->assertNull($user->fresh());
+});
+
+test('deleting an account preserves historical orders and news', function (): void {
+    $user = User::factory()->create();
+    $order = Order::create([
+        'total_price' => '25.00',
+        'status' => 'Новый',
+        'created_by' => $user->id,
+        'updated_by' => $user->id,
+    ]);
+    $news = News::create([
+        'title' => 'Historical post',
+        'description' => 'Historical description',
+        'date' => now(),
+        'author' => $user->id,
+    ]);
+
+    $this->actingAs($user)->delete('/api/v1/profile', [
+        'password' => 'password',
+    ])->assertNoContent();
+
+    $this->assertDatabaseMissing('user', ['id' => $user->id]);
+    $this->assertDatabaseHas('order', ['id' => $order->id, 'created_by' => null, 'updated_by' => null]);
+    $this->assertDatabaseHas('news', ['id' => $news->id, 'author' => null]);
 });
 
 test('correct password must be provided to delete account', function (): void {
@@ -76,14 +92,22 @@ test('correct password must be provided to delete account', function (): void {
 
     $response = $this
         ->actingAs($user)
-        ->from('/profile')
-        ->delete('/profile', [
+        ->deleteJson('/api/v1/profile', [
             'password' => 'wrong-password',
         ]);
 
-    $response
-        ->assertSessionHasErrors('password')
-        ->assertRedirect('/profile');
+    $response->assertUnprocessable()->assertJsonValidationErrors('password');
 
     $this->assertNotNull($user->fresh());
+});
+
+test('the last administrator cannot delete their own account', function (): void {
+    $admin = User::factory()->create(['isAdmin' => true]);
+
+    $this->actingAs($admin)
+        ->deleteJson('/api/v1/profile', ['password' => 'password'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('user');
+
+    $this->assertNotNull($admin->fresh());
 });

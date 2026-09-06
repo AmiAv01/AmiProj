@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link } from '@/spa/bridge';
 
 const props = defineProps({
     href: {

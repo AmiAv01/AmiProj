@@ -15,16 +15,13 @@ use App\Services\UserService;
 
 final class AdminSearchServiceFactory implements SearchServiceFactoryInterface
 {
-    public function create(string $category): AdminSearchInterface
+    public function create(Category $category): AdminSearchInterface
     {
-        $categoryEnum = Category::tryFrom($category);
-
-        return match ($categoryEnum) {
+        return match ($category) {
             Category::DETAILS => new AdminDetailsSearchService(app(DetailService::class)),
             Category::ORDERS => new AdminOrderSearchService(app(OrderService::class)),
             Category::NEWS => new AdminNewsSearchService(app(NewsService::class)),
             Category::USERS => new AdminUserSearchService(app(UserService::class)),
-            default => throw new \Exception('Not found category')
         };
     }
 }

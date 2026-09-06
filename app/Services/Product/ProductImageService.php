@@ -42,7 +42,8 @@ class ProductImageService
                     return $normalizedPath;
                 }
             } catch (\Exception $e) {
-                throw new ImageStorageException('Failed to access image storage: '.$e->getMessage());
+                Log::error('Failed to access product image storage.', ['exception' => $e]);
+                throw new ImageStorageException('Failed to access image storage.', $e);
             }
         }
 

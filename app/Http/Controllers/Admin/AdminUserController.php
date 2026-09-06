@@ -5,39 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserRequest;
-use App\Services\Cart\CartService;
-use App\Services\OrderService;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class AdminUserController extends Controller
 {
-    public function __construct(protected UserService $userService, protected CartService $cartService, protected OrderService $orderService) {}
-
-    public function index(): Response
-    {
-        return Inertia::render('Admin/User/UserList', ['users' => $this->userService->getAll(12)]);
-    }
-
-    public function show(int $userId): Response
-    {
-        return Inertia::render('Admin/User/UserCard', [
-            'user' => $this->userService->getById($userId),
-            'cart' => $this->cartService->getCartItemsByUserId($userId),
-            'orders' => $this->orderService->getByUserId($userId),
-            'formula' => $this->userService->getUserFormula($userId),
-        ]);
-    }
+    public function __construct(protected UserService $userService) {}
 
     public function update(int $userId, AdminUserRequest $request): JsonResponse
     {
-        return response()->json(['success' => $this->userService->update(new UserDTO($userId, $request->validated('formula')))]);
+        return response()->json(['data' => ['success' => $this->userService->update(new UserDTO($userId, $request->validated('formula')))]]);
     }
 
-    public function destroy(int $userId): JsonResponse
+    public function destroy(int $userId, Request $request): JsonResponse
     {
-        return response()->json(['success' => $this->userService->destroy($userId)]);
+        if ($request->user()?->getKey() === $userId) {
+            throw ValidationException::withMessages([
+                'user' => [__('You cannot delete your own account from the administration panel.')],
+            ]);
+        }
+
+        return response()->json(['data' => ['success' => $this->userService->destroy($userId)]]);
     }
 }

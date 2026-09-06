@@ -15,22 +15,22 @@
                 <li
                     class="flex justify-center items-center hover:bg-green-900 cursor-pointer"
                 >
-                    <inertia-link
+                    <spa-link
                         href="/catalog/generators"
                         class="text-white px-12 py-2"
                     >
                         Генераторы
-                    </inertia-link>
+                    </spa-link>
                 </li>
                 <li
                     class="flex justify-center items-center hover:bg-green-900 cursor-pointer"
                 >
-                    <inertia-link
+                    <spa-link
                         href="/catalog/starters"
                         class="text-white px-12 py-2"
                     >
                         Стартеры
-                    </inertia-link>
+                    </spa-link>
                 </li>
                 <li
                     class="flex group/main group items-center px-12 py-2 hover:bg-green-900 cursor-pointer"
@@ -91,19 +91,19 @@
                 <li
                     class="flex justify-center items-center group hover:bg-green-900 cursor-pointer"
                 >
-                    <inertia-link
+                    <spa-link
                         href="/catalog/bearings"
                         class="text-white px-12 py-2"
-                    >Подшипники</inertia-link
+                    >Подшипники</spa-link
                     >
                 </li>
                 <li
                     class="flex justify-center items-center hover:bg-green-900 cursor-pointer"
                 >
-                    <inertia-link
+                    <spa-link
                         href="/catalog/other"
                         class="text-white px-12 py-2"
-                    >Прочие запчасти</inertia-link
+                    >Прочие запчасти</spa-link
                     >
                 </li>
             </ul>
@@ -114,7 +114,7 @@
 
 <script setup>
 import MenuItem from "@/Shared/Nav/NavMenuItem.vue";
-import {starterParts, generatorParts} from "@/Store/index.js";
+import {starterParts, generatorParts} from "@/Store/index";
 import {onMounted, ref} from 'vue';
 import BurgerMenu from "@/Shared/BurgerMenu/BurgerMenu.vue";
 

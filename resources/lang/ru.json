@@ -52,5 +52,9 @@
     "client": "Клиент",
     "order_details": "Детали заказа:",
     "search_by_search": "Поиск по :search",
-    "invalid_data": "Неверные данные"
+    "invalid_data": "Неверные данные",
+    "Your account is not approved.": "Ваша учётная запись не одобрена.",
+    "You cannot delete your own account from the administration panel.": "Нельзя удалить собственную учётную запись через панель администратора.",
+    "The last administrator account cannot be deleted.": "Нельзя удалить последнюю учётную запись администратора.",
+    "CSRF token mismatch.": "Недействительный CSRF-токен."
 }

@@ -11,7 +11,11 @@ final class NewsService
 {
     public function getAll(int $perPage): LengthAwarePaginator
     {
-        return News::join('user', 'news.author', '=', 'user.id')->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate($perPage);
+        return News::leftJoin('user', 'news.author', '=', 'user.id')
+            ->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])
+            ->orderByDesc('news.date')
+            ->orderByDesc('news.id')
+            ->paginate($perPage);
     }
 
     public function store(NewsPostDTO $dto, int $adminId): News
@@ -21,8 +25,12 @@ final class NewsService
 
     public function getBySearching(string $search, int $perPage): LengthAwarePaginator
     {
-        return News::where('title', 'like', "%$search%")->join('user', 'news.author', '=', 'user.id')
-            ->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])->paginate($perPage)->withQueryString();
+        return News::where('title', 'like', "%$search%")->leftJoin('user', 'news.author', '=', 'user.id')
+            ->select(['news.id', 'news.title', 'news.date', 'news.description', 'user.name'])
+            ->orderByDesc('news.date')
+            ->orderByDesc('news.id')
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     public function update(NewsPostDTO $dto, int $id): bool
@@ -38,6 +46,9 @@ final class NewsService
     public function destroy(int $id): bool
     {
         $news = News::find($id);
+        if (! $news) {
+            throw new NewsNotFoundException((string) $id);
+        }
 
         return $news->delete();
     }

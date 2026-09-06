@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /*
@@ -14,6 +15,7 @@ use Tests\TestCase;
 */
 
 uses(TestCase::class)->in('Feature');
+uses(RefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,10 @@ uses(TestCase::class)->in('Feature');
 
 pest()->extend()
     ->in('Feature')
-    ->beforeEach(fn () => $this->withoutVite());
+    ->beforeEach(function (): void {
+        $this->withoutVite();
+        $this->withHeader('Origin', config('app.url'));
+    });
 
 /*
 |--------------------------------------------------------------------------

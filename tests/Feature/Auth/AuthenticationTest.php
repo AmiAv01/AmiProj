@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\RateLimiter;
 
 test('login screen can be rendered', function (): void {
     $this->withoutExceptionHandling();
@@ -11,53 +11,109 @@ test('login screen can be rendered', function (): void {
 });
 
 test('users can authenticate using the login screen', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => true,
     ]);
-    dump($user->toArray());
-    $response = $this->post('/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertOk()->assertJsonPath('data.id', $user->id);
+});
+
+test('login attempts are rate limited by email and ip', function (): void {
+    $user = User::factory()->create(['approved' => true]);
+    $key = mb_strtolower($user->email).'|127.0.0.1';
+    RateLimiter::clear($key);
+
+    foreach (range(1, 5) as $_attempt) {
+        $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ])->assertUnprocessable();
+    }
+
+    expect(RateLimiter::tooManyAttempts($key, 5))->toBeTrue();
+
+    $this->postJson('/api/v1/auth/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertUnprocessable()->assertJsonValidationErrors('email');
+
+    $this->assertGuest();
+    RateLimiter::clear($key);
+});
+
+test('authenticated user responses expose only the public contract', function (): void {
+    $user = User::factory()->create(['approved' => true]);
+
+    $this->actingAs($user)
+        ->getJson('/api/v1/auth/user')
+        ->assertOk()
+        ->assertJsonStructure(['data' => ['id', 'name', 'email', 'email_verified_at', 'approved', 'isAdmin']])
+        ->assertJsonMissingPath('data.formula')
+        ->assertJsonMissingPath('data.phone_number')
+        ->assertJsonMissingPath('data.created_at');
 });
 
 test('users can`t authenticate using the login screen when approved field is false', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create([
         'approved' => false,
     ]);
-    dump($user->toArray());
-    $response = $this->post('/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
     $this->assertGuest();
-
+    $response->assertUnprocessable();
 });
 
 test('users can not authenticate with invalid password', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
-    $this->post('/login', [
+    $this->postJson('/api/v1/auth/login', [
         'email' => $user->email,
         'password' => 'wrong-password',
-    ]);
+    ])->assertUnprocessable()
+        ->assertJsonPath('errors.email.0', 'Неверный адрес электронной почты или пароль.');
 
     $this->assertGuest();
 });
 
 test('users can logout', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/logout');
+    $response = $this->actingAs($user)->postJson('/api/v1/auth/logout');
 
     $this->assertGuest();
-    $response->assertRedirect('/');
+    $response->assertOk();
+});
+
+test('a revoked approval blocks an existing authenticated session', function (): void {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $user->forceFill(['approved' => false])->save();
+
+    $this->getJson('/api/v1/auth/user')
+        ->assertForbidden()
+        ->assertJsonPath('message', 'Ваша учётная запись не одобрена.');
+
+    $this->assertGuest();
+});
+
+test('login without a trusted SPA origin fails cleanly', function (): void {
+    $user = User::factory()->create();
+
+    $this->withHeader('Origin', '')
+        ->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ])
+        ->assertStatus(419);
+
+    $this->assertGuest();
 });

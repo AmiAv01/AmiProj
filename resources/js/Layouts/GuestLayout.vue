@@ -1,19 +1,19 @@
 <template>
     <div
-        class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100"
+        class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-50 via-white to-emerald-100 px-4 py-8"
     >
         <div>
-            <inertia-link href="/">
+            <spa-link href="/">
                 <img
                     src="/logo2.png"
                     class="h-8"
                     alt="AmiAvto Logo"
                 />
-            </inertia-link>
+            </spa-link>
         </div>
 
         <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
+            class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white border border-green-100 shadow-lg overflow-hidden rounded-xl"
         >
             <slot />
         </div>

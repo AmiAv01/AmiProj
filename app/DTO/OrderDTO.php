@@ -2,7 +2,13 @@
 
 namespace App\DTO;
 
-class OrderDTO
+use App\Enums\OrderStatus;
+
+final readonly class OrderDTO
 {
-    public function __construct(public readonly int $totalPrice, public readonly string $status, public readonly int $userId) {}
+    public function __construct(
+        public OrderStatus $status,
+        public int $userId,
+        public ?string $comment = null,
+    ) {}
 }

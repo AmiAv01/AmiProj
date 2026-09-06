@@ -9,9 +9,8 @@
         </p>
 
         <div v-if="showDetails">
-            <!-- Изменено на grid-cols-6 -->
             <div class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center font-bold">
-                <div class="flex items-center justify-center text-left">Фото</div> <!-- Новая колонка -->
+                <div class="flex items-center justify-center text-left">Фото</div>
                 <div class="flex items-center justify-center text-left">Артикул</div>
                 <div class="flex items-center justify-center text-left">Название</div>
                 <div class="flex items-center justify-center text-left">Бренд</div>
@@ -19,13 +18,11 @@
                 <div class="flex items-center justify-center text-left"></div>
             </div>
 
-            <!-- Изменено на grid-cols-6 -->
             <div
                 v-for="(item, index) in details"
                 :key="index"
                 class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center"
             >
-                <!-- Отображение миниатюры -->
                 <div class="flex items-center justify-center">
                     <img
                         :src="item.imageUrl"
@@ -35,7 +32,6 @@
                 </div>
 
                 <div class="flex items-center justify-center">
-                    <!-- Если пользователь не авторизован, убираем ссылку на карточку товара, так как артикул скрыт звездками -->
                     <a
                         v-if="$page.props.auth.user"
                         :href="`../../catalog/product/${item.dt_invoice}`"
@@ -62,13 +58,61 @@
                 </div>
 
                 <div class="flex items-center justify-center">
+                    <!-- Если товар уже в корзине -->
+                    <div v-if="getCartItem(item.dt_id)" class="flex items-center gap-2">
+                        <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
+                            <button
+                                @click="decDetailCount(item.dt_id)"
+                                :disabled="getCartItem(item.dt_id).quantity <= CART_QUANTITY_MIN"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                                :title="minimumQuantityTitle"
+                            >
+                                -
+                            </button>
+                            <input
+                                type="number"
+                                :value="getCartItem(item.dt_id).quantity"
+                                @input="changeDetailQty(item.dt_id, $event.target.value)"
+                                @change="enforceDetailQty(item.dt_id, $event.target.value)"
+                                :min="CART_QUANTITY_MIN"
+                                :max="CART_QUANTITY_MAX"
+                                class="w-12 text-center border-none py-0.5 focus:outline-none font-semibold bg-transparent"
+                            />
+                            <button
+                                @click="incDetailCount(item.dt_id)"
+                                :disabled="getCartItem(item.dt_id).quantity >= CART_QUANTITY_MAX"
+                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <button
+                            @click="confirmDetailDelete(item.dt_id)"
+                            class="inline-flex h-8 w-8 items-center justify-center rounded border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                            title="Удалить товар из корзины"
+                            aria-label="Удалить товар из корзины"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                        </button>
+                        <spa-link
+                            href="/cart"
+                            class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-2 py-1 rounded transition-colors"
+                            title="Перейти в корзину"
+                        >
+                            В корзине
+                        </spa-link>
+                    </div>
+
+                    <!-- Если товара нет в корзине -->
                     <button
-                        v-if="item.stock_quantity && $page.props.auth.user"
+                        v-else-if="item.stock_quantity && $page.props.auth.user"
                         @click="addDetailItemToCart(item.dt_id)"
                         class="bg-green-700 hover:bg-green-600 text-white p-2.5 rounded-lg transition-colors flex items-center justify-center shadow-sm"
                         title="Добавить в корзину"
                     >
-                        <!-- Чистая SVG иконка тележки без лишнего текста -->
                         <svg
                             class="w-5 h-5"
                             fill="none"
@@ -91,14 +135,39 @@
                 <p>Деталировка отсутствует</p>
             </div>
         </div>
+
+        <!-- Кастомное модальное окно подтверждения удаления -->
+        <teleport to="body">
+            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">
+                        Вы действительно хотите удалить этот товар из корзины?
+                    </h3>
+                    <div class="flex justify-center gap-4">
+                        <button
+                            @click="proceedDelete"
+                            class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Да
+                        </button>
+                        <button
+                            @click="cancelDelete"
+                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors"
+                        >
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </teleport>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from "axios";
-import { useCartStore } from "@/Store/cartStore.js";
-import CartButton from '@/Components/CartButton.vue';
+import { useCartStore } from "@/Store/cartStore";
+import { CART_QUANTITY_MAX, CART_QUANTITY_MIN } from "@/Config/AppConfig";
 
 const props = defineProps({
     details: {
@@ -107,25 +176,109 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['itemAddedToCart']);
+const emit = defineEmits(['cart-notification']);
 
 const store = useCartStore();
 const showDetails = ref(false);
+const showDeleteModal = ref(false);
+const activeProductIdToDelete = ref(null);
+const minimumQuantityTitle = `Минимальное количество — ${CART_QUANTITY_MIN}`;
 
 const toggleDetails = () => {
     showDetails.value = !showDetails.value;
 };
 
+// Вычисляемая ассоциативная карта товаров для надежной реактивности
+const cartMap = computed(() => {
+    const map = {};
+    if (store.cartData) {
+        Object.values(store.cartData).forEach(item => {
+            map[item.dt_id] = item;
+        });
+    }
+    return map;
+});
+
+const getCartItem = (productId) => {
+    return cartMap.value[productId] || null;
+};
+
+const incDetailCount = (productId) => {
+    const cartItem = getCartItem(productId);
+    if (cartItem) {
+        store.changeDetailQuantity(productId, cartItem.quantity + 1);
+    }
+};
+
+const decDetailCount = (productId) => {
+    const cartItem = getCartItem(productId);
+    if (cartItem) {
+        if (cartItem.quantity > CART_QUANTITY_MIN) {
+            store.changeDetailQuantity(productId, cartItem.quantity - 1);
+        }
+    }
+};
+
+const changeDetailQty = (productId, val) => {
+    const parsed = parseInt(val);
+    if (isNaN(parsed)) {
+        return;
+    }
+    if (parsed < CART_QUANTITY_MIN) {
+        store.changeDetailQuantity(productId, CART_QUANTITY_MIN);
+        return;
+    }
+    store.changeDetailQuantity(productId, parsed);
+};
+
+const enforceDetailQty = (productId, val) => {
+    const parsed = parseInt(val);
+    store.changeDetailQuantity(productId, isNaN(parsed) ? CART_QUANTITY_MIN : parsed);
+};
+
+const confirmDetailDelete = (productId) => {
+    activeProductIdToDelete.value = productId;
+    showDeleteModal.value = true;
+};
+
+const proceedDelete = () => {
+    if (activeProductIdToDelete.value) {
+        store.deleteDetailFromCart(activeProductIdToDelete.value);
+    }
+    showDeleteModal.value = false;
+    activeProductIdToDelete.value = null;
+};
+
+const cancelDelete = () => {
+    if (activeProductIdToDelete.value) {
+        store.changeDetailQuantity(activeProductIdToDelete.value, CART_QUANTITY_MIN);
+    }
+    showDeleteModal.value = false;
+    activeProductIdToDelete.value = null;
+};
+
 const addDetailItemToCart = (productId) => {
     axios
-        .post("/cart", {
+        .post("/api/v1/cart", {
             id: productId,
+            quantity: CART_QUANTITY_MIN,
         })
         .then((res) => {
-            console.log(res);
-            store.incCartCount();
-            emit('itemAddedToCart');
+            if (res.data?.data?.cartCount !== undefined) {
+                store.setCartCount(res.data.data.cartCount);
+            } else {
+                store.incCartCount();
+            }
+            if (res.data?.data?.items) {
+                store.setDetails(res.data.data.items);
+            }
+            emit('cart-notification', { type: 'success', message: 'Добавлено в корзину' });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            emit('cart-notification', {
+                type: 'error',
+                message: err.response?.data?.message || 'Не удалось добавить товар в корзину.',
+            });
+        });
 };
 </script>

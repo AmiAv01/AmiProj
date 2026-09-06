@@ -49,7 +49,7 @@
 <script setup>
 import axios from "axios";
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const props = defineProps({
     title: {

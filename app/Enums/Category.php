@@ -9,8 +9,4 @@ enum Category: string
     case NEWS = 'news';
     case USERS = 'user';
 
-    public static function isValid(string $value): bool
-    {
-        return ! is_null(self::tryFrom($value));
-    }
 }

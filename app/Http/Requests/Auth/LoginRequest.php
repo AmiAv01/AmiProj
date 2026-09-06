@@ -30,19 +30,26 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'remember' => ['sometimes', 'boolean'],
         ];
     }
 
     /**
      * Attempt to authenticate the request's credentials.
      *
+     * @param  array<string, bool>  $additionalCredentials
+     *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(array $additionalCredentials = []): void
     {
+        abort_unless($this->hasSession(), 419, __('CSRF token mismatch.'));
+
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = array_merge($this->only('email', 'password'), $additionalCredentials);
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

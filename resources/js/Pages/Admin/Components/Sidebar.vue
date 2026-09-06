@@ -48,6 +48,6 @@
 
 <script setup>
 import AdminButton from "@/Components/AdminButton.vue";
-import {adminMenuItems} from "@/Store/index.js";
+import {adminMenuItems} from "@/Store/index";
 
 </script>

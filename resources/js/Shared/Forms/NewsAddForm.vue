@@ -7,6 +7,7 @@
         <div class="w-full">
             <form
                 class="bg-white shadow-md flex flex-col rounded px-8 pt-6 pb-8 "
+                @submit.prevent="addPost"
             >
                 <div class="mb-4">
                     <label
@@ -38,10 +39,11 @@
                     />
                 </div>
                 <button
-                    @click.prevent ="store.addPost(currentTitle, currentDescription)"
+                    type="submit"
+                    :disabled="isSubmitting"
                     class="bg-green-700 rounded-lg text-white px-5 py-2.5 mx-auto text-lg mt-4"
                 >
-                    {{ actionTitle }}
+                    {{ isSubmitting ? 'Добавление...' : actionTitle }}
                 </button>
             </form>
         </div>
@@ -50,7 +52,7 @@
 
 <script setup>
 import {ref} from "vue";
-import {useNewsStore} from "@/Store/newsStore.js";
+import {useNewsStore} from "@/Store/newsStore";
 
 const props = defineProps({
     isShow: {
@@ -63,10 +65,29 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['closeModal']);
+const emit = defineEmits(['closeModal', 'created']);
 const store = useNewsStore();
 const currentTitle = ref("");
 const currentDescription = ref("");
+const isSubmitting = ref(false);
+
+const addPost = async () => {
+    if (isSubmitting.value) {
+        return;
+    }
+
+    isSubmitting.value = true;
+
+    try {
+        await store.addPost(currentTitle.value, currentDescription.value);
+        currentTitle.value = "";
+        currentDescription.value = "";
+        emit("created");
+        closeModal();
+    } finally {
+        isSubmitting.value = false;
+    }
+};
 
 const closeModal = () => {
     emit("closeModal");

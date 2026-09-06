@@ -16,11 +16,11 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                     <tr v-for="order in orders" :key="order.id"
-                        @click="setLink(order.id)"
+                        @click="setLink(order.order_number)"
                         class="hover:bg-gray-50 cursor-pointer transition">
-                        <td class="px-6 py-4 font-semibold text-gray-900">{{ order.id }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-900">{{ order.order_number }}</td>
                         <td class="px-6 py-4">{{ new Date(order.created_at).toLocaleDateString() }}</td>
-                        <td class="px-6 py-4">{{ order.total_price }} BYN</td>
+                        <td class="px-6 py-4">{{ formatMoney(order.total_price) }}</td>
                         <td class="px-6 py-4">
                                 <span class="px-3 py-1 rounded-full text-sm"
                                       :class="order.status === 'Завершён' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'">
@@ -47,6 +47,7 @@
 <script setup>
 import Layout from "@/Shared/UserLayout.vue";
 import EmptyState from "@/Components/EmptyState.vue"; // Импортируем компонент
+import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({ orders: Array });
 

@@ -10,7 +10,12 @@ class CartFormCreateRequest extends FormRequest
     {
         return [
             'id' => 'required|integer|exists:detail,dt_id',
-            'quantity' => 'integer|min:1',
+            'quantity' => [
+                'sometimes',
+                'integer',
+                'min:'.config('cart.quantity.min'),
+                'max:'.config('cart.quantity.max'),
+            ],
         ];
     }
 

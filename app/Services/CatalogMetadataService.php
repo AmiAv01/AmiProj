@@ -10,10 +10,10 @@ class CatalogMetadataService
 {
     public function getMetadata(string $type, ?string $category = null): CatalogMetadataDto
     {
-        $configKey = $category ? "parts.filters.{$category}.$type" : "parts.filters.{$type}";
+        $configKey = $category ? "parts.filters.{$type}.{$category}" : "parts.filters.{$type}";
         $filters = config($configKey, []);
 
-        $titleKey = $category ? "title.{$category}_{$type}" : "title.{$type}";
+        $titleKey = $category ? "title.{$type}_{$category}" : "title.{$type}";
         $title = __($titleKey);
 
         return new CatalogMetadataDto($filters, $title);

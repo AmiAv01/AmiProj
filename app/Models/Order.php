@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\OrderNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,12 +15,27 @@ class Order extends Model
     public $table = 'order';
 
     protected $fillable = [
+        'order_number',
         'total_price',
         'status',
+        'comment',
         'session_id',
         'created_by',
         'updated_by',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Order $order): void {
+            if ($order->order_number !== null) {
+                return;
+            }
+
+            do {
+                $order->order_number = OrderNumber::generate();
+            } while (static::query()->where('order_number', $order->order_number)->exists());
+        });
+    }
 
     public function user(): BelongsTo
     {

@@ -35,7 +35,7 @@ const props = defineProps({
 let currencyValue = ref(0);
 
 function changeCurrency(){
-    axios.post(`/admin/resource/currency`, {currency: currencyValue.value})
+    axios.post(`/api/v1/admin/currency`, {currency: currencyValue.value})
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
 }
@@ -45,4 +45,3 @@ onMounted(() => {
 })
 
 </script>
-

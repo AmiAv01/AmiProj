@@ -4,21 +4,17 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 test('password can be updated', function (): void {
-    $this->withoutExceptionHandling();
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
-        ->from('/profile')
-        ->put('/password', [
+        ->putJson('/api/v1/profile/password', [
             'current_password' => 'password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $response->assertOk();
 
     $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
 });
@@ -28,14 +24,11 @@ test('correct password must be provided to update password', function (): void {
 
     $response = $this
         ->actingAs($user)
-        ->from('/profile')
-        ->put('/password', [
+        ->putJson('/api/v1/profile/password', [
             'current_password' => 'wrong-password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
-    $response
-        ->assertSessionHasErrors('current_password')
-        ->assertRedirect('/profile');
+    $response->assertUnprocessable()->assertJsonValidationErrors('current_password');
 });

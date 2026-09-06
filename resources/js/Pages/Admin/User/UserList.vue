@@ -10,7 +10,7 @@
                     >
                         <Search
                             :placeholder="`Найти пользователя`"
-                            :link="`/admin/resource/api/search?category=user&searchQ`"
+                            category="user"
                             @setData="searchData"
                         />
                     </div>

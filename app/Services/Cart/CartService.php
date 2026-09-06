@@ -15,7 +15,7 @@ final class CartService
             return Cart::firstOrCreate(['user_id' => $userId]);
         } catch (\Exception $e) {
             Log::error("Failed to get or create cart for user {$userId}", ['error' => $e]);
-            throw new CartOperationException('Failed to get or create cart: '.$e->getMessage());
+            throw new CartOperationException($e);
         }
     }
 
@@ -28,13 +28,13 @@ final class CartService
                         return [];
                     }
 
-                    $detail = $item->detail()->first();
+                    $detail = $item->detail;
 
                     return array_merge($item->toArray(), $detail ? $detail->toArray() : []);
                 })->toArray();
         } catch (\Exception $e) {
             Log::error("Failed to get cart items for cart {$cart->id}", ['error' => $e]);
-            throw new CartOperationException('Failed to get cart items: '.$e->getMessage());
+            throw new CartOperationException($e);
         }
     }
 
@@ -45,9 +45,9 @@ final class CartService
         return $this->getCartItems($cart);
     }
 
-    public function getCartQuantity(Cart $cart)
+    public function getCartQuantity(Cart $cart): int
     {
-        return $cart->items()->sum('quantity');
+        return (int) $cart->items()->sum('quantity');
     }
 
     public function clearCart(Cart $cart): void

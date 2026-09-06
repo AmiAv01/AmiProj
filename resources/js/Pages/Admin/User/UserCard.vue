@@ -69,9 +69,8 @@ console.log(props.user)
 
 const changeFormula = () => {
     axios
-        .put(`/admin/resource/users/${props.user.id}`, {formula: newFormula.value})
+        .put(`/api/v1/admin/users/${props.user.id}`, {formula: newFormula.value})
         .then(res => console.log(res))
         .catch(err => console.log(err))
 }
 </script>
-
