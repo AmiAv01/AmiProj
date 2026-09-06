@@ -25,7 +25,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.1",
         "debounce": "^2.2.0",
-        "flowbite": "^2.5.2",
+        "flowbite": "^4.0.2",
         "lodash.debounce": "^4.0.8",
         "pinia": "^2.3.0",
         "vuex": "^4.1.0"
