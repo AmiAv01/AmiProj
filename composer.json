@@ -20,7 +20,7 @@
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^v3.14.10",
+        "barryvdh/laravel-debugbar": "^v4.4.3",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.68",
         "knuckleswtf/scribe": "^5.11",
