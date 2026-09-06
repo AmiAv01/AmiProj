@@ -2,12 +2,27 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
+    {
+        $lock = Cache::lock('dbf-import:sync', 7200);
+        if (! $lock->get()) {
+            throw new RuntimeException('A DBF import is running. Wait for it to finish, then retry the migration.');
+        }
+
+        try {
+            $this->migrateSchemaAndData();
+        } finally {
+            $lock->release();
+        }
+    }
+
+    private function migrateSchemaAndData(): void
     {
         if (! Schema::hasTable('dbf_import_files')) {
             Schema::create('dbf_import_files', function (Blueprint $table): void {
