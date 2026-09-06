@@ -42,7 +42,7 @@ RUN composer dump-autoload --no-dev --classmap-authoritative --no-scripts \
     && php artisan package:discover --ansi
 
 
-FROM node:22-alpine AS frontend
+FROM node:26-alpine AS frontend
 
 WORKDIR /app
 
