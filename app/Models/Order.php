@@ -27,7 +27,7 @@ class Order extends Model
     protected static function booted(): void
     {
         static::creating(function (Order $order): void {
-            if ($order->order_number !== null) {
+            if ($order->getAttribute('order_number') !== null) {
                 return;
             }
 
