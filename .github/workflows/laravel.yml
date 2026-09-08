@@ -19,7 +19,7 @@ jobs:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate composer.json
         run: composer validate --strict
       - name: Validate executable scripts
@@ -30,7 +30,7 @@ jobs:
     name: Secret Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Gitleaks secret scan
@@ -46,7 +46,7 @@ jobs:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup cache
         uses: actions/cache@v4
@@ -75,7 +75,7 @@ jobs:
     name: Frontend Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
@@ -116,7 +116,7 @@ jobs:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup cache
         uses: actions/cache@v4
@@ -174,7 +174,7 @@ jobs:
           --health-timeout=5s
           --health-retries=10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
@@ -204,7 +204,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [validate, frontend]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate production Docker target
         run: docker build --target production --tag "ami:${GITHUB_SHA}" .
 
@@ -218,7 +218,7 @@ jobs:
       group: production-deploy
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.4'
