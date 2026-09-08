@@ -10,7 +10,7 @@ FAILED=0
 for DBF_FILE in \
     FIRMS.DBF \
     ASS.DBF \
-    OEMS.DBF \
+    OEMS_OUT.DBF \
     ALT_CZ.DBF \
     ROZ_CZ.DBF \
     DATA.DBF \

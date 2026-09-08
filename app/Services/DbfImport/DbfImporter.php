@@ -14,7 +14,10 @@ final class DbfImporter
     private ?LegacyCrypt $crypt = null;
 
     /** @var list<string> */
-    public const FILES = ['FIRMS.DBF', 'ASS.DBF', 'OEMS.DBF', 'ALT_CZ.DBF', 'ROZ_CZ.DBF', 'DATA.DBF', 'stk.dbf'];
+    public const FILES = ['FIRMS.DBF', 'ASS.DBF', 'OEMS_OUT.DBF', 'ALT_CZ.DBF', 'ROZ_CZ.DBF', 'DATA.DBF', 'stk.dbf'];
+
+    /** @var array<string, string> */
+    private const FILE_ALIASES = ['OEMS.DBF' => 'OEMS_OUT.DBF'];
 
     /** @var array<string, string> */
     private const PART_TYPES = [
@@ -160,7 +163,7 @@ final class DbfImporter
                 'row' => ['fr_code' => $this->integer($record, 'CODE'), 'fr_name' => $this->text($record, 'TYPE', true), 'created_at' => $timestamp, 'updated_at' => $timestamp],
             ]],
             'ASS.DBF' => $this->detailRows($record, $timestamp),
-            'OEMS.DBF' => [$this->oemRow($record, $timestamp)],
+            'OEMS_OUT.DBF' => [$this->oemRow($record, $timestamp)],
             'ALT_CZ.DBF' => $this->compatibleRows('alt_cz', $fields, $record, false, $timestamp),
             'ROZ_CZ.DBF' => $this->compatibleRows('roz_cz', $fields, $record, true, $timestamp),
             'DATA.DBF' => [$this->priceRow($record, $timestamp)],
@@ -269,8 +272,16 @@ final class DbfImporter
 
     private function canonicalFilename(string $filename): string
     {
+        $basename = basename($filename);
+
         foreach (self::FILES as $known) {
-            if (strcasecmp($known, basename($filename)) === 0) {
+            if (strcasecmp($known, $basename) === 0) {
+                return $known;
+            }
+        }
+
+        foreach (self::FILE_ALIASES as $alias => $known) {
+            if (strcasecmp($alias, $basename) === 0) {
                 return $known;
             }
         }

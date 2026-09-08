@@ -19,7 +19,8 @@ DBF_PROCESS_MEMORY_LIMIT=256M
 of ZIP archives; all top-level ZIP files are searched automatically. To use one
 specific archive or another archive directory, set `DBF_ARCHIVE_PATH`. Never commit the
 encryption key or database credentials. In Docker Compose, `DBF_HOST_PATH` is
-mounted read-only at `/data/dbf`.
+mounted read-only at `/data/dbf`. The OEM source is expected to be named
+`OEMS_OUT.DBF`; filename matching is case-insensitive.
 
 ## Commands
 
