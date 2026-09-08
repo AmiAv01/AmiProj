@@ -40,6 +40,27 @@ function createCompactAltDbf(string $path, string $tmp = 'TMP-1'): void
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
+function createOemDbf(string $path): void
+{
+    $fields = [
+        ['INVOICE', 'C', 20, 0],
+        ['PARENT', 'C', 20, 0],
+        ['OEM', 'C', 20, 0],
+        ['BRAND', 'C', 20, 0],
+        ['TYPE_RUS', 'C', 40, 0],
+    ];
+    $headerLength = 32 + (32 * count($fields)) + 1;
+    $recordLength = 1 + array_sum(array_column($fields, 2));
+    $header = chr(0x03).pack('CCC', 126, 8, 30).pack('Vvv', 1, $headerLength, $recordLength).str_repeat("\0", 20);
+
+    foreach ($fields as [$fieldName, $type, $length, $decimals]) {
+        $header .= str_pad($fieldName, 11, "\0").$type.str_repeat("\0", 4).chr($length).chr($decimals).str_repeat("\0", 14);
+    }
+
+    $record = ' '.str_pad('INV-1', 20).str_pad('ROOT', 20).str_pad('OEM-1', 20).str_pad('BOSCH', 20).str_pad('Generator', 40);
+    file_put_contents($path, $header."\x0D".$record."\x1A");
+}
+
 it('inserts, updates, and skips unchanged DBF records', function (): void {
     $directory = sys_get_temp_dir().'/ami_dbf_test_'.bin2hex(random_bytes(6));
     mkdir($directory, 0755, true);
@@ -148,6 +169,30 @@ it('discovers a DBF inside one of several source ZIP archives', function (): voi
     } finally {
         @unlink($dbfPath);
         @unlink($zipPath);
+        @rmdir($directory);
+    }
+});
+
+it('imports the OEM source from its OEMS_OUT filename case-insensitively', function (): void {
+    $directory = sys_get_temp_dir().'/ami_oem_dbf_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/oems_out.dbf';
+
+    try {
+        createOemDbf($path);
+
+        $this->artisan('dbf:sync', ['--file' => ['OEMS.DBF'], '--source' => $directory])->assertSuccessful();
+
+        $this->assertDatabaseHas('oems', [
+            'dt_invoice' => 'INV-1',
+            'dt_parent' => 'ROOT',
+            'dt_oem' => 'OEM-1',
+            'fr_code' => 'BOSCH',
+            'dt_typec' => 'Generator',
+        ]);
+        $this->assertDatabaseHas('dbf_import_files', ['filename' => 'OEMS_OUT.DBF']);
+    } finally {
+        @unlink($path);
         @rmdir($directory);
     }
 });
