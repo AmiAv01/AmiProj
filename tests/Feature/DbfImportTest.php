@@ -40,11 +40,11 @@ function createCompactAltDbf(string $path, string $tmp = 'TMP-1'): void
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
-function createOemDbf(string $path): void
+function createOemDbf(string $path, string $parent = 'ROOT'): void
 {
     $fields = [
         ['INVOICE', 'C', 20, 0],
-        ['PARENT', 'C', 20, 0],
+        ['PARENT', 'C', 80, 0],
         ['OEM', 'C', 20, 0],
         ['BRAND', 'C', 20, 0],
         ['TYPE_RUS', 'C', 40, 0],
@@ -57,7 +57,7 @@ function createOemDbf(string $path): void
         $header .= str_pad($fieldName, 11, "\0").$type.str_repeat("\0", 4).chr($length).chr($decimals).str_repeat("\0", 14);
     }
 
-    $record = ' '.str_pad('INV-1', 20).str_pad('ROOT', 20).str_pad('OEM-1', 20).str_pad('BOSCH', 20).str_pad('Generator', 40);
+    $record = ' '.str_pad('INV-1', 20).str_pad($parent, 80).str_pad('OEM-1', 20).str_pad('BOSCH', 20).str_pad('Generator', 40);
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
@@ -179,13 +179,14 @@ it('imports the OEM source from its OEMS_OUT filename case-insensitively', funct
     $path = $directory.'/oems_out.dbf';
 
     try {
-        createOemDbf($path);
+        $parent = 'A manufacturer name longer than fifteen characters';
+        createOemDbf($path, $parent);
 
         $this->artisan('dbf:sync', ['--file' => ['OEMS.DBF'], '--source' => $directory])->assertSuccessful();
 
         $this->assertDatabaseHas('oems', [
             'dt_invoice' => 'INV-1',
-            'dt_parent' => 'ROOT',
+            'dt_parent' => $parent,
             'dt_oem' => 'OEM-1',
             'fr_code' => 'BOSCH',
             'dt_typec' => 'Generator',
