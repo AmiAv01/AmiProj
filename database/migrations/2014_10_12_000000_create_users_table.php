@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('isAdmin')->default(0);
-            $table->string('phone_number');
             $table->boolean('approved')->default(false);
             $table->string('formula', 255)->default(Crypt::encrypt('O'));
             $table->rememberToken();
