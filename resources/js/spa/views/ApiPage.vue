@@ -59,7 +59,35 @@ watch(() => route.fullPath, (_path, _previousPath, onCleanup) => {
 </script>
 
 <template>
-  <div v-if="loading" class="p-8 text-center">Loading…</div>
+  <div
+    v-if="loading"
+    class="flex min-h-screen items-center justify-center"
+    role="status"
+    aria-live="polite"
+  >
+    <svg
+      class="h-12 w-12 animate-spin text-green-700"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-20"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      />
+      <path
+        class="opacity-90"
+        fill="currentColor"
+        d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4Z"
+      />
+    </svg>
+    <span class="sr-only">Загрузка страницы…</span>
+  </div>
   <div v-else-if="error" class="p-8 text-center text-red-700">{{ error }}</div>
   <component :is="view" v-else v-bind="props" />
 </template>

@@ -3,17 +3,17 @@
         <push
             v-if="notification.show"
             :isShow="notification.show"
-            title="Новость успешно добавлена"
+            :title="notification.message"
             @hide="hideNotification"
         />
-        <section class="p-3 sm:p-5">
-            <div class="mx-auto  px-4 lg:px-12">
-                <div
-                    class="bg-white w-full 2xl:w-[80%]  relative shadow-md sm:rounded-lg overflow-hidden"
-                >
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-                    >
+        <section class="admin-content">
+            <header class="admin-page-header">
+                <p class="text-sm font-semibold uppercase tracking-[0.14em] text-green-700">Контент</p>
+                <h1 class="admin-page-title">Новости</h1>
+                <p class="admin-page-description">Публикуйте новости компании и редактируйте уже размещённые материалы.</p>
+            </header>
+            <div class="admin-panel">
+                    <div class="admin-panel-header">
                         <Search
                             :placeholder="`Найти новость`"
                             category="news"
@@ -21,20 +21,18 @@
                         />
                         <button
                             @click="showModal"
-                            class="flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center max-w-[400px]  py-2 px-4"
+                            class="admin-button-primary w-full sm:w-auto"
                         >
+                            <svg class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 4a.75.75 0 0 1 .75.75v4.5h4.5a.75.75 0 0 1 0 1.5h-4.5v4.5a.75.75 0 0 1-1.5 0v-4.5h-4.5a.75.75 0 0 1 0-1.5h4.5v-4.5A.75.75 0 0 1 10 4Z" /></svg>
                             Добавить
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table
-                            class="w-full text-sm text-left text-gray-500 "
-                        >
-                            <thead
-                                class="text-xs text-gray-700  bg-gray-50 "
-                            >
+                        <table class="admin-table min-w-[900px]">
+                            <thead>
                                 <tr>
-                                    <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>
+                                    <th scope="col" v-for="columnName in columnNames" :key="columnName">{{columnName}}</th>
+                                    <th scope="col"><span class="sr-only">Действия</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,16 +40,18 @@
                                     v-for="(post) in store.newsData.data"
                                     :post="post"
                                     :key="post.id"
+                                    @updated="showNotification('Изменения сохранены')"
                                 />
                             </tbody>
                         </table>
                     </div>
-                    <Pagination :links="store.newsData.links" />
+                    <div class="border-t border-slate-100 px-5 pb-6">
+                        <Pagination :links="store.newsData.links" />
+                    </div>
                 </div>
-            </div>
             <NewsAddForm
                 @closeModal="isShow = false"
-                @created="showNotification"
+                @created="showNotification('Новость успешно добавлена')"
                 :isShow="isShow"
                 :actionTitle="`Добавить`"
             />
@@ -77,7 +77,7 @@ const props = defineProps({
 
 const store = useNewsStore();
 const isShow = ref(false);
-const notification = ref({ show: false });
+const notification = ref({ show: false, message: '' });
 let columnNames = ['#', 'Заголовок', 'Дата', 'Описание', 'Автор'];
 
 store.newsData = props.news;
@@ -87,7 +87,8 @@ function searchData(data) {
 function showModal() {
     isShow.value = true;
 }
-function showNotification() {
+function showNotification(message) {
+    notification.value.message = message;
     notification.value.show = true;
 }
 function hideNotification(show) {

@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class OrderCreated extends Mailable
 {
@@ -36,6 +37,11 @@ class OrderCreated extends Mailable
                 'order' => $this->order,
                 'currencyRate' => $this->currencyRate,
                 'currencyCode' => config('currency.display_code'),
+                'confirmationUrl' => URL::temporarySignedRoute(
+                    'orders.confirm',
+                    now()->addDays(7),
+                    ['order' => $this->order->getKey()],
+                ),
             ],
         );
     }

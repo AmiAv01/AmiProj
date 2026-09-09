@@ -15,6 +15,13 @@
     @endif
     <p style="margin:0 0 20px;"><strong>Дата заказа:</strong> {{ $order->created_at?->format('d.m.Y H:i') }}</p>
 
+    <div style="margin:24px 0;text-align:center;">
+        <a href="{{ $confirmationUrl }}" style="display:inline-block;padding:14px 24px;border-radius:6px;background:#238636;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;">
+            Подтвердить заказ
+        </a>
+        <p style="margin:10px 0 0;color:#666666;font-size:12px;">Ссылка действительна 7 дней.</p>
+    </div>
+
     @if($currencyRate !== null)
         <h2 style="margin:24px 0 16px;font-size:20px;">Курс пересчёта {{ number_format((float) $currencyRate, 2, ',', ' ') }}</h2>
     @endif

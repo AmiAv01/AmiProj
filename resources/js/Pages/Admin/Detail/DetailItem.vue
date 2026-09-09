@@ -1,10 +1,8 @@
 <template>
-    <tr
-        class="border-b "
-    >
+    <tr>
         <th
             scope="row"
-            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
+            class="whitespace-nowrap font-semibold text-slate-900"
         >
             {{ detail.dt_id }}
         </th>

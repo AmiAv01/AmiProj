@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ConfirmOrderController;
 use Illuminate\Support\Facades\Route;
 
 $spa = fn () => view('spa');
@@ -37,6 +38,9 @@ Route::get('/profile', $spa)->name('profile.edit');
 Route::get('/cart', $spa)->name('cart.index');
 Route::get('/order', $spa)->name('order.index');
 Route::get('/order/{id}', $spa)->name('order.show');
+Route::get('/orders/{order}/confirm', ConfirmOrderController::class)
+    ->middleware(['signed', 'throttle:10,1'])
+    ->name('orders.confirm');
 
 Route::get('/admin/resource/login', $spa)->name('admin.login');
 Route::get('/admin/resource/dashboard', $spa)->name('admin.dashboard');

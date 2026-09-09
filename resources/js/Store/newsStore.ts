@@ -32,26 +32,16 @@ export const useNewsStore = defineStore('news', {
 
             this.setNews(res.data.data.items);
         },
-        deletePost(id: number){
-            axios.delete<NewsPayload>(`/api/v1/admin/news/${id}`)
-                .then(res => {
-                    console.log(res.data)
-                    this.setNews(res.data.data.items)
-                })
-                .catch(err => console.log(err))
+        async deletePost(id: number){
+            const res = await axios.delete<NewsPayload>(`/api/v1/admin/news/${id}`);
+            this.setNews(res.data.data.items);
         },
-        editPost(id: number, title: string, description: string) {
-            console.log(id);
-            axios
-                .patch<NewsPayload>(`/api/v1/admin/news/${id}`, {
+        async editPost(id: number, title: string, description: string) {
+            const res = await axios.patch<NewsPayload>(`/api/v1/admin/news/${id}`, {
                     title,
                     description,
-                })
-                .then(res => {
-                    console.log(res.data)
-                    this.setNews(res.data.data.items)
-                })
-                .catch((err) => console.log(err));
+                });
+            this.setNews(res.data.data.items);
         }
     }
 })

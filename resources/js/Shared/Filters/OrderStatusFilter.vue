@@ -1,37 +1,38 @@
 <template>
-    <div class="rounded-[15px] h-[350px] bg-green-300">
-        <p
-            class="text-3xl bg-green-700 text-white rounded-tr-[15px] rounded-tl-[15px] font-bold p-4"
-        >
-            Выбрать статус
-        </p>
-        <form action="" class="h-[250px] flex flex-col">
-            <ul :class="`h-[200px] overflow-y-auto p-6 bg-green-300`">
+    <aside class="admin-panel xl:sticky xl:top-24">
+        <div class="border-b border-slate-200 px-5 py-5">
+            <p class="text-lg font-semibold text-slate-900">Статус заказа</p>
+            <p class="mt-1 text-sm text-slate-500">Отфильтруйте список</p>
+        </div>
+        <form class="flex flex-col p-5" @submit.prevent>
+            <ul class="space-y-2">
                 <li
                     v-for="(status, index) in statuses"
                     :key="index"
-                    class="py-[4px]"
+                    class="rounded-lg transition hover:bg-green-50"
                 >
-                    <input
-                        type="checkbox"
-                        :value="status"
-                        class="mr-2 rounded-[5px] w-5 h-5 focus:ring-0 focus:outline-none cursor-pointer"
-                        v-model="checked"
-                    />
-                    <label class="text-lg">{{ status }}</label>
+                    <label class="flex cursor-pointer items-center px-2 py-2.5 text-base text-slate-700">
+                        <input
+                            type="checkbox"
+                            :value="status"
+                            class="mr-3 h-5 w-5 cursor-pointer rounded border-slate-300 text-green-700 focus:ring-green-600"
+                            v-model="checked"
+                        />
+                        <span>{{ status }}</span>
+                    </label>
                 </li>
             </ul>
             <menu-button
-                :href="`${this.currentUrl}?filter[id]=${checked.join()}`"
-                :attributes="`px-5 py-2.5 mx-auto text-lg mt-4`"
+                :href="`${currentUrl}?filter[id]=${checked.join()}`"
+                :attributes="`justify-center px-5 py-2.5 w-full text-base mt-5`"
             >
-                Подобрать
+                Применить<span v-if="checked.length"> ({{ checked.length }})</span>
             </menu-button>
-            <button class="text-lg mx-auto" @click="resetChecked">
+            <button type="button" class="mx-auto mt-3 text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 transition hover:text-red-700" @click="resetChecked">
                 Сбросить фильтр
             </button>
         </form>
-    </div>
+    </aside>
 </template>
 
 <script setup>
@@ -44,6 +45,9 @@ const checked = ref([]);
 
 onMounted(() => {
     currentUrl.value = window.location.pathname;
-    console.log(`Current URL => ${currentUrl.value}`);
 })
+
+const resetChecked = () => {
+    checked.value = [];
+};
 </script>

@@ -17,6 +17,7 @@ test('internal command creates an approved and verified user', function (): void
     $user = User::where('email', 'internal@example.com')->firstOrFail();
 
     expect($user->name)->toBe('Internal User')
+        ->and($user->notification_email)->toBe('internal@example.com')
         ->and($user->approved)->toBeTrue()
         ->and($user->isAdmin)->toBeFalse()
         ->and($user->email_verified_at)->not->toBeNull()

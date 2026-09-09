@@ -1,54 +1,44 @@
 <template>
-    <div>
-        <div
-            class="flex overflow-y-auto flex-col min-[500px]:flex-row min-[500px]:items-center gap-5 py-6 border-b border-gray-200 group"
-        >
-            <div class="w-full md:max-w-[126px]">
+    <div class="grid grid-cols-1 gap-5 py-6 first:pt-0 border-b border-gray-200 sm:grid-cols-[112px_minmax(0,1fr)] lg:grid-cols-[126px_minmax(0,1fr)_minmax(340px,372px)] lg:items-center group">
+            <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-xl bg-gray-50 lg:h-[126px] lg:w-[126px]">
                 <img
                     src="/no-photo--lg.png"
-                    alt="perfume bottle image"
-                    class="mx-auto"
+                    :alt="`Изображение товара ${editTitle(item.dt_typec)} ${item.dt_invoice}`"
+                    class="h-full w-full object-contain"
                 />
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-4 w-full">
-                <div class="md:col-span-2">
-                    <div class="flex flex-col max-[500px]:items-center gap-3">
-                        <p class="font-semibold text-base leading-7 text-black">
-                            {{ editTitle(item.dt_typec)}} {{ item.dt_invoice }}
-                        </p>
-                        <p class="font-normal text-base text-gray-500">
-                            Артикул: {{ item.dt_cargo }}
-                        </p>
-                        <p
-                            class="font-normal text-base leading-7 text-gray-500"
-                        >
-                            Бренд:
-                            {{ item.fr_code }}
-                        </p>
-                        <p
-                            class="font-medium text-base leading-7 text-gray-600 transition-all duration-300 "
-                        >
-                            {{ formatMoney(item.price) }}
-                        </p>
-                    </div>
+
+            <div class="min-w-0">
+                <p class="font-semibold text-lg leading-7 text-gray-900">
+                    {{ editTitle(item.dt_typec)}} {{ item.dt_invoice }}
+                </p>
+                <div class="mt-3 space-y-1.5 text-base leading-7 text-gray-500">
+                    <p>Артикул: {{ item.dt_cargo }}</p>
+                    <p>Бренд: {{ item.fr_code }}</p>
+                    <p>{{ formatMoney(item.price) }} / шт.</p>
                 </div>
+            </div>
+
+            <div class="grid grid-cols-[minmax(0,1fr)_44px] items-center gap-3 sm:col-start-2 min-[500px]:grid-cols-[188px_minmax(108px,1fr)_44px] lg:col-start-auto">
                 <InputQuantity
+                    class="col-span-2 min-[500px]:col-span-1"
                     :quantity="Number(item.quantity)"
                     :detailId="Number(item.dt_id)"
                 />
-                <div
-                    class="flex md:flex-col mt-6 md:mt-0 flex-row justify-center ml-[50px] items-center"
-                >
-                    <p
-                        class="font-bold text-lg mr-2 md:mr-0 md:mb-2 text-gray-600 transition-all duration-300 group-hover:text-green-600"
+                <p class="text-left font-bold text-lg text-gray-800 min-[500px]:text-right">
+                    {{ formatMoney(parseFloat(item.price) * item.quantity) }}
+                </p>
+                    <button
+                        type="button"
+                        @click="showDeleteModal = true"
+                        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                        title="Удалить товар из корзины"
+                        aria-label="Удалить товар из корзины"
                     >
-                        {{ formatMoney(parseFloat(item.price) * item.quantity) }}
-                    </p>
-                    <button @click="showDeleteModal = true" class="cursor-pointer hover:text-red-600 transition-colors" title="Удалить товар из корзины">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -64,9 +54,7 @@
                             <line x1="14" y1="11" x2="14" y2="17"></line>
                         </svg>
                     </button>
-                </div>
             </div>
-        </div>
 
         <teleport to="body">
             <div

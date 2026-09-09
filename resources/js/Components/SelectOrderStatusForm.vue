@@ -1,6 +1,6 @@
 <template>
-    <form class="max-w-sm ">
-        <select @change="changeOrderStatus" v-model="selectedValue" :disabled="processing" class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+    <form class="w-full">
+        <select @change="changeOrderStatus" v-model="selectedValue" :disabled="processing" class="admin-input">
             <option v-for="statusOption in ORDER_STATUSES" :key="statusOption" :value="statusOption">
                 {{ statusOption }}
             </option>

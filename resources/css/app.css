@@ -2,6 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .admin-content {
+        @apply mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8;
+    }
+
+    .admin-page-header {
+        @apply mb-6 flex flex-col gap-2 sm:mb-8;
+    }
+
+    .admin-page-title {
+        @apply text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl;
+    }
+
+    .admin-page-description {
+        @apply max-w-3xl text-base leading-7 text-slate-500;
+    }
+
+    .admin-panel {
+        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .admin-panel-header {
+        @apply flex flex-col gap-4 border-b border-slate-200 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6;
+    }
+
+    .admin-section-title {
+        @apply text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl;
+    }
+
+    .admin-button-primary {
+        @apply inline-flex min-h-11 items-center justify-center rounded-xl bg-green-700 px-5 py-2.5 text-base font-semibold text-white shadow-sm transition hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .admin-input {
+        @apply min-h-11 w-full rounded-xl border-slate-300 bg-white px-4 text-base text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-green-600 focus:ring-green-600;
+    }
+
+    .admin-table {
+        @apply w-full text-left text-base text-slate-600;
+    }
+
+    .admin-table thead {
+        @apply bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        @apply px-5 py-4;
+    }
+
+    .admin-table tbody tr {
+        @apply border-t border-slate-100 transition-colors;
+    }
+
+    .admin-table tbody tr:hover {
+        @apply bg-green-50/60;
+    }
+
+    .admin-empty-state {
+        @apply flex min-h-40 items-center justify-center px-6 py-10 text-center text-lg text-slate-400;
+    }
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

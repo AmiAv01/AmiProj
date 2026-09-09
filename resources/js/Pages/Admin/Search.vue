@@ -1,12 +1,12 @@
 <template>
-    <div class="w-full md:w-1/2">
-        <form class="flex items-center">
-            <label for="simple-search" class="sr-only">Search</label>
+    <div class="w-full md:max-w-xl">
+        <form class="flex items-center" @submit.prevent>
+            <label for="admin-search" class="sr-only">Поиск</label>
             <div class="relative w-full">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg
                         aria-hidden="true"
-                        class="w-5 h-5 text-gray-500 "
+                        class="h-5 w-5 text-slate-400"
                         fill="currentColor"
                         viewbox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
@@ -19,14 +19,14 @@
                     </svg>
                 </div>
                 <input
-                    type="text"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 focus:ring-primary-500 "
+                    id="admin-search"
+                    type="search"
+                    class="admin-input pl-10"
                     :placeholder="`${placeholder}`"
-                    required
                     @input="getSearchingDetails"
                     v-model="searchQuery"
                 />
-                <p v-if="error" class="mt-2 text-sm text-red-700" role="alert">{{ error }}</p>
+                <p v-if="error" class="mt-2 text-sm font-medium text-red-700" role="alert">{{ error }}</p>
             </div>
         </form>
     </div>
@@ -70,7 +70,7 @@ const getSearchingDetails = debounce(async () => {
             error.value = 'Не удалось выполнить поиск.';
         }
     }
-}, 1500);
+}, 400);
 
 onUnmounted(() => {
     getSearchingDetails.cancel();

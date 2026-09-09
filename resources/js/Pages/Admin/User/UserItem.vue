@@ -1,8 +1,15 @@
 <template>
-    <tr class="border-b ">
+    <tr
+        class="cursor-pointer focus-within:bg-green-50 focus:outline-none"
+        role="link"
+        tabindex="0"
+        @click="openUser"
+        @keydown.enter="openUser"
+        @keydown.space.prevent="openUser"
+    >
         <th
             scope="row"
-            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
+            class="whitespace-nowrap font-semibold text-slate-900"
         >
             <a :href="`/admin/resource/users/${user.id}`">
                 {{ user.id }}
@@ -10,15 +17,21 @@
         </th>
         <td class="px-4 py-3">{{ user.name }}</td>
         <td class="px-4 py-3">{{ user.email }}</td>
-        <td class="px-4 py-3">
-            {{ (user.isAdmin === 1) ? "Да" : "Нет" }}
+        <td>
+            <span class="inline-flex rounded-full px-2.5 py-1 text-sm font-semibold" :class="user.isAdmin === 1 ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'">
+                {{ (user.isAdmin === 1) ? "Да" : "Нет" }}
+            </span>
         </td>
 
-        <td class="px-4 py-3 flex items-center justify-end">
+        <td
+            class="flex items-center justify-end gap-2"
+            @click.stop
+            @keydown.stop
+        >
             <button
                 :id="`${user.id}-button`"
                 :data-dropdown-toggle="`${user.id}`"
-                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none "
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600"
                 type="button"
             >
                 <svg
@@ -35,36 +48,31 @@
             </button>
             <div
                 :id="`${user.id}`"
-                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow "
+                class="z-10 hidden w-44 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-xl"
             >
                 <div class="py-1">
                     <button
                         @click="deleteUser(user.id)"
-                        class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 "
+                        class="flex w-full px-4 py-2.5 text-sm text-red-700 hover:bg-red-50"
                     >
                         Удалить
                     </button>
                 </div>
             </div>
-            <button @click="approveUser(user.id)" v-if="!user.approved" class="`flex items-center text-white bg-green-700  hover:bg-green-800  font-medium rounded-lg  text-center p-2 ml-2`">Подтвердить</button>
-            <MenuButton/>
+            <button @click="approveUser(user.id)" v-if="!user.approved" class="inline-flex min-h-10 items-center rounded-lg bg-green-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">Подтвердить</button>
         </td>
     </tr>
 </template>
 
 <script setup>
-import MenuButton from "@/Components/MenuButton.vue";
-
 const props = defineProps({
     user: {
         type: Object,
         default: null,
     }});
 
-let isShow = false;
-
-function showModal() {
-    this.isShow = true;
+function openUser() {
+    window.location.href = `/admin/resource/users/${props.user.id}`;
 }
 
 function deleteUser(id){

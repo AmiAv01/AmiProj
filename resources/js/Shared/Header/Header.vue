@@ -10,7 +10,7 @@
                 >
                     <img
                         src="/logo2.png"
-                        class="h-8"
+                        class="h-10"
                         alt="AmiAvto Logo"
                     />
                 </a>

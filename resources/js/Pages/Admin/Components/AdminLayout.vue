@@ -1,12 +1,8 @@
 <template>
-    <div class="antialiased bg-gray-50 ">
-        <!-- navbar start -->
+    <div class="min-h-screen bg-slate-50 text-[17px] text-slate-700 antialiased">
         <Navbar />
-        <!-- end -->
-        <!-- Sidebar -->
         <Sidebar />
-        <!-- end -->
-        <main class="p-4 ml-0  lg:ml-64 h-auto pt-20">
+        <main class="min-h-screen pt-[72px] lg:ml-64">
             <slot />
         </main>
     </div>
@@ -17,7 +13,7 @@ import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import Navbar from './Navbar.vue'
 import Sidebar from './Sidebar.vue'
-// initialize components based on data attribute selectors
+
 onMounted(() => {
     initFlowbite();
 })

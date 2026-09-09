@@ -1,18 +1,21 @@
 <template>
-    <div class="bg-slate-900 py-4 sm:py-32">
-        <div class="mx-auto max-w-8xl px-6 lg:px-2">
+    <section class="bg-slate-900 py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-4 md:px-5 lg:px-6">
             <h2
-                class="mx-auto text-center max-w-7xl text-6xl font-semibold text-white"
+                class="mx-auto max-w-4xl text-center text-3xl font-bold leading-tight text-white sm:text-4xl"
             >
-                Мы являемся импортерами в РБ запчастей следующих брэндов
+                Мы являемся импортёрами запчастей в Беларуси
             </h2>
-            <div class="w-full mt-[45px] flex flex-wrap justify-center gap-x-4">
+            <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-7 text-slate-300">
+                Работаем напрямую с проверенными производителями
+            </p>
+            <div class="mt-10 grid w-full grid-cols-1 gap-5 md:grid-cols-3">
                 <div
-                    class="flex flex-col  items-center rounded-[15px] px-12 py-8"
+                    class="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="w-[300px] h-[120px] fill-white"
+                        class="h-24 w-full max-w-[240px] fill-white"
                         viewBox="0 0 920.000000 372.000000"
                         preserveAspectRatio="xMidYMid meet"
                     >
@@ -231,14 +234,14 @@ l-25 0 0 -190 0 -190 25 0 25 0 0 120 c0 87 4 131 16 160 17 43 61 74 88 64 8
                         </g>
                     </svg>
 
-                    <p class="text-white mt-10 text-5xl">AS</p>
+                    <p class="mt-6 text-2xl font-medium text-white">AS</p>
                 </div>
                 <div
-                    class="flex flex-col items-center rounded-[15px] px-12 py-8"
+                    class="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="w-[300px] h-[120px] fill-white"
+                        class="h-24 w-full max-w-[240px] fill-white"
                         viewBox="0 0 600.000000 365.000000"
                         preserveAspectRatio="xMidYMid meet"
                     >
@@ -324,14 +327,14 @@ l207 84 0 44 c0 31 -4 43 -12 39 -203 -85 -383 -157 -389 -157 -15 0 -11 248
                             />
                         </g>
                     </svg>
-                    <p class="text-white mt-10 text-5xl">IKA</p>
+                    <p class="mt-6 text-2xl font-medium text-white">IKA</p>
                 </div>
                 <div
-                    class="flex flex-col items-center text-center rounded-[15px] px-12 py-8"
+                    class="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="w-[300px] h-[120px] fill-white"
+                        class="h-24 w-full max-w-[240px] fill-white"
                         viewBox="0 0 242.000000 138.000000"
                         preserveAspectRatio="xMidYMid meet"
                     >
@@ -359,9 +362,9 @@ l207 84 0 44 c0 31 -4 43 -12 39 -203 -85 -383 -157 -389 -157 -15 0 -11 248
                             />
                         </g>
                     </svg>
-                    <p class="text-white mt-10 text-5xl">GHIBAUDI MARIO</p>
+                    <p class="mt-6 text-2xl font-medium text-white">GHIBAUDI MARIO</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>

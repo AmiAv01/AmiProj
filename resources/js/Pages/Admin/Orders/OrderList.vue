@@ -1,13 +1,14 @@
 <template>
     <AdminLayout>
-        <section class="p-3 sm:p-5">
-            <div class="flex justify-around px-4 lg:px-12">
-                <div
-                    class="bg-white w-[75%]  relative shadow-md sm:rounded-lg overflow-hidden"
-                >
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-                    >
+        <section class="admin-content">
+            <header class="admin-page-header">
+                <p class="text-sm font-semibold uppercase tracking-[0.14em] text-green-700">Продажи</p>
+                <h1 class="admin-page-title">Заказы</h1>
+                <p class="admin-page-description">Просматривайте заказы, меняйте их статус и находите нужную заявку по номеру или данным клиента.</p>
+            </header>
+            <div class="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+                <div class="admin-panel">
+                    <div class="admin-panel-header">
                         <Search
                             :placeholder="`Найти заказ`"
                             category="order"
@@ -15,14 +16,10 @@
                         />
                     </div>
                     <div class="overflow-x-auto">
-                        <table
-                            class="w-full text-sm text-left text-gray-500 "
-                        >
-                            <thead
-                                class="text-xs text-gray-700  bg-gray-50 "
-                            >
+                        <table class="admin-table min-w-[900px]">
+                            <thead>
                                 <tr>
-                                    <th scope="col" class="px-4 py-3" v-for="columnName in columnNames">{{columnName}}</th>
+                                    <th scope="col" v-for="columnName in columnNames" :key="columnName">{{columnName}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,8 +30,9 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <pagination :links="searchOrders.links" />
+                    <div class="border-t border-slate-100 px-5 pb-6">
+                        <pagination :links="searchOrders.links" />
+                    </div>
                 </div>
                 <OrderStatusFilter />
             </div>
@@ -51,8 +49,8 @@ import {ref} from "vue";
 
 const props = defineProps({
     orders: {
-        type: Array,
-        default: [],
+        type: Object,
+        default: () => ({ data: [], links: [] }),
     }})
 
 let searchOrders = ref(props.orders);

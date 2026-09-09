@@ -1,15 +1,32 @@
 <template>
-    <div class="rounded-lg border-2 w-full">
-        <p
-            class="text-lg font-bold px-4 py-4 text-center border-b-2 cursor-pointer flex justify-between items-center"
+    <div class="w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <button
+            type="button"
+            class="flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
             @click="toggleDetails"
+            :aria-expanded="showDetails"
         >
-            <strong>Деталировка</strong>
-            <span class="text-gray-500 text-sm ml-2">{{ showDetails ? 'Свернуть ▲' : 'Развернуть ▼' }}</span>
-        </p>
+            <span class="flex min-w-0 items-center gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6.75h16M4 12h16M4 17.25h10" />
+                    </svg>
+                </span>
+                <span>
+                    <strong class="block text-xl font-bold text-slate-900">Деталировка</strong>
+                    <span class="mt-0.5 block text-sm font-medium text-slate-500">{{ details.length }} {{ detailsWord }}</span>
+                </span>
+            </span>
+            <span class="flex shrink-0 items-center gap-2 text-base font-semibold text-slate-500">
+                <span class="hidden sm:inline">{{ showDetails ? 'Свернуть' : 'Развернуть' }}</span>
+                <svg class="h-6 w-6 transition-transform duration-200" :class="{ 'rotate-180': showDetails }" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6" />
+                </svg>
+            </span>
+        </button>
 
-        <div v-if="showDetails">
-            <div class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center font-bold">
+        <div v-if="showDetails" class="overflow-x-auto border-t border-slate-200">
+            <div class="grid min-w-[760px] grid-cols-6 gap-4 border-b border-slate-200 bg-slate-50 px-3 py-3 text-center text-lg font-bold text-slate-600">
                 <div class="flex items-center justify-center text-left">Фото</div>
                 <div class="flex items-center justify-center text-left">Артикул</div>
                 <div class="flex items-center justify-center text-left">Название</div>
@@ -21,13 +38,19 @@
             <div
                 v-for="(item, index) in details"
                 :key="index"
-                class="grid grid-cols-6 gap-4 p-3 border-b hover:bg-gray-50 text-center"
+                class="grid min-w-[760px] grid-cols-6 gap-4 border-b border-slate-100 px-3 py-3 text-center transition-colors last:border-b-0 hover:bg-blue-50/40"
+                :class="{ 'cursor-pointer': $page.props.auth.user }"
+                :role="$page.props.auth.user ? 'link' : undefined"
+                :tabindex="$page.props.auth.user ? 0 : undefined"
+                @click="$page.props.auth.user && openProduct(item.dt_invoice)"
+                @keydown.enter="$page.props.auth.user && openProduct(item.dt_invoice)"
+                @keydown.space.prevent="$page.props.auth.user && openProduct(item.dt_invoice)"
             >
                 <div class="flex items-center justify-center">
                     <img
                         :src="item.imageUrl"
                         alt="Part"
-                        class="w-12 h-12 object-contain rounded border bg-gray-50"
+                        class="h-12 w-12 rounded-lg border border-slate-200 bg-slate-50 object-contain p-1"
                     />
                 </div>
 
@@ -35,29 +58,33 @@
                     <a
                         v-if="$page.props.auth.user"
                         :href="`../../catalog/product/${item.dt_invoice}`"
-                        class="text-blue-600 hover:underline text-sm sm:text-base font-semibold"
+                        class="text-blue-600 hover:underline text-base lg:text-lg font-semibold"
                     >
                         {{ item.dt_invoice }}
                     </a>
-                    <span v-else class="text-gray-600 text-sm sm:text-base font-mono">
+                    <span v-else class="text-gray-600 text-base lg:text-lg font-mono">
                         {{ item.dt_invoice }}
                     </span>
                 </div>
 
-                <div class="flex items-center justify-center text-sm sm:text-base">
+                <div class="flex items-center justify-center text-base lg:text-lg">
                     {{ item.dt_typec }}
                 </div>
 
-                <div class="flex items-center justify-center text-sm sm:text-base">
+                <div class="flex items-center justify-center text-base lg:text-lg">
                     {{ item.fr_code }}
                 </div>
 
-                <div class="flex items-center justify-center text-sm sm:text-base">
+                <div class="flex items-center justify-center text-base lg:text-lg">
                     <span v-if="item.stock_quantity" class="text-green-500 font-semibold">{{ item.stock_quantity }} шт.</span>
                     <span v-else class="text-red-500">Нет в наличии</span>
                 </div>
 
-                <div class="flex items-center justify-center">
+                <div
+                    class="flex items-center justify-center"
+                    @click.stop
+                    @keydown.stop
+                >
                     <!-- Если товар уже в корзине -->
                     <div v-if="getCartItem(item.dt_id)" class="flex items-center gap-2">
                         <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
@@ -183,6 +210,20 @@ const showDetails = ref(false);
 const showDeleteModal = ref(false);
 const activeProductIdToDelete = ref(null);
 const minimumQuantityTitle = `Минимальное количество — ${CART_QUANTITY_MIN}`;
+const detailsWord = computed(() => {
+    const count = props.details.length;
+    const mod100 = count % 100;
+    const mod10 = count % 10;
+
+    if (mod100 >= 11 && mod100 <= 14) return 'позиций';
+    if (mod10 === 1) return 'позиция';
+    if (mod10 >= 2 && mod10 <= 4) return 'позиции';
+    return 'позиций';
+});
+
+const openProduct = (invoice) => {
+    window.location.href = `../../catalog/product/${invoice}`;
+};
 
 const toggleDetails = () => {
     showDetails.value = !showDetails.value;

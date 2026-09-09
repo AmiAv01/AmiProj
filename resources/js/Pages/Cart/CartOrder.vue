@@ -1,44 +1,42 @@
 <template>
     <div
-        class="bg-gray-50 w-full rounded-2xl py-12 px-6 sm:px-8 shadow-sm border border-gray-100"
+        class="bg-gray-50 w-full rounded-2xl p-6 sm:p-8 border border-gray-100"
     >
         <h2
-            class="font-manrope font-bold text-3xl leading-10 text-black pb-8 border-b border-gray-300"
+            class="font-bold text-2xl leading-8 text-gray-900 pb-6 border-b border-gray-200"
         >
             Ваш заказ
         </h2>
-        <div class="mt-8">
+        <div class="mt-6">
             <form @submit.prevent="makeOrder">
-                <div class="flex pb-4 w-full"></div>
-
-                <div class="flex items-center justify-between py-8 border-b border-gray-200">
-                    <p class="font-medium text-xl leading-8 text-black">
+                <div class="flex items-center justify-between gap-4 pb-6 border-b border-gray-200">
+                    <p class="font-medium text-lg leading-7 text-gray-700">
                         Товары, {{ count }} шт.
                     </p>
-                    <p class="font-semibold text-xl leading-8 text-green-500">
+                    <p class="shrink-0 font-bold text-xl leading-8 text-gray-900">
                         {{ formatMoney(price) }}
                     </p>
                 </div>
 
                 <div class="my-6">
-                    <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="comment" class="block text-base font-medium text-gray-700 mb-2">
                         Комментарий к заказу (опционально)
                     </label>
                     <textarea
                         id="comment"
                         v-model="comment"
-                        placeholder="Например: безнал, наличные, и т.д."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                        placeholder="Например, способ оплаты или пожелания к заказу"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent resize-none"
                         rows="3"
                         maxlength="1000"
                     ></textarea>
-                    <p class="text-xs text-gray-500 mt-1">{{ comment.length }}/1000</p>
+                    <p class="text-sm text-gray-500 mt-1">{{ comment.length }}/1000</p>
                 </div>
 
                 <button
                     type="submit"
                     :disabled="submitting || count === 0"
-                    class="w-full text-center bg-green-700 rounded-xl py-3 px-6 font-semibold text-lg text-white transition-all duration-500 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    class="w-full text-center bg-green-700 rounded-lg py-3 px-6 font-semibold text-lg text-white transition-colors hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {{ submitting ? 'Оформление…' : 'Оформить заказ' }}
                 </button>

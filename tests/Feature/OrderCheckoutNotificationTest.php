@@ -2,6 +2,7 @@
 
 use App\Enums\OrderStatus;
 use App\Jobs\SendAdminNewOrderNotification;
+use App\Mail\OrderConfirmed;
 use App\Mail\OrderCreated;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 
 function createOrderNotificationDetail(array $overrides = []): Detail
 {
@@ -98,6 +100,108 @@ it('sends a detailed order email to the configured notification recipients', fun
             && str_contains($html, '6303DDUC3E')
             && str_contains($html, '15,89')
             && str_contains($html, '34')
-            && str_contains($html, 'Оплата по безналу');
+            && str_contains($html, 'Оплата по безналу')
+            && str_contains($html, 'Подтвердить заказ')
+            && str_contains($html, '/orders/'.$mail->order->id.'/confirm');
     });
+});
+
+it('confirms an order through a signed email link and notifies the customer email', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create([
+        'email' => 'login@example.com',
+        'notification_email' => 'purchases@example.com',
+    ]);
+    $order = Order::create([
+        'total_price' => '25.00',
+        'status' => OrderStatus::NEW->value,
+        'created_by' => $user->id,
+        'updated_by' => $user->id,
+    ]);
+    $confirmationUrl = URL::temporarySignedRoute(
+        'orders.confirm',
+        now()->addDays(7),
+        ['order' => $order->id],
+    );
+
+    $this->get($confirmationUrl)
+        ->assertOk()
+        ->assertSee("Заказ №{$order->order_number}")
+        ->assertSee('Клиенту отправлено уведомление.');
+
+    $this->assertDatabaseHas('order', [
+        'id' => $order->id,
+        'status' => OrderStatus::DONE->value,
+    ]);
+    Mail::assertSent(OrderConfirmed::class, function (OrderConfirmed $mail): bool {
+        return $mail->hasTo('purchases@example.com')
+            && str_contains($mail->render(), $mail->order->order_number);
+    });
+});
+
+it('does not notify the customer twice when the confirmation link is reopened', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create(['notification_email' => 'customer@example.com']);
+    $order = Order::create([
+        'total_price' => '25.00',
+        'status' => OrderStatus::NEW->value,
+        'created_by' => $user->id,
+        'updated_by' => $user->id,
+    ]);
+    $confirmationUrl = URL::temporarySignedRoute(
+        'orders.confirm',
+        now()->addDays(7),
+        ['order' => $order->id],
+    );
+
+    $this->get($confirmationUrl)->assertOk();
+    $this->get($confirmationUrl)
+        ->assertOk()
+        ->assertSee('Этот заказ уже был подтверждён.');
+
+    Mail::assertSent(OrderConfirmed::class, 1);
+});
+
+it('rejects a tampered order confirmation link', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $order = Order::create([
+        'total_price' => '25.00',
+        'status' => OrderStatus::NEW->value,
+        'created_by' => $user->id,
+        'updated_by' => $user->id,
+    ]);
+
+    $this->get("/orders/{$order->id}/confirm?expires=1&signature=invalid")
+        ->assertForbidden();
+
+    $this->assertDatabaseHas('order', [
+        'id' => $order->id,
+        'status' => OrderStatus::NEW->value,
+    ]);
+    Mail::assertNothingSent();
+});
+
+it('lets an administrator change the customer notification email', function (): void {
+    $admin = User::factory()->create(['isAdmin' => true]);
+    $customer = User::factory()->create([
+        'email' => 'login@example.com',
+        'notification_email' => 'old@example.com',
+    ]);
+
+    $this->actingAs($admin)
+        ->putJson("/api/v1/admin/users/{$customer->id}", [
+            'notification_email' => 'NEW-NOTIFICATIONS@EXAMPLE.COM ',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.success', true);
+
+    $this->assertDatabaseHas('user', [
+        'id' => $customer->id,
+        'email' => 'login@example.com',
+        'notification_email' => 'new-notifications@example.com',
+    ]);
 });

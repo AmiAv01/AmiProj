@@ -3,35 +3,43 @@
         <!-- Всплывающее уведомление при добавлении в корзину -->
         <push v-if="notification.show" :isShow="notification.show" :type="notification.type" :title="notification.message" @hide="hideNotification" />
 
-        <section class="py-6 bg-white md:py-10 antialiased">
-            <div class="w-full max-w-8xl px-6 mx-auto">
-                <div class="flex flex-col lg:flex-row gap-8 items-stretch">
+        <section class="bg-slate-50/70 py-6 antialiased md:py-10">
+            <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col items-stretch gap-6 lg:flex-row">
 
                     <!-- Левый блок: Основная карточка товара -->
-                    <div class="border rounded-lg p-6 bg-white shadow-sm flex flex-col justify-center flex-grow lg:w-2/3">
-                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="flex flex-grow flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:w-2/3">
+                        <div class="flex flex-col items-start gap-7 p-5 sm:p-7 md:flex-row lg:p-8">
                             <!-- Блок с изображением товара (слева) -->
-                            <div class="shrink-0 w-full md:w-1/3 lg:w-1/4">
-                                <img
-                                    class="w-full max-h-80 object-contain"
-                                    :src="imageUrl"
-                                    alt="Product image"
-                                />
+                            <div class="w-full shrink-0 md:w-1/3 lg:w-1/4">
+                                <div class="aspect-square overflow-hidden rounded-xl border border-slate-100 bg-slate-50 p-4 sm:p-6">
+                                    <img
+                                        class="h-full w-full object-contain mix-blend-multiply"
+                                        :src="imageUrl"
+                                        alt="Изображение товара"
+                                    />
+                                </div>
                             </div>
 
                             <!-- Блок с текстовым описанием (справа) -->
-                            <div class="w-full md:w-2/3 lg:w-3/4">
-                                <h1 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                                    {{ editTitle(detail.dt_typec) }}
-                                    {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
-                                    {{ isEmpty ? detail.dt_firm : '' }}
-                                </h1>
+                            <div class="w-full min-w-0 md:w-2/3 lg:w-3/4">
+                                <div class="mb-6">
+                                    <span class="mb-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold uppercase tracking-wide text-blue-700">
+                                        Карточка товара
+                                    </span>
+                                    <h1 class="max-w-3xl text-2xl font-bold leading-snug text-slate-900 sm:text-3xl">
+                                        {{ editTitle(detail.dt_typec) }}
+                                        {{ isEmpty ? detail.dt_code : detail.dt_invoice }}
+                                        {{ isEmpty ? detail.dt_firm : '' }}
+                                    </h1>
+                                </div>
 
-                                <p v-if="isEmpty" class="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-                                    (CARGO # <span>{{ Array.from(cargoIds).join() }}</span>)
-                                </p>
+                                <div v-if="isEmpty" class="inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+                                    <span class="text-sm font-semibold uppercase tracking-wide text-slate-500">Номер CARGO</span>
+                                    <strong class="font-mono text-xl text-slate-900">{{ Array.from(cargoIds).join(', ') || '—' }}</strong>
+                                </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4" v-if="!isEmpty">
+                                <div class="mb-4 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-lg sm:grid-cols-2" v-if="!isEmpty">
                                     <div>
                                         <p class="text-gray-600"><span class="text-gray-500">OEM:</span> <strong>{{ detail.dt_oem }}</strong></p>
                                         <p class="text-gray-600"><span class="text-gray-500">CARGO:</span> <strong>{{ detail.dt_cargo }}</strong></p>
@@ -40,7 +48,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex items-center justify-between border-t pt-4" v-if="!isEmpty">
+                                <div class="flex items-center justify-between border-t border-slate-200 pt-4 text-lg" v-if="!isEmpty">
                                     <div>
                                         <p class="text-gray-600">
                                             <span class="text-gray-500">Наличие:</span>
@@ -118,15 +126,23 @@
                         </div>
 
                         <!-- Блок деталировки (для всех пользователей) -->
-                        <div class="mt-8 border-t pt-6" v-if="sameDetails && sameDetails.length">
+                        <div class="border-t border-slate-200 bg-slate-50/60 p-4 sm:p-5" v-if="sameDetails && sameDetails.length">
                             <DetailLayout :details="sameDetails" @cart-notification="showCartNotification" />
                         </div>
                     </div>
 
                     <!-- Правый блок: Найденные аналоги -->
-                    <div class="bg-white lg:w-1/3 min-w-[450px] max-h-[580px] p-6 rounded-lg border shadow-sm flex flex-col">
-                        <h2 class="text-lg font-bold mb-5 text-center shrink-0">Найденные аналоги</h2>
-                        <div class="overflow-y-auto flex-grow pr-1">
+                    <div class="flex max-h-[580px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:w-1/3 lg:min-w-[390px]">
+                        <div class="flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-4">
+                            <div>
+                                <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Альтернативные варианты</p>
+                                <h2 class="mt-1 text-xl font-bold text-slate-900">Найденные аналоги</h2>
+                            </div>
+                            <span class="inline-flex min-w-9 items-center justify-center rounded-full bg-blue-100 px-3 py-1 text-base font-bold text-blue-700">
+                                {{ analogs.length }}
+                            </span>
+                        </div>
+                        <div class="flex-grow overflow-y-auto p-4">
                             <Analogs :details="analogs" />
                         </div>
                     </div>

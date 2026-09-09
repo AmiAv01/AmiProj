@@ -19,6 +19,10 @@ test('new users can register without Auth', function (): void {
         'password_confirmation' => 'password',
     ]);
     $response->assertCreated()->assertJsonPath('data.email', 'test@example.com');
+    $this->assertDatabaseHas('user', [
+        'email' => 'test@example.com',
+        'notification_email' => 'test@example.com',
+    ]);
     $this->assertGuest();
 });
 

@@ -1,5 +1,12 @@
 <template>
-    <div class="grid grid-cols-7  w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10">
+    <div
+        class="grid grid-cols-7 w-full pb-2 border-b w-max-[900px] border-gray-300 group mt-10 cursor-pointer hover:bg-gray-50"
+        role="link"
+        tabindex="0"
+        @click="openProduct"
+        @keydown.enter="openProduct"
+        @keydown.space.prevent="openProduct"
+    >
         <img
 
             src="/no-photo--lg.png"
@@ -35,4 +42,7 @@ const props = defineProps({
 })
 
 const editTitle = (res) =>  editDetailTitle(res);
+const openProduct = () => {
+    window.location.href = `/catalog/product/${props.detail.dt_code}`;
+};
 </script>
