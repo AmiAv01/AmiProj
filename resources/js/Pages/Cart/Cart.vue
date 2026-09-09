@@ -7,21 +7,18 @@
             :title="notification.message"
             @hide="hideNotification"
         />
-        <section class="relative z-10 py-12 lg:py-24">
+        <section class="relative z-10 py-12 lg:py-16">
             <div class="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
-
-                <!-- Заголовок -->
-                <div class="flex items-center justify-between pb-8 border-b border-gray-300 mb-8">
-                    <h2 class="font-manrope font-bold text-3xl leading-10 text-black">Корзина</h2>
-                    <h2 v-if="store.cartData.length > 0" class="font-manrope font-bold text-xl leading-8 text-gray-600">
-                        Товаров: {{ count }} шт.
-                    </h2>
+                <div class="flex items-baseline justify-between gap-6 pb-6 border-b border-gray-200 mb-8">
+                    <h1 class="text-4xl font-bold leading-tight text-gray-900">Корзина</h1>
+                    <p v-if="store.cartData.length > 0" class="shrink-0 text-lg font-medium text-gray-500">
+                        {{ countLabel }}
+                    </p>
                 </div>
 
-                <!-- Список товаров -->
-                <div v-if="store.cartData.length > 0" class="grid grid-cols-12 gap-8">
+                <div v-if="store.cartData.length > 0" class="grid grid-cols-12 gap-8 xl:gap-12">
                     <div class="col-span-12 xl:col-span-8 w-full max-xl:max-w-3xl max-xl:mx-auto">
-                        <div class="h-[400px] xl:h-[500px] overflow-y-auto pr-4">
+                        <div class="max-h-[520px] overflow-y-auto pr-1 lg:pr-3">
                             <CartItem v-for="(detail, index) in store.cartData" :key="detail.dt_id || index" :item="detail" />
                         </div>
                     </div>
@@ -34,7 +31,6 @@
                     </div>
                 </div>
 
-                <!-- Состояние: Корзина пуста (Замена на компонент) -->
                 <EmptyState
                     v-else
                     title="Ваша корзина пуста"
@@ -73,6 +69,25 @@ store.setDetails(props.items);
 // Вычисляемые свойства для итогов
 const count = computed(() => {
     return Object.values(store.cartData).reduce((sum, obj) => sum + (obj.quantity || 0), 0);
+});
+
+const countLabel = computed(() => {
+    const lastTwoDigits = count.value % 100;
+    const lastDigit = count.value % 10;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+        return `${count.value} товаров`;
+    }
+
+    if (lastDigit === 1) {
+        return `${count.value} товар`;
+    }
+
+    if (lastDigit >= 2 && lastDigit <= 4) {
+        return `${count.value} товара`;
+    }
+
+    return `${count.value} товаров`;
 });
 
 const price = computed(() => {

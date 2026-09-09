@@ -2,7 +2,7 @@
 import {adminMenuItems} from "@/Store/index";
 import AdminButton from "@/Components/AdminButton.vue";
 
-const props = defineProps({
+defineProps({
     isShow:{
         type: Boolean,
         default: false
@@ -11,13 +11,14 @@ const props = defineProps({
 </script>
 
 <template>
-    <ul class="w-[100vw] h-[100vh] absolute top-[50px] bg-black " v-show="isShow">
-        <li v-for="[key, value] in adminMenuItems">
+    <div class="fixed inset-x-0 top-[72px] z-40 border-b border-slate-200 bg-white p-4 shadow-xl lg:hidden" v-show="isShow">
+        <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Управление</p>
+        <ul class="space-y-1">
+        <li v-for="[key, value] in adminMenuItems" :key="value">
             <AdminButton
                 :href="`${value}`"
-                class="flex items-center text-white p-2 pl-11 w-full text-base font-medium  rounded-lg transition duration-75 group hover:bg-gray-100 "
             >{{key}}</AdminButton>
         </li>
-    </ul>
+        </ul>
+    </div>
 </template>
-

@@ -4,11 +4,10 @@
     </push>
     <layout :title="title">
         <div class="bg-white w-full">
-            <!-- Двухколоночная сетка: 1 колонка на мобильных, 4 на десктопе -->
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:px-8">
 
                 <!-- Колонка фильтра брендов (слева) -->
-                <div class="lg:col-span-1">
+                <aside class="lg:sticky lg:top-6 lg:self-start">
                     <BrandFilter
                         @closeModal="closeBrandFilter"
                         :is-show="showBrandSelector"
@@ -16,12 +15,12 @@
                         :categories="categories.brands"
                         :clientBrands="clientBrands"
                     />
-                </div>
+                </aside>
 
                 <!-- Колонка со списком товаров (справа) -->
-                <div class="lg:col-span-3">
+                <div class="min-w-0">
                     <div class="relative">
-                        <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6">
+                        <h1 class="mb-6 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
                             {{ title }}
                         </h1>
 
@@ -34,19 +33,19 @@
                             Фильтр
                         </button>
 
-                        <div v-if="!$page.props.auth.user" class="mb-8 p-6 bg-green-50 border border-green-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div v-if="!$page.props.auth.user" class="mb-6 flex flex-col items-start justify-between gap-4 rounded-xl border border-green-200 bg-green-50 p-4 sm:flex-row sm:items-center">
                             <div>
-                                <p class="text-lg font-semibold text-green-900">Уважаемый клиент!</p>
-                                <p class="text-green-800">Цены и возможность заказа доступны только авторизованным пользователям.</p>
+                                <p class="font-semibold text-green-900">Уважаемый клиент!</p>
+                                <p class="mt-1 text-sm text-green-800">Цены и возможность заказа доступны только авторизованным пользователям.</p>
                             </div>
                             <div class="flex gap-3">
-                                <a href="/login" class="px-5 py-2 bg-white border border-green-700 text-green-700 rounded-lg hover:bg-green-100 font-medium">Войти</a>
-                                <a href="/register" class="px-5 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 font-medium">Регистрация</a>
+                                <a href="/login" class="rounded-lg border border-green-700 bg-white px-4 py-2 text-sm font-medium text-green-700 transition hover:bg-green-100">Войти</a>
+                                <a href="/register" class="rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800">Регистрация</a>
                             </div>
                         </div>
 
                         <!-- Сетка или список товаров -->
-                        <div v-if="details.data" class="w-full border-t border-gray-200 pt-4">
+                        <div v-if="details.data?.length" class="w-full space-y-3">
                             <CatalogItem
                                 @showPush="showModal"
                                 v-for="detail in details.data"
@@ -56,15 +55,15 @@
                         </div>
 
                         <!-- Адаптивное сообщение, если товары не найдены -->
-                        <div v-else class="mt-8 border-t border-gray-200 pt-8 w-full">
-                            <p class="text-center text-xl md:text-3xl text-gray-500 font-medium">
+                        <div v-else class="mt-8 w-full rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-12">
+                            <p class="text-center text-xl font-medium text-gray-500 md:text-2xl">
                                 По данному запросу запчастей не найдено
                             </p>
                         </div>
                     </div>
 
                     <!-- Пагинация -->
-                    <pagination :links="details.links" class="mt-8" />
+                    <pagination :links="details.links" class="mt-10" />
                 </div>
             </div>
         </div>

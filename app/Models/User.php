@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'notification_email',
         'password',
         'phone_number',
     ];
@@ -50,6 +51,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'isAdmin' => 'boolean',
         'approved' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user): void {
+            if (! $user->notification_email) {
+                $user->notification_email = $user->email;
+            }
+        });
+    }
 
     public function orders(): HasMany
     {

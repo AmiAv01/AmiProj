@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\OrderDTO;
+use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
 use App\Exceptions\EmptyCartException;
 use App\Exceptions\OrderNotFoundException;
@@ -113,6 +114,21 @@ final class OrderService
         ]);
 
         return $order;
+    }
+
+    public function confirmOrder(int $id): bool
+    {
+        return DB::transaction(function () use ($id): bool {
+            $order = Order::query()->lockForUpdate()->findOrFail($id);
+
+            if ($order->status === OrderStatus::DONE->value) {
+                return false;
+            }
+
+            $order->update(['status' => OrderStatus::DONE->value]);
+
+            return true;
+        }, 3);
     }
 
     public function getByIdentifier(string $identifier): Order

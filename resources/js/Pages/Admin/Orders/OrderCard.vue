@@ -1,42 +1,52 @@
 <template>
     <admin-layout>
-        <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4 sm:p-10">
-            <div
-                class="flex w-full min-w-0 flex-col rounded-[15px] pb-2 sm:pb-10"
-            >
-                <h3 class="py-6 text-3xl font-bold text-gray-900 [overflow-wrap:anywhere] sm:py-10 sm:text-5xl">
-                    Заказ № {{ order.order_number }}
-                </h3>
-                <div class="flex flex-col">
-                    <p class="text-gray-700 text-2xl mr-4">Статус заказа:</p>
-                    <status-form :status="order.status" :order-id="order.id"/>
+        <section class="admin-content">
+            <header class="admin-page-header">
+                <p class="text-sm font-semibold uppercase tracking-[0.14em] text-green-700">Заказ</p>
+                <h1 class="admin-page-title [overflow-wrap:anywhere]">№ {{ order.order_number }}</h1>
+                <p class="admin-page-description">Создан {{ new Date(order.created_at).toLocaleDateString() }}</p>
+            </header>
+
+            <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+                <div class="admin-panel p-5 sm:p-7">
+                    <h2 class="admin-section-title">Данные клиента</h2>
+                    <dl class="mt-6 grid gap-5 sm:grid-cols-2">
+                        <div class="rounded-xl bg-slate-50 p-4">
+                            <dt class="text-sm font-medium text-slate-500">Имя</dt>
+                            <dd class="mt-1 text-lg font-semibold text-slate-900">{{ order.name }}</dd>
+                        </div>
+                        <div class="rounded-xl bg-slate-50 p-4">
+                            <dt class="text-sm font-medium text-slate-500">Email</dt>
+                            <dd class="mt-1 break-all text-lg font-semibold text-slate-900">{{ order.email }}</dd>
+                        </div>
+                    </dl>
+                    <div v-if="order.comment" class="mt-5 rounded-xl border border-slate-200 p-4">
+                        <p class="text-sm font-medium text-slate-500">Комментарий</p>
+                        <p class="mt-2 whitespace-pre-line text-base leading-7 text-slate-800">{{ order.comment }}</p>
+                    </div>
                 </div>
-                <div class="flex">
-                    <p class="text-gray-700 text-2xl mr-4">Имя:</p>
-                    <p class="text-2xl">{{ order.name }}</p>
-                </div>
-                <div class="flex">
-                    <p class="text-gray-700 text-2xl mr-4">Email:</p>
-                    <p class="text-2xl">{{ order.email }}</p>
-                </div>
-                <div class="flex">
-                    <p class="text-gray text-2xl mr-4">Дата:</p>
-                    <p class="text-2xl">{{ new Date(order.created_at).toLocaleDateString() }}</p>
-                </div>
-                <div class="flex">
-                    <p class="text-gray text-2xl mr-4">Итоговая стоимость:</p>
-                    <p class="text-2xl">{{ formatMoney(order.total_price) }}</p>
-                </div>
-                <div v-if="order.comment" class="flex flex-col mt-4">
-                    <p class="text-gray text-2xl mr-4">Комментарий:</p>
-                    <p class="text-xl whitespace-pre-line">{{ order.comment }}</p>
-                </div>
+
+                <aside class="admin-panel p-5 sm:p-7">
+                    <h2 class="admin-section-title">Сводка</h2>
+                    <div class="mt-6">
+                        <label class="mb-2 block text-sm font-medium text-slate-500">Статус заказа</label>
+                        <status-form :status="order.status" :order-id="order.id"/>
+                    </div>
+                    <div class="mt-6 border-t border-slate-200 pt-6">
+                        <p class="text-sm font-medium text-slate-500">Итоговая стоимость</p>
+                        <p class="mt-1 text-3xl font-bold tracking-tight text-slate-900">{{ formatMoney(order.total_price) }}</p>
+                    </div>
+                </aside>
             </div>
-            <div class="min-w-0 rounded-lg border-2">
-                <p class="text-center py-4 text-xl border-b-2 sm:text-4xl mb-6 font-bold">
-                    Приобретённые детали
-                </p>
-                <div class="h-[500px] overflow-y-auto px-4 sm:px-12">
+
+            <div class="admin-panel mt-6 min-w-0">
+                <div class="admin-panel-header">
+                    <div>
+                        <h2 class="admin-section-title">Приобретённые детали</h2>
+                        <p class="mt-1 text-sm text-slate-500">{{ details.length }} позиций в заказе</p>
+                    </div>
+                </div>
+                <div class="max-h-[620px] overflow-y-auto px-5 sm:px-7">
                     <order-item
                         v-for="(detail, index) in details"
                         :item="detail"
@@ -44,7 +54,7 @@
                     />
                 </div>
             </div>
-        </div>
+        </section>
     </admin-layout>
 </template>
 
@@ -55,10 +65,6 @@ export default {
     components: {
         "order-item": OrderItem,
         "status-form": SelectOrderStatusForm
-    },
-    created() {
-        console.log(this.order);
-        console.log(this.details);
     },
 };
 </script>

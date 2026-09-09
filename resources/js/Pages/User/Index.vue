@@ -1,14 +1,9 @@
 <template>
     <layout>
-        <section>
-            <div class="w-full"></div>
-        </section>
         <HeroSection />
-        <section>
-            <ProductList v-bind:details="details" />
-            <LogoClouds/>
-            <NewsList :posts="posts"/>
-        </section>
+        <ProductList :details="details" />
+        <LogoClouds />
+        <NewsList :posts="posts" />
     </layout>
 </template>
 
@@ -27,4 +22,3 @@ const props = defineProps({
 });
 
 </script>
-

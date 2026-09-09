@@ -1,58 +1,55 @@
 <template>
-    <div>
-        <div
-            class="flex overflow-y-auto flex-col lg:flex-row mx-auto lg:items-center gap-5 py-6 border-b border-gray-200 group"
-        >
-            <div class="w-full md:max-w-[126px]">
-                <img
-                    src="/no-photo--lg.png"
-                    alt="perfume bottle image"
-                    class="mx-auto"
-                />
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-4 w-full">
-                <div class="md:col-span-2">
-                    <div class="flex flex-col  gap-3">
-                        <p class="font-semibold text-xl leading-7 text-black">
-                            {{ item.dt_typec }} {{ item.dt_invoice }}
-                        </p>
-                        <p class="font-normal text-xl text-gray-500">
-                            Артикул: {{ item.cargo }}
-                        </p>
-                        <p class="font-normal text-xl leading-7 text-gray-500">
-                            Бренд:
-                            {{ item.fr_code }}
-                        </p>
-                        <p
-                            class="font-medium text-xl leading-7 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
-                        >
-                            {{ formatMoney(item.unit_price) }}
-                        </p>
-                        <p class=" text-2xl text-gray-600">
-                            {{ item.quantity }} шт.
-                        </p>
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-col justify-center mt-2 sm:mt-0 items-center"
-                >
-                    <p
-                        class="font-bold text-2xl mb-2 text-gray-600 transition-all duration-300 group-hover:text-indigo-600"
-                    >
-                        {{ formatMoney(item.unit_price * item.quantity) }}
-                    </p>
-                </div>
-            </div>
+    <article class="grid grid-cols-1 gap-5 border-b border-gray-200 py-6 last:border-b-0 sm:grid-cols-[112px_minmax(0,1fr)] lg:grid-cols-[112px_minmax(0,1fr)_140px_160px] lg:items-center">
+        <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-xl bg-gray-50">
+            <img
+                src="/no-photo--lg.png"
+                :alt="`Изображение товара ${item.dt_typec} ${item.dt_invoice}`"
+                class="h-full w-full object-contain"
+            />
         </div>
-    </div>
+
+        <div class="min-w-0">
+            <h3 class="text-lg font-semibold leading-7 text-gray-900">
+                {{ item.dt_typec }} {{ item.dt_invoice }}
+            </h3>
+            <dl class="mt-3 space-y-1.5 text-base leading-7 text-gray-500">
+                <div class="flex flex-wrap gap-x-1.5">
+                    <dt>Артикул:</dt>
+                    <dd class="font-medium text-gray-700">{{ item.cargo || '—' }}</dd>
+                </div>
+                <div class="flex flex-wrap gap-x-1.5">
+                    <dt>Бренд:</dt>
+                    <dd class="font-medium text-gray-700">{{ item.fr_code || '—' }}</dd>
+                </div>
+                <div class="flex flex-wrap gap-x-1.5">
+                    <dt>Цена за шт.:</dt>
+                    <dd class="font-medium text-gray-700">{{ formatMoney(item.unit_price) }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="sm:col-start-2 lg:col-start-auto">
+            <p class="text-sm font-semibold uppercase tracking-wide text-gray-400">Количество</p>
+            <p class="mt-1 text-lg font-semibold text-gray-800">{{ item.quantity }} шт.</p>
+        </div>
+
+        <div class="sm:col-start-2 lg:col-start-auto lg:text-right">
+            <p class="text-sm font-semibold uppercase tracking-wide text-gray-400">Сумма</p>
+            <p class="mt-1 text-xl font-bold text-gray-900">
+                {{ formatMoney(item.unit_price * item.quantity) }}
+            </p>
+        </div>
+    </article>
 </template>
 
 <script setup>
 import { formatMoney } from "@/Services/PriceFormatter";
 
 const props = defineProps({
-    item: {},
+    item: {
+        type: Object,
+        required: true,
+    },
 })
 
 </script>

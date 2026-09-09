@@ -36,7 +36,7 @@ final class UserService
 
     public function getById(int $id): User
     {
-        $user = User::where('id', '=', $id)->select(['name', 'email', 'isAdmin', 'id'])->first();
+        $user = User::where('id', '=', $id)->select(['name', 'email', 'notification_email', 'isAdmin', 'id'])->first();
 
         return $user ?? throw new UserNotFoundException($id);
     }
@@ -96,6 +96,14 @@ final class UserService
     {
         $user = User::find($dto->userId) ?? throw new UserNotFoundException($dto->userId);
 
-        return $user->update(['formula' => Crypt::encrypt($dto->formula)]);
+        $attributes = [];
+        if ($dto->formula !== null) {
+            $attributes['formula'] = Crypt::encrypt($dto->formula);
+        }
+        if ($dto->notificationEmail !== null) {
+            $attributes['notification_email'] = $dto->notificationEmail;
+        }
+
+        return $attributes !== [] && $user->update($attributes);
     }
 }

@@ -16,7 +16,11 @@ class AdminUserController extends Controller
 
     public function update(int $userId, AdminUserRequest $request): JsonResponse
     {
-        return response()->json(['data' => ['success' => $this->userService->update(new UserDTO($userId, $request->validated('formula')))]]);
+        return response()->json(['data' => ['success' => $this->userService->update(new UserDTO(
+            $userId,
+            $request->validated('formula'),
+            $request->validated('notification_email'),
+        ))]]);
     }
 
     public function destroy(int $userId, Request $request): JsonResponse

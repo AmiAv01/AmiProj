@@ -1,52 +1,66 @@
 <template>
     <form @submit.prevent="handleSearch">
-        <div class="flex flex-wrap justify-around">
+        <div class="flex flex-wrap justify-around gap-2">
             <div class="relative w-full md:w-[60%]">
                 <input
                     type="search"
                     id="search-dropdown"
-                    class="block px-2.5 py-2.5 w-full z-20 text-md text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 rounded-tl-[15px] rounded-bl-[15px] border focus:ring-0 border-gray-300"
+                    class="block h-12 w-full rounded-xl border border-gray-300 bg-white py-2.5 pl-4 pr-28 text-base text-gray-900 shadow-sm transition focus:border-green-600 focus:ring-2 focus:ring-green-200"
                     placeholder="Поиск по артикулу + деталировка"
                     v-model="searchQuery"
                     @input="getSearchingDetails"
                 />
-                <div v-if="categoryList.length !== 0"  class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto">
-                    <div  class="bg-white  pt-4  border-b-6 border-gray-300 ">
-                        <div class="overflow-hidden">
-                            <p class="font-bold text-xl px-4">Категории</p>
-                        </div>
-                        <div v-for="category in categoryList" :key="category" class="overflow-hidden border-t-2 p-4 border-gray-300">
+                <div
+                    v-if="categoryList.length !== 0 || details.length !== 0"
+                    class="absolute top-full z-30 mt-2 max-h-[420px] w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-2xl"
+                >
+                    <section v-if="categoryList.length !== 0">
+                        <p class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            Категории
+                        </p>
+                        <div class="divide-y divide-gray-100 border-t border-gray-100">
                             <spa-link
+                                v-for="category in categoryList"
+                                :key="category"
                                 :href="`${otherParts.get(`${category}`)}`"
-                                class=" text-2xl p-8 border-b-gray-300"
+                                class="block px-4 py-3 text-base font-medium text-gray-800 transition hover:bg-green-50 hover:text-green-800 focus:bg-green-50 focus:outline-none"
                             >
                                 {{ category }}
                             </spa-link>
                         </div>
-                    </div>
-                </div>
-                <div
-                    class="absolute top-[45px] rounded-[15px]  z-10 w-full h-[200px] overflow-y-auto"
-                    v-if="details.length !== 0"
-                >
-                    <!--detail-list :details="details" /!-->
-                    <div  class="bg-white  pt-4  border-b-2 border-gray-300">
-                        <div class="grid grid-cols-3 gap-4 overflow-hidden">
-                            <p class="font-bold text-lg px-4">Код</p>
-                            <p class="font-bold text-lg ">Бренд</p>
-                            <p class="font-bold text-lg px-4">Наименование</p>
-                        </div>
-                        <div v-for="detail in details" :key="`${detail.dt_code}-${detail.dt_firm}`" class="grid grid-cols-3 gap-4 overflow-hidden border-t-2 border-gray-300">
-                            <spa-link :href="`/catalog/product/${detail.dt_code}`" class="text-xl p-4 border-r-2 border-gray-300">{{detail.dt_code}}</spa-link>
-                            <p class="text-xl p-4 border-r-2 border-gray-300">{{editTitle(detail.dt_firm)}}</p>
-                            <p class="text-xl p-4 border-r-2 border-gray-300">{{editTitle(detail.dt_typec)}}</p>
-                        </div>
-                    </div>
+                    </section>
 
+                    <section
+                        v-if="details.length !== 0"
+                        :class="{ 'border-t border-gray-200': categoryList.length !== 0 }"
+                    >
+                        <p class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            Найденные товары
+                        </p>
+                        <div class="overflow-x-auto border-t border-gray-200">
+                            <div class="min-w-[640px]">
+                                <div class="sticky top-0 grid grid-cols-[minmax(150px,1fr)_minmax(150px,1fr)_minmax(240px,1.4fr)] bg-gray-50 text-sm font-semibold text-gray-700">
+                                    <span class="px-4 py-3">Код</span>
+                                    <span class="border-l border-gray-200 px-4 py-3">Бренд</span>
+                                    <span class="border-l border-gray-200 px-4 py-3">Наименование</span>
+                                </div>
+                                <spa-link
+                                    v-for="detail in details"
+                                    :key="`${detail.dt_code}-${detail.dt_firm}`"
+                                    :href="`/catalog/product/${detail.dt_code}`"
+                                    class="grid grid-cols-[minmax(150px,1fr)_minmax(150px,1fr)_minmax(240px,1.4fr)] border-t border-gray-200 text-base text-gray-800 transition hover:bg-green-50 focus:bg-green-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-600"
+                                >
+                                    <span class="px-4 py-3 font-semibold text-green-800">{{ detail.dt_code }}</span>
+                                    <span class="border-l border-gray-200 px-4 py-3">{{ editTitle(detail.dt_firm) }}</span>
+                                    <span class="border-l border-gray-200 px-4 py-3">{{ editTitle(detail.dt_typec) }}</span>
+                                </spa-link>
+                            </div>
+                        </div>
+                    </section>
                 </div>
                 <button
                     type="submit"
-                    class="absolute flex items-center top-0 end-0 p-2.5 h-full font-medium text-white bg-green-700 rounded-e-lg border border-green-700 hover:bg-green-800 focus:outline-none"
+                    class="absolute end-0 top-0 flex h-12 items-center rounded-r-xl border border-green-700 bg-green-700 px-4 font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-300"
                 >
                     <svg
                         class="w-4 h-4"
@@ -66,7 +80,7 @@
                     <span class="pl-2 text-md">Найти</span>
                 </button>
             </div>
-            <div class="flex space-x-2 mt-2">
+            <div class="mt-2 flex space-x-2">
                 <svg
                     class="w-6 h-6 text-white dark:text-white"
                     aria-hidden="true"
@@ -151,5 +165,4 @@ onUnmounted(() => {
     requestController?.abort();
 });
 </script>
-
 

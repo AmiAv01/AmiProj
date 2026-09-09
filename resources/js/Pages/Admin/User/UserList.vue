@@ -1,13 +1,13 @@
 <template>
     <AdminLayout>
-        <section class="p-3 sm:p-5">
-            <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-                <div
-                    class="bg-white relative shadow-md sm:rounded-lg overflow-hidden"
-                >
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-                    >
+        <section class="admin-content">
+            <header class="admin-page-header">
+                <p class="text-sm font-semibold uppercase tracking-[0.14em] text-green-700">Клиенты</p>
+                <h1 class="admin-page-title">Пользователи</h1>
+                <p class="admin-page-description">Управляйте доступом клиентов и просматривайте связанную с ними историю заказов.</p>
+            </header>
+            <div class="admin-panel">
+                    <div class="admin-panel-header">
                         <Search
                             :placeholder="`Найти пользователя`"
                             category="user"
@@ -15,19 +15,16 @@
                         />
                     </div>
                     <div class="overflow-x-auto">
-                        <table
-                            class="w-full text-sm text-left text-gray-500 "
-                        >
-                            <thead
-                                class="text-xs text-gray-700  bg-gray-50 "
-                            >
+                        <table class="admin-table min-w-[760px]">
+                            <thead>
                             <tr>
-                                <th scope="col" class="px-4 py-3">#</th>
-                                <th scope="col" class="px-4 py-3">Имя</th>
-                                <th scope="col" class="px-4 py-3">Email</th>
-                                <th scope="col" class="px-4 py-3">
+                                <th scope="col">#</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">
                                     Админ
                                 </th>
+                                <th scope="col"><span class="sr-only">Действия</span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -39,9 +36,10 @@
                             </tbody>
                         </table>
                     </div>
-                    <Pagination :links="searchUser.links" />
+                    <div class="border-t border-slate-100 px-5 pb-6">
+                        <Pagination :links="searchUser.links" />
+                    </div>
                 </div>
-            </div>
         </section>
     </AdminLayout>
 </template>
@@ -55,15 +53,14 @@ import {ref} from "vue";
 
 const props = defineProps({
     users: {
-        type: Array,
-        default: [],
+        type: Object,
+        default: () => ({ data: [], links: [] }),
     }
 })
 
 let searchUser = ref(props.users);
 
 function searchData(data) {
-    console.log(data.users);
     searchUser.value = data.user;
 }
 

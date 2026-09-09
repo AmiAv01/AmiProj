@@ -1,23 +1,23 @@
 <template>
-    <tr class="border-b ">
+    <tr>
         <th
             scope="row"
-            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
+            class="whitespace-nowrap font-semibold text-slate-900"
         >
             {{ post.id }}
         </th>
         <td class="px-4 py-3">{{ post.title }}</td>
         <td class="px-4 py-3">{{ new Date(post.date).toLocaleDateString() }}</td>
-        <td class="px-4 py-3">
-            {{ post.description }}
+        <td class="max-w-md">
+            <p class="line-clamp-2">{{ post.description }}</p>
         </td>
         <td class="px-4 py-3">{{ post.name }}</td>
 
-        <td class="px-4 py-3 flex items-center justify-end">
+        <td class="flex items-center justify-end">
             <button
                 :id="`${post.id}-button`"
                 :data-dropdown-toggle="`${post.id}`"
-                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none "
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600"
                 type="button"
             >
                 <svg
@@ -34,7 +34,7 @@
             </button>
             <div
                 :id="`${post.id}`"
-                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow "
+                class="z-10 hidden w-44 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-xl"
             >
                 <ul
                     class="py-1 text-sm text-gray-700 "
@@ -42,8 +42,8 @@
                 >
                     <li>
                         <button
-                            @click="showModal(post.id)"
-                            class="flex w-full py-2 px-4 hover:bg-gray-100 "
+                            @click="showModal"
+                            class="flex w-full px-4 py-2.5 hover:bg-slate-50"
                         >
                             Изменить
                         </button>
@@ -52,7 +52,7 @@
                 <div class="py-1">
                     <button
                         @click = "store.deletePost(post.id)"
-                        class="flex w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 "
+                        class="flex w-full px-4 py-2.5 text-sm text-red-700 hover:bg-red-50"
                     >
                         Удалить
                     </button>
@@ -62,11 +62,12 @@
     </tr>
     <NewsEditForm
         @closeModal="isShow = false"
-        :show="isShow"
+        @updated="emit('updated')"
+        :is-show="isShow"
         :title="post.title"
         :description="post.description"
-        :postId="post.id"
-        :actionTitle="`Изменить`"
+        :post-id="post.id"
+        action-title="Сохранить изменения"
     />
 </template>
 
@@ -77,6 +78,7 @@ import {useNewsStore} from "@/Store/newsStore";
 
 const isShow = ref(false);
 const store = useNewsStore();
+const emit = defineEmits(['updated']);
 const props = defineProps({
     post: {
         type: Object,

@@ -1,57 +1,59 @@
 <template>
-    <footer class="w-full bg-slate-900 mb-[-10px]">
-        <div class=" mx-auto w-full flex flex-wrap justify-around pb-32 pt-16">
-            <div class="">
-                <p class="text-white text-2xl mb-2">Ами-Авто</p>
-                <p class="mb-2 text-white">
-                    <i class="fa-solid fa-location-dot text-white mr-4"> </i
-                    >Минская область , Минский район , а/г. Ждановичи , ул. Мира
-                    12
+    <footer class="w-full bg-slate-900">
+        <div class="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 text-gray-300 md:grid-cols-2 md:px-5 lg:grid-cols-[1.5fr_0.75fr_0.75fr] lg:px-6 lg:py-16">
+            <div class="max-w-xl">
+                <p class="mb-4 text-2xl font-semibold text-white">Ами-Авто</p>
+                <p class="mb-3 flex items-start leading-7">
+                    <i class="fa-solid fa-location-dot mr-3 mt-1 text-green-500"></i>
+                    <span>Минская область, Минский район, а/г Ждановичи, ул. Мира, 12</span>
                 </p>
-                <p class="text-white mb-2">
-                    <i class="fa-solid fa-envelope text-white mr-2"></i>+375 29
-                    630-85-35
+                <p class="mb-3 flex items-center">
+                    <i class="fa-solid fa-phone mr-3 text-green-500"></i>
+                    <a href="tel:+375296308535" class="hover:text-white">+375 29 630-85-35</a>
                 </p>
-                <p class="text-white mb-2">
-                    <i class="fa-solid fa-phone text-white mr-2"></i
-                    >amiauto.minsk@gmail.com
+                <p class="mb-3 flex items-center">
+                    <i class="fa-solid fa-envelope mr-3 text-green-500"></i>
+                    <a href="mailto:amiauto.minsk@gmail.com" class="hover:text-white">amiauto.minsk@gmail.com</a>
                 </p>
-                <p class="text-white">
-                    <i class="fa-brands fa-skype text-white mr-2"></i>ami.auto
+                <p class="flex items-center">
+                    <i class="fa-brands fa-skype mr-3 text-green-500"></i>
+                    <span>ami.auto</span>
                 </p>
             </div>
-            <div class="flex flex-col">
-                <p class="text-2xl text-white mb-2">О компании</p>
+            <div class="flex flex-col items-start gap-3">
+                <p class="mb-1 text-lg font-semibold text-white">О компании</p>
                 <Link
                     :href="route('news.index')"
-                    class="text-white mb-2 hover:text-green-700"
+                    class="hover:text-white"
                     >Новости</Link
                 >
                 <Link
                     :href="route('info.index')"
-                    class="text-white mb-2 hover:text-green-700"
+                    class="hover:text-white"
                     >О нас</Link
                 >
-                <Link href="#" class="text-white mb-2 hover:text-green-700"
+                <Link href="#" class="hover:text-white"
                     >Контакты</Link
                 >
             </div>
-            <div class="flex flex-col">
-                <p class="text-white text-2xl mb-2">Категории</p>
-                <Link href="/catalog/generators" class="text-white mb-2 hover:text-green-700"
+            <div class="flex flex-col items-start gap-3">
+                <p class="mb-1 text-lg font-semibold text-white">Категории</p>
+                <Link href="/catalog/generators" class="hover:text-white"
                     >Генераторы</Link
                 >
-                <Link href="/catalog/starters" class="text-white mb-2 hover:text-green-700"
+                <Link href="/catalog/starters" class="hover:text-white"
                     >Стартеры</Link
                 >
-                <Link href="/catalog/other" class="text-white hover:text-green-700"
+                <Link href="/catalog/other" class="hover:text-white"
                     >Остальные запчасти</Link
                 >
             </div>
         </div>
-        <p class="text-white text-center pb-2">
-            <i class="fa-regular fa-copyright"></i> Ами-Авто 2024-...
-        </p>
+        <div class="border-t border-white/10">
+            <p class="mx-auto max-w-7xl px-4 py-5 text-sm text-gray-400 md:px-5 lg:px-6">
+                © Ами-Авто, 2024–{{ new Date().getFullYear() }}
+            </p>
+        </div>
     </footer>
 </template>
 

@@ -20,7 +20,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "closeModal"]);
 
 watch(
     () => props.show,
@@ -34,9 +34,8 @@ watch(
 );
 
 const close = () => {
-    /*if (props.closeable) {
-        emit("close");
-    }*/
+    if (!props.closeable) return;
+    emit("close");
     emit("closeModal");
 };
 
@@ -66,47 +65,59 @@ const maxWidthClass = computed(() => {
 
 <template>
     <Teleport to="body">
-        <Transition leave-active-class="duration-200 ">
+        <Transition
+            enter-active-class="duration-200 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
             <div
                 v-show="show"
-                class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+                class="fixed inset-0 z-[70] overflow-y-auto bg-slate-950/55 px-4 py-6 backdrop-blur-[2px] sm:py-10"
                 scroll-region
+                @mousedown.self="close"
             >
                 <Transition
-                    enter-active-class="ease-out duration-300"
-                    enter-from-class="opacity-0"
-                    enter-to-class="opacity-100"
-                    leave-active-class="ease-in duration-200"
-                    leave-from-class="opacity-100"
-                    leave-to-class="opacity-0"
+                    enter-active-class="duration-200 ease-out"
+                    enter-from-class="translate-y-4 scale-[0.98] opacity-0"
+                    enter-to-class="translate-y-0 scale-100 opacity-100"
+                    leave-active-class="duration-150 ease-in"
+                    leave-from-class="translate-y-0 scale-100 opacity-100"
+                    leave-to-class="translate-y-4 scale-[0.98] opacity-0"
                 >
                     <div
                         v-show="show"
-                        class="fixed inset-0 transform transition-all"
+                        class="mx-auto flex min-h-full items-center justify-center"
+                        @mousedown.self="close"
                     >
                         <div
-                            class="mx-auto mt-10 inset-0 w-[600px] bg-gray-200 rounded-lg"
+                            class="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+                            :class="maxWidthClass"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="modal-title"
                         >
                             <div
-                                class="flex items-center px-4 justify-between bg-green-500"
+                                class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-5 sm:px-6"
                             >
-                                <p
-                                    class="text-2xl p-4 rounded-tr-[15px] rounded-tl-[15px] text-white"
-                                >
+                                <h2 id="modal-title" class="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
                                     {{ title }}
-                                </p>
-                                <p
+                                </h2>
+                                <button
+                                    type="button"
                                     @click="close"
-                                    class="text-white text-5xl cursor-pointer hover:text-red-400"
+                                    class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-green-600"
+                                    aria-label="Закрыть"
                                 >
-                                    &times;
-                                </p>
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.47 4.47a.75.75 0 0 1 1.06 0L10 8.94l4.47-4.47a.75.75 0 1 1 1.06 1.06L11.06 10l4.47 4.47a.75.75 0 1 1-1.06 1.06L10 11.06l-4.47 4.47a.75.75 0 0 1-1.06-1.06L8.94 10 4.47 5.53a.75.75 0 0 1 0-1.06Z" /></svg>
+                                </button>
                             </div>
 
                             <div
                                 v-show="show"
-                                class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                                :class="maxWidthClass"
+                                class="bg-white"
                             >
                                 <slot v-if="show" />
                             </div>

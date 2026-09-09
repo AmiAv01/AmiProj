@@ -1,18 +1,24 @@
 <template>
     <spa-link
         :href="`${href}`"
-        class="flex items-center p-6 pl-11 w-full text-lg font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100"
+        class="group flex min-h-12 w-full items-center gap-3 rounded-xl px-3.5 py-3 text-base font-semibold transition"
+        :class="isActive ? 'bg-green-700 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'"
         ><slot
     /></spa-link>
 </template>
 
-<script>
-export default {
-    props: {
-        href: {
-            type: String,
-            default: "#",
-        },
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+    href: {
+        type: String,
+        default: "#",
     },
-};
+});
+
+const isActive = computed(() => {
+    if (typeof window === 'undefined') return false;
+    return window.location.pathname.startsWith(props.href);
+});
 </script>
