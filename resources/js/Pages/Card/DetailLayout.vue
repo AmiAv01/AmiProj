@@ -26,7 +26,7 @@
         </button>
 
         <div v-if="showDetails" class="overflow-x-auto border-t border-slate-200">
-            <div class="grid min-w-[760px] grid-cols-6 gap-4 border-b border-slate-200 bg-slate-50 px-3 py-3 text-center text-lg font-bold text-slate-600">
+            <div class="grid min-w-[920px] grid-cols-[80px_minmax(120px,1fr)_minmax(180px,1.35fr)_minmax(80px,0.7fr)_minmax(110px,0.8fr)_260px] gap-4 border-b border-slate-200 bg-slate-50 px-3 py-3 text-center text-lg font-bold text-slate-600">
                 <div class="flex items-center justify-center text-left">Фото</div>
                 <div class="flex items-center justify-center text-left">Артикул</div>
                 <div class="flex items-center justify-center text-left">Название</div>
@@ -38,7 +38,7 @@
             <div
                 v-for="(item, index) in details"
                 :key="index"
-                class="grid min-w-[760px] grid-cols-6 gap-4 border-b border-slate-100 px-3 py-3 text-center transition-colors last:border-b-0 hover:bg-blue-50/40"
+                class="grid min-w-[920px] grid-cols-[80px_minmax(120px,1fr)_minmax(180px,1.35fr)_minmax(80px,0.7fr)_minmax(110px,0.8fr)_260px] gap-4 border-b border-slate-100 px-3 py-3 text-center transition-colors last:border-b-0 hover:bg-blue-50/40"
                 :class="{ 'cursor-pointer': $page.props.auth.user }"
                 :role="$page.props.auth.user ? 'link' : undefined"
                 :tabindex="$page.props.auth.user ? 0 : undefined"
@@ -86,13 +86,14 @@
                     @keydown.stop
                 >
                     <!-- Если товар уже в корзине -->
-                    <div v-if="getCartItem(item.dt_id)" class="flex items-center gap-2">
-                        <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
+                    <div v-if="getCartItem(item.dt_id)" class="flex w-full items-center justify-start gap-2 whitespace-nowrap">
+                        <div class="flex h-10 shrink-0 items-stretch overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm">
                             <button
                                 @click="decDetailCount(item.dt_id)"
                                 :disabled="getCartItem(item.dt_id).quantity <= CART_QUANTITY_MIN"
-                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                                class="flex w-9 items-center justify-center bg-gray-100 text-lg font-bold transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
                                 :title="minimumQuantityTitle"
+                                aria-label="Уменьшить количество"
                             >
                                 -
                             </button>
@@ -103,19 +104,21 @@
                                 @change="enforceDetailQty(item.dt_id, $event.target.value)"
                                 :min="CART_QUANTITY_MIN"
                                 :max="CART_QUANTITY_MAX"
-                                class="w-12 text-center border-none py-0.5 focus:outline-none font-semibold bg-transparent"
+                                class="h-full w-14 border-x border-y-0 border-gray-300 bg-transparent p-0 text-center text-base font-semibold focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                aria-label="Количество"
                             />
                             <button
                                 @click="incDetailCount(item.dt_id)"
                                 :disabled="getCartItem(item.dt_id).quantity >= CART_QUANTITY_MAX"
-                                class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                                class="flex w-9 items-center justify-center bg-gray-100 text-lg font-bold transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+                                aria-label="Увеличить количество"
                             >
                                 +
                             </button>
                         </div>
                         <button
                             @click="confirmDetailDelete(item.dt_id)"
-                            class="inline-flex h-8 w-8 items-center justify-center rounded border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-red-200 text-red-600 transition-colors hover:bg-red-50"
                             title="Удалить товар из корзины"
                             aria-label="Удалить товар из корзины"
                         >
@@ -126,7 +129,7 @@
                         </button>
                         <spa-link
                             href="/cart"
-                            class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-2 py-1 rounded transition-colors"
+                            class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg bg-green-600 px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-green-500"
                             title="Перейти в корзину"
                         >
                             В корзине
