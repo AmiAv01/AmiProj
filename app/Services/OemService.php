@@ -49,4 +49,21 @@ final class OemService
                     ->orWhere('dt_oem', 'like', "$searchQuery%");
             });
     }
+
+    public function buildUniqueDetailsQuery(string $searchQuery): Builder
+    {
+        $pattern = "$searchQuery%";
+        $codeExpression = 'CASE WHEN dt_oem LIKE ? THEN dt_oem ELSE dt_invoice END';
+        $firmExpression = 'CASE WHEN dt_oem LIKE ? THEN fr_code ELSE dt_parent END';
+        $representativeIds = $this->buildDetailsQuery($searchQuery)
+            ->selectRaw('MIN(id) AS id')
+            ->groupByRaw($codeExpression, [$pattern])
+            ->groupByRaw($firmExpression, [$pattern]);
+
+        return Oems::query()
+            ->whereIn('id', $representativeIds)
+            ->orderByRaw($codeExpression, [$pattern])
+            ->orderByRaw($firmExpression, [$pattern])
+            ->orderBy('id');
+    }
 }

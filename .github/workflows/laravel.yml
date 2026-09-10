@@ -23,7 +23,9 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
       - name: Validate executable scripts
-        run: test -x scripts/dbf-sync-cron.sh
+        run: |
+          test -x scripts/dbf-sync-cron.sh
+          bash -n scripts/dbf-sync-cron.sh
 
   # Stage 2: Secret Scanning
   secret-scan:

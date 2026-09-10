@@ -7,7 +7,6 @@ use App\Exceptions\NoResultsFoundException;
 use App\Models\Detail;
 use App\Services\Product\ProductImageService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 final class SearchService
@@ -32,19 +31,17 @@ final class SearchService
 
     public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
-        $page = Paginator::resolveCurrentPage();
         $perPage = self::RESULTS_PER_PAGE;
-        $paginator = $this->oemService->buildDetailsQuery($dto->searchQuery)->paginate($perPage, ['*'], 'page', $page);
+        $paginator = $this->oemService->buildUniqueDetailsQuery($dto->searchQuery)->paginate($perPage);
         if ($paginator->isEmpty()) {
             throw new NoResultsFoundException($dto->searchQuery);
         }
         $processedDetails = $this->processDetails(collect($paginator->items()), $dto->searchQuery);
         $details = array_values($this->formatResults($processedDetails));
+        $paginator->setCollection(collect($details));
+        $paginator->withQueryString();
 
-        return new LengthAwarePaginator($details, $paginator->total(), $perPage, $page, [
-            'path' => Paginator::resolveCurrentPath(),
-            'pageName' => 'page',
-        ]);
+        return $paginator;
     }
 
     private function processDetails(Collection $details, string $searchQuery): array
