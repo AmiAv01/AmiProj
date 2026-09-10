@@ -38,6 +38,21 @@ php artisan dbf:sync --file=FIRMS.DBF --file=ASS.DBF
 php artisan dbf:sync --force
 ```
 
+For a cron job, `scripts/dbf-sync-cron.sh` determines the application root from
+its own location, so no server path is stored in the repository. A server can
+override the detected application path or PHP executable through environment
+variables:
+
+```shell
+AMI_APP_PATH=/path/to/application \
+AMI_PHP_BIN=/path/to/php \
+/path/to/application/scripts/dbf-sync-cron.sh
+```
+
+These values belong in the server's cron or service environment and are not
+written to the script during deployment. When the default PHP executable is
+available in cron's `PATH`, `AMI_PHP_BIN` can be omitted.
+
 Every attempt is recorded in `dbf_import_runs`. The latest successful checksum
 for each file is stored in `dbf_import_files`; unchanged files are skipped.
 Each upsert batch is atomic; if a later batch fails, the next run safely resumes
