@@ -5,6 +5,7 @@ use App\Models\CartItem;
 use App\Models\Detail;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\Product\ProductImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -164,6 +165,35 @@ it('synchronizes product images even when ASS DBF is unchanged', function (): vo
     } finally {
         @unlink($dbfPath);
         @unlink($imagePath);
+        @rmdir($directory);
+    }
+});
+
+it('converts legacy CP866 product image filenames to safe UTF-8 paths', function (): void {
+    Storage::fake('images');
+    $directory = sys_get_temp_dir().'/ami_legacy_image_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $dbfPath = $directory.'/ASS.DBF';
+    $utf8Photo = '2Я-3708150';
+    $legacyPhoto = iconv('UTF-8', 'CP866', $utf8Photo);
+    expect($legacyPhoto)->not->toBeFalse();
+    $legacyImagePath = $directory.'/'.$legacyPhoto.'.JPG';
+
+    try {
+        createDetailDbf($dbfPath, $legacyPhoto);
+        file_put_contents($legacyImagePath, 'image bytes');
+
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])
+            ->assertSuccessful();
+
+        $safeImagePath = '2я-3708150.jpg';
+        $this->assertDatabaseHas('detail', ['dt_code' => 131586, 'dt_foto' => $utf8Photo]);
+        Storage::disk('images')->assertExists($safeImagePath);
+        expect(app(ProductImageService::class)->getImageUrl($utf8Photo))
+            ->toBe(url('/storage/images/'.$safeImagePath));
+    } finally {
+        @unlink($dbfPath);
+        @unlink($legacyImagePath);
         @rmdir($directory);
     }
 });

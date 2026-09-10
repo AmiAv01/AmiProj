@@ -69,7 +69,7 @@ class ProductImageService
             : self::IMAGE_EXTENSIONS;
         $candidates = [];
 
-        foreach (array_unique([$stem, strtolower($stem), strtoupper($stem)]) as $candidateStem) {
+        foreach (array_unique([$stem, mb_strtolower($stem, 'UTF-8'), mb_strtoupper($stem, 'UTF-8')]) as $candidateStem) {
             foreach ($extensions as $candidateExtension) {
                 $candidates[] = "{$candidateStem}.{$candidateExtension}";
                 $candidates[] = "{$candidateStem}.".strtoupper($candidateExtension);
