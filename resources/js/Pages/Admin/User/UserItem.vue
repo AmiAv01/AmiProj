@@ -18,8 +18,8 @@
         <td class="px-4 py-3">{{ user.name }}</td>
         <td class="px-4 py-3">{{ user.email }}</td>
         <td>
-            <span class="inline-flex rounded-full px-2.5 py-1 text-sm font-semibold" :class="user.isAdmin === 1 ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'">
-                {{ (user.isAdmin === 1) ? "Да" : "Нет" }}
+            <span class="inline-flex rounded-full px-2.5 py-1 text-sm font-semibold" :class="user.isAdmin ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'">
+                {{ user.isAdmin ? "Да" : "Нет" }}
             </span>
         </td>
 

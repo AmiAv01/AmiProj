@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function (): void {
     Route::post('/auth/register', [AuthController::class, 'register'])->middleware(['guest', 'throttle:5,1']);
     Route::post('/auth/forgot-password', [RecoveryController::class, 'forgotPassword'])->middleware(['guest', 'throttle:5,1']);
     Route::post('/auth/reset-password', [RecoveryController::class, 'resetPassword'])->middleware(['guest', 'throttle:5,1']);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/home', [PublicContentController::class, 'home']);
     Route::get('/news', [PublicContentController::class, 'news']);
     Route::get('/catalog/search', [PublicContentController::class, 'search']);
@@ -46,7 +47,6 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/products/{id}', [PublicContentController::class, 'product']);
 
     Route::middleware('auth:sanctum')->group(function (): void {
-        Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::middleware('approved')->group(function (): void {
             Route::get('/auth/user', [AuthController::class, 'user']);
             Route::post('/auth/confirm-password', [RecoveryController::class, 'confirmPassword'])->middleware('throttle:5,1');

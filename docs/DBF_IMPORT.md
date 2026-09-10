@@ -10,6 +10,7 @@ Set these values in the runtime environment:
 DBF_HOST_PATH=./DbfParsers/amiproject
 DBF_SOURCE_PATH=/data/dbf
 DBF_ARCHIVE_PATH=
+DBF_IMAGE_SOURCE_PATH=
 DBF_ENCRYPTION_KEY=replace-with-the-legacy-key
 DBF_BATCH_SIZE=1000
 DBF_PROCESS_MEMORY_LIMIT=256M
@@ -46,9 +47,12 @@ large table cannot accumulate into the next import.
 
 `ASS.DBF` synchronizes the `FOTO` column into `detail.dt_foto`, including a new
 photo reference for an existing product when the DBF checksum changes. The DBF
-contains only the photo name: the corresponding `.jpg` file must also be placed
-in `storage/app/public/images` and `public/storage` must point to
-`storage/app/public` (run `php artisan storage:link` when setting up a host).
+contains only the photo name. During every `ASS.DBF` run, supported image files
+(`.jpg`, `.jpeg`, `.png`, and `.webp`) are copied from `DBF_IMAGE_SOURCE_PATH`,
+or from `DBF_SOURCE_PATH` when the image path is not configured. Subdirectories
+and ZIP archives are scanned, filenames are normalized to lowercase, and images
+that arrive after an unchanged DBF are still synchronized. `public/storage` must
+point to `storage/app/public` (run `php artisan storage:link` when setting up a host).
 
 On the first production deployment, back up the database, apply the migration,
 and then inspect legacy duplicates:

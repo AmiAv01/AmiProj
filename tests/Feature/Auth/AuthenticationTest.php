@@ -92,6 +92,14 @@ test('users can logout', function (): void {
     $response->assertOk();
 });
 
+test('logout is idempotent when the session has already expired', function (): void {
+    $this->postJson('/api/v1/auth/logout')
+        ->assertOk()
+        ->assertJsonPath('message', 'Logged out.');
+
+    $this->assertGuest();
+});
+
 test('a revoked approval blocks an existing authenticated session', function (): void {
     $user = User::factory()->create();
     $this->actingAs($user);

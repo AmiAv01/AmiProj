@@ -20,8 +20,8 @@
                         <div>
                             <dt class="text-sm font-medium text-slate-500">Роль</dt>
                             <dd class="mt-2">
-                                <span class="inline-flex rounded-full px-3 py-1 text-sm font-semibold" :class="user.isAdmin === 1 ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'">
-                                    {{ user.isAdmin === 1 ? 'Администратор' : 'Пользователь' }}
+                                <span class="inline-flex rounded-full px-3 py-1 text-sm font-semibold" :class="user.isAdmin ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'">
+                                    {{ user.isAdmin ? 'Администратор' : 'Пользователь' }}
                                 </span>
                             </dd>
                         </div>

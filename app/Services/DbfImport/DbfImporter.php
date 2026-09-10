@@ -39,7 +39,10 @@ final class DbfImporter
         'RBIE' => 'Шестерня', 'RBIE_CG' => 'Шестерня', 'RLOZ' => 'Подшипник', 'RLOZ_CG' => 'Подшипник',
     ];
 
-    public function __construct(private readonly DbfSourceLocator $locator) {}
+    public function __construct(
+        private readonly DbfSourceLocator $locator,
+        private readonly DbfImageSynchronizer $imageSynchronizer,
+    ) {}
 
     /** @param list<string>|null $filenames
      * @return list<DbfImportResult>
@@ -63,6 +66,7 @@ final class DbfImporter
         $path = $source['path'];
         $startedAt = now();
         $runId = null;
+        $imagesWritten = 0;
 
         try {
             $sha256 = hash_file('sha256', $path);
@@ -79,11 +83,19 @@ final class DbfImporter
                 'updated_at' => $startedAt,
             ]);
 
+            if (strcasecmp($filename, 'ASS.DBF') === 0) {
+                $configuredImagePath = config('dbf.image_source_path');
+                $imageSourcePath = is_string($configuredImagePath) && $configuredImagePath !== ''
+                    ? $configuredImagePath
+                    : $sourcePath;
+                $imagesWritten = $this->imageSynchronizer->sync($imageSourcePath, $archivePath);
+            }
+
             $previousHash = DB::table('dbf_import_files')->where('filename', $filename)->value('sha256');
             if (! $force && hash_equals((string) $previousHash, $sha256)) {
                 $this->finishRun($runId, 'skipped', 0, 0);
 
-                return new DbfImportResult($filename, 'skipped');
+                return new DbfImportResult($filename, 'skipped', imagesWritten: $imagesWritten);
             }
 
             [$recordsRead, $recordsWritten] = $this->writeFile($filename, $path);
@@ -102,7 +114,7 @@ final class DbfImporter
 
             $this->finishRun($runId, 'completed', $recordsRead, $recordsWritten);
 
-            return new DbfImportResult($filename, 'completed', $recordsRead, $recordsWritten);
+            return new DbfImportResult($filename, 'completed', $recordsRead, $recordsWritten, $imagesWritten);
         } catch (Throwable $exception) {
             if ($runId !== null) {
                 DB::table('dbf_import_runs')->where('id', $runId)->update([

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\CatalogMetadataService;
 use App\Services\Product\AnalogService;
+use App\Services\Product\ProductImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -200,4 +201,14 @@ it('returns product image URLs in catalog and search results', function (): void
         ->assertOk()
         ->assertJsonPath('data.title', 'Поиск по 131586')
         ->assertJsonPath('data.details.data.0.imageUrl', $expectedUrl);
+});
+
+it('finds product images with an explicit extension and uppercase filename', function (): void {
+    Storage::fake('images');
+    Storage::disk('images')->put('PRODUCT-131586.JPEG', 'image bytes');
+
+    $imageUrl = app(ProductImageService::class)
+        ->getImageUrl('PRODUCT-131586.JPEG');
+
+    expect($imageUrl)->toBe(url('/storage/images/PRODUCT-131586.JPEG'));
 });

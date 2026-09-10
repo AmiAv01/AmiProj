@@ -9,5 +9,6 @@ final readonly class DbfImportResult
         public string $status,
         public int $recordsRead = 0,
         public int $recordsWritten = 0,
+        public int $imagesWritten = 0,
     ) {}
 }

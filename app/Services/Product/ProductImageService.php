@@ -12,6 +12,9 @@ class ProductImageService
 {
     const string DEFAULT_IMAGE_URL = '/no-photo--lg.png';
 
+    /** @var list<string> */
+    private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+
     /**
      * @throws InvalidImagePathException
      * @throws ImageStorageException
@@ -33,13 +36,12 @@ class ProductImageService
      */
     private function findExistingImage(string $imagePaths): ?string
     {
-        foreach (explode(',', $imagePaths) as $imagePath) {
-            $normalizedPath = $this->normalizeImagePath($imagePath);
+        foreach (array_filter(array_map('trim', explode(',', $imagePaths))) as $imagePath) {
             try {
-                if (Storage::disk('images')->exists($normalizedPath.'.jpg')) {
-                    Log::info("Found image: {$normalizedPath}.jpg");
-
-                    return $normalizedPath;
+                foreach ($this->candidatePaths($imagePath) as $candidate) {
+                    if (Storage::disk('images')->exists($candidate)) {
+                        return $candidate;
+                    }
                 }
             } catch (\Exception $e) {
                 Log::error('Failed to access product image storage.', ['exception' => $e]);
@@ -50,14 +52,31 @@ class ProductImageService
         return null;
     }
 
-    private function normalizeImagePath(string $path): string
+    /** @return list<string> */
+    private function candidatePaths(string $path): array
     {
-        if (empty(trim($path))) {
+        $filename = basename(str_replace('\\', '/', trim($path)));
+        if ($filename === '') {
             throw new InvalidImagePathException($path);
         }
-        $path = strtolower($path);
 
-        return stristr($path, ',', true) ?: $path;
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $stem = in_array($extension, self::IMAGE_EXTENSIONS, true)
+            ? pathinfo($filename, PATHINFO_FILENAME)
+            : $filename;
+        $extensions = in_array($extension, self::IMAGE_EXTENSIONS, true)
+            ? [$extension]
+            : self::IMAGE_EXTENSIONS;
+        $candidates = [];
+
+        foreach (array_unique([$stem, strtolower($stem), strtoupper($stem)]) as $candidateStem) {
+            foreach ($extensions as $candidateExtension) {
+                $candidates[] = "{$candidateStem}.{$candidateExtension}";
+                $candidates[] = "{$candidateStem}.".strtoupper($candidateExtension);
+            }
+        }
+
+        return array_values(array_unique($candidates));
     }
 
     private function getDefaultImageUrl(): string
@@ -75,6 +94,6 @@ class ProductImageService
             throw new InvalidImagePathException($imagePath);
         }
 
-        return url('storage/images/'.$imagePath.'.jpg');
+        return url('storage/images/'.$imagePath);
     }
 }

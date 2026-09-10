@@ -52,9 +52,9 @@ class SyncDbfCommand extends Command
                     )[0];
 
                     if ($result->status === 'skipped') {
-                        $this->line("{$result->filename}: unchanged, skipped");
+                        $this->line("{$result->filename}: unchanged, skipped; {$result->imagesWritten} images synchronized");
                     } else {
-                        $this->info("{$result->filename}: {$result->recordsRead} DBF records read, {$result->recordsWritten} SQL rows synchronized");
+                        $this->info("{$result->filename}: {$result->recordsRead} DBF records read, {$result->recordsWritten} SQL rows synchronized, {$result->imagesWritten} images synchronized");
                     }
                 } catch (Throwable $exception) {
                     $failed = true;
