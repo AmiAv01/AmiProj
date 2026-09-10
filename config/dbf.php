@@ -7,6 +7,7 @@ $encryptionKey = env('DBF_ENCRYPTION_KEY');
 return [
     'source_path' => env('DBF_SOURCE_PATH', storage_path('app/dbf')),
     'archive_path' => env('DBF_ARCHIVE_PATH'),
+    'image_source_path' => env('DBF_IMAGE_SOURCE_PATH'),
     'encryption_key' => is_string($encryptionKey) && $encryptionKey !== ''
         ? $encryptionKey
         : ($legacyConfig['encryption_key'] ?? null),

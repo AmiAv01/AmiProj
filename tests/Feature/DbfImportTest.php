@@ -6,6 +6,7 @@ use App\Models\Detail;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 function createFirmDbf(string $path, string $name): void
 {
@@ -138,6 +139,31 @@ it('updates the product photo reference when ASS DBF changes', function (): void
         $this->assertDatabaseHas('detail', ['dt_code' => 131586, 'dt_foto' => 'new-product-photo']);
     } finally {
         @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('synchronizes product images even when ASS DBF is unchanged', function (): void {
+    Storage::fake('images');
+    $directory = sys_get_temp_dir().'/ami_detail_image_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $dbfPath = $directory.'/ASS.DBF';
+    $imagePath = $directory.'/NEW-PRODUCT-PHOTO.JPG';
+
+    try {
+        createDetailDbf($dbfPath, 'NEW-PRODUCT-PHOTO');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+        Storage::disk('images')->assertMissing('new-product-photo.jpg');
+
+        file_put_contents($imagePath, 'image bytes');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])
+            ->expectsOutputToContain('unchanged, skipped; 1 images synchronized')
+            ->assertSuccessful();
+
+        Storage::disk('images')->assertExists('new-product-photo.jpg');
+    } finally {
+        @unlink($dbfPath);
+        @unlink($imagePath);
         @rmdir($directory);
     }
 });
