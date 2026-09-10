@@ -1,12 +1,14 @@
 <?php
 
 use App\Enums\OrderStatus;
+use App\Models\Detail;
 use App\Models\News;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\CatalogMetadataService;
 use App\Services\Product\AnalogService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 it('resolves nested catalog filters and translated titles in type-category order', function (): void {
     $metadata = app(CatalogMetadataService::class)->getMetadata('starter_parts', 'fork');
@@ -158,4 +160,44 @@ it('applies cargo ownership filters to both sides of the analog lookup', functio
     ]);
 
     expect($result)->toBe(['CARGO-INVOICE']);
+});
+
+it('returns product image URLs in catalog and search results', function (): void {
+    Storage::fake('images');
+    Storage::disk('images')->put('product-131586.jpg', 'image bytes');
+
+    DB::table('firm')->insert([
+        'fr_code' => 131586,
+        'fr_name' => 'CARGO',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+    $detail = Detail::factory()->create([
+        'dt_code' => 131586,
+        'dt_invoice' => '131586',
+        'dt_typec' => 'ВИЛКА СТАРТЕРА',
+        'dt_foto' => 'product-131586',
+        'fr_code' => 'CARGO',
+        'deleted_at' => null,
+    ]);
+    DB::table('oems')->insert([
+        'dt_invoice' => $detail->dt_invoice,
+        'dt_parent' => 'CARGO',
+        'dt_oem' => 'OEM-131586',
+        'fr_code' => 'CARGO',
+        'dt_typec' => 'ВИЛКА СТАРТЕРА',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $expectedUrl = url('/storage/images/product-131586.jpg');
+
+    $this->getJson('/api/v1/catalog/starter_parts/fork')
+        ->assertOk()
+        ->assertJsonPath('data.details.data.0.imageUrl', $expectedUrl);
+
+    $this->getJson('/api/v1/catalog/search?searchQ=131586')
+        ->assertOk()
+        ->assertJsonPath('data.title', 'Поиск по 131586')
+        ->assertJsonPath('data.details.data.0.imageUrl', $expectedUrl);
 });

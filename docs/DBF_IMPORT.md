@@ -44,6 +44,12 @@ the idempotent synchronization without holding one long database transaction.
 The all-files command isolates every DBF in its own PHP process so memory from a
 large table cannot accumulate into the next import.
 
+`ASS.DBF` synchronizes the `FOTO` column into `detail.dt_foto`, including a new
+photo reference for an existing product when the DBF checksum changes. The DBF
+contains only the photo name: the corresponding `.jpg` file must also be placed
+in `storage/app/public/images` and `public/storage` must point to
+`storage/app/public` (run `php artisan storage:link` when setting up a host).
+
 On the first production deployment, back up the database, apply the migration,
 and then inspect legacy duplicates:
 

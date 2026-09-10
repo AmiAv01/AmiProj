@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\DTO\SearchQueryDTO;
 use App\Exceptions\NoResultsFoundException;
+use App\Models\Detail;
+use App\Services\Product\ProductImageService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -12,7 +14,10 @@ final class SearchService
 {
     private const int RESULTS_PER_PAGE = 10;
 
-    public function __construct(private OemService $oemService) {}
+    public function __construct(
+        private readonly OemService $oemService,
+        private readonly ProductImageService $imageService,
+    ) {}
 
     public function getBySearching(SearchQueryDTO $dto): array
     {
@@ -44,8 +49,15 @@ final class SearchService
 
     private function processDetails(Collection $details, string $searchQuery): array
     {
-        return $details->map(function ($detail) use ($searchQuery) {
-            return $this->oemService->getInfoAboutDetailFromOems($detail, $searchQuery)->toArray();
+        $photosByInvoice = Detail::query()
+            ->whereIn('dt_invoice', $details->pluck('dt_invoice')->filter()->unique())
+            ->pluck('dt_foto', 'dt_invoice');
+
+        return $details->map(function ($detail) use ($searchQuery, $photosByInvoice) {
+            $result = $this->oemService->getInfoAboutDetailFromOems($detail, $searchQuery)->toArray();
+            $result['imageUrl'] = $this->imageService->getImageUrl($photosByInvoice->get($detail['dt_invoice']));
+
+            return $result;
         })->toArray();
     }
 

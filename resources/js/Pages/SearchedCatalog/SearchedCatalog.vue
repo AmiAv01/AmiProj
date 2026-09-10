@@ -1,61 +1,103 @@
 <template>
-    <push v-if="isShow" :isShow="isShow" @hide="hideModal" :title="`Успешно добавлено в корзину`">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"  stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-    </push>
     <layout :title="title">
-        <div class="bg-white flex ml-12 py-12 sm:py-12">
-            <div>
-                <div class="ml-12 max-w-xl ">
-                    <p class="text-5xl font-bold tracking-tight text-gray-900 mb-10">
-                        {{ title }}
-                    </p>
-                    <div v-if="details.data"
-                         class=" grid grid-cols-1 gap-x-4 gap-y-2 w-[1200px]  border-gray-200"
-                    >
-                        <SearchedCatalogItem
-                            @showPush="showModal"
+        <div class="w-full bg-white">
+            <div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:px-8">
+                <aside class="lg:sticky lg:top-6 lg:self-start">
+                    <BrandFilter
+                        :is-show="showBrandSelector"
+                        :is-mobile="showMobileFilter"
+                        :categories="categories.brands"
+                        :client-brands="clientBrands"
+                        @closeModal="closeBrandFilter"
+                    />
+                </aside>
 
+                <main class="min-w-0">
+                    <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+                        <h1 class="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                            {{ title }}
+                        </h1>
+                        <span
+                            v-if="details.total"
+                            class="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-800"
+                        >
+                            Найдено: {{ details.total }}
+                        </span>
+                    </div>
+
+                    <button
+                        v-show="showFilterButton"
+                        type="button"
+                        class="mb-6 inline-flex h-11 items-center justify-center rounded-xl border border-green-700 bg-green-700 px-6 font-semibold text-white transition hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-300"
+                        @click="toggleMobile"
+                    >
+                        Фильтр
+                    </button>
+
+                    <div v-if="details.data?.length" class="w-full space-y-3">
+                        <SearchedCatalogItem
                             v-for="detail in details.data"
-                            :key="detail.dt_id"
+                            :key="`${detail.dt_code}-${detail.dt_firm}`"
                             :detail="detail"
                         />
                     </div>
-                    <div v-else
-                         class="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 border-t w-[1300px] border-gray-200"
-                    >
-                        <p class="text-center mt-12 text-5xl text-gray-500">По данному запросу запчастей не найдено</p>
+
+                    <div v-else class="mt-8 w-full rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-12">
+                        <p class="text-center text-xl font-medium text-gray-500 md:text-2xl">
+                            По данному запросу запчастей не найдено
+                        </p>
                     </div>
-                </div>
-                <pagination :links="details.links"  />
+
+                    <pagination :links="details.links" class="mt-10" />
+                </main>
             </div>
-            <BrandSelector
-                :categories="categories.brands"
-                :clientBrands="clientBrands"
-            />
         </div>
     </layout>
 </template>
 
 <script setup>
-import BrandSelector from "@/Shared/Filters/BrandFilter.vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import BrandFilter from "@/Shared/Filters/BrandFilter.vue";
 import SearchedCatalogItem from "@/Pages/SearchedCatalog/SearchedCatalogItem.vue";
-import {ref} from "vue";
 
-const props = defineProps({
-    details: Object,
+defineProps({
+    details: {
+        type: Object,
+        default: () => ({ data: [], links: [], total: 0 }),
+    },
     title: String,
-    categories: Object,
-    clientBrands: Object,
+    categories: {
+        type: Object,
+        default: () => ({ brands: [] }),
+    },
+    clientBrands: {
+        type: Object,
+        default: null,
+    },
 });
 
-const checked = ref([]);
-let isShow = ref(false);
-const selectedDetails = ref(props.details);
+const showBrandSelector = ref(false);
+const showFilterButton = ref(false);
+const showMobileFilter = ref(false);
 
-const hideModal = (param) => isShow = param;
+const handleWindowResize = () => {
+    showBrandSelector.value = window.innerWidth >= 1124;
+    showFilterButton.value = window.innerWidth < 1124;
+    showMobileFilter.value = window.innerWidth < 1124;
+};
 
-const showModal = (param) => isShow = param;
+const toggleMobile = () => {
+    showBrandSelector.value = !showBrandSelector.value;
+};
 
+const closeBrandFilter = () => {
+    showBrandSelector.value = false;
+};
+
+onMounted(() => {
+    window.addEventListener('resize', handleWindowResize);
+    handleWindowResize();
+});
+
+onUnmounted(() => window.removeEventListener('resize', handleWindowResize));
 </script>
-
-

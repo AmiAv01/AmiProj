@@ -73,7 +73,7 @@ class PublicContentController extends Controller
         return response()->json([
             'data' => [
                 'details' => $details,
-                'title' => __('Search by :search', ['search' => $query]),
+                'title' => __('search_by_search', ['search' => $query]),
                 'categories' => ['brands' => $this->firms->getAll()],
                 'clientBrands' => $this->details->getClientBrands(new FilterDTO($request->validated('filter'))),
             ],
