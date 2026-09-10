@@ -61,6 +61,36 @@ function createOemDbf(string $path, string $parent = 'ROOT'): void
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
+function createDetailDbf(string $path, string $photo): void
+{
+    $fields = [
+        ['CODE', 'N', 10, 0],
+        ['TYPE', 'C', 40, 0],
+        ['FOTO', 'C', 100, 0],
+        ['INVOICE', 'C', 20, 0],
+        ['TYPEC', 'C', 40, 0],
+        ['FIRMS', 'C', 20, 0],
+        ['ACODE', 'N', 10, 0],
+    ];
+    $headerLength = 32 + (32 * count($fields)) + 1;
+    $recordLength = 1 + array_sum(array_column($fields, 2));
+    $header = chr(0x03).pack('CCC', 126, 8, 30).pack('Vvv', 1, $headerLength, $recordLength).str_repeat("\0", 20);
+
+    foreach ($fields as [$fieldName, $type, $length, $decimals]) {
+        $header .= str_pad($fieldName, 11, "\0").$type.str_repeat("\0", 4).chr($length).chr($decimals).str_repeat("\0", 14);
+    }
+
+    $record = ' '
+        .str_pad('131586', 10, ' ', STR_PAD_LEFT)
+        .str_pad('Relay', 40)
+        .str_pad($photo, 100)
+        .str_pad('131586', 20)
+        .str_pad('Starter relay', 40)
+        .str_pad('CARGO', 20)
+        .str_pad('1', 10, ' ', STR_PAD_LEFT);
+    file_put_contents($path, $header."\x0D".$record."\x1A");
+}
+
 it('inserts, updates, and skips unchanged DBF records', function (): void {
     $directory = sys_get_temp_dir().'/ami_dbf_test_'.bin2hex(random_bytes(6));
     mkdir($directory, 0755, true);
@@ -85,6 +115,27 @@ it('inserts, updates, and skips unchanged DBF records', function (): void {
             ->expectsOutputToContain('unchanged, skipped')
             ->assertSuccessful();
         expect(DB::table('dbf_import_runs')->where('status', 'skipped')->count())->toBe(1);
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('updates the product photo reference when ASS DBF changes', function (): void {
+    $directory = sys_get_temp_dir().'/ami_detail_photo_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+
+    try {
+        createDetailDbf($path, 'old-product-photo');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+        $this->assertDatabaseHas('detail', ['dt_code' => 131586, 'dt_foto' => 'old-product-photo']);
+
+        createDetailDbf($path, 'new-product-photo');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+
+        expect(DB::table('detail')->where('dt_code', 131586)->count())->toBe(1);
+        $this->assertDatabaseHas('detail', ['dt_code' => 131586, 'dt_foto' => 'new-product-photo']);
     } finally {
         @unlink($path);
         @rmdir($directory);

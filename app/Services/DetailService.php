@@ -6,12 +6,15 @@ use App\DTO\FilterDTO;
 use App\Exceptions\InvalidInvoiceException;
 use App\Models\Detail;
 use App\Models\Firm;
+use App\Services\Product\ProductImageService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class DetailService
 {
+    public function __construct(private readonly ProductImageService $imageService) {}
+
     public function getById(int $id): Detail
     {
         return Detail::query()->findOrFail($id);
@@ -26,8 +29,10 @@ final class DetailService
     {
         $brands = QueryBuilder::for(Firm::class)->allowedFilters(AllowedFilter::exact('id', 'fr_code', true, null))->get();
 
-        return Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
-            ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem'])->paginate($perPage)->withQueryString();
+        $details = Detail::whereIn('dt_typec', $categories)->whereIn('fr_code', $brands->pluck('fr_name')->toArray())
+            ->select(['dt_id', 'dt_invoice', 'dt_typec', 'dt_cargo', 'fr_code', 'dt_oem', 'dt_foto'])->paginate($perPage)->withQueryString();
+
+        return $this->withImageUrls($details);
     }
 
     public function getByBrand(int $perPage): LengthAwarePaginator
@@ -70,5 +75,15 @@ final class DetailService
     public function deleteById(int $id): bool
     {
         return Detail::where('dt_id', $id)->delete();
+    }
+
+    private function withImageUrls(LengthAwarePaginator $details): LengthAwarePaginator
+    {
+        return $details->through(function (Detail $detail): Detail {
+            $detail->setAttribute('imageUrl', $this->imageService->getImageUrl($detail->dt_foto));
+            $detail->makeHidden('dt_foto');
+
+            return $detail;
+        });
     }
 }

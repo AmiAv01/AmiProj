@@ -11,15 +11,17 @@
 
         <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-50 sm:h-28 sm:w-28">
             <img
-                src="/no-photo--lg.png"
-                alt="Нет фотографии товара"
+                :src="detail.imageUrl || defaultImage"
+                :alt="`Изображение товара ${detail.dt_invoice}`"
                 class="h-full w-full object-contain"
+                loading="lazy"
+                @error="useDefaultImage"
             />
         </div>
 
         <div class="min-w-0 flex-grow">
             <h3 class="font-manrope text-lg font-semibold leading-snug text-gray-900 transition group-hover:text-green-800 sm:text-xl md:text-2xl">
-                <a :href="`product/${detail.dt_invoice}`">
+                <a :href="productUrl" @click.stop>
                     {{ editTitle(detail.dt_typec) }} {{ detail.dt_invoice }}
                 </a>
             </h3>
@@ -54,10 +56,17 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { editDetailTitle } from "@/Services/TitleService";
 const props = defineProps({ detail: Object });
+const defaultImage = '/no-photo--lg.png';
+const productUrl = computed(() => `/catalog/product/${encodeURIComponent(props.detail.dt_invoice)}`);
 const editTitle = (res) => editDetailTitle(res);
 const openProduct = () => {
-    window.location.href = `product/${props.detail.dt_invoice}`;
+    window.location.href = productUrl.value;
+};
+const useDefaultImage = (event) => {
+    if (event.target.src.endsWith(defaultImage)) return;
+    event.target.src = defaultImage;
 };
 </script>
