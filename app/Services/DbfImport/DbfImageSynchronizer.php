@@ -3,6 +3,7 @@
 namespace App\Services\DbfImport;
 
 use FilesystemIterator;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -85,6 +86,15 @@ final class DbfImageSynchronizer
                 }
 
                 $destination = $this->destinationName($stat['name']);
+                if ($destination === null) {
+                    Log::warning('Skipped a product image with an unreadable archive filename.', [
+                        'archive' => $archivePath,
+                        'entry_index' => $index,
+                    ]);
+
+                    continue;
+                }
+
                 $modifiedAt = $stat['mtime'];
                 if (! $this->needsCopy($destination, (int) $stat['size'], $modifiedAt)) {
                     continue;
@@ -112,6 +122,14 @@ final class DbfImageSynchronizer
     private function copyFile(string $source, int $size, int $modifiedAt): int
     {
         $destination = $this->destinationName($source);
+        if ($destination === null) {
+            Log::warning('Skipped a product image with an unreadable filename.', [
+                'filename_hex' => bin2hex(basename(str_replace('\\', '/', $source))),
+            ]);
+
+            return 0;
+        }
+
         if (! $this->needsCopy($destination, $size, $modifiedAt)) {
             return 0;
         }
@@ -157,8 +175,21 @@ final class DbfImageSynchronizer
         return $sourceModifiedAt > 0 && $disk->lastModified($destination) < $sourceModifiedAt;
     }
 
-    private function destinationName(string $source): string
+    private function destinationName(string $source): ?string
     {
-        return strtolower(basename(str_replace('\\', '/', $source)));
+        $filename = basename(str_replace('\\', '/', $source));
+        if (! mb_check_encoding($filename, 'UTF-8')) {
+            $converted = iconv('CP866', 'UTF-8//IGNORE', $filename);
+            if ($converted === false) {
+                return null;
+            }
+
+            $filename = $converted;
+        }
+
+        $filename = preg_replace('/\p{C}+/u', '', $filename);
+        $filename = is_string($filename) ? trim($filename) : '';
+
+        return $filename === '' ? null : mb_strtolower($filename, 'UTF-8');
     }
 }
