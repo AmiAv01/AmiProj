@@ -212,3 +212,57 @@ it('finds product images with an explicit extension and uppercase filename', fun
 
     expect($imageUrl)->toBe(url('/storage/images/PRODUCT-131586.JPEG'));
 });
+
+it('counts unique search results before paginating them', function (): void {
+    $now = now();
+    $rows = [];
+    foreach (range(1, 21) as $index) {
+        $rows[] = [
+            'dt_invoice' => sprintf('ALT-%02d', $index),
+            'dt_parent' => 'CARGO',
+            'dt_oem' => '131586',
+            'fr_code' => 'CARGO',
+            'dt_typec' => 'Втягивающее реле стартера',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
+    }
+    DB::table('oems')->insert($rows);
+
+    $this->getJson('/api/v1/catalog/search?searchQ=131586')
+        ->assertOk()
+        ->assertJsonPath('data.details.total', 1)
+        ->assertJsonPath('data.details.last_page', 1)
+        ->assertJsonCount(1, 'data.details.data');
+});
+
+it('keeps the search query in pagination links', function (): void {
+    $now = now();
+    $rows = [];
+    foreach (range(1, 11) as $index) {
+        $rows[] = [
+            'dt_invoice' => sprintf('INV-%02d', $index),
+            'dt_parent' => 'CARGO',
+            'dt_oem' => sprintf('SEARCH-%02d', $index),
+            'fr_code' => 'CARGO',
+            'dt_typec' => 'Деталь',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
+    }
+    DB::table('oems')->insert($rows);
+
+    $firstPage = $this->getJson('/api/v1/catalog/search?searchQ=SEARCH');
+    $firstPage
+        ->assertOk()
+        ->assertJsonPath('data.details.total', 11)
+        ->assertJsonPath('data.details.last_page', 2)
+        ->assertJsonCount(10, 'data.details.data');
+    expect($firstPage->json('data.details.next_page_url'))->toContain('searchQ=SEARCH');
+
+    $this->getJson('/api/v1/catalog/search?searchQ=SEARCH&page=2')
+        ->assertOk()
+        ->assertJsonPath('data.details.current_page', 2)
+        ->assertJsonPath('data.details.total', 11)
+        ->assertJsonCount(1, 'data.details.data');
+});
