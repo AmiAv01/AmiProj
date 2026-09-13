@@ -3,7 +3,6 @@
 namespace App\Services\DbfImport;
 
 use DateTimeInterface;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use org\majkel\dbase\Table;
 use RuntimeException;
@@ -14,7 +13,7 @@ final class DbfImporter
     private ?LegacyCrypt $crypt = null;
 
     /** @var list<string> */
-    public const FILES = ['FIRMS.DBF', 'ASS.DBF', 'OEMS_OUT.DBF', 'ALT_CZ.DBF', 'ROZ_CZ.DBF', 'DATA.DBF', 'stk.dbf'];
+    public const FILES = ['ASS.DBF', 'OEMS_OUT.DBF', 'ALT_CZ.DBF', 'ROZ_CZ.DBF', 'DATA.DBF', 'stk.dbf'];
 
     /** @var array<string, string> */
     private const FILE_ALIASES = ['OEMS.DBF' => 'OEMS_OUT.DBF'];
@@ -178,10 +177,6 @@ final class DbfImporter
     private function mapRecord(string $filename, array $fields, mixed $record, string $timestamp): array
     {
         return match (strtoupper($filename)) {
-            'FIRMS.DBF' => [[
-                'table' => 'firm',
-                'row' => ['fr_code' => $this->integer($record, 'CODE'), 'fr_name' => $this->text($record, 'TYPE', true), 'created_at' => $timestamp, 'updated_at' => $timestamp],
-            ]],
             'ASS.DBF' => $this->detailRows($record, $timestamp),
             'OEMS_OUT.DBF' => [$this->oemRow($record, $timestamp)],
             'ALT_CZ.DBF' => $this->compatibleRows('alt_cz', $fields, $record, false, $timestamp),
@@ -278,14 +273,11 @@ final class DbfImporter
         }
 
         $uniqueBy = match ($table) {
-            'firm' => ['fr_code'], 'stk', 'price' => ['code'], 'layout_for_details' => ['lt_dt_acode'],
+            'stk', 'price' => ['code'], 'layout_for_details' => ['lt_dt_acode'],
             default => ['dbf_source_key'],
         };
         $update = array_values(array_diff(array_keys($rows[0]), [...$uniqueBy, 'created_at']));
         DB::table($table)->upsert($rows, $uniqueBy, $update);
-        if ($table === 'firm') {
-            Cache::forget('firms.all');
-        }
 
         return count($rows);
     }

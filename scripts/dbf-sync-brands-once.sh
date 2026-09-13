@@ -31,24 +31,5 @@ fi
 
 cd -- "$APP_PATH" || exit 1
 
-FAILED=0
-
 echo "Using $PHP_BIN ($("$PHP_BIN" -r 'echo PHP_VERSION;'))"
-
-for DBF_FILE in \
-    ASS.DBF \
-    OEMS_OUT.DBF \
-    ALT_CZ.DBF \
-    ROZ_CZ.DBF \
-    DATA.DBF \
-    stk.dbf
-do
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Importing ${DBF_FILE}"
-
-    if ! "$PHP_BIN" artisan dbf:sync --file="$DBF_FILE"; then
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] FAILED: ${DBF_FILE}"
-        FAILED=1
-    fi
-done
-
-exit "$FAILED"
+exec "$PHP_BIN" artisan dbf:sync-brands "$@"
