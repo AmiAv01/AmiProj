@@ -44,4 +44,5 @@ export const adminMenuItems = new Map([
     ['Заказы', '/admin/resource/orders'],
     ['Новости', '/admin/resource/news'],
     ['Пользователи', '/admin/resource/users'],
-    ['Курс валют', '/admin/resource/currency']]);
+    ['Курс валют', '/admin/resource/currency'],
+    ['Импорт DBF', '/admin/resource/imports']]);

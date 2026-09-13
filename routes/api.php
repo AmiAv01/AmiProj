@@ -91,6 +91,7 @@ Route::prefix('v1')->group(function (): void {
                     Route::put('/users/{id}/approve', [AdminApproveUserController::class, 'index']);
                     Route::get('/currency', [ApiAdminController::class, 'currency']);
                     Route::post('/currency', [AdminCurrencyController::class, 'update']);
+                    Route::get('/imports', [ApiAdminController::class, 'imports']);
                     Route::get('/search', [AdminSearchController::class, 'index']);
                 });
             });

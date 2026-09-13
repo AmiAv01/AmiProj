@@ -38,6 +38,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/admin/resource/users', component: ApiPage, meta: { endpoint: '/admin/users', page: 'Admin/User/UserList', auth: true, admin: true } },
   { path: '/admin/resource/users/:id', component: ApiPage, meta: { endpoint: '/admin/users/:id', page: 'Admin/User/UserCard', auth: true, admin: true } },
   { path: '/admin/resource/currency', component: ApiPage, meta: { endpoint: '/admin/currency', page: 'Admin/Currency/Index', auth: true, admin: true } },
+  { path: '/admin/resource/imports', component: ApiPage, meta: { endpoint: '/admin/imports', page: 'Admin/Imports/Index', auth: true, admin: true } },
 ];
 
 export const router = createRouter({

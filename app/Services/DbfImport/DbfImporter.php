@@ -42,6 +42,7 @@ final class DbfImporter
     public function __construct(
         private readonly DbfSourceLocator $locator,
         private readonly DbfImageSynchronizer $imageSynchronizer,
+        private readonly DbfImportAuditor $auditor,
     ) {}
 
     /** @param list<string>|null $filenames
@@ -62,24 +63,28 @@ final class DbfImporter
 
     private function import(string $filename, bool $force, string $sourcePath, ?string $archivePath): DbfImportResult
     {
-        $source = $this->locator->locate($filename, $sourcePath, $archivePath);
-        $path = $source['path'];
         $startedAt = now();
-        $runId = null;
+        $source = null;
         $imagesWritten = 0;
+        $issuesCount = 0;
+        $runId = DB::table('dbf_import_runs')->insertGetId([
+            'filename' => $filename,
+            'status' => 'running',
+            'started_at' => $startedAt,
+            'created_at' => $startedAt,
+            'updated_at' => $startedAt,
+        ]);
 
         try {
+            $source = $this->locator->locate($filename, $sourcePath, $archivePath);
+            $path = $source['path'];
             $sha256 = hash_file('sha256', $path);
             if ($sha256 === false) {
                 throw new RuntimeException("Unable to calculate a checksum for {$filename}.");
             }
 
-            $runId = DB::table('dbf_import_runs')->insertGetId([
-                'filename' => $filename,
+            DB::table('dbf_import_runs')->where('id', $runId)->update([
                 'sha256' => $sha256,
-                'status' => 'running',
-                'started_at' => $startedAt,
-                'created_at' => $startedAt,
                 'updated_at' => $startedAt,
             ]);
 
@@ -93,12 +98,15 @@ final class DbfImporter
 
             $previousHash = DB::table('dbf_import_files')->where('filename', $filename)->value('sha256');
             if (! $force && hash_equals((string) $previousHash, $sha256)) {
-                $this->finishRun($runId, 'skipped', 0, 0);
+                $this->finishRun($runId, 'skipped', 0, 0, $imagesWritten, 0);
 
                 return new DbfImportResult($filename, 'skipped', imagesWritten: $imagesWritten);
             }
 
-            [$recordsRead, $recordsWritten] = $this->writeFile($filename, $path);
+            [$recordsRead, $recordsWritten, $importTimestamp] = $this->writeFile($filename, $path);
+            if (strcasecmp($filename, 'ASS.DBF') === 0) {
+                $issuesCount = $this->auditor->recordDetailIssues($runId, $importTimestamp);
+            }
             $modifiedAt = filemtime($path);
             $finishedAt = now();
 
@@ -112,28 +120,28 @@ final class DbfImporter
                 'updated_at' => $finishedAt,
             ]], ['filename'], ['sha256', 'size', 'source_modified_at', 'imported_at', 'updated_at']);
 
-            $this->finishRun($runId, 'completed', $recordsRead, $recordsWritten);
+            $this->finishRun($runId, 'completed', $recordsRead, $recordsWritten, $imagesWritten, $issuesCount);
 
             return new DbfImportResult($filename, 'completed', $recordsRead, $recordsWritten, $imagesWritten);
         } catch (Throwable $exception) {
-            if ($runId !== null) {
-                DB::table('dbf_import_runs')->where('id', $runId)->update([
-                    'status' => 'failed',
-                    'error' => $this->errorMessage($exception),
-                    'finished_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+            DB::table('dbf_import_runs')->where('id', $runId)->update([
+                'status' => 'failed',
+                'images_written' => $imagesWritten,
+                'issues_count' => $issuesCount,
+                'error' => $this->errorMessage($exception),
+                'finished_at' => now(),
+                'updated_at' => now(),
+            ]);
 
             throw $exception;
         } finally {
-            if ($source['temporary']) {
-                @unlink($path);
+            if ($source !== null && $source['temporary']) {
+                @unlink($source['path']);
             }
         }
     }
 
-    /** @return array{int, int} */
+    /** @return array{int, int, string} */
     private function writeFile(string $filename, string $path): array
     {
         $table = Table::fromFile($path);
@@ -163,7 +171,7 @@ final class DbfImporter
             $recordsWritten += $this->flush($tableName, $rows);
         }
 
-        return [$recordsRead, $recordsWritten];
+        return [$recordsRead, $recordsWritten, $timestamp];
     }
 
     /** @return list<array{table: string, row: array<string, mixed>}> */
@@ -301,10 +309,11 @@ final class DbfImporter
         throw new RuntimeException("Unsupported DBF file: {$filename}.");
     }
 
-    private function finishRun(int $runId, string $status, int $read, int $written): void
+    private function finishRun(int $runId, string $status, int $read, int $written, int $imagesWritten, int $issuesCount): void
     {
         DB::table('dbf_import_runs')->where('id', $runId)->update([
             'status' => $status, 'records_read' => $read, 'records_written' => $written,
+            'images_written' => $imagesWritten, 'issues_count' => $issuesCount,
             'finished_at' => now(), 'updated_at' => now(),
         ]);
     }

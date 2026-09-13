@@ -144,6 +144,81 @@ it('updates the product photo reference when ASS DBF changes', function (): void
     }
 });
 
+it('stores a human-readable quality snapshot for incomplete product fields', function (): void {
+    $directory = sys_get_temp_dir().'/ami_detail_quality_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+
+    try {
+        createDetailDbf($path, 'product-photo');
+
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+
+        $run = DB::table('dbf_import_runs')->where('filename', 'ASS.DBF')->latest('id')->first();
+        expect($run)->not->toBeNull()
+            ->and($run->status)->toBe('completed')
+            ->and($run->issues_count)->toBe(1);
+
+        $this->assertDatabaseHas('dbf_import_issues', [
+            'run_id' => $run->id,
+            'detail_code' => 131586,
+            'invoice' => '131586',
+            'missing_internal_code' => false,
+            'missing_invoice' => false,
+            'missing_cargo' => true,
+            'missing_oem' => true,
+            'missing_photo' => false,
+        ]);
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('shows import history and incomplete positions to administrators', function (): void {
+    $directory = sys_get_temp_dir().'/ami_detail_admin_report_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+
+    try {
+        createDetailDbf($path, '');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+        $admin = User::factory()->create(['isAdmin' => true, 'approved' => true]);
+
+        $this->actingAs($admin)
+            ->getJson('/api/v1/admin/imports')
+            ->assertOk()
+            ->assertJsonPath('data.runs.data.0.filename', 'ASS.DBF')
+            ->assertJsonPath('data.runs.data.0.status', 'completed')
+            ->assertJsonPath('data.summary.positions', 1)
+            ->assertJsonPath('data.summary.cargo', 1)
+            ->assertJsonPath('data.summary.oem', 1)
+            ->assertJsonPath('data.summary.photo', 1)
+            ->assertJsonPath('data.issues.data.0.detail_code', 131586)
+            ->assertJsonPath('data.issues.data.0.missing_fields.0', 'Код CARGO');
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('records a failed import when its source file cannot be found', function (): void {
+    $directory = sys_get_temp_dir().'/ami_missing_dbf_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+
+    try {
+        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])->assertFailed();
+
+        $run = DB::table('dbf_import_runs')->where('filename', 'FIRMS.DBF')->latest('id')->first();
+        expect($run)->not->toBeNull()
+            ->and($run->status)->toBe('failed')
+            ->and($run->finished_at)->not->toBeNull()
+            ->and($run->error)->not->toBeEmpty();
+    } finally {
+        @rmdir($directory);
+    }
+});
+
 it('synchronizes product images even when ASS DBF is unchanged', function (): void {
     Storage::fake('images');
     $directory = sys_get_temp_dir().'/ami_detail_image_test_'.bin2hex(random_bytes(6));

@@ -37,5 +37,6 @@ const quickActions = [
     { title: 'Новости', description: 'Публикации на сайте компании', href: '/admin/resource/news', symbol: 'Н' },
     { title: 'Пользователи', description: 'Доступы и клиентские данные', href: '/admin/resource/users', symbol: 'П' },
     { title: 'Курс валют', description: 'Актуальный курс для расчёта цен', href: '/admin/resource/currency', symbol: 'К' },
+    { title: 'Импорт DBF', description: 'История загрузок и пустые поля товаров', href: '/admin/resource/imports', symbol: 'И' },
 ];
 </script>

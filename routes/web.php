@@ -51,5 +51,6 @@ Route::get('/admin/resource/news', $spa)->name('admin.news.index');
 Route::get('/admin/resource/users', $spa)->name('admin.users.index');
 Route::get('/admin/resource/users/{id}', $spa)->name('admin.users.show');
 Route::get('/admin/resource/currency', $spa)->name('admin.currency.index');
+Route::get('/admin/resource/imports', $spa)->name('admin.imports.index');
 
 Route::fallback($spa);
