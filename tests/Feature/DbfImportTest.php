@@ -5,27 +5,10 @@ use App\Models\CartItem;
 use App\Models\Detail;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\DbfImport\DbfImporter;
 use App\Services\Product\ProductImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
-function createFirmDbf(string $path, string $name): void
-{
-    $fields = [
-        ['CODE', 'N', 10, 0],
-        ['TYPE', 'C', 40, 0],
-    ];
-    $headerLength = 32 + (32 * count($fields)) + 1;
-    $recordLength = 1 + array_sum(array_column($fields, 2));
-    $header = chr(0x03).pack('CCC', 126, 8, 30).pack('Vvv', 1, $headerLength, $recordLength).str_repeat("\0", 20);
-
-    foreach ($fields as [$fieldName, $type, $length, $decimals]) {
-        $header .= str_pad($fieldName, 11, "\0").$type.str_repeat("\0", 4).chr($length).chr($decimals).str_repeat("\0", 14);
-    }
-
-    $record = ' '.str_pad('7', 10, ' ', STR_PAD_LEFT).str_pad($name, 40);
-    file_put_contents($path, $header."\x0D".$record."\x1A");
-}
 
 function createCompactAltDbf(string $path, string $tmp = 'TMP-1'): void
 {
@@ -93,27 +76,40 @@ function createDetailDbf(string $path, string $photo): void
     file_put_contents($path, $header."\x0D".$record."\x1A");
 }
 
+/** @param list<string> $brands */
+function createBrandAssDbf(string $path, array $brands): void
+{
+    $fields = [['FIRMS', 'C', 40, 0]];
+    $headerLength = 32 + (32 * count($fields)) + 1;
+    $recordLength = 41;
+    $header = chr(0x03).pack('CCC', 126, 8, 30).pack('Vvv', count($brands), $headerLength, $recordLength).str_repeat("\0", 20);
+    $header .= str_pad('FIRMS', 11, "\0").'C'.str_repeat("\0", 4).chr(40).chr(0).str_repeat("\0", 14);
+    $records = implode('', array_map(static fn (string $brand): string => ' '.str_pad($brand, 40), $brands));
+
+    file_put_contents($path, $header."\x0D".$records."\x1A");
+}
+
 it('inserts, updates, and skips unchanged DBF records', function (): void {
     $directory = sys_get_temp_dir().'/ami_dbf_test_'.bin2hex(random_bytes(6));
     mkdir($directory, 0755, true);
-    $path = $directory.'/FIRMS.DBF';
+    $path = $directory.'/OEMS_OUT.DBF';
 
     try {
-        createFirmDbf($path, 'Original');
+        createOemDbf($path, 'Original');
 
-        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])
+        $this->artisan('dbf:sync', ['--file' => ['OEMS_OUT.DBF'], '--source' => $directory])
             ->assertSuccessful();
-        expect(DB::table('firm')->where('fr_code', 7)->value('fr_name'))->toBe('Original')
-            ->and(DB::table('firm')->where('fr_code', 7)->count())->toBe(1);
+        expect(DB::table('oems')->where('dt_invoice', 'INV-1')->value('dt_parent'))->toBe('Original')
+            ->and(DB::table('oems')->where('dt_invoice', 'INV-1')->count())->toBe(1);
 
-        createFirmDbf($path, 'Changed');
+        createOemDbf($path, 'Changed');
 
-        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])
+        $this->artisan('dbf:sync', ['--file' => ['OEMS_OUT.DBF'], '--source' => $directory])
             ->assertSuccessful();
-        expect(DB::table('firm')->where('fr_code', 7)->value('fr_name'))->toBe('Changed')
-            ->and(DB::table('firm')->where('fr_code', 7)->count())->toBe(1);
+        expect(DB::table('oems')->where('dt_invoice', 'INV-1')->value('dt_parent'))->toBe('Changed')
+            ->and(DB::table('oems')->where('dt_invoice', 'INV-1')->count())->toBe(1);
 
-        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])
+        $this->artisan('dbf:sync', ['--file' => ['OEMS_OUT.DBF'], '--source' => $directory])
             ->expectsOutputToContain('unchanged, skipped')
             ->assertSuccessful();
         expect(DB::table('dbf_import_runs')->where('status', 'skipped')->count())->toBe(1);
@@ -121,6 +117,59 @@ it('inserts, updates, and skips unchanged DBF records', function (): void {
         @unlink($path);
         @rmdir($directory);
     }
+});
+
+it('rebuilds a unique brand list from the FIRMS column in ASS DBF', function (): void {
+    $directory = sys_get_temp_dir().'/ami_brand_sync_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+    $legacyBrand = iconv('UTF-8', 'CP866', 'БАТЭ');
+    expect($legacyBrand)->not->toBeFalse();
+
+    try {
+        createBrandAssDbf($path, ['CARGO', 'BOSCH', 'cargo', '', $legacyBrand]);
+        DB::table('firm')->insert(['fr_name' => 'OLD BRAND', 'created_at' => now(), 'updated_at' => now()]);
+
+        $this->artisan('dbf:sync-brands', ['--source' => $directory])
+            ->expectsOutputToContain('3 unique values')
+            ->assertSuccessful();
+
+        expect(DB::table('firm')->count())->toBe(3)
+            ->and(DB::table('firm')->where('fr_name', 'CARGO')->count())->toBe(1)
+            ->and(DB::table('firm')->where('fr_name', 'BOSCH')->count())->toBe(1)
+            ->and(DB::table('firm')->where('fr_name', 'БАТЭ')->count())->toBe(1)
+            ->and(DB::table('firm')->where('fr_name', 'OLD BRAND')->count())->toBe(0);
+
+        $this->artisan('dbf:sync-brands', ['--source' => $directory])->assertSuccessful();
+        expect(DB::table('firm')->count())->toBe(3);
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('does not clear brands when ASS DBF has no FIRMS column', function (): void {
+    $directory = sys_get_temp_dir().'/ami_invalid_brand_sync_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+
+    try {
+        createOemDbf($path);
+        DB::table('firm')->insert(['fr_name' => 'EXISTING', 'created_at' => now(), 'updated_at' => now()]);
+
+        $this->artisan('dbf:sync-brands', ['--source' => $directory])
+            ->expectsOutputToContain('FIRMS column was not found')
+            ->assertFailed();
+
+        $this->assertDatabaseHas('firm', ['fr_name' => 'EXISTING']);
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
+it('does not include FIRMS DBF in the regular importer', function (): void {
+    expect(DbfImporter::FILES)->not->toContain('FIRMS.DBF');
 });
 
 it('updates the product photo reference when ASS DBF changes', function (): void {
@@ -207,9 +256,9 @@ it('records a failed import when its source file cannot be found', function (): 
     mkdir($directory, 0755, true);
 
     try {
-        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])->assertFailed();
+        $this->artisan('dbf:sync', ['--file' => ['ALT_CZ.DBF'], '--source' => $directory])->assertFailed();
 
-        $run = DB::table('dbf_import_runs')->where('filename', 'FIRMS.DBF')->latest('id')->first();
+        $run = DB::table('dbf_import_runs')->where('filename', 'ALT_CZ.DBF')->latest('id')->first();
         expect($run)->not->toBeNull()
             ->and($run->status)->toBe('failed')
             ->and($run->finished_at)->not->toBeNull()
@@ -335,19 +384,19 @@ it('converts non UTF-8 values in compatibility code columns', function (): void 
 it('discovers a DBF inside one of several source ZIP archives', function (): void {
     $directory = sys_get_temp_dir().'/ami_zip_dbf_test_'.bin2hex(random_bytes(6));
     mkdir($directory, 0755, true);
-    $dbfPath = $directory.'/FIRMS.DBF';
-    $zipPath = $directory.'/firms.zip';
+    $dbfPath = $directory.'/OEMS_OUT.DBF';
+    $zipPath = $directory.'/oems.zip';
 
     try {
-        createFirmDbf($dbfPath, 'From archive');
+        createOemDbf($dbfPath, 'From archive');
         $archive = new ZipArchive;
         expect($archive->open($zipPath, ZipArchive::CREATE))->toBeTrue();
-        $archive->addFile($dbfPath, 'nested/FIRMS.DBF');
+        $archive->addFile($dbfPath, 'nested/OEMS_OUT.DBF');
         $archive->close();
         unlink($dbfPath);
 
-        $this->artisan('dbf:sync', ['--file' => ['FIRMS.DBF'], '--source' => $directory])->assertSuccessful();
-        $this->assertDatabaseHas('firm', ['fr_code' => 7, 'fr_name' => 'From archive']);
+        $this->artisan('dbf:sync', ['--file' => ['OEMS_OUT.DBF'], '--source' => $directory])->assertSuccessful();
+        $this->assertDatabaseHas('oems', ['dt_invoice' => 'INV-1', 'dt_parent' => 'From archive']);
     } finally {
         @unlink($dbfPath);
         @unlink($zipPath);

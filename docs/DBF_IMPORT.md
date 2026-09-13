@@ -34,9 +34,22 @@ php artisan dbf:sync
 Run selected files or bypass checksum detection:
 
 ```shell
-php artisan dbf:sync --file=FIRMS.DBF --file=ASS.DBF
+php artisan dbf:sync --file=ASS.DBF --file=OEMS_OUT.DBF
 php artisan dbf:sync --force
 ```
+
+`FIRMS.DBF` is not part of the regular import. To rebuild the brand filter once
+from the `FIRMS` column in `ASS.DBF`, run:
+
+```shell
+scripts/dbf-sync-brands-once.sh
+```
+
+The script uses the same `AMI_APP_PATH` and `AMI_PHP_BIN` overrides as the cron
+script and accepts Artisan options, for example
+`scripts/dbf-sync-brands-once.sh --source=/data/dbf`. It removes empty values,
+deduplicates names case-insensitively, and atomically replaces the contents of
+the `firm` table. Running it again produces the same brand list.
 
 For a cron job, `scripts/dbf-sync-cron.sh` determines the application root from
 its own location, so no server path is stored in the repository. A server can
