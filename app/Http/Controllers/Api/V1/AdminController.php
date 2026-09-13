@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Services\Cart\CartService;
 use App\Services\CurrencyService;
+use App\Services\DbfImport\DbfImportReportService;
 use App\Services\DetailService;
 use App\Services\FirmService;
 use App\Services\NewsService;
 use App\Services\OrderService;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -24,6 +26,7 @@ class AdminController extends Controller
         private readonly UserService $users,
         private readonly CartService $carts,
         private readonly CurrencyService $currency,
+        private readonly DbfImportReportService $dbfImports,
     ) {}
 
     public function dashboard(): JsonResponse
@@ -89,5 +92,12 @@ class AdminController extends Controller
     public function currency(): JsonResponse
     {
         return response()->json(['data' => ['currency' => $this->currency->getCurrency()]]);
+    }
+
+    public function imports(Request $request): JsonResponse
+    {
+        $runId = $request->integer('run');
+
+        return response()->json(['data' => $this->dbfImports->report($runId > 0 ? $runId : null)]);
     }
 }

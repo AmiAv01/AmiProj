@@ -55,6 +55,11 @@ available in cron's `PATH`, `AMI_PHP_BIN` can be omitted.
 
 Every attempt is recorded in `dbf_import_runs`. The latest successful checksum
 for each file is stored in `dbf_import_files`; unchanged files are skipped.
+Administrators can inspect the file history at `/admin/resource/imports`. Each
+completed `ASS.DBF` import also stores a quality snapshot in
+`dbf_import_issues`, covering empty internal codes, Invoice articles, CARGO and
+OEM codes, and photo references. Historical imports created before the quality
+report migration do not have a retroactive snapshot.
 Each upsert batch is atomic; if a later batch fails, the next run safely resumes
 the idempotent synchronization without holding one long database transaction.
 The all-files command isolates every DBF in its own PHP process so memory from a
