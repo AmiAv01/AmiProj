@@ -50,8 +50,11 @@ AMI_PHP_BIN=/path/to/php \
 ```
 
 These values belong in the server's cron or service environment and are not
-written to the script during deployment. When the default PHP executable is
-available in cron's `PATH`, `AMI_PHP_BIN` can be omitted.
+written to the script during deployment. Shell aliases are not expanded by
+cron. When `AMI_PHP_BIN` is omitted, the script prefers `/opt/php83/bin/php`
+and only then looks for `php` in cron's `PATH`. It prints the selected
+executable and version before importing files, and refuses to run on PHP older
+than the application's minimum version.
 
 Every attempt is recorded in `dbf_import_runs`. The latest successful checksum
 for each file is stored in `dbf_import_files`; unchanged files are skipped.
