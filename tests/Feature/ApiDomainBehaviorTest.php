@@ -218,6 +218,31 @@ it('returns the complete analog group from every product in the group', function
     }
 });
 
+it('keeps the matched OEM code when the search query uses different casing', function (): void {
+    DB::table('oems')->insert([
+        'dt_invoice' => 'YR-IL38',
+        'dt_parent' => 'UNIPOINT',
+        'dt_oem' => '8RL3023C',
+        'fr_code' => 'PRESTOLITE',
+        'dt_typec' => 'Регулятор напряжения генератора',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $autocomplete = $this->getJson('/api/v1/catalog/autocomplete?searchQ=8rl3023')
+        ->assertOk()
+        ->json('data.details');
+
+    expect(array_values($autocomplete))->toHaveCount(1)
+        ->and(array_values($autocomplete)[0]['dt_code'])->toBe('8RL3023C')
+        ->and(array_values($autocomplete)[0]['dt_firm'])->toBe('PRESTOLITE');
+
+    $this->getJson('/api/v1/catalog/search?searchQ=8rl3023')
+        ->assertOk()
+        ->assertJsonPath('data.details.data.0.dt_code', '8RL3023C')
+        ->assertJsonPath('data.details.data.0.dt_firm', 'PRESTOLITE');
+});
+
 it('returns product image URLs in catalog and search results', function (): void {
     Storage::fake('images');
     Storage::disk('images')->put('product-131586.jpg', 'image bytes');

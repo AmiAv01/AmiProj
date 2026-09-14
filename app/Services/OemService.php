@@ -27,7 +27,10 @@ final class OemService
 
     public function getInfoAboutDetailFromOems(array|Oems $detail, string $searchQuery): OemInfoDTO
     {
-        $isStartWithOem = str_starts_with($detail['dt_oem'], $searchQuery);
+        $isStartWithOem = str_starts_with(
+            mb_strtolower($detail['dt_oem'], 'UTF-8'),
+            mb_strtolower($searchQuery, 'UTF-8'),
+        );
 
         return new OemInfoDTO(
             code: ($isStartWithOem) ? $detail['dt_oem'] : $detail['dt_invoice'],
