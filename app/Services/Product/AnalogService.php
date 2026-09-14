@@ -4,30 +4,83 @@ namespace App\Services\Product;
 
 use App\Models\Detail;
 use App\Models\Oems;
+use Illuminate\Database\Eloquent\Builder;
 
 final class AnalogService
 {
     public function getAnalogs(string $id): array
     {
-        $detailsFromOems = Oems::ofCode($id)->get()->toArray();
-        $ids = $this->getAnalogIds($detailsFromOems, $id);
-        $analogs = Detail::whereIn('dt_invoice', $ids)->orWhereIn('dt_oem', $ids)->orWhereIn('dt_cargo', $ids)
-            ->join('stk', 'stk.code', '=', 'detail.dt_code')->get()->toArray();
+        $currentDetail = Detail::query()
+            ->where('dt_invoice', $id)
+            ->first(['dt_id', 'dt_invoice', 'dt_oem', 'dt_cargo']);
+
+        $codes = $this->getRelatedCodes($id, $currentDetail);
+
+        $analogsQuery = Detail::query()
+            ->where(function (Builder $query) use ($codes): void {
+                $query->whereIn('detail.dt_invoice', $codes)
+                    ->orWhereIn('detail.dt_oem', $codes)
+                    ->orWhereIn('detail.dt_cargo', $codes);
+            });
+
+        if ($currentDetail !== null) {
+            $analogsQuery->where('detail.dt_id', '<>', $currentDetail->dt_id);
+        }
+
+        $analogs = $analogsQuery
+            ->join('stk', 'stk.code', '=', 'detail.dt_code')
+            ->get()
+            ->toArray();
 
         return $this->sortAnalogs($analogs);
     }
 
-    private function getAnalogIds(array $detailList, string $id): array
+    private function getRelatedCodes(string $id, ?Detail $currentDetail): array
     {
-        return array_reduce($detailList, function ($carry, $detail) use ($id) {
-            if ($detail['dt_oem'] === $id) {
-                $carry[] = $detail['dt_invoice'];
-            } elseif ($detail['dt_invoice'] === $id) {
-                $carry[] = $detail['dt_oem'];
+        $seedCodes = [$id];
+
+        if ($currentDetail !== null) {
+            $seedCodes = array_merge($seedCodes, [
+                $currentDetail->dt_invoice,
+                $currentDetail->dt_oem,
+                $currentDetail->dt_cargo,
+            ]);
+        }
+
+        $knownCodes = [];
+        foreach ($seedCodes as $code) {
+            if (trim((string) $code) !== '') {
+                $knownCodes[(string) $code] = true;
+            }
+        }
+
+        $frontier = array_keys($knownCodes);
+
+        while ($frontier !== []) {
+            $relations = Oems::query()
+                ->where(function (Builder $query) use ($frontier): void {
+                    $query->whereIn('dt_invoice', $frontier)
+                        ->orWhereIn('dt_oem', $frontier);
+                })
+                ->get(['dt_invoice', 'dt_oem']);
+
+            $nextFrontier = [];
+            foreach ($relations as $relation) {
+                foreach ([$relation->dt_invoice, $relation->dt_oem] as $code) {
+                    $code = (string) $code;
+                    if ($code === '' || isset($knownCodes[$code])) {
+                        continue;
+                    }
+
+                    $knownCodes[$code] = true;
+                    $nextFrontier[] = $code;
+                }
             }
 
-            return $carry;
-        }, []);
+            $frontier = $nextFrontier;
+        }
+
+        return array_keys($knownCodes);
     }
 
     private function sortAnalogs(array $analogList): array
