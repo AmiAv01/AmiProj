@@ -167,10 +167,10 @@ it('returns the complete analog group from every product in the group', function
     $now = now();
 
     foreach ([
-        ['dt_id' => 9101, 'dt_code' => 9101, 'dt_invoice' => 'ANALOG-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => 'CARGO-A'],
-        ['dt_id' => 9102, 'dt_code' => 9102, 'dt_invoice' => 'ANALOG-B', 'dt_oem' => 'ANALOG-A', 'dt_cargo' => 'CARGO-B'],
-        ['dt_id' => 9103, 'dt_code' => 9103, 'dt_invoice' => 'ANALOG-C', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-C'],
-        ['dt_id' => 9104, 'dt_code' => 9104, 'dt_invoice' => 'ANALOG-D', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-D'],
+        ['dt_id' => 9101, 'dt_code' => 9101, 'dt_invoice' => 'ANALOG-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => 'CARGO-A', 'dt_typec' => 'TYPE'],
+        ['dt_id' => 9102, 'dt_code' => 9102, 'dt_invoice' => 'ANALOG-B', 'dt_oem' => 'ANALOG-A', 'dt_cargo' => 'CARGO-B', 'dt_typec' => 'TYPE'],
+        ['dt_id' => 9103, 'dt_code' => 9103, 'dt_invoice' => 'ANALOG-C', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-C', 'dt_typec' => 'TYPE'],
+        ['dt_id' => 9104, 'dt_code' => 9104, 'dt_invoice' => 'ANALOG-D', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-D', 'dt_typec' => 'TYPE'],
     ] as $attributes) {
         Detail::factory()->create($attributes + ['deleted_at' => null]);
         DB::table('stk')->insert([
@@ -222,9 +222,9 @@ it('does not join unrelated analog groups through placeholder codes', function (
     $now = now();
 
     foreach ([
-        ['dt_id' => 9201, 'dt_code' => 9201, 'dt_invoice' => 'REGULATOR-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => '------'],
-        ['dt_id' => 9202, 'dt_code' => 9202, 'dt_invoice' => 'REGULATOR-B', 'dt_oem' => 'REGULATOR-A', 'dt_cargo' => 'CARGO-B'],
-        ['dt_id' => 9203, 'dt_code' => 9203, 'dt_invoice' => 'UNRELATED-X', 'dt_oem' => 'OEM-X', 'dt_cargo' => '------'],
+        ['dt_id' => 9201, 'dt_code' => 9201, 'dt_invoice' => 'REGULATOR-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => '------', 'dt_typec' => 'REGULATOR'],
+        ['dt_id' => 9202, 'dt_code' => 9202, 'dt_invoice' => 'REGULATOR-B', 'dt_oem' => 'REGULATOR-A', 'dt_cargo' => 'CARGO-B', 'dt_typec' => 'REGULATOR'],
+        ['dt_id' => 9203, 'dt_code' => 9203, 'dt_invoice' => 'UNRELATED-X', 'dt_oem' => 'OEM-X', 'dt_cargo' => '------', 'dt_typec' => 'REGULATOR'],
     ] as $attributes) {
         Detail::factory()->create($attributes + ['deleted_at' => null]);
         DB::table('stk')->insert([
@@ -260,7 +260,7 @@ it('does not join unrelated analog groups through placeholder codes', function (
             'dt_parent' => 'BRAND-X',
             'dt_oem' => '------',
             'fr_code' => 'BRAND-X',
-            'dt_typec' => 'OTHER',
+            'dt_typec' => 'REGULATOR',
             'created_at' => $now,
             'updated_at' => $now,
         ],
@@ -269,6 +269,49 @@ it('does not join unrelated analog groups through placeholder codes', function (
     $analogs = app(AnalogService::class)->getAnalogs('REGULATOR-A');
 
     expect(array_column($analogs, 'dt_invoice'))->toBe(['REGULATOR-B']);
+});
+
+it('does not cross product types through an ambiguous code', function (): void {
+    $now = now();
+
+    foreach ([
+        ['dt_id' => 9301, 'dt_code' => 9301, 'dt_invoice' => 'BEARING-A', 'dt_oem' => '6202', 'dt_cargo' => '140084', 'dt_typec' => 'ПОДШИПНИК'],
+        ['dt_id' => 9302, 'dt_code' => 9302, 'dt_invoice' => 'STARTER-X', 'dt_oem' => '6202', 'dt_cargo' => '111100', 'dt_typec' => 'СТАРТЕР'],
+    ] as $attributes) {
+        Detail::factory()->create($attributes + ['deleted_at' => null]);
+        DB::table('stk')->insert([
+            'code' => $attributes['dt_code'],
+            'ostc' => '1',
+            'ost' => '1',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+    }
+
+    DB::table('oems')->insert([
+        [
+            'dt_invoice' => '140084',
+            'dt_parent' => 'CARGO',
+            'dt_oem' => '6202',
+            'fr_code' => 'KOYO',
+            'dt_typec' => 'ПОДШИПНИК',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'dt_invoice' => '111100',
+            'dt_parent' => 'CARGO',
+            'dt_oem' => '6202',
+            'fr_code' => 'DUCELLIER',
+            'dt_typec' => 'СТАРТЕР',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+    ]);
+
+    $analogs = app(AnalogService::class)->getAnalogs('140084');
+
+    expect(array_column($analogs, 'dt_invoice'))->toBe(['BEARING-A']);
 });
 
 it('keeps the matched OEM code when the search query uses different casing', function (): void {
