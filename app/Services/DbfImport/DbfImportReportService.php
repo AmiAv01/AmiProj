@@ -14,6 +14,7 @@ final class DbfImportReportService
             ->orderByDesc('started_at')
             ->orderByDesc('id')
             ->paginate(15, ['*'], 'runs_page')
+            ->withPath('/admin/resource/imports')
             ->withQueryString();
 
         $selectedRunQuery = DB::table('dbf_import_runs')
@@ -41,6 +42,7 @@ final class DbfImportReportService
             ->where('run_id', $selectedRun->id)
             ->orderBy('detail_id')
             ->paginate(50, ['*'], 'issues_page')
+            ->withPath('/admin/resource/imports')
             ->withQueryString()
             ->through(function (object $issue): object {
                 $issue->missing_fields = array_values(array_filter([

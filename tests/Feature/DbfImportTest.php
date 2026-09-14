@@ -239,11 +239,13 @@ it('shows import history and incomplete positions to administrators', function (
             ->assertOk()
             ->assertJsonPath('data.runs.data.0.filename', 'ASS.DBF')
             ->assertJsonPath('data.runs.data.0.status', 'completed')
+            ->assertJsonPath('data.runs.path', '/admin/resource/imports')
             ->assertJsonPath('data.summary.positions', 1)
             ->assertJsonPath('data.summary.cargo', 1)
             ->assertJsonPath('data.summary.oem', 1)
             ->assertJsonPath('data.summary.photo', 1)
             ->assertJsonPath('data.issues.data.0.detail_code', 131586)
+            ->assertJsonPath('data.issues.path', '/admin/resource/imports')
             ->assertJsonPath('data.issues.data.0.missing_fields.0', 'Код CARGO');
     } finally {
         @unlink($path);
