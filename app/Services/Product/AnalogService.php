@@ -49,8 +49,9 @@ final class AnalogService
 
         $knownCodes = [];
         foreach ($seedCodes as $code) {
-            if (trim((string) $code) !== '') {
-                $knownCodes[(string) $code] = true;
+            $code = $this->normalizeCode($code);
+            if ($code !== null) {
+                $knownCodes[$code] = true;
             }
         }
 
@@ -67,8 +68,8 @@ final class AnalogService
             $nextFrontier = [];
             foreach ($relations as $relation) {
                 foreach ([$relation->dt_invoice, $relation->dt_oem] as $code) {
-                    $code = (string) $code;
-                    if ($code === '' || isset($knownCodes[$code])) {
+                    $code = $this->normalizeCode($code);
+                    if ($code === null || isset($knownCodes[$code])) {
                         continue;
                     }
 
@@ -81,6 +82,17 @@ final class AnalogService
         }
 
         return array_keys($knownCodes);
+    }
+
+    private function normalizeCode(mixed $value): ?string
+    {
+        $code = trim((string) $value);
+
+        if ($code === '' || preg_match('/^-+$/', $code) === 1) {
+            return null;
+        }
+
+        return $code;
     }
 
     private function sortAnalogs(array $analogList): array

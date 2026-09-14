@@ -218,6 +218,59 @@ it('returns the complete analog group from every product in the group', function
     }
 });
 
+it('does not join unrelated analog groups through placeholder codes', function (): void {
+    $now = now();
+
+    foreach ([
+        ['dt_id' => 9201, 'dt_code' => 9201, 'dt_invoice' => 'REGULATOR-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => '------'],
+        ['dt_id' => 9202, 'dt_code' => 9202, 'dt_invoice' => 'REGULATOR-B', 'dt_oem' => 'REGULATOR-A', 'dt_cargo' => 'CARGO-B'],
+        ['dt_id' => 9203, 'dt_code' => 9203, 'dt_invoice' => 'UNRELATED-X', 'dt_oem' => 'OEM-X', 'dt_cargo' => '------'],
+    ] as $attributes) {
+        Detail::factory()->create($attributes + ['deleted_at' => null]);
+        DB::table('stk')->insert([
+            'code' => $attributes['dt_code'],
+            'ostc' => '0',
+            'ost' => '0',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+    }
+
+    DB::table('oems')->insert([
+        [
+            'dt_invoice' => 'REGULATOR-B',
+            'dt_parent' => 'BRAND-B',
+            'dt_oem' => 'REGULATOR-A',
+            'fr_code' => 'BRAND-A',
+            'dt_typec' => 'REGULATOR',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'dt_invoice' => 'REGULATOR-B',
+            'dt_parent' => 'BRAND-B',
+            'dt_oem' => '------',
+            'fr_code' => 'BRAND-A',
+            'dt_typec' => 'REGULATOR',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'dt_invoice' => 'UNRELATED-X',
+            'dt_parent' => 'BRAND-X',
+            'dt_oem' => '------',
+            'fr_code' => 'BRAND-X',
+            'dt_typec' => 'OTHER',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+    ]);
+
+    $analogs = app(AnalogService::class)->getAnalogs('REGULATOR-A');
+
+    expect(array_column($analogs, 'dt_invoice'))->toBe(['REGULATOR-B']);
+});
+
 it('keeps the matched OEM code when the search query uses different casing', function (): void {
     DB::table('oems')->insert([
         'dt_invoice' => 'YR-IL38',
