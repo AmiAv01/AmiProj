@@ -12,9 +12,10 @@ final class AnalogService
     {
         $currentDetail = Detail::query()
             ->where('dt_invoice', $id)
-            ->first(['dt_id', 'dt_invoice', 'dt_oem', 'dt_cargo']);
+            ->first(['dt_id', 'dt_invoice', 'dt_oem', 'dt_cargo', 'dt_typec']);
 
-        $codes = $this->getRelatedCodes($id, $currentDetail);
+        $detailType = $this->getDetailType($id, $currentDetail);
+        $codes = $this->getRelatedCodes($id, $currentDetail, $detailType);
 
         $analogsQuery = Detail::query()
             ->where(function (Builder $query) use ($codes): void {
@@ -22,6 +23,10 @@ final class AnalogService
                     ->orWhereIn('detail.dt_oem', $codes)
                     ->orWhereIn('detail.dt_cargo', $codes);
             });
+
+        if ($detailType !== null) {
+            $analogsQuery->where('detail.dt_typec', $detailType);
+        }
 
         if ($currentDetail !== null) {
             $analogsQuery->where('detail.dt_id', '<>', $currentDetail->dt_id);
@@ -35,7 +40,18 @@ final class AnalogService
         return $this->sortAnalogs($analogs);
     }
 
-    private function getRelatedCodes(string $id, ?Detail $currentDetail): array
+    private function getDetailType(string $id, ?Detail $currentDetail): ?string
+    {
+        $detailType = $currentDetail === null ? '' : trim((string) $currentDetail->dt_typec);
+
+        if ($detailType === '') {
+            $detailType = trim((string) Oems::ofCode($id)->value('dt_typec'));
+        }
+
+        return $detailType === '' ? null : $detailType;
+    }
+
+    private function getRelatedCodes(string $id, ?Detail $currentDetail, ?string $detailType): array
     {
         $seedCodes = [$id];
 
@@ -55,30 +71,22 @@ final class AnalogService
             }
         }
 
-        $frontier = array_keys($knownCodes);
+        $seedCodes = array_keys($knownCodes);
+        $relations = Oems::query()
+            ->when($detailType !== null, fn (Builder $query) => $query->where('dt_typec', $detailType))
+            ->where(function (Builder $query) use ($seedCodes): void {
+                $query->whereIn('dt_invoice', $seedCodes)
+                    ->orWhereIn('dt_oem', $seedCodes);
+            })
+            ->get(['dt_invoice', 'dt_oem']);
 
-        while ($frontier !== []) {
-            $relations = Oems::query()
-                ->where(function (Builder $query) use ($frontier): void {
-                    $query->whereIn('dt_invoice', $frontier)
-                        ->orWhereIn('dt_oem', $frontier);
-                })
-                ->get(['dt_invoice', 'dt_oem']);
-
-            $nextFrontier = [];
-            foreach ($relations as $relation) {
-                foreach ([$relation->dt_invoice, $relation->dt_oem] as $code) {
-                    $code = $this->normalizeCode($code);
-                    if ($code === null || isset($knownCodes[$code])) {
-                        continue;
-                    }
-
+        foreach ($relations as $relation) {
+            foreach ([$relation->dt_invoice, $relation->dt_oem] as $code) {
+                $code = $this->normalizeCode($code);
+                if ($code !== null) {
                     $knownCodes[$code] = true;
-                    $nextFrontier[] = $code;
                 }
             }
-
-            $frontier = $nextFrontier;
         }
 
         return array_keys($knownCodes);
