@@ -163,6 +163,61 @@ it('applies cargo ownership filters to both sides of the analog lookup', functio
     expect($result)->toBe(['CARGO-INVOICE']);
 });
 
+it('returns the complete analog group from every product in the group', function (): void {
+    $now = now();
+
+    foreach ([
+        ['dt_id' => 9101, 'dt_code' => 9101, 'dt_invoice' => 'ANALOG-A', 'dt_oem' => 'OEM-A', 'dt_cargo' => 'CARGO-A'],
+        ['dt_id' => 9102, 'dt_code' => 9102, 'dt_invoice' => 'ANALOG-B', 'dt_oem' => 'ANALOG-A', 'dt_cargo' => 'CARGO-B'],
+        ['dt_id' => 9103, 'dt_code' => 9103, 'dt_invoice' => 'ANALOG-C', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-C'],
+        ['dt_id' => 9104, 'dt_code' => 9104, 'dt_invoice' => 'ANALOG-D', 'dt_oem' => 'ANALOG-B', 'dt_cargo' => 'CARGO-D'],
+    ] as $attributes) {
+        Detail::factory()->create($attributes + ['deleted_at' => null]);
+        DB::table('stk')->insert([
+            'code' => $attributes['dt_code'],
+            'ostc' => '0',
+            'ost' => '0',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+    }
+
+    DB::table('oems')->insert([
+        [
+            'dt_invoice' => 'ANALOG-B',
+            'dt_parent' => 'BRAND-B',
+            'dt_oem' => 'ANALOG-A',
+            'fr_code' => 'BRAND-A',
+            'dt_typec' => 'TYPE',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'dt_invoice' => 'ANALOG-C',
+            'dt_parent' => 'BRAND-C',
+            'dt_oem' => 'ANALOG-B',
+            'fr_code' => 'BRAND-B',
+            'dt_typec' => 'TYPE',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+    ]);
+
+    $service = app(AnalogService::class);
+
+    foreach (['ANALOG-A', 'ANALOG-B', 'ANALOG-C', 'ANALOG-D'] as $currentCode) {
+        $actualCodes = array_column($service->getAnalogs($currentCode), 'dt_invoice');
+        sort($actualCodes);
+
+        $expectedCodes = array_values(array_diff(
+            ['ANALOG-A', 'ANALOG-B', 'ANALOG-C', 'ANALOG-D'],
+            [$currentCode]
+        ));
+
+        expect($actualCodes)->toBe($expectedCodes);
+    }
+});
+
 it('returns product image URLs in catalog and search results', function (): void {
     Storage::fake('images');
     Storage::disk('images')->put('product-131586.jpg', 'image bytes');
