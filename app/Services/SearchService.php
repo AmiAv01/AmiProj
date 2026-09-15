@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\DTO\SearchQueryDTO;
-use App\Exceptions\NoResultsFoundException;
 use App\Models\Detail;
 use App\Services\Product\ProductImageService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,11 +19,8 @@ final class SearchService
 
     public function getBySearching(SearchQueryDTO $dto): array
     {
-        $detailsFromOems = $this->oemService->findDetailsByQuery($dto->searchQuery);
-        if ($detailsFromOems->isEmpty()) {
-            throw new NoResultsFoundException($dto->searchQuery);
-        }
-        $processedDetails = $this->processDetails($detailsFromOems, $dto->searchQuery);
+        $details = $this->oemService->findUniqueSearchResults($dto->searchQuery);
+        $processedDetails = $this->processDetails($details);
 
         return $this->formatResults($processedDetails);
     }
@@ -32,11 +28,8 @@ final class SearchService
     public function getBySearchingWithPagination(SearchQueryDTO $dto): LengthAwarePaginator
     {
         $perPage = self::RESULTS_PER_PAGE;
-        $paginator = $this->oemService->buildUniqueDetailsQuery($dto->searchQuery)->paginate($perPage);
-        if ($paginator->isEmpty()) {
-            throw new NoResultsFoundException($dto->searchQuery);
-        }
-        $processedDetails = $this->processDetails(collect($paginator->items()), $dto->searchQuery);
+        $paginator = $this->oemService->buildUniqueSearchResultsQuery($dto->searchQuery)->paginate($perPage);
+        $processedDetails = $this->processDetails(collect($paginator->items()));
         $details = array_values($this->formatResults($processedDetails));
         $paginator->setCollection(collect($details));
         $paginator->withQueryString();
@@ -44,17 +37,25 @@ final class SearchService
         return $paginator;
     }
 
-    private function processDetails(Collection $details, string $searchQuery): array
+    private function processDetails(Collection $details): array
     {
         $photosByInvoice = Detail::query()
-            ->whereIn('dt_invoice', $details->pluck('dt_invoice')->filter()->unique())
+            ->whereIn('dt_invoice', $details->pluck('image_invoice')->filter()->unique())
             ->pluck('dt_foto', 'dt_invoice');
 
-        return $details->map(function ($detail) use ($searchQuery, $photosByInvoice) {
-            $result = $this->oemService->getInfoAboutDetailFromOems($detail, $searchQuery)->toArray();
-            $result['imageUrl'] = $this->imageService->getImageUrl($photosByInvoice->get($detail['dt_invoice']));
+        return $details->map(function (mixed $detail) use ($photosByInvoice): array {
+            $code = (string) data_get($detail, 'dt_code');
+            $firm = (string) data_get($detail, 'dt_firm');
+            $type = (string) data_get($detail, 'dt_typec');
+            $imageInvoice = (string) data_get($detail, 'image_invoice');
+            $photo = $photosByInvoice->get($imageInvoice);
 
-            return $result;
+            return [
+                'dt_code' => $code,
+                'dt_firm' => $firm,
+                'dt_typec' => $type,
+                'imageUrl' => $this->imageService->getImageUrl(is_string($photo) ? $photo : null),
+            ];
         })->toArray();
     }
 
