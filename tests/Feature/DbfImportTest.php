@@ -193,6 +193,29 @@ it('updates the product photo reference when ASS DBF changes', function (): void
     }
 });
 
+it('makes an ASS DBF product searchable without a matching OEM import', function (): void {
+    $directory = sys_get_temp_dir().'/ami_detail_search_test_'.bin2hex(random_bytes(6));
+    mkdir($directory, 0755, true);
+    $path = $directory.'/ASS.DBF';
+
+    try {
+        createDetailDbf($path, 'product-photo');
+        $this->artisan('dbf:sync', ['--file' => ['ASS.DBF'], '--source' => $directory])->assertSuccessful();
+
+        $this->assertDatabaseHas('detail', ['dt_invoice' => '131586']);
+        $this->assertDatabaseMissing('oems', ['dt_invoice' => '131586']);
+
+        $this->getJson('/api/v1/catalog/search?searchQ=131586')
+            ->assertOk()
+            ->assertJsonPath('data.details.total', 1)
+            ->assertJsonPath('data.details.data.0.dt_code', '131586')
+            ->assertJsonPath('data.details.data.0.dt_firm', 'CARGO');
+    } finally {
+        @unlink($path);
+        @rmdir($directory);
+    }
+});
+
 it('stores a human-readable quality snapshot for incomplete product fields', function (): void {
     $directory = sys_get_temp_dir().'/ami_detail_quality_test_'.bin2hex(random_bytes(6));
     mkdir($directory, 0755, true);

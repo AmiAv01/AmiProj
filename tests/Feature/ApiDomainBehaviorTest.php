@@ -339,6 +339,48 @@ it('keeps the matched OEM code when the search query uses different casing', fun
         ->assertJsonPath('data.details.data.0.dt_firm', 'PRESTOLITE');
 });
 
+it('renders an empty catalog response when a search has no matches', function (): void {
+    $this->getJson('/api/v1/catalog/autocomplete?searchQ=NOT-A-REAL-PART')
+        ->assertOk()
+        ->assertExactJson([
+            'data' => [
+                'details' => [],
+                'search' => 'NOT-A-REAL-PART',
+            ],
+        ]);
+
+    $this->getJson('/api/v1/catalog/search?searchQ=NOT-A-REAL-PART')
+        ->assertOk()
+        ->assertJsonPath('data.details.total', 0)
+        ->assertJsonPath('data.details.data', [])
+        ->assertJsonPath('data.title', 'Поиск по NOT-A-REAL-PART');
+});
+
+it('finds catalog details that do not have an OEM cross-reference row', function (): void {
+    Detail::factory()->create([
+        'dt_code' => 620012,
+        'dt_invoice' => '620012',
+        'dt_oem' => 'OEM-620012',
+        'dt_typec' => 'Подшипник',
+        'fr_code' => 'CARGO',
+        'deleted_at' => null,
+    ]);
+
+    $autocomplete = $this->getJson('/api/v1/catalog/autocomplete?searchQ=620012')
+        ->assertOk()
+        ->json('data.details');
+
+    expect(array_values($autocomplete))->toHaveCount(1)
+        ->and(array_values($autocomplete)[0]['dt_code'])->toBe('620012')
+        ->and(array_values($autocomplete)[0]['dt_firm'])->toBe('CARGO');
+
+    $this->getJson('/api/v1/catalog/search?searchQ=620012')
+        ->assertOk()
+        ->assertJsonPath('data.details.total', 1)
+        ->assertJsonPath('data.details.data.0.dt_code', '620012')
+        ->assertJsonPath('data.details.data.0.dt_firm', 'CARGO');
+});
+
 it('returns product image URLs in catalog and search results', function (): void {
     Storage::fake('images');
     Storage::disk('images')->put('product-131586.jpg', 'image bytes');
