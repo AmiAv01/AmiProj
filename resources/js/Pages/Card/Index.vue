@@ -12,13 +12,10 @@
                         <div class="flex flex-col items-start gap-7 p-5 sm:p-7 md:flex-row lg:p-8">
                             <!-- Блок с изображением товара (слева) -->
                             <div class="w-full shrink-0 md:w-1/3 lg:w-1/4">
-                                <div class="aspect-square overflow-hidden rounded-xl border border-slate-100 bg-slate-50 p-4 sm:p-6">
-                                    <img
-                                        class="h-full w-full object-contain mix-blend-multiply"
-                                        :src="imageUrl"
-                                        alt="Изображение товара"
-                                    />
-                                </div>
+                                <ProductImageZoom
+                                    :src="imageUrl"
+                                    :alt="`Изображение товара ${detail.dt_invoice || detail.dt_code || ''}`.trim()"
+                                />
                             </div>
 
                             <!-- Блок с текстовым описанием (справа) -->
@@ -186,6 +183,7 @@ import { ref, computed, watch } from "vue";
 import { useCartStore } from "@/Store/cartStore";
 import DetailLayout from "./DetailLayout.vue";
 import CartButton from '@/Components/CartButton.vue';
+import ProductImageZoom from '@/Components/ProductImageZoom.vue';
 import Layout from "@/Shared/UserLayout.vue";
 import { formatMoney } from "@/Services/PriceFormatter";
 import { CART_QUANTITY_MAX, CART_QUANTITY_MIN } from "@/Config/AppConfig";
